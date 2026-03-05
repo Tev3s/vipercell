@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v2.9</title>
+  <title>Vipercell - Premium Top Up v3.0</title>
   
   <!-- Tailwind CSS & Custom Config -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -80,7 +80,6 @@
     const { useState, useEffect, useRef, useMemo } = React;
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
     import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
@@ -90,8 +89,7 @@
       projectId: "vipercell-8502b",
       storageBucket: "vipercell-8502b.firebasestorage.app",
       messagingSenderId: "509296616890",
-      appId: "1:509296616890:web:57e7521494db9c52942983",
-      measurementId: "G-7CLNHSCVQQ"
+      appId: "1:509296616890:web:57e7521494db9c52942983"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -197,6 +195,9 @@
     const IconWallet = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>;
     const IconPercent = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>;
     const IconZapOff = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="1" y1="1" x2="23" y2="23"></line><path d="M10.1 5.3L13 2l-1 8h9L13.9 18.7"></path><path d="M11 22l1-8H3l4.3-5.2"></path></svg>;
+    const IconMessageSquare = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>;
+    const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
+    const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
 
     // --- DEFAULT DATA & CONSTANTS ---
     const PAYMENTS = [
@@ -204,9 +205,7 @@
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi', fee: 0 },
     ];
 
-    const PROMO_TYPES = {
-      PERCENTAGE: 'percentage', FIXED: 'fixed'
-    };
+    const PROMO_TYPES = { PERCENTAGE: 'percentage', FIXED: 'fixed' };
 
     // --- CUSTOM CONFIRM MODAL ---
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
@@ -240,7 +239,7 @@
                   Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
                </p>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v2.9</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v3.0</span>
                </div>
             </div>
          </footer>
@@ -263,13 +262,13 @@
        );
 
        return (
-          <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative border border-white/10 shadow-2xl bg-black mt-6">
+          <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative border border-white/10 shadow-2xl bg-black mt-6 group">
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                    {b.type === 'youtube' ? (
                       <iframe className="w-full h-full object-cover pointer-events-none opacity-80 scale-105" src={`https://www.youtube.com/embed/${getYouTubeId(b.url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(b.url)}`} frameBorder="0" allow="autoplay; encrypted-media"></iframe>
                    ) : (
-                      <img src={b.url} className="w-full h-full object-cover opacity-90 transition duration-[5000ms] ease-in-out transform scale-100 hover:scale-105" />
+                      <img src={b.url} className="w-full h-full object-cover opacity-90 transition duration-[5000ms] ease-in-out transform scale-100 group-hover:scale-105" />
                    )}
                 </div>
              ))}
@@ -317,7 +316,7 @@
       const [authMessage, setAuthMessage] = useState({ text: '', type: '' });
       const [resetCooldown, setResetCooldown] = useState(0);
 
-      // --- PROFILE STATE (DIRECT FETCH) ---
+      // --- PROFILE STATE ---
       const [currentUserData, setCurrentUserData] = useState(null);
       const [showPasswordForm, setShowPasswordForm] = useState(false);
       const [currentPassword, setCurrentPassword] = useState('');
@@ -331,19 +330,22 @@
       const [profileAvatar, setProfileAvatar] = useState('');
       const [profileSaveMsg, setProfileSaveMsg] = useState('');
 
-      // --- DB STATES (COLLECTIONS) ---
+      // --- DB STATES ---
       const [isStoreOpen, setIsStoreOpen] = useState(true);
       const [games, setGames] = useState([]);
       const [items, setItems] = useState([]); 
       const [promos, setPromos] = useState([]); 
       const [banners, setBanners] = useState([]); 
       const [galleryData, setGalleryData] = useState([]);
-      const [runningTexts, setRunningTexts] = useState([]);
+      const [runningTexts, setRunningTexts] = useState(['', '', '', '', '']); // Default 5 empty slots
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
 
-      // Admin States
+      // Admin & Data States
       const [adminList, setAdminList] = useState([]);
       const [allGlobalOrders, setAllGlobalOrders] = useState([]); 
+      const [memberList, setMemberList] = useState([]); 
+      const [adminChats, setAdminChats] = useState([]); 
+      
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL;
       const isAdmin = isSuperAdmin || adminList.includes(authUser?.email);
 
@@ -353,6 +355,7 @@
 
       const navigateTo = (view) => {
          setCurrentView(view); setIsMenuOpen(false); setMobileMenuOpen(false);
+         // Reset top up form
          if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); }
       };
 
@@ -386,9 +389,15 @@
       
       const [newAdminEmail, setNewAdminEmail] = useState('');
       const [adminOrderSearch, setAdminOrderSearch] = useState('');
+      const [adminMemberSearch, setAdminMemberSearch] = useState('');
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
       const [scannedOrder, setScannedOrder] = useState(null);
       const [scannerError, setScannerError] = useState('');
+
+      // Chat Admin States
+      const [activeChatEmail, setActiveChatEmail] = useState(null);
+      const [adminReplyText, setAdminReplyText] = useState('');
+      const adminChatEndRef = useRef(null);
 
       // --- USER APP STATE ---
       const [selectedGame, setSelectedGame] = useState(null);
@@ -405,6 +414,12 @@
       const [activeOrderDetails, setActiveOrderDetails] = useState(null); 
       const [userOrders, setUserOrders] = useState([]);
       const [adminOrders, setAdminOrders] = useState([]);
+      
+      // Chat User State
+      const [userChat, setUserChat] = useState(null);
+      const [chatInput, setChatInput] = useState('');
+      const [loadingChat, setLoadingChat] = useState(false);
+      const chatEndRef = useRef(null);
 
       const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
@@ -418,6 +433,9 @@
            setActiveOrderDetails(found || null);
         }
       }, [lastOrderId, allGlobalOrders]);
+
+      useEffect(() => { if(currentView === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView]);
+      useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail]);
 
       useEffect(() => {
          const handleKeyDown = (e) => {
@@ -434,7 +452,7 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen]);
 
-      // --- REFACTORED DB FETCHING ---
+      // --- REFACTORED DB FETCHING (Public Data) ---
       useEffect(() => {
          const globalRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global');
          const unsubGlobal = onSnapshot(globalRef, (snap) => {
@@ -442,12 +460,17 @@
                const d = snap.data();
                setIsStoreOpen(d.isOpen ?? true);
                setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', tg: d.tgLink||'' });
-               setRunningTexts(d.runningTexts || []);
+               
+               // Ensure runningTexts always has 5 elements to prevent undefined mapping errors
+               let rTexts = d.runningTexts || [];
+               while(rTexts.length < 5) rTexts.push('');
+               setRunningTexts(rTexts.slice(0,5));
+               
                setBanners(d.banners || []);
                setGalleryData(d.gallery || []);
             } else {
                if(isSuperAdmin) {
-                 setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'], banners: [], gallery: [] }).catch(()=>{});
+                 setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman', '', '', ''], banners: [], gallery: [] }).catch(()=>{});
                }
             }
          });
@@ -470,6 +493,7 @@
          return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
       }, [isSuperAdmin]);
 
+      // Auth Listener
       useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           setAuthUser(user); setIsAuthChecking(false);
@@ -482,6 +506,7 @@
         return () => unsubscribe();
       }, []);
 
+      // Current User Profile Listener
       useEffect(() => {
          if(!authUser) return;
          const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid);
@@ -495,18 +520,43 @@
          return () => unsubUser();
       }, [authUser]);
 
+      // Restricted Data Listeners (Orders, Members, Chats)
       useEffect(() => {
          if (!authUser) return;
-         const unsubOrders = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
+         let unsubs = [];
+
+         // Global Orders
+         unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
             const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
             const getStatusScore = (s) => s === 'Pending' ? 1 : s === 'Sukses' ? 2 : 3;
             fetchedAll.sort((a,b) => getStatusScore(a.status) !== getStatusScore(b.status) ? getStatusScore(a.status) - getStatusScore(b.status) : new Date(b.createdAt) - new Date(a.createdAt));
             setAllGlobalOrders(fetchedAll);
             if (isAdmin) setAdminOrders(fetchedAll); else setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email));
-         });
-         return () => unsubOrders();
+         }));
+
+         // Members List (For Admin)
+         if (isAdmin) {
+            unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => {
+               const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()}));
+               m.sort((a,b) => new Date(b.lastLogin) - new Date(a.lastLogin)); setMemberList(m);
+            }));
+            
+            // Support Chats (For Admin)
+            unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => {
+               const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() }));
+               fetched.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt)); setAdminChats(fetched);
+            }));
+         } else {
+            // User Chat
+            unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => {
+               if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] });
+            }));
+         }
+
+         return () => unsubs.forEach(fn => fn());
       }, [authUser, isAdmin]);
 
+      // Set Profile Data into Inputs
       useEffect(() => {
          if (currentView === 'profile' && currentUserData) {
             setProfileName(currentUserData.name || ''); 
@@ -516,12 +566,30 @@
          }
       }, [currentView, currentUserData]);
 
+      // Set Admin Settings Data into Inputs
       useEffect(() => {
-         setAdminIG(socialLinks.ig); setAdminWA(socialLinks.wa); setAdminTT(socialLinks.tt); setAdminTG(socialLinks.tg);
-      }, [socialLinks]);
+         if(currentView === 'admin' && activeAdminTab === 'settings') {
+            setAdminIG(socialLinks.ig || ''); setAdminWA(socialLinks.wa || ''); setAdminTT(socialLinks.tt || ''); setAdminTG(socialLinks.tg || '');
+         }
+      }, [currentView, activeAdminTab, socialLinks]);
 
       const pendingOrdersCount = adminOrders.filter(o => o.status === 'Pending').length;
+      const openChatsCount = adminChats.filter(c => c.status === 'Open').length;
+      const userHasUnread = userChat?.status === 'Dijawab';
 
+      const allUserChats = useMemo(() => {
+          if (!isAdmin) return [];
+          return memberList.map(member => {
+              const existingChat = adminChats.find(c => c.id === member.email);
+              return existingChat || { id: member.email, messages: [], status: 'Selesai', updatedAt: member.lastLogin };
+          }).sort((a, b) => {
+              if (a.status === 'Open' && b.status !== 'Open') return -1;
+              if (b.status === 'Open' && a.status !== 'Open') return 1;
+              return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+          });
+      }, [memberList, adminChats, isAdmin]);
+
+      // QR Scanner Logic
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
@@ -621,7 +689,7 @@
         if (!promo) return price;
         if (promo.type === PROMO_TYPES.PERCENTAGE) return price - (price * promo.discount / 100);
         else if (promo.type === PROMO_TYPES.FIXED) return Math.max(0, price - promo.discount);
-        return price;
+        return Math.max(0, price);
       };
 
       const handleCheckout = async () => {
@@ -655,6 +723,16 @@
         } catch (error) { alert("Gagal memproses pesanan."); } finally { setIsProcessing(false); }
       };
 
+      const handleSendChatUser = async (e) => {
+         e.preventDefault(); if (!chatInput.trim()) return;
+         try {
+            setLoadingChat(true); const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email);
+            const newMessages = [...(userChat?.messages || []), { sender: 'user', text: chatInput, time: new Date().toISOString(), role: 'Pelanggan' }];
+            await setDoc(chatRef, { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true });
+            setChatInput(''); setLoadingChat(false);
+         } catch (err) { alert('Gagal kirim pesan: ' + err.message); setLoadingChat(false); }
+      };
+
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const statusColor = (status) => { if(status === 'Sukses' || status === 'Selesai' || status === 'Dijawab') return 'text-orange-400 bg-orange-500/10 border-orange-500/30'; if(status === 'Batal' || status === 'Dihapus') return 'text-red-400 bg-red-500/10 border-red-500/30'; return 'text-blue-400 bg-blue-500/10 border-blue-500/30'; };
 
@@ -674,7 +752,7 @@
          catch(e) { alert("Gagal menghapus pesanan: " + e.message); }
       });
       
-      // Games Management
+      // Games
       const handleSaveGame = async (e) => {
          e.preventDefault(); if (!newGameId || !newGameName) return;
          try {
@@ -691,7 +769,7 @@
          catch(e) { alert("Gagal menghapus game: " + e.message); }
       });
 
-      // Items Management
+      // Items
       const handleSaveItem = async (e) => {
          e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return;
          try {
@@ -709,7 +787,7 @@
          catch(e) { alert("Gagal menghapus item: " + e.message); }
       });
 
-      // Promo Management
+      // Promo
       const handleAddPromo = async (e) => {
          e.preventDefault(); if (!newPromoCode || !newPromoDiscount || !newPromoMax) return;
          try {
@@ -728,10 +806,10 @@
          catch(e) { alert("Gagal update status promo: " + e.message); }
       };
 
-      // Config Management
+      // Config & Media
       const handleRunningTextChange = (index, value) => { const newTexts = [...runningTexts]; newTexts[index] = value; setRunningTexts(newTexts); };
       const saveRunningTexts = async () => { 
-         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: runningTexts }, { merge: true }); setItemNotice('Teks Berjalan disimpan!'); setTimeout(()=>setItemNotice(''), 2000); }
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: runningTexts }, { merge: true }); alert('Teks Berjalan disimpan!'); }
          catch(e) { alert("Gagal simpan teks: " + e.message); }
       };
       const handleAddBanner = async (type, url) => { 
@@ -739,15 +817,15 @@
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); }
          catch(e) { alert("Gagal tambah banner: " + e.message); }
       };
-      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if (file) { setItemNotice('Mengompres...'); const compressed = await compressImage(file, 800); handleAddBanner('image', compressed); setItemNotice(''); } };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if (file) { const compressed = await compressImage(file, 800); handleAddBanner('image', compressed); } };
       const handleDeleteBanner = (index) => requestConfirm('Hapus banner?', async () => { 
          const newBanners = [...banners]; newBanners.splice(index, 1); 
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); }
          catch(e) { alert("Gagal hapus banner: " + e.message); }
       });
       const handleGalleryUpload = async (e) => { 
-         const file = e.target.files[0]; if (file) { if (galleryData.length >= 10) return alert('Maksimal 10 foto!'); setItemNotice('Mengompres...'); const compressed = await compressImage(file, 400); 
-         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...galleryData, compressed] }, { merge: true }); setItemNotice('Foto ditambah!'); setTimeout(()=>setItemNotice(''), 2000); }
+         const file = e.target.files[0]; if (file) { if (galleryData.length >= 10) return alert('Maksimal 10 foto!'); const compressed = await compressImage(file, 400); 
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...galleryData, compressed] }, { merge: true }); }
          catch(e) { alert("Gagal upload foto: " + e.message); }
       }};
       const handleRemoveGallery = async (index) => requestConfirm('Hapus foto?', async () => { 
@@ -756,14 +834,34 @@
          catch(e) { alert("Gagal hapus foto: " + e.message); }
       });
       const saveSettingsLinks = async () => { 
-         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminIG, waLink: adminWA, ttLink: adminTT, tgLink: adminTG }, { merge: true }); setItemNotice('Kontak diperbarui!'); setTimeout(()=>setItemNotice(''), 2000); }
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminIG, waLink: adminWA, ttLink: adminTT, tgLink: adminTG }, { merge: true }); alert('Kontak diperbarui!'); }
          catch(e) { alert("Gagal simpan kontak: " + e.message); }
+      };
+      const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !newAdminEmail.includes('@') || adminList.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: [...adminList, newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
+      const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: adminList.filter(e => e !== email) }, { merge: true }); });
+
+      // Chat Admin Support
+      const handleAdminSendChat = async (e) => {
+         if(e) e.preventDefault(); if (!adminReplyText.trim() || !activeChatEmail) return;
+         try {
+            const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail);
+            const activeChat = adminChats.find(c => c.id === activeChatEmail);
+            const roleName = authUser.email === ADMIN_EMAIL ? 'Super Admin' : 'Admin';
+            const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: adminReplyText, time: new Date().toISOString(), role: roleName }];
+            await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true });
+            setAdminReplyText('');
+         } catch(err) { alert("Gagal kirim: " + err.message); }
+      };
+      const markChatDone = async () => { 
+         if(!activeChatEmail) return; 
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Selesai' }, { merge: true }); }
+         catch(e) { alert("Gagal update status: " + e.message); }
       };
       
       const flashSalePromos = promos.filter(p => p.isFlashSale && p.isActive);
 
       // --- RENDERING ---
-      if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-[#050505]"><IconLoader className="w-12 h-12 text-orange-500"/></div>;
+      if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-[#050505]"><IconLoader className="w-12 h-12 text-orange-500 animate-spin"/></div>;
 
       // LOGIN UI REDESIGN
       if (!authUser) {
@@ -919,12 +1017,13 @@
              </div>
           )}
 
-          {/* FLOATING NAVBAR (v2.9 Style) */}
+          {/* FLOATING NAVBAR (v3.0 Style) */}
           <nav className="fixed top-4 left-0 w-full z-40 px-4">
             <div className="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl">
               <div className="flex items-center gap-4">
-                 <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl hover:bg-orange-500/20 hover:text-orange-400 transition shadow-sm">
+                 <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl hover:bg-orange-500/20 hover:text-orange-400 transition shadow-sm relative">
                     <IconMenu className="w-6 h-6" />
+                    {userHasUnread && <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-orange-500 rounded-full border border-black animate-pulse"></span>}
                  </button>
                  <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition" onClick={() => navigateTo('home')}>
                    <IconZap className="text-orange-500 w-7 h-7 drop-shadow-sm" />
@@ -936,7 +1035,10 @@
               <div className="hidden md:flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/5 shadow-inner">
                  <button onClick={()=>navigateTo('home')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider ${currentView === 'home' ? 'bg-orange-500 text-white' : 'text-gray-400 hover:text-white'}`}>Beranda</button>
                  <button onClick={()=>navigateTo('history')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider ${currentView === 'history' ? 'bg-orange-500 text-white' : 'text-gray-400 hover:text-white'}`}>Riwayat</button>
-                 {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-600 text-white' : 'text-red-400 hover:text-red-300'}`}>Admin {pendingOrdersCount>0 && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount}</span>}</button>}
+                 <button onClick={()=>navigateTo('chat')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'chat' ? 'bg-orange-500 text-white' : 'text-gray-400 hover:text-white'}`}>
+                    Bantuan CS {userHasUnread && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]"></span>}
+                 </button>
+                 {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-600 text-white' : 'text-red-400 hover:text-red-300'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount}</span>}</button>}
               </div>
 
               <div className="flex items-center gap-3">
@@ -958,15 +1060,15 @@
 
           {/* TEKS BERJALAN (MARQUEE) */}
           <div className="pt-[90px]">
-             {runningTexts.some(t => t.trim() !== '') && (
+             {runningTexts.some(t => t?.trim() !== '') && (
                 <div className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-1.5 overflow-hidden flex whitespace-nowrap shadow-sm border-y border-orange-400/30 relative">
                    <div className="animate-marquee inline-block text-[10px] font-black uppercase tracking-widest">
-                      {runningTexts.filter(t => t.trim() !== '').map((text, idx) => (
+                      {runningTexts.filter(t => t?.trim() !== '').map((text, idx) => (
                          <span key={idx} className="mx-8 flex-inline items-center gap-2">
                             <IconZap className="w-3 h-3 inline pb-0.5 text-yellow-300"/> {text}
                          </span>
                       ))}
-                      {runningTexts.filter(t => t.trim() !== '').map((text, idx) => (
+                      {runningTexts.filter(t => t?.trim() !== '').map((text, idx) => (
                          <span key={'dup-'+idx} className="mx-8 flex-inline items-center gap-2">
                             <IconZap className="w-3 h-3 inline pb-0.5 text-yellow-300"/> {text}
                          </span>
@@ -1002,6 +1104,10 @@
                        <button onClick={()=>navigateTo('history')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition ${currentView === 'history' ? 'bg-orange-500/20 border border-orange-500/50 text-orange-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
                            <IconHistory className="w-5 h-5"/> Riwayat Pesanan
                        </button>
+                       <button onClick={()=>navigateTo('chat')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition relative ${currentView === 'chat' ? 'bg-orange-500/20 border border-orange-500/50 text-orange-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
+                           <IconMessageSquare className="w-5 h-5"/> Hubungi CS
+                           {userHasUnread && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,1)] animate-pulse"></span>}
+                       </button>
                        <button onClick={()=>navigateTo('profile')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition ${currentView === 'profile' ? 'bg-orange-500/20 border border-orange-500/50 text-orange-400' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
                            <IconUser className="w-5 h-5"/> Akun & Keamanan
                        </button>
@@ -1009,7 +1115,7 @@
                        {isAdmin && (
                           <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition mt-4 ${currentView === 'admin' ? 'bg-red-500/20 border border-red-500/50 text-red-400' : 'text-red-500/70 hover:bg-red-500/10 hover:text-red-400'}`}>
                               <IconShieldAlert className="w-5 h-5"/> Dashboard Admin
-                              {pendingOrdersCount > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">{pendingOrdersCount}</span>}
+                              {(pendingOrdersCount + openChatsCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">{pendingOrdersCount + openChatsCount}</span>}
                           </button>
                        )}
                    </div>
@@ -1023,8 +1129,8 @@
              </div>
           )}
 
-          <main className="flex-1 transition-all w-full flex flex-col">
-            <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-6">
+          <main className={`flex-1 transition-all w-full flex flex-col ${currentView === 'chat' ? 'h-full' : ''}`}>
+            <div className={`max-w-7xl mx-auto w-full px-4 flex-grow mt-6 ${currentView === 'chat' ? 'h-full flex flex-col max-w-5xl' : ''}`}>
             
             {/* BERANDA (HOME VIEW) */}
             {currentView === 'home' && (
@@ -1258,6 +1364,60 @@
                </div>
             )}
 
+            {/* TAB CHAT / BANTUAN (DIKEMBALIKAN & DIMATANGKAN) */}
+            {currentView === 'chat' && !isAdmin && (
+               <div className="flex flex-col h-full glass-panel rounded-[2rem] shadow-2xl overflow-hidden mt-4 relative">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-orange-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                  
+                  <div className="p-6 border-b border-white/10 flex items-center gap-4 bg-white/5 backdrop-blur-sm z-10">
+                     <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg"><IconMessageSquare className="w-7 h-7 text-white"/></div>
+                     <div>
+                        <h2 className="text-xl font-black leading-tight text-white">CS Vipercell</h2>
+                        <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span> Tim Sedang Online</p>
+                     </div>
+                  </div>
+                  
+                  <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-10">
+                     <div className="text-center text-[9px] uppercase tracking-widest text-gray-500 font-black bg-black/40 py-2 px-5 rounded-full w-fit mx-auto shadow-inner border border-white/5">Enkripsi Ujung ke Ujung</div>
+                     
+                     {loadingChat ? (
+                        <div className="flex flex-col items-center justify-center py-20"><IconLoader className="w-10 h-10 text-orange-500 animate-spin mb-4" /><span className="text-gray-400 font-bold text-xs uppercase tracking-widest">Sinkronisasi Chat...</span></div>
+                     ) : (
+                        <>
+                           {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 py-3 px-6 rounded-xl text-xs font-bold w-fit mx-auto shadow-sm backdrop-blur-md">✔ Tiket obrolan telah ditutup. Jika ada pertanyaan lain, silakan kirim pesan baru.</div>)}
+                           {(!userChat || userChat.messages.length === 0) && (
+                              <div className="flex flex-col items-center justify-center py-20 text-gray-500">
+                                 <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5"><IconMessageSquare className="w-10 h-10 opacity-30" /></div>
+                                 <p className="font-bold text-sm">Kirim pesan untuk meminta bantuan Customer Service.</p>
+                              </div>
+                           )}
+                           {(userChat?.messages || []).map((msg, i) => (
+                              <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
+                                 <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
+                                    {msg.role && msg.sender === 'admin' && <span className="text-[9px] text-orange-500 font-bold uppercase tracking-widest mb-1.5 ml-1">{msg.role}</span>}
+                                    <div className={`p-4 rounded-2xl text-sm shadow-xl font-medium leading-relaxed border ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-tr-sm border-orange-400/30' : 'bg-[#0a0a0a] text-gray-200 border-white/10 rounded-tl-sm'}`}>
+                                       {msg.text}
+                                    </div>
+                                    <span className="text-[9px] text-gray-500 font-bold mt-2 px-1 uppercase tracking-widest">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
+                                 </div>
+                              </div>
+                           ))}
+                        </>
+                     )}
+                     <div ref={chatEndRef} />
+                  </div>
+                  
+                  <div className="p-4 md:p-6 bg-black/60 backdrop-blur-xl border-t border-white/10 z-10">
+                     <form onSubmit={handleSendChatUser} className="flex gap-3">
+                        <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Tuliskan kendala Anda di sini..." className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-orange-500 text-white font-medium transition shadow-inner placeholder-gray-500" />
+                        <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 hover:bg-orange-500 text-white px-8 rounded-2xl font-black transition disabled:opacity-50 shadow-[0_0_15px_rgba(249,115,22,0.3)] uppercase tracking-widest flex items-center justify-center gap-2">
+                           {loadingChat ? <IconLoader className="w-5 h-5 animate-spin"/> : <><IconSend className="w-5 h-5"/> <span className="hidden sm:inline text-xs">Kirim</span></>}
+                        </button>
+                     </form>
+                  </div>
+               </div>
+            )}
+
             {/* TAB PROFIL */}
             {currentView === 'profile' && !isAdmin && (
                <div className="animate-in fade-in pb-10 max-w-4xl mx-auto pt-4">
@@ -1336,80 +1496,6 @@
                </div>
             )}
 
-            {/* TAB RIWAYAT PESANAN */}
-            {currentView === 'history' && !isAdmin && (
-               <div className="animate-in fade-in pb-10 max-w-5xl mx-auto pt-4">
-                  <div className="glass-panel rounded-[3rem] p-6 md:p-10 shadow-2xl">
-                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10 border-b border-white/10 pb-8">
-                        <div className="flex items-center gap-5">
-                           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(168,85,247,0.3)] text-white"><IconHistory className="w-8 h-8"/></div>
-                           <div>
-                              <h2 className="text-2xl md:text-3xl font-black leading-tight drop-shadow-md">Riwayat Transaksi</h2>
-                              <p className="text-xs text-gray-400 font-medium mt-1.5">Pantau status pesanan top-up Anda secara real-time.</p>
-                           </div>
-                        </div>
-                        <div className="bg-white/5 px-5 py-3 rounded-2xl text-xs font-bold text-gray-300 border border-white/10 flex items-center gap-3 backdrop-blur-sm shadow-inner">
-                           Total Pemesanan: <span className="text-white text-lg font-black font-mono bg-white/10 px-3 py-0.5 rounded-lg">{userOrders.filter(o => o.status !== 'Dihapus').length}</span>
-                        </div>
-                     </div>
-                     
-                     <div className="space-y-5">
-                        {userOrders.filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => (
-                           <div key={order.id} className="bg-[#0a0a0a] border border-white/5 p-6 rounded-[2rem] flex flex-col md:flex-row justify-between md:items-center gap-6 hover:border-white/20 transition-all duration-300 group shadow-lg">
-                              <div className="flex gap-5 items-center w-full md:w-auto">
-                                 <div className="relative">
-                                    <img src={games?.find(g => g.id === order.gameId)?.image || 'https://via.placeholder.com/300'} className="w-20 h-20 rounded-[1.5rem] object-cover shadow-md border border-white/10 group-hover:scale-105 transition duration-500"/>
-                                    <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl flex items-center justify-center shadow-lg border border-white/10 backdrop-blur-md ${order.status === 'Sukses' ? 'bg-emerald-500/80' : order.status === 'Batal' ? 'bg-red-500/80' : 'bg-orange-500/80'}`}>
-                                       {order.status === 'Sukses' ? <IconCheckCircle className="w-4 h-4 text-white"/> : order.status === 'Batal' ? <IconX className="w-4 h-4 text-white"/> : <IconLoader className="w-4 h-4 text-white animate-spin"/>}
-                                    </div>
-                                 </div>
-                                 <div className="flex-1">
-                                    <div className="font-black text-lg text-white mb-1 tracking-wide">{order.gameName}</div>
-                                    <div className="text-sm text-gray-400 font-bold mb-3">{order.nominalName}</div>
-                                    <div className="flex flex-wrap gap-2">
-                                       <div className="text-[10px] text-gray-300 bg-white/5 px-2.5 py-1 rounded-lg border border-white/5 font-mono uppercase tracking-wider">ID: {order.targetUserId} {order.targetZoneId && `(${order.targetZoneId})`}</div>
-                                       <div className="text-[10px] text-gray-400 font-bold px-2 py-1 rounded-lg border border-white/5 bg-black/50 flex items-center gap-1.5 uppercase tracking-wider"><IconQrcode className="w-3 h-3"/> {order.paymentMethod}</div>
-                                    </div>
-                                 </div>
-                              </div>
-                              
-                              <div className="flex flex-col md:items-end gap-4 border-t md:border-t-0 border-white/5 pt-5 md:pt-0 w-full md:w-auto md:pl-6 md:border-l">
-                                 <div className="flex flex-col md:items-end gap-1 w-full text-left md:text-right">
-                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Total Pembayaran</span>
-                                    <span className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 font-mono drop-shadow-md">{formatRupiah(order.priceTotal)}</span>
-                                 </div>
-                                 
-                                 <div className="flex items-center justify-between md:justify-end w-full gap-4 mt-2">
-                                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5 bg-black/40 px-3 py-1.5 rounded-lg border border-white/5"><IconHistory className="w-3 h-3"/> {new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'})}</div>
-                                    <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-sm ${statusColor(order.status)}`}>{order.status}</span>
-                                 </div>
-                                 
-                                 {order.status === 'Pending' && (
-                                    <div className="mt-4 p-5 bg-black border border-orange-500/30 rounded-2xl flex flex-col items-center shadow-inner w-full animate-in zoom-in relative overflow-hidden">
-                                       <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 animate-pulse"></div>
-                                       {order.paymentMethod.includes('QRIS') ? (
-                                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-28 h-28 object-contain mix-blend-screen bg-white rounded-xl p-2" />
-                                       ) : (
-                                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${order.id}&margin=5`} className="w-28 h-28 object-contain mix-blend-screen bg-white rounded-xl p-2" />
-                                       )}
-                                       <p className="text-[10px] text-orange-400 font-black mt-3 text-center uppercase tracking-widest bg-orange-500/10 px-4 py-1.5 rounded-full border border-orange-500/20">{order.paymentMethod.includes('QRIS') ? 'Scan QRIS Untuk Bayar' : 'Tunjukkan Ke Kasir'}</p>
-                                    </div>
-                                 )}
-                              </div>
-                           </div>
-                        )) : (
-                           <div className="text-center py-24 text-gray-500 border border-dashed border-white/10 rounded-[3rem] bg-white/5 shadow-inner">
-                              <div className="w-24 h-24 bg-black/50 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5"><IconHistory className="w-10 h-10 opacity-30 text-white"/></div>
-                              <p className="font-black text-xl text-white mb-2">Belum Ada Transaksi</p>
-                              <p className="text-sm font-medium opacity-60 max-w-sm mx-auto">Riwayat pesanan Anda masih kosong. Lakukan top up pertama Anda sekarang juga.</p>
-                              <button onClick={()=>navigateTo('home')} className="mt-8 bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl transition hover:-translate-y-1">Mulai Top Up</button>
-                           </div>
-                        )}
-                     </div>
-                  </div>
-               </div>
-            )}
-
             {/* DASHBOARD ADMIN */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-7xl mx-auto flex flex-col md:flex-row gap-6 h-[calc(100vh-120px)]">
@@ -1430,7 +1516,9 @@
                            { id: 'orders', label: 'Pesanan', icon: IconList, notif: pendingOrdersCount },
                            { id: 'katalog', label: 'Katalog Game', icon: IconGamepad },
                            { id: 'promo', label: 'Sistem Promo', icon: IconPercent },
-                           { id: 'settings', label: 'Pengaturan', icon: IconSettings }
+                           { id: 'members', label: 'Data Member', icon: IconUsers },
+                           { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount },
+                           { id: 'settings', label: 'Pengaturan Web', icon: IconSettings }
                         ].map(tab => (
                            <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl font-bold transition-all whitespace-nowrap md:whitespace-normal shrink-0 group relative overflow-hidden ${activeAdminTab === tab.id ? 'bg-red-600 text-white shadow-md shadow-red-500/20' : 'text-gray-400 hover:bg-white/5 hover:text-white'}`}>
                               {activeAdminTab === tab.id && <span className="absolute left-0 top-0 bottom-0 w-1 bg-white"></span>}
@@ -1457,6 +1545,7 @@
                      <div className="absolute -top-40 -right-40 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] pointer-events-none"></div>
                      
                      <div className="flex-1 overflow-y-auto p-6 md:p-8 custom-scrollbar relative z-10">
+                        
                         {/* --- TAB: STATISTIK --- */}
                         {activeAdminTab === 'dashboard' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500">
@@ -1476,9 +1565,9 @@
                                  </div>
                                  <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform">
                                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                                    <IconPercent className="w-8 h-8 mb-4 opacity-80" />
-                                    <p className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Promo Tersedia</p>
-                                    <p className="text-4xl font-black drop-shadow-md font-mono">{promos.length}</p>
+                                    <IconUsers className="w-8 h-8 mb-4 opacity-80" />
+                                    <p className="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Member Terdaftar</p>
+                                    <p className="text-4xl font-black drop-shadow-md font-mono">{memberList.length}</p>
                                  </div>
                               </div>
 
@@ -1488,7 +1577,7 @@
                                     {allGlobalOrders.slice(0,5).map(o => (
                                        <div key={o.id} className="flex justify-between items-center bg-white/5 p-4 rounded-2xl border border-white/5">
                                           <div className="flex items-center gap-4">
-                                             <div className={`w-2 h-2 rounded-full ${o.status==='Pending'?'bg-orange-500 animate-pulse':o.status==='Sukses'?'bg-green-500':'bg-red-500'}`}></div>
+                                             <div className={`w-2 h-2 rounded-full ${o.status==='Pending'?'bg-orange-500 animate-pulse':o.status==='Sukses'?'bg-emerald-500':'bg-red-500'}`}></div>
                                              <div>
                                                 <div className="text-sm font-bold text-white">{o.userEmail.split('@')[0]} <span className="text-xs text-gray-500 font-medium">memesan</span> {o.gameName}</div>
                                                 <div className="text-[10px] font-mono text-gray-500 mt-1">{o.id}</div>
@@ -1496,7 +1585,7 @@
                                           </div>
                                           <div className="text-right">
                                              <div className="text-sm font-black font-mono text-emerald-400">{formatRupiah(o.priceTotal)}</div>
-                                             <div className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">{new Date(o.createdAt).toLocaleTimeString('id-ID')}</div>
+                                             <div className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">{o.createdAt ? new Date(o.createdAt).toLocaleTimeString('id-ID') : '-'}</div>
                                           </div>
                                        </div>
                                     ))}
@@ -1772,6 +1861,120 @@
                            </div>
                         )}
 
+                        {/* --- TAB: MEMBERS --- */}
+                        {activeAdminTab === 'members' && (
+                           <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full">
+                              <h2 className="text-2xl font-black mb-6">Data Pelanggan Terdaftar</h2>
+                              <div className="relative mb-6">
+                                 <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                                 <input type="text" placeholder="Cari nama atau email member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-600 transition shadow-inner" />
+                              </div>
+                              <div className="flex-1 overflow-auto custom-scrollbar bg-[#0a0a0a] rounded-[2rem] border border-white/5">
+                                 <table className="w-full text-left text-sm text-gray-300 whitespace-nowrap min-w-[700px]">
+                                    <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
+                                       <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Waktu Daftar</th><th className="px-6 py-4 text-right">Terakhir Login</th></tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-white/5">
+                                       {memberList.filter(m => (m.name?.toLowerCase().includes(adminMemberSearch.toLowerCase()) || m.email?.toLowerCase().includes(adminMemberSearch.toLowerCase()))).map(m => (
+                                          <tr key={m.id} className="hover:bg-white/[0.02] transition">
+                                             <td className="px-6 py-4">
+                                                <div className="flex items-center gap-4">
+                                                   {m.avatar ? (
+                                                      <img src={m.avatar} className="w-10 h-10 rounded-full object-cover border border-white/10" />
+                                                   ) : (
+                                                      <div className="w-10 h-10 rounded-full bg-white/10 text-gray-400 font-black flex items-center justify-center">{m.email?.charAt(0).toUpperCase()}</div>
+                                                   )}
+                                                   <div>
+                                                      <div className="font-black text-white">{m.name || 'Member VIP'}</div>
+                                                      <div className="text-[9px] bg-red-500/20 text-red-400 px-2 py-0.5 rounded uppercase tracking-widest inline-block mt-1 font-bold">Terverifikasi</div>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                             <td className="px-6 py-4">
+                                                <div className="font-mono text-xs">{m.email}</div>
+                                                <div className="text-[10px] text-gray-500 mt-1">{m.phone || 'Belum diatur'}</div>
+                                             </td>
+                                             <td className="px-6 py-4 text-xs text-gray-400">{m.createdAt ? new Date(m.createdAt).toLocaleDateString('id-ID') : '-'}</td>
+                                             <td className="px-6 py-4 text-right font-medium text-emerald-400">{m.lastLogin ? new Date(m.lastLogin).toLocaleDateString('id-ID') : '-'}</td>
+                                          </tr>
+                                       ))}
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        )}
+
+                        {/* --- TAB: BANTUAN (CHAT) --- */}
+                        {activeAdminTab === 'support' && (
+                           <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex gap-6 h-full">
+                              {/* Tiket List */}
+                              <div className={`w-full md:w-80 bg-[#0a0a0a] rounded-[2rem] border border-white/5 flex-col ${activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
+                                 <div className="p-5 border-b border-white/10">
+                                    <h2 className="font-black text-lg flex items-center gap-2"><IconMessageSquare className="w-5 h-5 text-orange-500"/> Tiket Masuk</h2>
+                                 </div>
+                                 <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
+                                    {allUserChats.map(c => (
+                                       <div key={c.id} onClick={() => setActiveChatEmail(c.id)} className={`p-4 rounded-xl cursor-pointer border transition-all ${activeChatEmail === c.id ? 'bg-orange-500/10 border-orange-500/30' : 'bg-white/5 border-transparent hover:border-white/10'}`}>
+                                          <div className="flex justify-between items-center mb-2">
+                                             <span className="font-bold text-sm text-white truncate max-w-[140px]">{c.id.split('@')[0]}</span>
+                                             {c.status === 'Open' ? (
+                                                <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_red]"></span>
+                                             ) : (
+                                                <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-black uppercase">Selesai</span>
+                                             )}
+                                          </div>
+                                          <div className="text-xs text-gray-500 truncate">{c.messages?.length > 0 ? c.messages[c.messages.length-1].text : 'Belum ada pesan.'}</div>
+                                       </div>
+                                    ))}
+                                 </div>
+                              </div>
+
+                              {/* Ruang Obrolan */}
+                              <div className={`flex-1 bg-[#0a0a0a] rounded-[2rem] border border-white/5 flex-col relative overflow-hidden ${!activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
+                                 {activeChatEmail ? (
+                                    <>
+                                       <div className="p-5 border-b border-white/10 flex items-center gap-4 bg-white/5 backdrop-blur-sm z-10">
+                                          <button onClick={()=>setActiveChatEmail(null)} className="md:hidden p-2 bg-white/10 rounded-lg text-white"><IconChevronLeft className="w-5 h-5"/></button>
+                                          <div>
+                                             <div className="font-black text-white text-lg">{activeChatEmail.split('@')[0]}</div>
+                                             <div className="text-[10px] text-gray-400 font-mono mt-0.5">{activeChatEmail}</div>
+                                          </div>
+                                          {allUserChats.find(c => c.id === activeChatEmail)?.status !== 'Selesai' && (
+                                             <button onClick={markChatDone} className="ml-auto bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition flex items-center gap-1.5 shadow-lg"><IconCheckCircle className="w-3.5 h-3.5"/> Selesai</button>
+                                          )}
+                                       </div>
+                                       
+                                       <div className="flex-1 overflow-y-auto p-6 space-y-5 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-10 custom-scrollbar">
+                                          {allUserChats.find(c => c.id === activeChatEmail)?.messages?.map((msg, i) => (
+                                             <div key={i} className={`flex w-full ${msg.sender === 'admin' ? 'justify-end' : 'justify-start'}`}>
+                                                <div className={`flex flex-col ${msg.sender === 'admin' ? 'items-end' : 'items-start'} max-w-[80%]`}>
+                                                   <div className={`p-4 text-sm font-medium leading-relaxed border ${msg.sender === 'admin' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm border-orange-400/30' : 'bg-black text-gray-200 border-white/10 rounded-2xl rounded-tl-sm'}`}>
+                                                      {msg.text}
+                                                   </div>
+                                                   <span className="text-[9px] text-gray-500 font-bold mt-1.5 px-1 uppercase">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour: '2-digit', minute:'2-digit'}) : ''}</span>
+                                                </div>
+                                             </div>
+                                          ))}
+                                          <div ref={adminChatEndRef} />
+                                       </div>
+
+                                       <div className="p-5 border-t border-white/10 bg-black/60 backdrop-blur-xl z-10">
+                                          <form onSubmit={handleAdminSendChat} className="flex gap-3">
+                                             <input type="text" value={adminReplyText} onChange={(e)=>setAdminReplyText(e.target.value)} placeholder="Tulis balasan untuk pelanggan..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 text-white transition" />
+                                             <button type="submit" disabled={!adminReplyText.trim()} className="bg-orange-600 hover:bg-orange-500 text-white px-6 rounded-xl font-black transition disabled:opacity-50 text-xs uppercase tracking-widest shadow-lg flex items-center gap-2"><IconSend className="w-4 h-4"/> Balas</button>
+                                          </form>
+                                       </div>
+                                    </>
+                                 ) : (
+                                    <div className="flex flex-col items-center justify-center h-full text-gray-500">
+                                       <div className="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-4"><IconMessageSquare className="w-8 h-8 opacity-40"/></div>
+                                       <p className="font-bold text-sm">Pilih tiket chat di samping untuk membalas.</p>
+                                    </div>
+                                 )}
+                              </div>
+                           </div>
+                        )}
+
                         {/* --- TAB: PENGATURAN --- */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-6 pb-10">
@@ -1779,7 +1982,7 @@
                               
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                  {/* SAKLAR TOKO */}
-                                 <div className="bg-[#0a0a0a] p-6 rounded-[2rem] border border-white/5 shadow-inner">
+                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner">
                                     <div className="flex items-center justify-between mb-4">
                                        <div className="flex items-center gap-3">
                                           <div className="p-2 bg-white/5 rounded-xl"><IconSettings className="w-5 h-5 text-gray-400"/></div>
@@ -1789,7 +1992,7 @@
                                           </div>
                                        </div>
                                     </div>
-                                    <button onClick={toggleStore} className={`w-full py-4 rounded-xl font-black text-xs transition uppercase tracking-widest shadow-lg ${isStoreOpen ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500 hover:text-white' : 'bg-red-600 text-white shadow-red-500/30 hover:bg-red-500'}`}>
+                                    <button onClick={toggleStore} className={`w-full py-4 rounded-2xl font-black text-sm transition uppercase tracking-widest shadow-lg ${isStoreOpen ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 hover:bg-emerald-500 hover:text-white' : 'bg-red-600 text-white shadow-red-500/30 hover:bg-red-500'}`}>
                                        {isStoreOpen ? 'Sistem Berjalan (Online)' : 'Sistem Ditutup (Offline)'}
                                     </button>
                                  </div>
@@ -1801,17 +2004,17 @@
                                        <div className="flex gap-3">
                                           <div className="flex-1 relative">
                                              <IconInstagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"/>
-                                             <input type="text" value={adminIG} onChange={(e)=>setAdminIG(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL Instagram" />
+                                             <input type="text" value={adminIG || ''} onChange={(e)=>setAdminIG(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL Instagram" />
                                           </div>
                                           <div className="flex-1 relative">
                                              <IconWhatsapp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"/>
-                                             <input type="text" value={adminWA} onChange={(e)=>setAdminWA(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL WhatsApp" />
+                                             <input type="text" value={adminWA || ''} onChange={(e)=>setAdminWA(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL WhatsApp" />
                                           </div>
                                        </div>
                                        <div className="flex gap-3">
                                           <div className="flex-1 relative">
                                              <IconTiktok className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"/>
-                                             <input type="text" value={adminTT} onChange={(e)=>setAdminTT(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL TikTok" />
+                                             <input type="text" value={adminTT || ''} onChange={(e)=>setAdminTT(e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition" placeholder="URL TikTok" />
                                           </div>
                                           <button onClick={saveSettingsLinks} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest transition shadow-lg">Simpan Kontak</button>
                                        </div>
@@ -1824,80 +2027,79 @@
                                  {/* TEKS BERJALAN */}
                                  <div className="bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-white/5 shadow-inner">
                                     <h3 className="text-sm font-black text-white mb-2 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Header Teks Berjalan (Marquee)</h3>
-                                    <p className="text-[10px] text-gray-500 mb-4">Informasi promo yang bergerak di navigasi atas.</p>
-                                    <div className="space-y-3">
-                                       {[0, 1, 2].map((idx) => (
-                                          <div key={idx} className="flex items-center gap-2">
-                                             <span className="text-[10px] font-black text-gray-600 bg-white/5 px-2.5 py-1.5 rounded-lg">{idx + 1}</span>
-                                             <input type="text" value={runningTexts[idx] || ''} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-2.5 px-3 text-xs focus:border-orange-500 transition" placeholder="Ketikan info singkat..." />
+                                    <p className="text-[10px] text-gray-500 mb-4">Informasi promo yang bergerak di navigasi atas. Kosongkan baris untuk menghapus.</p>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                       {[0, 1, 2, 3].map((idx) => (
+                                          <div key={idx} className="flex items-center gap-3">
+                                             <span className="text-xs font-black text-gray-600 bg-white/5 px-3 py-2 rounded-lg">{idx + 1}</span>
+                                             <input type="text" value={runningTexts[idx] || ''} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 transition" placeholder="Informasi singkat..." />
                                           </div>
                                        ))}
                                     </div>
-                                    <button onClick={saveRunningTexts} className="mt-4 w-full bg-orange-600 hover:bg-orange-500 text-white py-3 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-lg">Update Teks</button>
+                                    <button onClick={saveRunningTexts} className="mt-6 w-full bg-orange-600 hover:bg-orange-500 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-lg">Simpan Teks</button>
                                  </div>
 
                                  {/* SLIDER BANNER */}
-                                 <div className="bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
-                                    <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2"><IconImage className="w-4 h-4 text-blue-500"/> Slider Banner (Home)</h3>
+                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
+                                    <h3 className="text-lg font-black text-white mb-6">Slider Banner (Home)</h3>
                                     <div className="flex gap-2 mb-4">
-                                       <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} className="flex-1 bg-black border border-white/10 rounded-xl py-2.5 px-3 text-xs focus:border-blue-500 transition" placeholder="URL Banner / Youtube" />
-                                       <button onClick={() => handleAddBanner(getYouTubeId(adminBannerUrl)?'youtube':'image', adminBannerUrl)} className="bg-white text-black px-4 rounded-xl font-black transition text-lg">+</button>
+                                       <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} className="flex-1 bg-black border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-blue-500 transition" placeholder="Tempel URL Banner/Youtube" />
+                                       <button onClick={() => handleAddBanner(getYouTubeId(adminBannerUrl)?'youtube':'image', adminBannerUrl)} className="bg-white text-black px-5 rounded-xl font-black transition text-xl">+</button>
                                     </div>
-                                    <div className="relative group mb-4">
+                                    <div className="relative group mb-6">
                                        <input type="file" accept="image/*" onChange={handleBannerUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                       <div className="bg-white/5 border border-dashed border-white/20 group-hover:border-white/50 rounded-xl p-3 flex items-center justify-center gap-2 text-gray-400 text-[10px] font-bold transition">
-                                          <IconUpload className="w-3 h-3"/> Upload dari Perangkat (Max 2MB)
+                                       <div className="bg-white/5 border border-dashed border-white/20 group-hover:border-white/50 rounded-xl p-4 flex items-center justify-center gap-2 text-gray-400 text-xs font-bold transition">
+                                          <IconUpload className="w-4 h-4"/> Upload dari Perangkat (Max 2MB)
                                        </div>
                                     </div>
                                     <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
                                        {banners.map((b, i) => (
-                                          <div key={i} className="relative w-24 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-white/10 group bg-black">
+                                          <div key={i} className="relative w-32 h-20 flex-shrink-0 rounded-xl overflow-hidden border border-white/10 group bg-black">
                                              <img src={b.type === 'youtube' ? `https://img.youtube.com/vi/${getYouTubeId(b.url)}/hqdefault.jpg` : b.url} className="w-full h-full object-cover opacity-60 group-hover:scale-110 transition duration-500" />
-                                             <button onClick={() => handleDeleteBanner(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-4 h-4 text-white"/></button>
+                                             <button onClick={() => handleDeleteBanner(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-5 h-5 text-white"/></button>
                                           </div>
                                        ))}
                                     </div>
                                  </div>
-                              </div>
 
-                              {/* GALERI ADMIN MANAGER & SUPER ADMIN */}
-                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                 <div className="bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
-                                    <div className="flex justify-between items-center mb-4">
-                                       <h3 className="text-sm font-black text-white">Galeri Toko <span className="text-[9px] bg-white/10 px-2 py-0.5 rounded-md font-mono align-middle ml-1">{galleryData.length}/12</span></h3>
-                                       <div className="relative group w-8 h-8">
+                                 {/* GALERI MANAGER & SUPER ADMIN */}
+                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col lg:col-span-2">
+                                    <div className="flex justify-between items-center mb-6">
+                                       <h3 className="text-lg font-black text-white">Manajemen Galeri Toko <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded-md font-mono align-middle ml-2">{galleryData.length}/10</span></h3>
+                                       <div className="relative group w-10 h-10">
                                           <input type="file" accept="image/*" onChange={handleGalleryUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                          <button className="absolute inset-0 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg flex items-center justify-center font-black transition text-sm">+</button>
+                                          <button className="absolute inset-0 bg-white/10 hover:bg-white/20 border border-white/10 rounded-xl flex items-center justify-center font-black transition text-lg">+</button>
                                        </div>
                                     </div>
-                                    <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 gap-2">
+                                    <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-8 gap-3">
                                        {galleryData.map((img, i) => (
-                                          <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-white/10 group">
+                                          <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-white/10 group bg-black">
                                              <img src={img} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition duration-500" />
-                                             <button onClick={()=>handleRemoveGallery(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-3 h-3 text-white"/></button>
+                                             <button onClick={()=>handleRemoveGallery(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-5 h-5 text-white"/></button>
                                           </div>
                                        ))}
+                                       {galleryData.length === 0 && <p className="col-span-full text-xs text-gray-500 font-bold">Galeri kosong.</p>}
                                     </div>
                                  </div>
-
+                                 
                                  {/* AKSES SUPER ADMIN */}
                                  {isSuperAdmin && (
-                                    <div className="bg-red-900/10 p-6 rounded-[2.5rem] border border-red-500/20 shadow-inner relative overflow-hidden flex flex-col">
+                                    <div className="bg-red-900/10 p-6 md:p-8 rounded-[2.5rem] border border-red-500/20 shadow-inner relative overflow-hidden lg:col-span-2">
                                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-100 dark:bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
-                                       <h3 className="text-sm font-black text-red-400 mb-4 flex items-center gap-2 relative z-10"><IconShieldAlert className="w-4 h-4"/> Akses Karyawan</h3>
-                                       <form onSubmit={handleAddAdmin} className="flex gap-2 mb-4 relative z-10">
-                                          <input type="email" required value={newAdminEmail} onChange={(e)=>setNewAdminEmail(e.target.value)} placeholder="Email admin..." className="flex-1 bg-black border border-white/10 rounded-xl py-2.5 px-3 text-xs focus:border-red-500 transition" />
-                                          <button type="submit" className="bg-red-600 hover:bg-red-500 text-white px-4 rounded-xl font-black transition text-xs shadow-lg">Add</button>
+                                       <h3 className="text-lg font-black text-red-400 mb-6 flex items-center gap-2 relative z-10"><IconShieldAlert className="w-5 h-5"/> Akses Karyawan</h3>
+                                       <form onSubmit={handleAddAdmin} className="flex gap-2 max-w-md mb-6 relative z-10">
+                                          <input type="email" required value={newAdminEmail} onChange={(e)=>setNewAdminEmail(e.target.value)} placeholder="Email admin baru..." className="flex-1 bg-black border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 transition" />
+                                          <button type="submit" className="bg-red-600 hover:bg-red-500 text-white px-6 rounded-xl font-black transition text-sm shadow-lg">Tambah</button>
                                        </form>
-                                       <div className="space-y-2 relative z-10 overflow-y-auto custom-scrollbar flex-1">
-                                          <div className="flex justify-between items-center bg-red-500/20 border border-red-500/30 p-3 rounded-xl shadow-inner">
-                                             <span className="text-xs font-black text-red-300 truncate">{ADMIN_EMAIL}</span>
-                                             <span className="text-[8px] bg-red-600 text-white px-2 py-0.5 rounded font-black uppercase tracking-widest ml-2">Owner</span>
+                                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 relative z-10">
+                                          <div className="flex justify-between items-center bg-red-500/20 border border-red-500/30 p-4 rounded-2xl shadow-inner">
+                                             <span className="text-sm font-black text-red-300 truncate">{ADMIN_EMAIL}</span>
+                                             <span className="text-[9px] bg-red-600 text-white px-2 py-1 rounded font-black uppercase tracking-widest ml-2 shadow-sm">Owner</span>
                                           </div>
                                           {adminList.map(em => (
-                                             <div key={em} className="flex justify-between items-center bg-black/40 border border-white/5 p-3 rounded-xl transition">
-                                                <span className="text-xs text-gray-300 font-bold truncate">{em}</span>
-                                                <button onClick={() => handleRemoveAdmin(em)} className="text-gray-500 hover:text-red-400 transition bg-white/5 p-1.5 rounded-lg ml-2"><IconX className="w-3 h-3"/></button>
+                                             <div key={em} className="flex justify-between items-center bg-black/40 border border-white/5 p-4 rounded-2xl transition">
+                                                <span className="text-sm text-gray-300 font-bold truncate">{em}</span>
+                                                <button onClick={() => handleRemoveAdmin(em)} className="text-gray-500 hover:text-red-400 transition bg-white/5 p-2 rounded-lg ml-2"><IconX className="w-3.5 h-3.5"/></button>
                                              </div>
                                           ))}
                                        </div>
