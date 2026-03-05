@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v2.3</title>
+  <title>Vipercell - Premium Top Up v2.5</title>
   
   <!-- Tailwind CSS & Custom Config -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -60,21 +60,6 @@
     }
     
     .chat-container { height: calc(100vh - 120px); display: flex; flex-direction: column; border-radius: 1.5rem; overflow: hidden; }
-    
-    /* Desain Kupon */
-    .voucher-ticket { position: relative; border-radius: 1rem; overflow: hidden; }
-    .voucher-ticket::before, .voucher-ticket::after {
-      content: ''; position: absolute; top: 50%; width: 24px; height: 24px;
-      background-color: rgb(249 250 251); border-radius: 50%; transform: translateY(-50%); z-index: 10;
-    }
-    .dark .voucher-ticket::before, .dark .voucher-ticket::after { background-color: rgb(2 6 23); }
-    .voucher-ticket::before { left: -12px; }
-    .voucher-ticket::after { right: -12px; }
-    .voucher-ticket-dashed { border-left: 2px dashed rgba(255,255,255,0.4); }
-
-    /* Infinite Marquee Fix */
-    .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; display: flex; align-items: center; }
-    .marquee-content { display: flex; flex-shrink: 0; min-width: 100%; }
   </style>
 
   <!-- React & Babel -->
@@ -91,7 +76,7 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-analytics.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -194,7 +179,6 @@
     const IconMoon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>;
     const IconSun = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line></svg>;
     const IconTag = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>;
-    const IconCopy = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>;
     const IconInstagram = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
     const IconWhatsapp = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>;
     const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
@@ -202,7 +186,6 @@
     const IconShieldAlert = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>;
     const IconSearch = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
     const IconCamera = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
-    const IconGift = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line></svg>;
     const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
     const IconMenu = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>;
     const IconUser = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
@@ -214,25 +197,16 @@
     const IconPercent = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>;
     const IconInfo = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
     const IconTiktok = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>;
+    const IconZapOff = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="1" y1="1" x2="23" y2="23"></line><path d="M10.1 5.3L13 2l-1 8h9L13.9 18.7"></path><path d="M11 22l1-8H3l4.3-5.2"></path></svg>;
 
-    // --- DEFAULT DATA ---
-    const DEFAULT_GAMES = [
-      { id: 'mlbb', name: 'Mobile Legends', developer: 'Moonton', inputType: 'id_zone', image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=300&h=300' },
-      { id: 'ff', name: 'Free Fire', developer: 'Garena', inputType: 'id_only', image: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=300&h=300' },
-      { id: 'valo', name: 'Valorant', developer: 'Riot Games', inputType: 'riot_id', image: 'https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&q=80&w=300&h=300' }
-    ];
-    const DEFAULT_NOMINALS = {
-      mlbb: [{ id: 'd1', name: '86 Diamonds', price: 23000 }, { id: 'd2', name: '172 Diamonds', price: 46000 }],
-      ff: [{ id: 'f1', name: '70 Diamonds', price: 10000 }],
-      valo: [{ id: 'v1', name: '420 Points', price: 50000 }]
-    };
+    // --- DEFAULT DATA & CONSTANTS ---
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0 },
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi', fee: 0 },
     ];
 
     const PROMO_TYPES = {
-      PERCENTAGE: 'percentage', FIXED: 'fixed', BUY_ONE_GET_ONE: 'bogo', FREE_SHIPPING: 'free_shipping', SPECIAL_PRODUCT: 'special_product'
+      PERCENTAGE: 'percentage', FIXED: 'fixed'
     };
 
     // --- CUSTOM CONFIRM MODAL ---
@@ -254,7 +228,7 @@
        )
     }
 
-    // --- COMPONENT: FOOTER (ABOUT US & SOCIALS) ---
+    // --- COMPONENT: FOOTER ---
     const MainFooter = ({ socialLinks }) => {
        return (
          <footer className="mt-16 bg-white/50 dark:bg-navy-900/50 backdrop-blur-md border-t border-gray-200 dark:border-white/10 pt-10 pb-8 px-6 text-center">
@@ -267,21 +241,13 @@
                   Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Kami berkomitmen memberikan pengalaman transaksi instan otomatis 24/7 dengan sistem keamanan tingkat tinggi untuk seluruh gamers di Indonesia.
                </p>
                <div className="flex justify-center gap-4 mb-8">
-                  {socialLinks?.ig && (
-                     <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-orange-50 dark:hover:bg-orange-500/20 text-gray-600 dark:text-gray-400 hover:text-orange-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>
-                  )}
-                  {socialLinks?.wa && (
-                     <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-green-50 dark:hover:bg-green-500/20 text-gray-600 dark:text-gray-400 hover:text-green-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>
-                  )}
-                  {socialLinks?.tt && (
-                     <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-full transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>
-                  )}
-                  {socialLinks?.tg && (
-                     <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-blue-50 dark:hover:bg-blue-500/20 text-gray-600 dark:text-gray-400 hover:text-blue-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>
-                  )}
+                  {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-orange-50 dark:hover:bg-orange-500/20 text-gray-600 dark:text-gray-400 hover:text-orange-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>}
+                  {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-green-50 dark:hover:bg-green-500/20 text-gray-600 dark:text-gray-400 hover:text-green-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>}
+                  {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-full transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>}
+                  {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-blue-50 dark:hover:bg-blue-500/20 text-gray-600 dark:text-gray-400 hover:text-blue-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>}
                </div>
-               <div className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved.
+               <div className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-gray-200 dark:bg-white/10 rounded-md font-mono text-[9px]">v2.5</span>
                </div>
             </div>
          </footer>
@@ -309,7 +275,7 @@
           <div className="w-full h-48 md:h-72 rounded-3xl overflow-hidden mb-8 relative border border-gray-200 dark:border-white/10 shadow-xl bg-black group mt-4"
                onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
              {items.map((b, i) => (
-                <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
+                <div key={b.id || i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                    {b.type === 'youtube' ? (
                       <iframe className="w-full h-full object-cover pointer-events-none opacity-80 scale-105" src={`https://www.youtube.com/embed/${getYouTubeId(b.url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(b.url)}`} frameBorder="0" allow="autoplay; encrypted-media"></iframe>
                    ) : (
@@ -367,7 +333,7 @@
       const [authMessage, setAuthMessage] = useState({ text: '', type: '' });
       const [resetCooldown, setResetCooldown] = useState(0);
 
-      // Profile & Security States
+      // --- PROFILE STATE (FIXED) ---
       const [showPasswordForm, setShowPasswordForm] = useState(false);
       const [currentPassword, setCurrentPassword] = useState('');
       const [newPassword, setNewPassword] = useState('');
@@ -377,10 +343,18 @@
       const [avatarMessage, setAvatarMessage] = useState('');
       const [profileName, setProfileName] = useState('');
       const [profilePhone, setProfilePhone] = useState('');
-      const [profileRefCode, setProfileRefCode] = useState('');
       const [profileAvatar, setProfileAvatar] = useState('');
-      const [referralBalance, setReferralBalance] = useState(0);
-      const [referralHistory, setReferralHistory] = useState([]);
+      const [profileSaveMsg, setProfileSaveMsg] = useState('');
+
+      // --- DB STATES (REFACTORED TO COLLECTIONS) ---
+      const [isStoreOpen, setIsStoreOpen] = useState(true);
+      const [games, setGames] = useState([]);
+      const [items, setItems] = useState([]); 
+      const [promos, setPromos] = useState([]); 
+      const [banners, setBanners] = useState([]); 
+      const [galleryData, setGalleryData] = useState([]);
+      const [runningTexts, setRunningTexts] = useState([]);
+      const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
 
       // Admin States
       const [adminList, setAdminList] = useState([]);
@@ -389,17 +363,6 @@
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL;
       const isAdmin = isSuperAdmin || adminList.includes(authUser?.email);
       const myData = memberList.find(m => m.email === authUser?.email);
-
-      // --- GLOBAL DB STATE ---
-      const [isStoreOpen, setIsStoreOpen] = useState(true);
-      const [games, setGames] = useState(DEFAULT_GAMES);
-      const [nominals, setNominals] = useState(DEFAULT_NOMINALS);
-      const [banners, setBanners] = useState([]); 
-      const [promos, setPromos] = useState([]); 
-      const [bannerPromoConfig, setBannerPromoConfig] = useState({ active: false, text: 'Spesial Diskon', code: '' });
-      const [runningTexts, setRunningTexts] = useState(['', '', '', '', '']); // Fitur Baru Teks Berjalan
-      const [galleryData, setGalleryData] = useState([]);
-      const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
 
       // --- VIEW CONTROLLERS ---
       const [currentView, setCurrentView] = useState('home'); 
@@ -416,7 +379,7 @@
 
       // --- ADMIN LOCAL STATES ---
       const [activeAdminTab, setActiveAdminTab] = useState('dashboard');
-      const [adminSelectedGame, setAdminSelectedGame] = useState(DEFAULT_GAMES[0]?.id || '');
+      const [adminSelectedGame, setAdminSelectedGame] = useState('');
       const [editingItemId, setEditingItemId] = useState(null);
       const [newItemName, setNewItemName] = useState('');
       const [newItemPrice, setNewItemPrice] = useState('');
@@ -434,16 +397,13 @@
       const [adminTT, setAdminTT] = useState('');
       const [adminTG, setAdminTG] = useState('');
       
-      // Move promo banner settings to Promo Tab
-      const [adminBannerPromoText, setAdminBannerPromoText] = useState('');
-      const [adminBannerPromoCode, setAdminBannerPromoCode] = useState('');
-      const [adminBannerPromoActive, setAdminBannerPromoActive] = useState(false);
-      
+      // Promo Admin States
       const [newPromoType, setNewPromoType] = useState(PROMO_TYPES.PERCENTAGE);
       const [newPromoCode, setNewPromoCode] = useState('');
       const [newPromoDiscount, setNewPromoDiscount] = useState('');
       const [newPromoMax, setNewPromoMax] = useState('');
       const [newPromoMinPurchase, setNewPromoMinPurchase] = useState('');
+      const [newPromoIsFlashSale, setNewPromoIsFlashSale] = useState(false); 
       
       const [newAdminEmail, setNewAdminEmail] = useState('');
       const [activeChatEmail, setActiveChatEmail] = useState(null);
@@ -475,12 +435,17 @@
       const [chatInput, setChatInput] = useState('');
       const chatEndRef = useRef(null);
 
-      const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+      const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
       useEffect(() => { if(currentView === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail]);
 
-      // Check Active Order Details for Realtime Modal updates
+      // Focus Selected Game initially in Admin
+      useEffect(() => {
+         if (games.length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id);
+      }, [games, adminSelectedGame]);
+
+      // Map Active Order for Modal
       useEffect(() => {
         if(lastOrderId && allGlobalOrders.length > 0) {
            const found = allGlobalOrders.find(o => o.id === lastOrderId);
@@ -488,6 +453,7 @@
         }
       }, [lastOrderId, allGlobalOrders]);
 
+      // Keydown Listeners (Escape)
       useEffect(() => {
          const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
@@ -503,138 +469,81 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen]);
 
+      // --- REFACTORED DB FETCHING (Clean & Modular) ---
       useEffect(() => {
-         if (currentView === 'profile' && myData) {
-            setProfileName(myData.name || ''); setProfilePhone(myData.phone || '');
-            setProfileAvatar(myData.avatar || ''); setProfileRefCode(''); 
-            setReferralBalance(myData.referralBalance || 0); setReferralHistory(myData.referralHistory || []);
-         }
-      }, [currentView, myData]);
-
-      const handleAvatarUpload = async (e) => {
-        const file = e.target.files[0]; if (!file || !myData) return;
-        setUploadingAvatar(true); setAvatarMessage('');
-        try {
-          const compressedAvatar = await compressImage(file, 200);
-          await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), { avatar: compressedAvatar }, { merge: true });
-          setProfileAvatar(compressedAvatar); setAvatarMessage({ text: 'Foto profil berhasil diperbarui!', type: 'success' });
-        } catch (error) { setAvatarMessage({ text: 'Gagal mengupload foto.', type: 'error' }); } 
-        finally { setUploadingAvatar(false); setTimeout(() => setAvatarMessage(''), 3000); }
-      };
-
-      const handleChangePassword = async (e) => {
-        e.preventDefault(); setPasswordMessage('');
-        if (!currentPassword || !newPassword || !confirmNewPassword) return setPasswordMessage({ text: 'Semua field harus diisi!', type: 'error' });
-        if (newPassword !== confirmNewPassword) return setPasswordMessage({ text: 'Password baru tidak cocok!', type: 'error' });
-        if (newPassword.length < 6) return setPasswordMessage({ text: 'Password minimal 6 karakter!', type: 'error' });
-
-        try {
-          const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword);
-          await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword);
-          setPasswordMessage({ text: 'Password berhasil diubah!', type: 'success' });
-          setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false);
-        } catch (error) {
-          setPasswordMessage({ text: error.code === 'auth/wrong-password' ? 'Password saat ini salah!' : 'Gagal mengubah password.', type: 'error' });
-        }
-      };
-
-      const handleReferralCommission = async (friendEmail, orderAmount) => {
-        const friendData = memberList.find(m => m.email === friendEmail);
-        if (!friendData || !friendData.referredBy) return;
-
-        const referrerData = memberList.find(m => m.myReferral === friendData.referredBy);
-        if (!referrerData) return;
-
-        const commission = 150; 
-        const newHistory = [...(referrerData.referralHistory || []), { friendEmail, orderAmount, commission, date: new Date().toISOString() }];
-        await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', referrerData.id), {
-          referralBalance: (referrerData.referralBalance || 0) + commission, referralHistory: newHistory
-        }, { merge: true });
-      };
-
-      const pendingOrdersCount = adminOrders.filter(o => o.status === 'Pending').length;
-      const openChatsCount = adminChats.filter(c => c.status === 'Open').length;
-      const totalAdminNotifs = pendingOrdersCount + openChatsCount;
-      const userHasUnread = userChat?.status === 'Dijawab';
-
-      useEffect(() => {
-         const settingsRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings');
-         const unsub1 = onSnapshot(settingsRef, (docSnap) => {
-            if (docSnap.exists()) {
-               const data = docSnap.data();
-               setIsStoreOpen(data.isOpen !== undefined ? data.isOpen : true);
-               if (data.gamesData) setGames(JSON.parse(data.gamesData));
-               if (data.nominalsData) setNominals(JSON.parse(data.nominalsData));
-               if (data.bannersData) setBanners(JSON.parse(data.bannersData));
-               if (data.promosData) setPromos(JSON.parse(data.promosData));
-               if (data.galleryData) setGalleryData(JSON.parse(data.galleryData));
-               if (data.bannerPromoConfig) setBannerPromoConfig(JSON.parse(data.bannerPromoConfig));
-               if (data.runningTextData) setRunningTexts(JSON.parse(data.runningTextData));
-               if (data.igLink !== undefined) setSocialLinks(prev => ({...prev, ig: data.igLink}));
-               if (data.waLink !== undefined) setSocialLinks(prev => ({...prev, wa: data.waLink}));
-               if (data.ttLink !== undefined) setSocialLinks(prev => ({...prev, tt: data.ttLink}));
-               if (data.tgLink !== undefined) setSocialLinks(prev => ({...prev, tg: data.tgLink}));
+         const globalRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global');
+         const unsubGlobal = onSnapshot(globalRef, (snap) => {
+            if (snap.exists()) {
+               const d = snap.data();
+               setIsStoreOpen(d.isOpen ?? true);
+               setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', tg: d.tgLink||'' });
+               setRunningTexts(d.runningTexts || []);
+               setBanners(d.banners || []);
+               setGalleryData(d.gallery || []);
+            } else {
+               // Initialize default global config if missing
+               if(isSuperAdmin) {
+                 setDoc(globalRef, {
+                    isOpen: true,
+                    runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'],
+                    banners: [], gallery: []
+                 }).catch(()=>{});
+               }
             }
          });
-         return () => unsub1();
-      }, []);
 
-      useEffect(() => {
-         setAdminIG(socialLinks.ig); setAdminWA(socialLinks.wa); setAdminTT(socialLinks.tt); setAdminTG(socialLinks.tg);
-         setAdminBannerPromoText(bannerPromoConfig?.text || ''); setAdminBannerPromoCode(bannerPromoConfig?.code || ''); setAdminBannerPromoActive(bannerPromoConfig?.active || false);
-         if (games.length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id);
-      }, [socialLinks, bannerPromoConfig, games]);
+         const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => {
+             const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()}));
+             setGames(g);
+         });
 
+         const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => {
+             const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()}));
+             setItems(i);
+         });
+
+         const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => {
+             const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()}));
+             setPromos(p);
+         });
+
+         return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
+      }, [isSuperAdmin]);
+
+      // Auth Listener
       useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           setAuthUser(user); setIsAuthChecking(false);
           if(user) {
-             getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'admins')).then(d => { if(d.exists()) setAdminList(d.data().emails || []); });
+             getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins')).then(d => { 
+                if(d.exists()) setAdminList(d.data().emails || []); 
+             });
           }
         });
         return () => unsubscribe();
       }, []);
 
-      const generateUniqueCode = () => {
-         return 'VP' + Math.random().toString(36).substring(2, 7).toUpperCase();
-      }
-
-      useEffect(() => {
-         if (authUser && !isAdmin && memberList.length > 0) {
-            const tempMyData = memberList.find(m => m.email === authUser.email);
-            if (tempMyData && !tempMyData.myReferral) {
-               const myCode = generateUniqueCode();
-               setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', tempMyData.id), { myReferral: myCode, referralBalance: 0, referralHistory: [] }, { merge: true }).catch(()=>{});
-            }
-         }
-      }, [authUser, memberList, isAdmin]);
-
-      useEffect(() => {
-         if (resetCooldown > 0) { const timer = setTimeout(() => setResetCooldown(c => c - 1), 1000); return () => clearTimeout(timer); }
-      }, [resetCooldown]);
-
+      // Orders, Members, Chats Listener (Requires Auth)
       useEffect(() => {
          if (!authUser) return;
          let unsubs = [];
+         
+         // Orders
          unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
             const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
             const getStatusScore = (s) => s === 'Pending' ? 1 : s === 'Sukses' ? 2 : 3;
             fetchedAll.sort((a,b) => getStatusScore(a.status) !== getStatusScore(b.status) ? getStatusScore(a.status) - getStatusScore(b.status) : new Date(b.createdAt) - new Date(a.createdAt));
-            fetchedAll.forEach(order => {
-              if (order.status === 'Sukses' && !order.commissionGiven) {
-                handleReferralCommission(order.userEmail, order.priceTotal);
-                updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', order.id), { commissionGiven: true });
-              }
-            });
             setAllGlobalOrders(fetchedAll);
             if (isAdmin) setAdminOrders(fetchedAll); else setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email));
          }));
 
+         // Members
          unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => {
             const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()}));
             m.sort((a,b) => new Date(b.lastLogin) - new Date(a.lastLogin)); setMemberList(m);
          }));
 
+         // Chats
          if (isAdmin) {
             unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => {
                const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() }));
@@ -650,14 +559,25 @@
          return () => unsubs.forEach(fn => fn());
       }, [authUser, isAdmin]);
 
+      // Set Profile Initial State when view changes to Profile
       useEffect(() => {
-         if(isSuperAdmin) {
-            const settingsRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings');
-            getDoc(settingsRef).then(d => {
-               if(!d.exists()) setDoc(settingsRef, { isOpen: true, gamesData: JSON.stringify(DEFAULT_GAMES), nominalsData: JSON.stringify(DEFAULT_NOMINALS), bannersData: JSON.stringify([]), promosData: JSON.stringify([]), galleryData: JSON.stringify([]), runningTextData: JSON.stringify(['Selamat Datang di Vipercell', 'Top Up Game Terpercaya']), bannerPromoConfig: JSON.stringify({ active: false, text: 'Spesial Diskon', code: '' }) }).catch(()=>{});
-            })
+         if (currentView === 'profile' && myData) {
+            setProfileName(myData.name || ''); 
+            setProfilePhone(myData.phone || '');
+            setProfileAvatar(myData.avatar || '');
+            setProfileSaveMsg('');
          }
-      }, [isSuperAdmin]);
+      }, [currentView, myData]);
+
+      // Initial admin states setup
+      useEffect(() => {
+         setAdminIG(socialLinks.ig); setAdminWA(socialLinks.wa); setAdminTT(socialLinks.tt); setAdminTG(socialLinks.tg);
+      }, [socialLinks]);
+
+      const pendingOrdersCount = adminOrders.filter(o => o.status === 'Pending').length;
+      const openChatsCount = adminChats.filter(c => c.status === 'Open').length;
+      const totalAdminNotifs = pendingOrdersCount + openChatsCount;
+      const userHasUnread = userChat?.status === 'Dijawab';
 
       const allUserChats = useMemo(() => {
           if (!isAdmin) return [];
@@ -671,6 +591,7 @@
           });
       }, [memberList, adminChats, isAdmin]);
 
+      // QR Scanner Logic
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
@@ -686,16 +607,16 @@
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => console.log(e)); };
       }, [isScannerOpen, adminOrders]);
 
+      // --- USER ACTIONS ---
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthMessage({ text: '', type: '' }); setAuthLoading(true);
         try {
           if (authMode === 'register') {
              if(!regName) throw new Error('Nama pengguna wajib diisi!');
              const cred = await createUserWithEmailAndPassword(auth, email, password);
-             const myCode = generateUniqueCode();
              const now = new Date().toISOString();
              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
-                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, myReferral: myCode, referredBy: '', referralBalance: 0, referralHistory: [], avatar: '', hasUsedReferralDiscount: false
+                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, avatar: ''
              });
              await sendEmailVerification(cred.user); await signOut(auth); 
              setAuthMessage({ text: 'Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', type: 'success' }); setAuthMode('login');
@@ -723,46 +644,52 @@
       const handleUpdateProfile = async (e) => {
          e.preventDefault(); if(!myData) return;
          try {
-            let updatePayload = { name: profileName, phone: profilePhone };
-            if (!myData.referredBy && profileRefCode) {
-               const upperCode = profileRefCode.toUpperCase();
-               if(upperCode === myData.myReferral) return alert('Tidak bisa memakai kode referral milik sendiri!');
-               if(memberList.find(m => m.myReferral === upperCode)) updatePayload.referredBy = upperCode;
-               else return alert('Kode Referral tidak valid atau tidak ditemukan.');
-            }
-            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), updatePayload, { merge: true });
-            alert("Profil berhasil diperbarui!");
-         } catch(err) { alert("Gagal memperbarui profil."); }
+            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), { name: profileName, phone: profilePhone }, { merge: true });
+            setProfileSaveMsg('Profil berhasil disimpan!'); setTimeout(() => setProfileSaveMsg(''), 3000);
+         } catch(err) { setProfileSaveMsg('Gagal menyimpan profil.'); setTimeout(() => setProfileSaveMsg(''), 3000); }
       }
 
+      const handleAvatarUpload = async (e) => {
+        const file = e.target.files[0]; if (!file || !myData) return;
+        setUploadingAvatar(true); setAvatarMessage('');
+        try {
+          const compressedAvatar = await compressImage(file, 200);
+          await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), { avatar: compressedAvatar }, { merge: true });
+          setProfileAvatar(compressedAvatar); setAvatarMessage({ text: 'Foto berhasil diperbarui!', type: 'success' });
+        } catch (error) { setAvatarMessage({ text: 'Gagal mengupload foto.', type: 'error' }); } 
+        finally { setUploadingAvatar(false); setTimeout(() => setAvatarMessage(''), 3000); }
+      };
+
+      const handleChangePassword = async (e) => {
+        e.preventDefault(); setPasswordMessage('');
+        if (!currentPassword || !newPassword || !confirmNewPassword) return setPasswordMessage({ text: 'Semua field harus diisi!', type: 'error' });
+        if (newPassword !== confirmNewPassword) return setPasswordMessage({ text: 'Password baru tidak cocok!', type: 'error' });
+        if (newPassword.length < 6) return setPasswordMessage({ text: 'Password minimal 6 karakter!', type: 'error' });
+
+        try {
+          const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword);
+          await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword);
+          setPasswordMessage({ text: 'Password berhasil diubah!', type: 'success' });
+          setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false);
+        } catch (error) {
+          setPasswordMessage({ text: error.code === 'auth/wrong-password' ? 'Password saat ini salah!' : 'Gagal mengubah password.', type: 'error' });
+        }
+      };
+
       const handleApplyPromo = () => {
-         const promo = promos.find(p => p.code.toUpperCase() === inputPromo.toUpperCase());
-         if (!promo) return alert('Kode promo tidak ditemukan.');
+         const promo = promos.find(p => p.code.toUpperCase() === inputPromo.toUpperCase() && p.isActive !== false);
+         if (!promo) return alert('Kode promo tidak valid atau kadaluarsa.');
          if (promo.usedBy && promo.usedBy.includes(authUser.email)) return alert('Anda sudah pernah menggunakan kode promo ini.');
          if (promo.usedBy && promo.usedBy.length >= promo.maxUses) return alert('Kuota kode promo sudah habis digunakan orang lain.');
-         if (promo.applicableGames && promo.applicableGames.length > 0 && !promo.applicableGames.includes(selectedGame?.id)) return alert('Promo ini tidak berlaku untuk game yang dipilih.');
          if (promo.minPurchase && selectedNominal && selectedNominal.price < promo.minPurchase) return alert(`Minimal pembelian ${formatRupiah(promo.minPurchase)} untuk promo ini.`);
          setActivePromo(promo);
       };
 
-      const handleVoucherClick = (promoCode) => {
-         setInputPromo(promoCode);
-         setTimeout(() => {
-            const promo = promos.find(p => p.code.toUpperCase() === promoCode.toUpperCase());
-            if (promo) setActivePromo(promo);
-         }, 100);
-      };
-
       const calculateFinalPrice = (basePrice, promo) => {
         let price = basePrice;
-        if (myData?.referredBy && !myData?.hasUsedReferralDiscount) {
-           price = Math.max(0, price - 2000);
-        }
-        
         if (!promo) return price;
         if (promo.type === PROMO_TYPES.PERCENTAGE) return price - (price * promo.discount / 100);
         else if (promo.type === PROMO_TYPES.FIXED) return Math.max(0, price - promo.discount);
-        else if (promo.type === PROMO_TYPES.SPECIAL_PRODUCT) return price * 0.9;
         return price;
       };
 
@@ -773,28 +700,25 @@
         let appliedPromoCode = '';
 
         if (activePromo) {
-           const currentSettings = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'));
-           const latestPromos = JSON.parse(currentSettings.data()?.promosData || '[]');
-           let livePromo = latestPromos.find(p => p.code === activePromo.code);
-           
-           if (livePromo && livePromo.usedBy.length < livePromo.maxUses && !livePromo.usedBy.includes(authUser.email)) {
-              appliedPromoCode = livePromo.code; livePromo.usedBy.push(authUser.email);
-              await setDoc(currentSettings.ref, { promosData: JSON.stringify(latestPromos) }, { merge: true });
-           } else {
-              alert("Mohon maaf, kuota promo baru saja habis digunakan."); setActivePromo(null); setIsProcessing(false); return;
+           const promoRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id);
+           const pDoc = await getDoc(promoRef);
+           if(pDoc.exists()) {
+              let livePromo = pDoc.data();
+              if (livePromo.usedBy.length < livePromo.maxUses && !livePromo.usedBy.includes(authUser.email)) {
+                 appliedPromoCode = livePromo.code; 
+                 await setDoc(promoRef, { usedBy: [...livePromo.usedBy, authUser.email] }, { merge: true });
+              } else {
+                 alert("Mohon maaf, kuota promo baru saja habis digunakan."); setActivePromo(null); setIsProcessing(false); return;
+              }
            }
         }
 
         try {
           const docRef = await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), {
-            gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode, paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString(), commissionGiven: false
+            gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode, paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString()
           });
           setLastOrderId(docRef.id);
           
-          if (myData?.referredBy && !myData?.hasUsedReferralDiscount) {
-             await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), { hasUsedReferralDiscount: true }, { merge: true });
-          }
-
           if (selectedPayment.id === 'qris') setDynamicQrisUrl(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, finalPrice))}&margin=10`);
           setShowModal(true);
         } catch (error) { alert("Gagal memproses pesanan."); } finally { setIsProcessing(false); }
@@ -822,71 +746,64 @@
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const statusColor = (status) => { if(status === 'Sukses' || status === 'Selesai' || status === 'Dijawab') return 'text-orange-500 bg-orange-50 dark:bg-orange-500/10 border-orange-500/30'; if(status === 'Batal' || status === 'Dihapus') return 'text-red-500 bg-red-50 dark:bg-red-500/10 border-red-500/30'; return 'text-blue-500 bg-blue-50 dark:bg-blue-500/10 border-blue-500/30'; };
 
-      const isEligibleForReferralInput = useMemo(() => {
-         if (!myData || myData.referredBy) return false;
-         const createdDate = myData.createdAt ? new Date(myData.createdAt) : new Date(myData.lastLogin);
-         const daysDiff = (new Date() - createdDate) / (1000 * 60 * 60 * 24);
-         return daysDiff <= 7;
-      }, [myData]);
-
-      // ADMIN HANDLERS
-      const toggleStore = async () => await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { isOpen: !isStoreOpen }, { merge: true });
+      // --- ADMIN HANDLERS ---
+      const toggleStore = async () => await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true });
       const updateOrderStatus = async (orderId, newStatus) => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); } catch (e) {} };
       const deleteOrder = async (orderId) => requestConfirm('Riwayat pesanan ini akan ditandai terhapus.', async () => await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }));
       
-      const handleSaveItem = async (e) => {
-         e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return;
-         const updatedNominals = { ...nominals }; if(!updatedNominals[adminSelectedGame]) updatedNominals[adminSelectedGame] = [];
-         if (editingItemId) { const idx = updatedNominals[adminSelectedGame].findIndex(i => i.id === editingItemId); if (idx > -1) updatedNominals[adminSelectedGame][idx] = { id: editingItemId, name: newItemName, price: Number(newItemPrice) }; } 
-         else updatedNominals[adminSelectedGame].push({ id: 'item_' + Date.now().toString(), name: newItemName, price: Number(newItemPrice) });
-         try {
-            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { nominalsData: JSON.stringify(updatedNominals) }, { merge: true });
-            setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); setItemNotice(editingItemId ? 'Item diperbarui!' : 'Item ditambahkan!'); setTimeout(() => setItemNotice(''), 3000);
-         } catch (e) {}
-      };
-      const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
-      const handleDeleteItem = async (gameId, itemId) => requestConfirm('Hapus item harga ini?', async () => {
-         const updatedNominals = { ...nominals }; updatedNominals[gameId] = updatedNominals[gameId].filter(i => i.id !== itemId);
-         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { nominalsData: JSON.stringify(updatedNominals) }, { merge: true });
-      });
-
+      // Games Management
       const handleSaveGame = async (e) => {
          e.preventDefault(); if (!newGameId || !newGameName) return;
-         let newGamesList = [...games];
-         if (editingGameId) { const idx = newGamesList.findIndex(g => g.id === editingGameId); if (idx > -1) newGamesList[idx] = { id: newGameId.toLowerCase().replace(/\s+/g, ''), name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || DEFAULT_GAMES[0].image }; } 
-         else newGamesList.push({ id: newGameId.toLowerCase().replace(/\s+/g, ''), name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || DEFAULT_GAMES[0].image });
          try {
-            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { gamesData: JSON.stringify(newGamesList) }, { merge: true });
+            const cleanId = newGameId.toLowerCase().replace(/\s+/g, '');
+            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), {
+               name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300'
+            }, { merge: true });
             setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); setItemNotice(editingGameId ? 'Game diperbarui!' : 'Game ditambahkan!'); setTimeout(() => setItemNotice(''), 3000);
          } catch (e) {}
       };
       const handleEditGameClick = (game) => { setEditingGameId(game.id); setNewGameId(game.id); setNewGameName(game.name); setNewGameDev(game.developer); setNewGameInput(game.inputType); setNewGameImg(game.image); setAdminSelectedGame(game.id); };
-      const handleDeleteGame = async (gameId) => requestConfirm('Hapus Game ini?', async () => { const newGamesList = games.filter(g => g.id !== gameId); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { gamesData: JSON.stringify(newGamesList) }, { merge: true }); });
+      const handleDeleteGame = async (gameId) => requestConfirm('Hapus Game ini?', async () => { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); });
 
+      // Items Management
+      const handleSaveItem = async (e) => {
+         e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return;
+         try {
+            if (editingItemId) {
+               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true });
+            } else {
+               await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame });
+            }
+            setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); setItemNotice(editingItemId ? 'Item diperbarui!' : 'Item ditambahkan!'); setTimeout(() => setItemNotice(''), 3000);
+         } catch (e) {}
+      };
+      const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
+      const handleDeleteItem = async (itemId) => requestConfirm('Hapus item harga ini?', async () => { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); });
+
+      // Promo Management (Upgraded)
       const handleAddPromo = async (e) => {
          e.preventDefault(); if (!newPromoCode || !newPromoDiscount || !newPromoMax) return;
-         const newPromo = { code: newPromoCode.toUpperCase(), type: newPromoType, discount: Number(newPromoDiscount), maxUses: Number(newPromoMax), minPurchase: newPromoMinPurchase ? Number(newPromoMinPurchase) : 0, applicableGames: newPromoApplicableGames, description: newPromoDescription || '', usedBy: [], createdAt: new Date().toISOString() };
-         const newPromos = [...promos, newPromo];
-         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { promosData: JSON.stringify(newPromos) }, { merge: true });
-         setNewPromoCode(''); setNewPromoDiscount(''); setNewPromoMax(''); setNewPromoMinPurchase(''); setNewPromoApplicableGames([]); setNewPromoDescription('');
+         try {
+            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', newPromoCode.toUpperCase()), { 
+               code: newPromoCode.toUpperCase(), type: newPromoType, discount: Number(newPromoDiscount), maxUses: Number(newPromoMax), minPurchase: newPromoMinPurchase ? Number(newPromoMinPurchase) : 0, usedBy: [], createdAt: new Date().toISOString(), isFlashSale: newPromoIsFlashSale, isActive: true 
+            });
+            setNewPromoCode(''); setNewPromoDiscount(''); setNewPromoMax(''); setNewPromoMinPurchase(''); setNewPromoIsFlashSale(false);
+         } catch(e) {}
       };
-      const handleDeletePromo = (code) => requestConfirm(`Hapus promo ${code}?`, async () => { const newPromos = promos.filter(p => p.code !== code); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { promosData: JSON.stringify(newPromos) }, { merge: true }); });
+      const handleDeletePromo = (id) => requestConfirm(`Hapus promo?`, async () => { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); });
+      const togglePromoStatus = async (id, currentStatus) => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); };
 
-      // Handle Running Text Updates
-      const handleRunningTextChange = (index, value) => {
-         const newTexts = [...runningTexts];
-         newTexts[index] = value;
-         setRunningTexts(newTexts);
-      };
-      const saveRunningTexts = async () => {
-         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { runningTextData: JSON.stringify(runningTexts) }, { merge: true });
-         setItemNotice('Teks Berjalan disimpan!'); setTimeout(()=>setItemNotice(''), 2000);
-      };
-
-      const saveBannerPromoConfig = async () => {
-        await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { bannerPromoConfig: JSON.stringify({ active: adminBannerPromoActive, text: adminBannerPromoText, code: adminBannerPromoCode }) }, { merge: true });
-        setItemNotice('Pengaturan banner promo disimpan!'); setTimeout(()=>setItemNotice(''), 2000);
-      };
+      // Config Management
+      const handleRunningTextChange = (index, value) => { const newTexts = [...runningTexts]; newTexts[index] = value; setRunningTexts(newTexts); };
+      const saveRunningTexts = async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: runningTexts }, { merge: true }); setItemNotice('Teks Berjalan disimpan!'); setTimeout(()=>setItemNotice(''), 2000); };
+      const handleAddBanner = async (type, url) => { if(!url) return; const newBanners = [...banners, { type, url }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if (file) { setItemNotice('Mengompres...'); const compressed = await compressImage(file, 800); handleAddBanner('image', compressed); setItemNotice(''); } };
+      const handleDeleteBanner = (index) => requestConfirm('Hapus banner?', async () => { const newBanners = [...banners]; newBanners.splice(index, 1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); });
+      const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if (galleryData.length >= 6) return alert('Maksimal 6 foto!'); setItemNotice('Mengompres...'); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...galleryData, compressed] }, { merge: true }); setItemNotice('Foto ditambah!'); setTimeout(()=>setItemNotice(''), 2000); } };
+      const handleRemoveGallery = async (index) => requestConfirm('Hapus foto?', async () => { const newGallery = [...galleryData]; newGallery.splice(index, 1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); });
+      const saveSettingsLinks = async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminIG, waLink: adminWA, ttLink: adminTT, tgLink: adminTG }, { merge: true }); setItemNotice('Kontak diperbarui!'); setTimeout(()=>setItemNotice(''), 2000); };
+      const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !newAdminEmail.includes('@') || adminList.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: [...adminList, newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
+      const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: adminList.filter(e => e !== email) }, { merge: true }); });
 
       const handleAdminSendChat = async (e, quickReply = null) => {
          if(e) e.preventDefault(); const text = quickReply || adminReplyText; if (!text.trim() || !activeChatEmail) return;
@@ -901,14 +818,8 @@
       };
       const markChatDone = async () => { if(!activeChatEmail) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Selesai' }, { merge: true }); };
 
-      const handleAddBanner = async (type, url) => { if(!url) return; const newBanners = [...banners, { type, url }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { bannersData: JSON.stringify(newBanners) }, { merge: true }); setAdminBannerUrl(''); };
-      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if (file) { setItemNotice('Mengompres...'); const compressed = await compressImage(file, 800); handleAddBanner('image', compressed); setItemNotice(''); } };
-      const handleDeleteBanner = (index) => requestConfirm('Hapus banner?', async () => { const newBanners = [...banners]; newBanners.splice(index, 1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { bannersData: JSON.stringify(newBanners) }, { merge: true }); });
-      const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if (galleryData.length >= 6) return alert('Maksimal 6 foto!'); setItemNotice('Mengompres...'); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { galleryData: JSON.stringify([...galleryData, compressed]) }, { merge: true }); setItemNotice('Foto ditambah!'); setTimeout(()=>setItemNotice(''), 2000); } };
-      const handleRemoveGallery = async (index) => requestConfirm('Hapus foto?', async () => { const newGallery = [...galleryData]; newGallery.splice(index, 1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { galleryData: JSON.stringify(newGallery) }, { merge: true }); });
-      const saveSettingsLinks = async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { igLink: adminIG, waLink: adminWA, ttLink: adminTT, tgLink: adminTG }, { merge: true }); setItemNotice('Kontak diperbarui!'); setTimeout(()=>setItemNotice(''), 2000); };
-      const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !newAdminEmail.includes('@') || adminList.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'admins'), { emails: [...adminList, newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
-      const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'admins'), { emails: adminList.filter(e => e !== email) }, { merge: true }); });
+      // Helpers for UI
+      const flashSalePromos = promos.filter(p => p.isFlashSale && p.isActive);
 
       // --- RENDERING ---
       if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-navy-950"><IconLoader className="w-12 h-12 text-orange-500"/></div>;
@@ -930,7 +841,6 @@
                   </div>
                   <h2 className="text-4xl font-black text-gray-900 dark:text-white leading-tight mb-4">Top Up Games <br/>Lebih Cepat & Murah!</h2>
                   
-                  {/* TENTANG KAMI - DI PINDAH KE KIRI HALAMAN LOGIN */}
                   <div className="bg-white/40 dark:bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/20 mt-4 mb-6 shadow-inner">
                      <h3 className="font-black text-gray-900 dark:text-white mb-2 flex items-center gap-2"><IconInfo className="w-5 h-5 text-orange-500"/> Tentang Kami</h3>
                      <p className="text-xs text-gray-700 dark:text-gray-300 font-medium leading-relaxed">
@@ -938,22 +848,12 @@
                      </p>
                   </div>
                   
-                  {/* SOCIAL MEDIA ICONS - DI PINDAH KE KIRI HALAMAN LOGIN */}
                   <div className="flex gap-3">
-                     {socialLinks?.ig && (
-                        <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-orange-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>
-                     )}
-                     {socialLinks?.wa && (
-                        <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-green-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>
-                     )}
-                     {socialLinks?.tt && (
-                        <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-gray-900 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>
-                     )}
-                     {socialLinks?.tg && (
-                        <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-blue-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>
-                     )}
+                     {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-orange-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>}
+                     {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-green-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>}
+                     {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-gray-900 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>}
+                     {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-blue-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>}
                   </div>
-
                 </div>
               </div>
 
@@ -1083,10 +983,6 @@
                          <span className="text-gray-500 text-xs uppercase font-bold">Data Pembeli</span>
                          <span className="text-gray-900 dark:text-white font-mono text-xs font-bold bg-gray-200 dark:bg-white/10 px-2 py-0.5 rounded">{scannedOrder.targetUserId} {scannedOrder.targetZoneId ? `(${scannedOrder.targetZoneId})` : ''}</span>
                       </div>
-                      <div className="flex justify-between mb-3 border-b border-gray-200 dark:border-white/10 pb-3">
-                         <span className="text-gray-500 text-xs uppercase font-bold">Waktu Pesan</span>
-                         <span className="text-gray-900 dark:text-white text-xs font-bold">{new Date(scannedOrder.createdAt).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})}</span>
-                      </div>
                       <div className="flex justify-between mb-3">
                          <span className="text-gray-500 text-xs uppercase font-bold">Produk</span>
                          <span className="text-orange-500 font-bold text-sm text-right">{scannedOrder.gameName}<br/><span className="text-xs text-gray-400 dark:text-gray-300">{scannedOrder.nominalName}</span></span>
@@ -1133,18 +1029,18 @@
                       <div className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">{isAdmin ? 'Admin' : 'Member'}</div>
                    </div>
                    <div className="w-10 h-10 bg-gradient-to-tr from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-inner text-white font-black overflow-hidden">
-                     {myData?.avatar ? (
-                       <img src={myData.avatar} className="w-full h-full object-cover" />
-                     ) : (
-                       (myData?.name ? myData.name.charAt(0).toUpperCase() : authUser.email.charAt(0).toUpperCase())
-                     )}
+                      {myData?.avatar ? (
+                        <img src={myData.avatar} className="w-full h-full object-cover" />
+                      ) : (
+                        (myData?.name ? myData.name.charAt(0).toUpperCase() : authUser.email.charAt(0).toUpperCase())
+                      )}
                    </div>
                 </div>
               </div>
             </div>
           </nav>
 
-          {/* TEKS BERJALAN (MARQUEE) - NEW PROMO FEATURE */}
+          {/* TEKS BERJALAN (MARQUEE) */}
           {runningTexts.some(t => t.trim() !== '') && (
              <div className="w-full bg-orange-500 text-white py-2 overflow-hidden flex whitespace-nowrap shadow-sm border-b border-orange-600 relative">
                 <div className="animate-marquee inline-block text-[10px] font-black uppercase tracking-widest">
@@ -1179,10 +1075,6 @@
                        </div>
                        <h3 className="font-black text-gray-900 dark:text-white text-lg">{myData?.name || authUser.email.split('@')[0]}</h3>
                        <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{authUser.email}</p>
-                       <div className="mt-3 flex gap-2 flex-wrap">
-                          <span className="text-[9px] bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/30 px-2 py-1 rounded font-black uppercase tracking-widest">ID: {myData?.myReferral}</span>
-                          <span className="text-[9px] bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/30 px-2 py-1 rounded font-black uppercase tracking-widest">Saldo: Rp{referralBalance}</span>
-                       </div>
                    </div>
 
                    <div className="flex-1 overflow-y-auto p-4 space-y-1 custom-scrollbar">
@@ -1197,9 +1089,6 @@
                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-4 py-2 mt-4">Transaksi & Bantuan</p>
                        <button onClick={()=>navigateTo('history')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition ${currentView === 'history' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
                            <IconHistory className="w-5 h-5"/> Riwayat Pesanan
-                       </button>
-                       <button onClick={()=>navigateTo('referral')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition ${currentView === 'referral' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
-                           <IconGift className="w-5 h-5"/> Program Referral
                        </button>
                        <button onClick={()=>navigateTo('chat')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition relative ${currentView === 'chat' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
                            <IconMessageSquare className="w-5 h-5"/> Hubungi CS
@@ -1243,10 +1132,6 @@
                        </div>
                        <h3 className="font-black text-gray-900 dark:text-white text-lg">{myData?.name || authUser.email.split('@')[0]}</h3>
                        <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{authUser.email}</p>
-                       <div className="mt-3 flex gap-2 flex-wrap">
-                          <span className="text-[9px] bg-orange-100 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-200 dark:border-orange-500/30 px-2 py-1 rounded font-black uppercase tracking-widest">ID: {myData?.myReferral}</span>
-                          <span className="text-[9px] bg-purple-100 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-500/30 px-2 py-1 rounded font-black uppercase tracking-widest">Saldo: Rp{referralBalance}</span>
-                       </div>
                    </div>
 
                    <div className="flex-1 overflow-y-auto p-4 space-y-1 custom-scrollbar">
@@ -1261,9 +1146,6 @@
                        <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest px-4 py-2 mt-4">Transaksi & Bantuan</p>
                        <button onClick={()=>navigateTo('history')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition ${currentView === 'history' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
                            <IconHistory className="w-5 h-5"/> Riwayat Pesanan
-                       </button>
-                       <button onClick={()=>navigateTo('referral')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition ${currentView === 'referral' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
-                           <IconGift className="w-5 h-5"/> Program Referral
                        </button>
                        <button onClick={()=>navigateTo('chat')} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold transition relative ${currentView === 'chat' ? 'bg-orange-500 text-white shadow-md shadow-orange-500/30' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5'}`}>
                            <IconMessageSquare className="w-5 h-5"/> Hubungi CS
@@ -1297,9 +1179,34 @@
             {currentView === 'home' && (
                <div className="animate-in fade-in slide-in-from-bottom-4 pb-20">
                   <BannerSlider items={banners} />
+                  
+                  {/* FLASH SALE PROMO SECTION */}
+                  {flashSalePromos.length > 0 && (
+                     <div className="mb-8">
+                        <div className="flex items-center gap-2 mb-4">
+                           <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
+                           <h2 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-widest">Flash Sale Aktif!</h2>
+                        </div>
+                        <div className="flex overflow-x-auto gap-4 pb-4 custom-scrollbar snap-x">
+                           {flashSalePromos.map(promo => (
+                              <div key={promo.id} className="snap-center min-w-[280px] bg-gradient-to-br from-orange-500 to-red-600 p-5 rounded-3xl text-white shadow-lg relative overflow-hidden flex-shrink-0">
+                                 <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+                                 <div className="relative z-10">
+                                    <div className="text-[10px] font-black uppercase tracking-widest bg-white/20 px-2 py-1 rounded inline-block mb-2">Kode Kupon</div>
+                                    <div className="text-2xl font-black font-mono tracking-wider drop-shadow-md">{promo.code}</div>
+                                    <div className="text-sm font-bold mt-2 opacity-90">
+                                       Diskon {promo.type === 'percentage' ? `${promo.discount}%` : formatRupiah(promo.discount)}
+                                    </div>
+                                    <div className="text-[10px] mt-1 font-bold">Tersisa: {promo.maxUses - (promo.usedBy?.length || 0)} Kuota</div>
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                     </div>
+                  )}
 
                   <div className="relative">
-                     {/* STEP 1: PILIH GAME (GRID UTAMA) */}
+                     {/* STEP 1: PILIH GAME */}
                      <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-xl mb-8">
                         <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3"><div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2.5 rounded-xl shadow-md"><IconGamepad className="w-6 h-6 text-white"/></div> Pilih Game Tersedia</h2>
                         
@@ -1315,10 +1222,11 @@
                                  </div>
                               </div>
                            ))}
+                           {games.length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-50 dark:bg-black/10 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada game tersedia.</div>}
                         </div>
                      </div>
 
-                     {/* GALERI BUKTI TRANSAKSI DI HOME */}
+                     {/* GALERI */}
                      {galleryData.length > 0 && (
                         <div className="bg-white/50 dark:bg-navy-900/50 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-sm">
                            <h3 className="text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><IconImage className="w-4 h-4"/> Galeri</h3>
@@ -1335,7 +1243,7 @@
                         </div>
                      )}
 
-                     {/* OVERLAY FORM TOP UP (FULL SCREEN) */}
+                     {/* OVERLAY FORM TOP UP */}
                      {selectedGame && (
                         <div className="fixed inset-0 z-[100] flex flex-col bg-gray-50 dark:bg-navy-950 animate-in slide-in-from-bottom-full duration-500">
                            <div className="flex justify-between items-center p-5 bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 shadow-sm sticky top-0 z-50">
@@ -1352,7 +1260,7 @@
                            <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
                               <div className="max-w-3xl mx-auto space-y-6 pb-20">
                                  
-                                 {/* STEP 2: DATA AKUN */}
+                                 {/* DATA AKUN */}
                                  <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md">
                                     <h2 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 mb-5"><div className="bg-blue-50 dark:bg-blue-500/20 p-2 rounded-xl text-blue-500"><IconUser className="w-5 h-5"/></div> 1. Masukkan ID Tujuan</h2>
                                     
@@ -1378,23 +1286,23 @@
                                     </div>
                                  </div>
 
-                                 {/* STEP 3: PILIH NOMINAL */}
+                                 {/* PILIH NOMINAL */}
                                  <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
                                     <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-green-50 dark:bg-green-500/20 p-2 rounded-xl text-green-500"><IconBox className="w-5 h-5"/></div> 2. Pilih Nominal</h2>
                                     
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-                                       {(nominals[selectedGame?.id] || []).map(item => (
+                                       {items.filter(i => i.gameId === selectedGame?.id).map(item => (
                                           <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all flex flex-col justify-center items-center text-center group ${selectedNominal?.id === item.id ? 'border-green-500 bg-green-50 dark:bg-green-500/10 shadow-md transform scale-95' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 hover:border-green-300 hover:-translate-y-1'}`}>
                                              <div className="font-black text-gray-900 dark:text-white text-xs md:text-sm mb-2 leading-tight">{item.name}</div>
                                              <div className="text-xs font-black text-green-600 dark:text-green-400 font-mono bg-white dark:bg-navy-950 px-2 py-1 rounded-md shadow-inner w-full border border-gray-100 dark:border-white/5">{formatRupiah(item.price)}</div>
                                              {selectedNominal?.id === item.id && <div className="absolute top-2 right-2"><IconCheckCircle className="w-4 h-4 text-green-500 animate-in zoom-in"/></div>}
                                           </div>
                                        ))}
-                                       {(nominals[selectedGame?.id] || []).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-50 dark:bg-black/10 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
+                                       {items.filter(i => i.gameId === selectedGame?.id).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-50 dark:bg-black/10 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
                                     </div>
                                  </div>
 
-                                 {/* STEP 4: PEMBAYARAN & CHECKOUT */}
+                                 {/* PEMBAYARAN */}
                                  <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
                                     <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-purple-50 dark:bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconWallet className="w-5 h-5"/></div> 3. Metode Pembayaran</h2>
                                     
@@ -1413,7 +1321,7 @@
                                        ))}
                                     </div>
 
-                                    {/* SISTEM PROMO */}
+                                    {/* PROMO INPUT */}
                                     <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 pl-1">Gunakan Kode Promo</p>
                                     <div className="flex gap-3 mb-6 bg-gray-50 dark:bg-black/30 p-2.5 rounded-2xl border border-gray-200 dark:border-white/5 shadow-inner">
                                        <div className="relative flex-1 group">
@@ -1439,13 +1347,6 @@
                                              <span className="text-xs font-bold text-gray-500">Biaya Layanan</span>
                                              <span className="font-mono font-bold text-gray-900 dark:text-white">{formatRupiah(selectedPayment?.fee || 0)}</span>
                                           </div>
-                                          {/* Info Potongan Harga Dari Kode Referral Teman Baru */}
-                                          {myData?.referredBy && !myData?.hasUsedReferralDiscount && (
-                                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-indigo-500 animate-in slide-in-from-top-2">
-                                                <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconGift className="w-3 h-3"/> Diskon Referral Pertama</span>
-                                                <span className="font-mono font-black">- Rp 2.000</span>
-                                             </div>
-                                          )}
                                           {activePromo && (
                                              <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-green-500 animate-in slide-in-from-top-2">
                                                 <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconTag className="w-3 h-3"/> Diskon Promo ({activePromo.code})</span>
@@ -1474,6 +1375,81 @@
                </div>
             )}
 
+            {/* TAB PROFIL & KEAMANAN (BARU DITAMBAHKAN) */}
+            {currentView === 'profile' && !isAdmin && (
+               <div className="animate-in fade-in pb-10 max-w-4xl mx-auto mt-4">
+                  <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
+                     <div className="flex flex-col md:flex-row items-center gap-6 mb-10 border-b border-gray-200 dark:border-white/10 pb-8">
+                        <div className="relative group">
+                           <div className="w-28 h-28 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 p-1 shadow-xl">
+                              <div className="w-full h-full bg-white dark:bg-navy-900 rounded-full flex items-center justify-center overflow-hidden relative">
+                                 {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-4xl font-black text-gray-400">{myData?.name?.charAt(0).toUpperCase() || authUser.email.charAt(0).toUpperCase()}</span>}
+                                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm cursor-pointer">
+                                    <IconCamera className="w-8 h-8 text-white"/>
+                                 </div>
+                                 <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                              </div>
+                           </div>
+                           {uploadingAvatar && <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-[10px] px-3 py-1 rounded-full font-bold shadow-md flex items-center gap-1"><IconLoader className="w-3 h-3 animate-spin"/> Loading</div>}
+                        </div>
+                        <div className="text-center md:text-left flex-1">
+                           <h2 className="text-3xl font-black text-gray-900 dark:text-white leading-tight">{myData?.name || 'Member VIP'}</h2>
+                           <p className="text-sm text-gray-500 dark:text-gray-400 font-mono mt-1">{authUser.email}</p>
+                           <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-4">
+                              <span className="text-[10px] bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-400 px-3 py-1.5 rounded-lg border border-green-200 dark:border-green-500/30 font-black uppercase tracking-widest flex items-center gap-1.5"><IconCheckCircle className="w-3 h-3"/> Akun Terverifikasi</span>
+                              <span className="text-[10px] bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/5 font-black uppercase tracking-widest">Sejak: {new Date(myData?.createdAt || myData?.lastLogin).toLocaleDateString('id-ID')}</span>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                           <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2"><IconUser className="w-5 h-5 text-orange-500"/> Informasi Personal</h3>
+                           <form onSubmit={handleUpdateProfile} className="space-y-4">
+                              <div>
+                                 <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-widest ml-1">Nama Lengkap</label>
+                                 <input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3.5 px-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 text-sm font-medium transition shadow-inner" />
+                              </div>
+                              <div>
+                                 <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-widest ml-1">Nomor WhatsApp</label>
+                                 <input type="tel" value={profilePhone} onChange={(e)=>setProfilePhone(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3.5 px-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 text-sm font-medium transition shadow-inner" />
+                              </div>
+                              {profileSaveMsg && <div className="text-green-600 text-xs font-bold bg-green-50 px-4 py-2 rounded-lg">{profileSaveMsg}</div>}
+                              <button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3.5 rounded-xl font-black transition shadow-lg shadow-orange-500/30 uppercase tracking-widest text-xs">Simpan Perubahan</button>
+                           </form>
+                        </div>
+
+                        <div>
+                           <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2"><IconLock className="w-5 h-5 text-red-500"/> Keamanan Akun</h3>
+                           {!showPasswordForm ? (
+                              <div className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 p-5 rounded-2xl">
+                                 <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mb-4">Ganti kata sandi secara berkala untuk menjaga keamanan akun Anda.</p>
+                                 <button onClick={()=>setShowPasswordForm(true)} className="bg-white dark:bg-navy-800 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white hover:border-red-500 hover:text-red-500 py-3 px-5 rounded-xl font-black transition shadow-sm text-xs uppercase tracking-widest w-full">Ubah Kata Sandi</button>
+                              </div>
+                           ) : (
+                              <form onSubmit={handleChangePassword} className="space-y-4 bg-gray-50 dark:bg-black/20 p-5 rounded-2xl border border-gray-200 dark:border-white/5">
+                                 <div>
+                                    <input type="password" required value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} className="w-full bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white text-sm" placeholder="Password Saat Ini" />
+                                 </div>
+                                 <div>
+                                    <input type="password" required value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} minLength="6" className="w-full bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white text-sm" placeholder="Password Baru" />
+                                 </div>
+                                 <div>
+                                    <input type="password" required value={confirmNewPassword} onChange={(e)=>setConfirmNewPassword(e.target.value)} minLength="6" className="w-full bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white text-sm" placeholder="Konfirmasi Password Baru" />
+                                 </div>
+                                 {passwordMessage && <div className={`text-xs font-bold p-3 rounded-lg ${passwordMessage.type === 'error' ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>{passwordMessage.text}</div>}
+                                 <div className="flex gap-2">
+                                    <button type="button" onClick={()=>{setShowPasswordForm(false); setPasswordMessage('');}} className="flex-1 bg-gray-200 dark:bg-navy-800 text-gray-700 dark:text-gray-300 py-3 rounded-xl font-bold text-xs uppercase">Batal</button>
+                                    <button type="submit" className="flex-1 bg-red-500 hover:bg-red-600 text-white py-3 rounded-xl font-black text-xs uppercase shadow-md shadow-red-500/30">Simpan Sandi</button>
+                                 </div>
+                              </form>
+                           )}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            )}
+
             {/* HISTORY VIEW */}
             {currentView === 'history' && !isAdmin && (
                <div className="animate-in fade-in pb-10 max-w-5xl mx-auto mt-4">
@@ -1495,7 +1471,7 @@
                         {userOrders.filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => (
                            <div key={order.id} className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 p-5 rounded-2xl flex flex-col md:flex-row justify-between md:items-start gap-5 hover:border-orange-300 dark:hover:border-orange-500/50 transition group shadow-sm">
                               <div className="flex gap-4 items-start w-full md:w-auto">
-                                 <img src={games?.find(g => g.id === order.gameId)?.image || DEFAULT_GAMES[0].image} className="w-16 h-16 rounded-xl object-cover shadow-sm border border-gray-200 dark:border-white/10 group-hover:scale-105 transition"/>
+                                 <img src={games?.find(g => g.id === order.gameId)?.image || 'https://via.placeholder.com/300'} className="w-16 h-16 rounded-xl object-cover shadow-sm border border-gray-200 dark:border-white/10 group-hover:scale-105 transition"/>
                                  <div className="flex-1">
                                     <div className="font-black text-gray-900 dark:text-white text-base">{order.gameName}</div>
                                     <div className="text-xs text-orange-600 dark:text-orange-400 font-bold mb-1.5">{order.nominalName}</div>
@@ -1794,6 +1770,7 @@
 
                      {activeAdminTab === 'katalog' && (
                         <div className="space-y-8 relative z-10">
+                           {/* GAMES MANAGEMENT */}
                            <div className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 md:p-8 shadow-inner">
                               <div className="flex items-center gap-4 mb-8 border-b border-gray-200 dark:border-white/10 pb-6">
                                  <div className="p-3.5 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl shadow-lg"><IconGamepad className="w-7 h-7 text-white"/></div>
@@ -1861,6 +1838,7 @@
                               </div>
                            </div>
 
+                           {/* ITEMS MANAGEMENT */}
                            <div className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 md:p-8 shadow-inner">
                               <div className="flex items-center gap-4 mb-8 border-b border-gray-200 dark:border-white/10 pb-6">
                                  <div className="p-3.5 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl shadow-lg"><IconBox className="w-7 h-7 text-white"/></div>
@@ -1902,7 +1880,7 @@
                                        <h2 className="text-sm font-bold text-gray-900 dark:text-white">Menampilkan Item Untuk: <span className="text-blue-600 dark:text-blue-400 ml-1 font-black">{games?.find(g => g.id === adminSelectedGame)?.name || '-'}</span></h2>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 h-[450px] overflow-y-auto custom-scrollbar pr-2 pb-10">
-                                       {(nominals[adminSelectedGame] || []).map(item => (
+                                       {items.filter(i => i.gameId === adminSelectedGame).map(item => (
                                           <div key={item.id} className="flex items-center justify-between bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 p-5 rounded-2xl shadow-sm hover:border-blue-500/50 transition group h-fit">
                                              <div>
                                                 <div className="text-gray-900 dark:text-white font-bold text-sm mb-1.5">{item.name}</div>
@@ -1910,11 +1888,11 @@
                                              </div>
                                              <div className="flex gap-2 opacity-100 sm:opacity-0 group-hover:opacity-100 transition">
                                                 <button onClick={() => handleEditItemClick(adminSelectedGame, item)} className="text-gray-500 dark:text-gray-400 hover:text-white hover:bg-blue-500 p-2 bg-gray-50 dark:bg-navy-800 rounded-xl shadow-sm border border-gray-200 dark:border-white/5 transition"><IconEdit className="w-4 h-4" /></button>
-                                                <button onClick={() => handleDeleteItem(adminSelectedGame, item.id)} className="text-gray-500 dark:text-gray-400 hover:text-white hover:bg-red-500 p-2 bg-gray-50 dark:bg-navy-800 rounded-xl shadow-sm border border-gray-200 dark:border-white/5 transition"><IconTrash className="w-4 h-4" /></button>
+                                                <button onClick={() => handleDeleteItem(item.id)} className="text-gray-500 dark:text-gray-400 hover:text-white hover:bg-red-500 p-2 bg-gray-50 dark:bg-navy-800 rounded-xl shadow-sm border border-gray-200 dark:border-white/5 transition"><IconTrash className="w-4 h-4" /></button>
                                              </div>
                                           </div>
                                        ))}
-                                       {(nominals[adminSelectedGame] || []).length === 0 && (
+                                       {items.filter(i => i.gameId === adminSelectedGame).length === 0 && (
                                           <div className="col-span-1 sm:col-span-2 flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-3xl bg-white/50 dark:bg-black/20">
                                              <IconBox className="w-12 h-12 mb-3 opacity-30"/>
                                              <span className="font-bold text-sm">Belum ada harga ditambahkan untuk game ini.</span>
@@ -1927,13 +1905,14 @@
                         </div>
                      )}
 
+                     {/* PROMO MANAGEMENT (UPGRADED) */}
                      {activeAdminTab === 'promo' && (
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
                            <div className="lg:col-span-4 space-y-6">
                               <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-[2rem] p-6 text-white shadow-xl shadow-purple-500/30 relative overflow-hidden">
                                  <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
-                                 <h2 className="text-xl font-black mb-1 relative z-10 drop-shadow-md">Sistem Promo v2.3</h2>
-                                 <p className="text-xs font-medium text-white/80 mb-6 relative z-10">Buat kupon eksklusif untuk pelanggan.</p>
+                                 <h2 className="text-xl font-black mb-1 relative z-10 drop-shadow-md">Sistem Promo v2.5</h2>
+                                 <p className="text-xs font-medium text-white/80 mb-6 relative z-10">Buat kupon eksklusif & Flash Sale.</p>
                                  <form onSubmit={handleAddPromo} className="space-y-4 relative z-10">
                                     <div>
                                        <label className="block text-[10px] font-black text-white/70 mb-1.5 uppercase tracking-widest">Kode Promo Kupon</label>
@@ -1962,24 +1941,14 @@
                                           <input type="number" value={newPromoMinPurchase} onChange={(e)=>setNewPromoMinPurchase(e.target.value)} className="w-full bg-white/20 border border-white/30 rounded-xl py-3.5 px-4 text-white focus:outline-none focus:border-white font-mono text-sm placeholder-white/40 shadow-inner backdrop-blur-md transition" placeholder="10000" />
                                        </div>
                                     </div>
-                                    <button type="submit" className="w-full bg-white text-purple-600 hover:bg-purple-50 py-4 rounded-xl font-black transition shadow-lg shadow-black/20 uppercase tracking-widest text-xs mt-4">Buat Promo Canggih</button>
-                                 </form>
-                              </div>
+                                    
+                                    <div className="flex items-center gap-3 bg-white/10 p-3 rounded-xl border border-white/20 mt-2">
+                                       <input type="checkbox" id="flashsale" checked={newPromoIsFlashSale} onChange={(e)=>setNewPromoIsFlashSale(e.target.checked)} className="w-5 h-5 rounded text-orange-500 focus:ring-orange-500 cursor-pointer" />
+                                       <label htmlFor="flashsale" className="text-xs font-black cursor-pointer select-none">Tandai sebagai FLASH SALE 🔥</label>
+                                    </div>
 
-                              {/* NEW: Move Banner Promo Settings Here */}
-                              <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 p-6 rounded-[2rem] shadow-sm relative overflow-hidden">
-                                 <div className="absolute top-0 left-0 w-full h-2 bg-purple-500"></div>
-                                 <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest flex items-center gap-2 mt-2"><IconTag className="w-4 h-4 text-purple-500"/> Pengaturan Teks Berjalan</h3>
-                                 <div className="space-y-4">
-                                    <p className="text-[10px] font-bold text-gray-500">Tambahkan informasi promo atau pengumuman yang akan berjalan di bagian atas web (Maksimal 5).</p>
-                                    {runningTexts.map((text, idx) => (
-                                       <div key={idx} className="flex items-center gap-3">
-                                          <span className="text-[10px] font-black text-gray-400">{idx + 1}.</span>
-                                          <input type="text" value={text} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:border-purple-500 text-xs font-bold transition shadow-inner" placeholder="Tulis kalimat promo..." />
-                                       </div>
-                                    ))}
-                                    <button onClick={saveRunningTexts} className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-md shadow-purple-500/30">Simpan Teks Berjalan</button>
-                                 </div>
+                                    <button type="submit" className="w-full bg-white text-purple-600 hover:bg-purple-50 py-4 rounded-xl font-black transition shadow-lg shadow-black/20 uppercase tracking-widest text-xs mt-4">Buat Promo</button>
+                                 </form>
                               </div>
                            </div>
 
@@ -1987,30 +1956,32 @@
                               <h3 className="text-sm font-black text-gray-500 uppercase tracking-widest mb-6 flex items-center gap-2"><IconTag className="w-4 h-4"/> Daftar Promo Aktif</h3>
                               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                  {promos.map(p => {
-                                   const isFlexible = !!p.type; 
                                    return (
-                                     <div key={p.code} className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 p-5 rounded-3xl shadow-md flex flex-col justify-between relative overflow-hidden group hover:border-purple-500/50 hover:shadow-xl transition-all">
-                                       <div className="absolute -top-10 -right-10 w-24 h-24 bg-purple-100 dark:bg-purple-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform"></div>
+                                     <div key={p.code} className={`bg-white dark:bg-navy-900 border ${p.isFlashSale ? 'border-orange-500 shadow-orange-500/20' : 'border-gray-200 dark:border-white/10'} p-5 rounded-3xl shadow-md flex flex-col justify-between relative overflow-hidden group hover:border-purple-500/50 hover:shadow-xl transition-all`}>
+                                       <div className={`absolute -top-10 -right-10 w-24 h-24 ${p.isFlashSale ? 'bg-orange-500/20' : 'bg-purple-100 dark:bg-purple-500/10'} rounded-full blur-2xl group-hover:scale-150 transition-transform`}></div>
                                        <div className="flex justify-between items-start mb-4 relative z-10">
                                           <div>
                                              <div className="flex items-center gap-2 mb-2">
-                                                {isFlexible && <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] px-2 py-1 rounded font-black shadow-sm uppercase tracking-widest border border-white/20">v2.3</span>}
+                                                {p.isFlashSale && <span className="bg-gradient-to-r from-orange-500 to-red-500 text-white text-[9px] px-2 py-1 rounded font-black shadow-sm uppercase tracking-widest border border-white/20 animate-pulse">Flash Sale</span>}
                                                 <div className="text-lg font-black text-gray-900 dark:text-white tracking-widest font-mono bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 px-3 py-1.5 rounded-lg inline-block shadow-inner">
                                                    {p.code}
                                                 </div>
                                              </div>
                                              <div className="text-xs font-bold text-gray-500 dark:text-gray-400 mt-2">
-                                                {p.type === PROMO_TYPES.PERCENTAGE ? `Diskon ${p.discount}%` : 
-                                                 p.type === PROMO_TYPES.FIXED ? `Diskon ${formatRupiah(p.discount)}` : 
-                                                 `Potongan: ${formatRupiah(p.discount)}`}
+                                                {p.type === PROMO_TYPES.PERCENTAGE ? `Diskon ${p.discount}%` : `Potongan: ${formatRupiah(p.discount)}`}
                                              </div>
                                              {(p.minPurchase > 0) && (
                                                 <div className="text-[10px] text-gray-400 mt-1 font-medium bg-gray-50 dark:bg-white/5 inline-block px-2 py-0.5 rounded">Min: {formatRupiah(p.minPurchase)}</div>
                                              )}
                                           </div>
-                                          <button onClick={() => handleDeletePromo(p.code)} className="p-2 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-500 rounded-xl hover:bg-red-50 hover:text-white transition shadow-sm"><IconTrash className="w-4 h-4"/></button>
+                                          <div className="flex flex-col gap-2">
+                                             <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`p-2 rounded-xl transition shadow-sm border ${p.isActive ? 'bg-green-50 dark:bg-green-500/10 text-green-500 border-green-200 dark:border-green-500/20 hover:bg-green-500 hover:text-white' : 'bg-gray-100 dark:bg-navy-800 text-gray-500 border-gray-200 dark:border-white/10 hover:bg-gray-500 hover:text-white'}`} title={p.isActive ? 'Matikan Promo' : 'Aktifkan Promo'}>
+                                                {p.isActive ? <IconZap className="w-4 h-4"/> : <IconZapOff className="w-4 h-4"/>}
+                                             </button>
+                                             <button onClick={() => handleDeletePromo(p.id)} className="p-2 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-500 rounded-xl hover:bg-red-50 hover:text-white transition shadow-sm"><IconTrash className="w-4 h-4"/></button>
+                                          </div>
                                        </div>
-                                       <div className="bg-gray-50 dark:bg-black/40 rounded-2xl p-4 border border-gray-200 dark:border-white/5 relative z-10 shadow-inner mt-2">
+                                       <div className={`bg-gray-50 dark:bg-black/40 rounded-2xl p-4 border border-gray-200 dark:border-white/5 relative z-10 shadow-inner mt-2 ${!p.isActive && 'opacity-50 grayscale'}`}>
                                           <div className="flex justify-between text-[10px] font-black mb-2 uppercase tracking-widest">
                                              <span className="text-gray-500">Pemakaian Total</span>
                                              <span className={`${p.usedBy?.length >= p.maxUses ? 'text-red-500' : 'text-green-500'}`}>{p.usedBy?.length || 0} / {p.maxUses}</span>
@@ -2040,7 +2011,7 @@
                               <div className="overflow-x-auto custom-scrollbar bg-white dark:bg-navy-900 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm">
                                  <table className="w-full text-left text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest border-b border-gray-200 dark:border-white/10 bg-gray-100 dark:bg-black/40">
-                                       <tr><th className="px-5 py-4">Informasi Akun</th><th className="px-5 py-4">Kode Invite</th><th className="px-5 py-4 text-right">Aktivitas Terakhir</th></tr>
+                                       <tr><th className="px-5 py-4">Informasi Akun</th><th className="px-5 py-4 text-right">Aktivitas Terakhir</th></tr>
                                     </thead>
                                     <tbody>
                                        {memberList.map(m => (
@@ -2053,15 +2024,10 @@
                                                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-600 text-gray-500 dark:text-gray-300 font-black flex items-center justify-center shadow-inner border-2 border-white dark:border-navy-800">{m.email?.charAt(0).toUpperCase()}</div>
                                                    )}
                                                    <div>
-                                                     <div className="font-black text-gray-900 dark:text-white text-base">{m.name || m.email.split('@')[0]}</div>
-                                                     <div className="text-[10px] font-bold text-gray-500 mt-0.5">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
-                                                     <div className="text-[10px] text-white bg-green-500 px-2 py-0.5 rounded uppercase tracking-widest font-black inline-block mt-1.5 shadow-sm">ID: {m.myReferral || '-'}</div>
+                                                      <div className="font-black text-gray-900 dark:text-white text-base">{m.name || m.email.split('@')[0]}</div>
+                                                      <div className="text-[10px] font-bold text-gray-500 mt-0.5">{m.email} {m.phone ? `• ${m.phone}` : ''}</div>
                                                    </div>
                                                 </div>
-                                             </td>
-                                             <td className="px-5 py-4">
-                                                <div className="text-xs font-bold text-gray-500 mb-1">Membawa: {memberList.filter(f=>f.referredBy === m.myReferral).length} Orang</div>
-                                                <span className="text-green-600 dark:text-green-400 font-black bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 px-2 py-1 rounded shadow-inner text-xs">Saldo: Rp{m.referralBalance || 0}</span>
                                              </td>
                                              <td className="px-5 py-4 text-right">
                                                 <div className="text-xs font-black text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-black/30 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/5 inline-block">{new Date(m.lastLogin).toLocaleDateString('id-ID')}</div>
@@ -2104,6 +2070,7 @@
                      {activeAdminTab === 'settings' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
                            <div className="space-y-8">
+                              {/* KONFIGURASI SISTEM */}
                               <div className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 p-6 md:p-8 rounded-[2rem] shadow-inner">
                                  <h2 className="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3 border-b border-gray-200 dark:border-white/10 pb-4"><div className="p-2 bg-gradient-to-br from-gray-700 to-black dark:from-white/20 dark:to-white/10 rounded-xl shadow-lg"><IconSettings className="w-5 h-5 text-white"/></div> Konfigurasi Sistem</h2>
                                  
@@ -2115,6 +2082,22 @@
                                     <button onClick={toggleStore} className={`px-8 py-4 rounded-xl font-black text-xs transition uppercase tracking-widest shadow-xl ${isStoreOpen ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:scale-105 shadow-green-500/30' : 'bg-gradient-to-r from-red-600 to-red-500 text-white hover:scale-105 shadow-red-500/30'}`}>
                                        {isStoreOpen ? 'Toko Buka (Live)' : 'Toko Tutup (Off)'}
                                     </button>
+                                 </div>
+
+                                 {/* PENGATURAN TEKS BERJALAN */}
+                                 <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 p-6 rounded-[2rem] shadow-sm relative overflow-hidden">
+                                    <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest flex items-center gap-2 mt-2"><IconTag className="w-4 h-4 text-orange-500"/> Pengaturan Teks Berjalan</h3>
+                                    <div className="space-y-4">
+                                       <p className="text-[10px] font-bold text-gray-500">Tambahkan informasi promo atau pengumuman yang akan berjalan di bagian atas web (Maksimal 5).</p>
+                                       {/* Input untuk teks berjalan, sediakan 5 slot */}
+                                       {[0, 1, 2, 3, 4].map((idx) => (
+                                          <div key={idx} className="flex items-center gap-3">
+                                             <span className="text-[10px] font-black text-gray-400">{idx + 1}.</span>
+                                             <input type="text" value={runningTexts[idx] || ''} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:border-orange-500 text-xs font-bold transition shadow-inner" placeholder="Kosongkan jika tidak dipakai..." />
+                                          </div>
+                                       ))}
+                                       <button onClick={saveRunningTexts} className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-md shadow-orange-500/30">Simpan Teks Berjalan</button>
+                                    </div>
                                  </div>
                               </div>
                               
@@ -2154,7 +2137,7 @@
                                     <div className="relative group cursor-pointer">
                                        <input type="file" accept="image/*" onChange={handleBannerUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                        <div className="bg-white dark:bg-navy-900 border-2 border-dashed border-gray-300 dark:border-white/20 group-hover:border-orange-500 group-hover:bg-orange-50 dark:group-hover:bg-orange-500/10 rounded-3xl p-6 flex flex-col items-center justify-center gap-3 text-gray-500 dark:text-gray-400 font-bold text-xs transition relative z-0 shadow-sm">
-                                          <IconUpload className="w-8 h-8 opacity-50"/> Upload Banner dari HP (Max 100MB)
+                                          <IconUpload className="w-8 h-8 opacity-50"/> Upload Banner dari HP (Max 10MB)
                                        </div>
                                     </div>
                                  </div>
@@ -2198,11 +2181,56 @@
           </main>
           
           <MainFooter socialLinks={socialLinks} />
+          
+          {/* Modal Berhasil Top Up */}
+          {showModal && (
+             <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-md animate-in fade-in duration-300">
+                <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[3rem] p-8 max-w-sm w-full text-center shadow-2xl relative overflow-hidden transform scale-in-center">
+                   <div className="absolute top-0 left-0 w-full h-2.5 bg-gradient-to-r from-orange-400 to-orange-600"></div>
+                   
+                   <div className="w-20 h-20 bg-green-50 dark:bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-5 shadow-inner border border-green-100 dark:border-green-500/20">
+                      <IconCheckCircle className="w-10 h-10 text-green-500 drop-shadow-md" />
+                   </div>
+                   
+                   <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-1">Pesanan Berhasil!</h3>
+                   <p className="text-gray-500 dark:text-gray-400 text-xs font-bold mb-6">Selesaikan pembayaran agar pesanan diproses.</p>
+                   
+                   <div className="bg-gray-50 dark:bg-navy-950 border border-gray-200 dark:border-white/5 rounded-2xl p-5 mb-6 text-left shadow-inner">
+                      <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-200 dark:border-white/10">
+                         <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">ID Transaksi</span>
+                         <span className="font-mono text-xs font-bold text-gray-900 dark:text-white">{lastOrderId}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-3">
+                         <span className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Total Tagihan</span>
+                         <span className="font-black text-lg text-orange-500 drop-shadow-sm">{formatRupiah(activeOrderDetails?.priceTotal || 0)}</span>
+                      </div>
+                      
+                      {selectedPayment?.id === 'qris' && dynamicQrisUrl && (
+                         <div className="mt-4 flex flex-col items-center animate-in slide-in-from-bottom-2">
+                            <div className="bg-white p-2 rounded-2xl shadow-md border border-gray-200">
+                               <img src={dynamicQrisUrl} alt="QRIS" className="w-40 h-40 object-contain mix-blend-multiply" />
+                            </div>
+                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mt-3 animate-pulse">Scan untuk Membayar</p>
+                         </div>
+                      )}
+                      
+                      {selectedPayment?.id === 'cash' && (
+                         <div className="mt-4 text-center bg-orange-50 dark:bg-orange-500/10 p-4 rounded-xl border border-orange-200 dark:border-orange-500/20">
+                            <p className="text-xs font-bold text-orange-600 dark:text-orange-400">Silakan tunjukkan ID Pesanan ini ke kasir/admin di lokasi untuk melakukan pembayaran tunai.</p>
+                         </div>
+                      )}
+                   </div>
+
+                   <button onClick={() => {setShowModal(false); navigateTo('history');}} className="w-full bg-gray-900 dark:bg-white text-white dark:text-navy-950 hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all transform hover:-translate-y-1 shadow-xl">
+                      Lihat Riwayat Pesanan
+                   </button>
+                </div>
+             </div>
+          )}
         </div>
       );
     }
 
-    // Render the React app
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<App />);
   </script>
