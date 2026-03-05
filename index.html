@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v2.2</title>
+  <title>Vipercell - Premium Top Up v2.3</title>
   
   <!-- Tailwind CSS & Custom Config -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -57,6 +57,26 @@
     }
     
     .chat-container { height: calc(100vh - 120px); display: flex; flex-direction: column; border-radius: 1.5rem; overflow: hidden; }
+    
+    /* Ticket Edge for Voucher */
+    .voucher-card {
+      position: relative;
+    }
+    .voucher-card::before, .voucher-card::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 16px;
+      height: 16px;
+      background-color: rgb(249 250 251); /* gray-50 */
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+    .dark .voucher-card::before, .dark .voucher-card::after {
+      background-color: rgb(2 6 23); /* navy-950 */
+    }
+    .voucher-card::before { left: -8px; }
+    .voucher-card::after { right: -8px; }
   </style>
 
   <!-- React & Babel -->
@@ -197,6 +217,8 @@
     const IconKey = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>;
     const IconWallet = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>;
     const IconPercent = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>;
+    const IconInfo = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
+    const IconTiktok = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>;
 
     // --- DEFAULT DATA ---
     const DEFAULT_GAMES = [
@@ -237,6 +259,40 @@
        )
     }
 
+    // --- COMPONENT: FOOTER (ABOUT US & SOCIALS) ---
+    const MainFooter = ({ socialLinks }) => {
+       return (
+         <footer className="mt-16 bg-white/50 dark:bg-navy-900/50 backdrop-blur-md border-t border-gray-200 dark:border-white/10 pt-10 pb-8 px-6 text-center">
+            <div className="max-w-4xl mx-auto">
+               <div className="flex items-center justify-center gap-2 mb-4">
+                  <IconZap className="w-6 h-6 text-orange-500" />
+                  <span className="text-xl font-black tracking-wider text-gray-900 dark:text-white">VIPER<span className="text-orange-500">CELL</span></span>
+               </div>
+               <p className="text-gray-500 dark:text-gray-400 text-sm mb-8 max-w-2xl mx-auto font-medium leading-relaxed">
+                  Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Kami berkomitmen memberikan pengalaman transaksi instan otomatis 24/7 dengan sistem keamanan tingkat tinggi untuk seluruh gamers di Indonesia.
+               </p>
+               <div className="flex justify-center gap-4 mb-8">
+                  {socialLinks?.ig && (
+                     <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-orange-50 dark:hover:bg-orange-500/20 text-gray-600 dark:text-gray-400 hover:text-orange-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>
+                  )}
+                  {socialLinks?.wa && (
+                     <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-green-50 dark:hover:bg-green-500/20 text-gray-600 dark:text-gray-400 hover:text-green-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>
+                  )}
+                  {socialLinks?.tt && (
+                     <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-full transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>
+                  )}
+                  {socialLinks?.tg && (
+                     <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 hover:bg-blue-50 dark:hover:bg-blue-500/20 text-gray-600 dark:text-gray-400 hover:text-blue-500 rounded-full transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>
+                  )}
+               </div>
+               <div className="text-xs text-gray-400 dark:text-gray-500 font-bold uppercase tracking-widest">
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved.
+               </div>
+            </div>
+         </footer>
+       )
+    }
+
     // --- COMPONENT: BANNER SLIDER ---
     const BannerSlider = ({ items, promoConfig }) => {
        const [curr, setCurr] = useState(0);
@@ -272,8 +328,8 @@
                 <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight drop-shadow-lg">Top Up<br/><span className="text-orange-500">Super Cepat</span></h1>
                 <p className="text-gray-200 font-medium text-sm md:text-base drop-shadow-md">Harga jujur, proses instan otomatis.</p>
                 {promoConfig?.isActive && promoConfig?.code && (
-                  <div className="mt-3 inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1.5 rounded-full shadow-lg pointer-events-auto cursor-pointer hover:bg-white/30 transition" onClick={() => {navigator.clipboard.writeText(promoConfig.code); alert('Kode Promo Disalin!');}}>
-                    <IconTag className="w-4 h-4 text-orange-400" />
+                  <div className="mt-3 inline-flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 px-3 py-1.5 rounded-full shadow-lg pointer-events-auto cursor-pointer hover:bg-white/30 transition group/promo" onClick={() => {navigator.clipboard.writeText(promoConfig.code); alert('Kode Promo Disalin!');}}>
+                    <IconTag className="w-4 h-4 text-orange-400 group-hover/promo:animate-bounce" />
                     <span className="text-white text-xs font-bold">{promoConfig.text || 'Gunakan Kode:'} <span className="text-orange-400 font-black tracking-widest">{promoConfig.code}</span></span>
                   </div>
                 )}
@@ -418,7 +474,7 @@
       const [showModal, setShowModal] = useState(false);
       const [dynamicQrisUrl, setDynamicQrisUrl] = useState('');
       const [lastOrderId, setLastOrderId] = useState(''); 
-      const [activeOrderDetails, setActiveOrderDetails] = useState(null); // For realtime modal checking
+      const [activeOrderDetails, setActiveOrderDetails] = useState(null); 
       
       const [userOrders, setUserOrders] = useState([]);
       const [adminOrders, setAdminOrders] = useState([]);
@@ -498,7 +554,6 @@
         }
       };
 
-      // ⚡ REWARD SYSTEM UPDATE: Rp 150 per transaction
       const handleReferralCommission = async (friendEmail, orderAmount) => {
         const friendData = memberList.find(m => m.email === friendEmail);
         if (!friendData || !friendData.referredBy) return;
@@ -506,7 +561,7 @@
         const referrerData = memberList.find(m => m.myReferral === friendData.referredBy);
         if (!referrerData) return;
 
-        const commission = 150; // Set to Rp 150 as requested
+        const commission = 150; 
         const newHistory = [...(referrerData.referralHistory || []), { friendEmail, orderAmount, commission, date: new Date().toISOString() }];
         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', referrerData.id), {
           referralBalance: (referrerData.referralBalance || 0) + commission, referralHistory: newHistory
@@ -555,7 +610,6 @@
         return () => unsubscribe();
       }, []);
 
-      // Generates secure unique code for referral
       const generateUniqueCode = () => {
          return 'VP' + Math.random().toString(36).substring(2, 7).toUpperCase();
       }
@@ -706,9 +760,17 @@
          setActivePromo(promo);
       };
 
+      const handleVoucherClick = (promoCode) => {
+         setInputPromo(promoCode);
+         // Simulate checking the promo automatically
+         setTimeout(() => {
+            const promo = promos.find(p => p.code.toUpperCase() === promoCode.toUpperCase());
+            if (promo) setActivePromo(promo);
+         }, 100);
+      };
+
       const calculateFinalPrice = (basePrice, promo) => {
         let price = basePrice;
-        // ⚡ Apply Rp 2000 referral discount for the first transaction if applicable
         if (myData?.referredBy && !myData?.hasUsedReferralDiscount) {
            price = Math.max(0, price - 2000);
         }
@@ -745,7 +807,6 @@
           });
           setLastOrderId(docRef.id);
           
-          // Deduct the first time referral usage if applicable
           if (myData?.referredBy && !myData?.hasUsedReferralDiscount) {
              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', myData.id), { hasUsedReferralDiscount: true }, { merge: true });
           }
@@ -777,9 +838,8 @@
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const statusColor = (status) => { if(status === 'Sukses' || status === 'Selesai' || status === 'Dijawab') return 'text-orange-500 bg-orange-50 dark:bg-orange-500/10 border-orange-500/30'; if(status === 'Batal' || status === 'Dihapus') return 'text-red-500 bg-red-50 dark:bg-red-500/10 border-red-500/30'; return 'text-blue-500 bg-blue-50 dark:bg-blue-500/10 border-blue-500/30'; };
 
-      // Check if user is eligible to enter referral code (<= 7 days)
       const isEligibleForReferralInput = useMemo(() => {
-         if (!myData || myData.referredBy) return false; // Already inputted
+         if (!myData || myData.referredBy) return false;
          const createdDate = myData.createdAt ? new Date(myData.createdAt) : new Date(myData.lastLogin);
          const daysDiff = (new Date() - createdDate) / (1000 * 60 * 60 * 24);
          return daysDiff <= 7;
@@ -860,12 +920,12 @@
 
       if (!authUser) {
         return (
-          <div className="flex-grow flex items-center justify-center p-4 relative overflow-hidden min-h-screen w-full bg-gray-50 dark:bg-navy-950">
-            <button onClick={() => setIsDarkMode(!isDarkMode)} className="absolute top-6 right-6 p-3 bg-white/20 backdrop-blur-md rounded-full shadow-lg text-white hover:scale-110 transition z-50 border border-white/30">
+          <div className="flex-grow flex flex-col relative overflow-x-hidden min-h-screen w-full bg-gray-50 dark:bg-navy-950">
+            <button onClick={() => setIsDarkMode(!isDarkMode)} className="fixed top-6 right-6 p-3 bg-white/20 backdrop-blur-md rounded-full shadow-lg text-white hover:scale-110 transition z-50 border border-white/30 mix-blend-difference">
                {isDarkMode ? <IconSun className="w-6 h-6"/> : <IconMoon className="w-6 h-6"/>}
             </button>
 
-            <div className="w-full max-w-5xl bg-white/95 dark:bg-navy-900/90 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative z-10 flex flex-col lg:flex-row overflow-hidden border border-white/20 animate-in zoom-in-95 duration-500">
+            <div className="w-full max-w-5xl mx-auto mt-10 md:mt-20 mb-10 bg-white/95 dark:bg-navy-900/90 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative z-10 flex flex-col lg:flex-row overflow-hidden border border-white/20 animate-in zoom-in-95 duration-500">
               <div className="hidden lg:flex lg:w-1/2 login-bg p-12 flex-col justify-between relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
                 <div className="relative z-10">
@@ -954,7 +1014,9 @@
                 </div>
               </div>
             </div>
-            <div className="fixed bottom-3 right-5 text-[10px] text-gray-400 font-mono font-black z-0 uppercase tracking-widest">V2.2</div>
+            
+            <MainFooter socialLinks={socialLinks} />
+            <div className="fixed bottom-3 right-5 text-[10px] text-gray-400 font-mono font-black z-0 uppercase tracking-widest">V2.3</div>
           </div>
         );
       }
@@ -978,7 +1040,7 @@
       }
 
       return (
-        <div className="flex-grow flex flex-col relative z-10">
+        <div className="flex-grow flex flex-col relative z-10 min-h-screen">
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
           
           {/* CAMERA FULL SCREEN OVERLAY */}
@@ -1205,11 +1267,235 @@
              </div>
           )}
 
-          <main className={`max-w-6xl mx-auto w-full px-4 flex-grow transition-all ${currentView === 'chat' ? 'mt-2 p-0 md:mt-4 h-full' : 'mt-6'}`}>
+          <main className={`flex-1 transition-all w-full flex flex-col ${currentView === 'chat' ? 'p-0 h-full' : ''}`}>
+            <div className={`max-w-6xl mx-auto w-full px-4 flex-grow ${currentView === 'chat' ? 'mt-2 p-0 md:mt-4 h-full max-w-4xl' : 'mt-6'}`}>
             
+            {/* BERANDA (HOME VIEW) */}
+            {currentView === 'home' && (
+               <div className="animate-in fade-in slide-in-from-bottom-4 pb-20">
+                  <BannerSlider items={banners} promoConfig={bannerPromoConfig} />
+
+                  <div className="relative">
+                     {/* STEP 1: PILIH GAME (GRID UTAMA) */}
+                     <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-xl">
+                        <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3"><div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2.5 rounded-xl shadow-md"><IconGamepad className="w-6 h-6 text-white"/></div> Pilih Game Tersedia</h2>
+                        
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                           {games.map(game => (
+                              <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId('');}} className="cursor-pointer rounded-3xl overflow-hidden relative border border-gray-200 dark:border-white/10 hover:border-orange-500 hover:shadow-[0_10px_30px_rgba(249,115,22,0.3)] transition-all duration-300 group hover:-translate-y-2 bg-white dark:bg-navy-800">
+                                 <div className="aspect-square bg-gray-100 dark:bg-black p-2">
+                                    <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition duration-500 ease-out shadow-inner"/>
+                                 </div>
+                                 <div className="p-4 text-center">
+                                    <h3 className="font-black text-gray-900 dark:text-white text-sm md:text-base leading-tight mb-1">{game.name}</h3>
+                                    <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{game.developer}</p>
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                     </div>
+
+                     {/* OVERLAY FORM TOP UP (FULL SCREEN) */}
+                     {selectedGame && (
+                        <div className="fixed inset-0 z-[100] flex flex-col bg-gray-50 dark:bg-navy-950 animate-in slide-in-from-bottom-full duration-500">
+                           <div className="flex justify-between items-center p-5 bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 shadow-sm sticky top-0 z-50">
+                              <div className="flex items-center gap-3">
+                                 <img src={selectedGame.image} className="w-10 h-10 rounded-xl object-cover shadow-sm"/>
+                                 <div>
+                                    <h3 className="font-black text-gray-900 dark:text-white leading-tight">{selectedGame.name}</h3>
+                                    <p className="text-[10px] text-orange-500 font-bold uppercase tracking-widest">Form Pemesanan</p>
+                                 </div>
+                              </div>
+                              <button onClick={() => setSelectedGame(null)} className="p-2.5 bg-gray-100 dark:bg-white/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-gray-600 dark:text-gray-300 hover:text-red-500 rounded-full transition shadow-sm"><IconX className="w-5 h-5"/></button>
+                           </div>
+
+                           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+                              <div className="max-w-3xl mx-auto space-y-6 pb-20">
+                                 
+                                 {/* STEP 2: DATA AKUN */}
+                                 <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md">
+                                    <h2 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 mb-5"><div className="bg-blue-50 dark:bg-blue-500/20 p-2 rounded-xl text-blue-500"><IconUser className="w-5 h-5"/></div> 1. Masukkan ID Tujuan</h2>
+                                    
+                                    <div className="flex flex-col sm:flex-row gap-4">
+                                       <div className="flex-1 relative group">
+                                          <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                                          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID'} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
+                                       </div>
+                                       
+                                       {selectedGame?.inputType === 'id_zone' && (
+                                          <div className="w-full sm:w-1/3 relative group">
+                                             <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
+                                          </div>
+                                       )}
+                                       
+                                       {selectedGame?.inputType === 'riot_id' && (
+                                          <div className="w-full sm:w-1/3 relative group">
+                                             <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
+                                          </div>
+                                       )}
+                                    </div>
+                                 </div>
+
+                                 {/* STEP 3: PILIH NOMINAL */}
+                                 <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
+                                    <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-green-50 dark:bg-green-500/20 p-2 rounded-xl text-green-500"><IconBox className="w-5 h-5"/></div> 2. Pilih Nominal</h2>
+                                    
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
+                                       {(nominals[selectedGame?.id] || []).map(item => (
+                                          <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all flex flex-col justify-center items-center text-center group ${selectedNominal?.id === item.id ? 'border-green-500 bg-green-50 dark:bg-green-500/10 shadow-md transform scale-95' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 hover:border-green-300 hover:-translate-y-1'}`}>
+                                             <div className="font-black text-gray-900 dark:text-white text-xs md:text-sm mb-2 leading-tight">{item.name}</div>
+                                             <div className="text-xs font-black text-green-600 dark:text-green-400 font-mono bg-white dark:bg-navy-950 px-2 py-1 rounded-md shadow-inner w-full border border-gray-100 dark:border-white/5">{formatRupiah(item.price)}</div>
+                                             {selectedNominal?.id === item.id && <div className="absolute top-2 right-2"><IconCheckCircle className="w-4 h-4 text-green-500 animate-in zoom-in"/></div>}
+                                          </div>
+                                       ))}
+                                       {(nominals[selectedGame?.id] || []).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-50 dark:bg-black/10 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
+                                    </div>
+                                 </div>
+
+                                 {/* STEP 4: PEMBAYARAN & CHECKOUT */}
+                                 <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
+                                    <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-purple-50 dark:bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconWallet className="w-5 h-5"/></div> 3. Metode Pembayaran</h2>
+                                    
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                       {PAYMENTS.map(pay => (
+                                          <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10 shadow-md transform scale-95' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 hover:border-purple-300'}`}>
+                                             <div className={`p-3 rounded-xl shadow-inner border border-gray-100 dark:border-white/5 ${selectedPayment?.id === pay.id ? 'bg-white dark:bg-navy-900 text-purple-600' : 'bg-white dark:bg-navy-800 text-gray-400'}`}>
+                                                <IconQrcode className="w-6 h-6" />
+                                             </div>
+                                             <div>
+                                                <div className="font-black text-gray-900 dark:text-white text-sm leading-tight">{pay.name}</div>
+                                                <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">{pay.type}</div>
+                                             </div>
+                                             {selectedPayment?.id === pay.id && <IconCheckCircle className="w-5 h-5 text-purple-500 ml-auto animate-in zoom-in"/>}
+                                          </div>
+                                       ))}
+                                    </div>
+
+                                    {/* SISTEM PROMO */}
+                                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 pl-1">Gunakan Kode Promo</p>
+                                    <div className="flex gap-3 mb-6 bg-gray-50 dark:bg-black/30 p-2.5 rounded-2xl border border-gray-200 dark:border-white/5 shadow-inner">
+                                       <div className="relative flex-1 group">
+                                          <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
+                                          <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." className="w-full bg-white dark:bg-navy-950 border border-gray-200 dark:border-white/10 rounded-xl py-3.5 pl-11 pr-4 focus:outline-none focus:border-purple-500 font-mono text-sm uppercase text-gray-900 dark:text-white shadow-sm font-black transition disabled:opacity-50 disabled:bg-gray-100" disabled={activePromo} />
+                                       </div>
+                                       {activePromo ? (
+                                          <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-50 hover:bg-red-500 text-red-500 hover:text-white border border-red-200 dark:border-red-500/30 px-6 rounded-xl font-black transition shadow-sm text-xs uppercase tracking-widest">Hapus</button>
+                                       ) : (
+                                          <button onClick={handleApplyPromo} className="bg-purple-600 hover:bg-purple-500 text-white px-6 rounded-xl font-black transition shadow-lg shadow-purple-500/30 text-xs uppercase tracking-widest">Terapkan</button>
+                                       )}
+                                    </div>
+
+                                    {/* STRUK PREVIEW */}
+                                    {selectedNominal && (
+                                       <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black/40 dark:to-navy-950 p-5 rounded-2xl border border-gray-200 dark:border-white/10 shadow-inner mb-6 relative overflow-hidden">
+                                          <div className="absolute -right-4 -top-4 w-20 h-20 bg-orange-500/10 rounded-full blur-xl"></div>
+                                          <div className="flex justify-between items-center mb-3">
+                                             <span className="text-xs font-bold text-gray-500">Harga Item</span>
+                                             <span className="font-mono font-bold text-gray-900 dark:text-white">{formatRupiah(selectedNominal.price)}</span>
+                                          </div>
+                                          <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10">
+                                             <span className="text-xs font-bold text-gray-500">Biaya Layanan</span>
+                                             <span className="font-mono font-bold text-gray-900 dark:text-white">{formatRupiah(selectedPayment?.fee || 0)}</span>
+                                          </div>
+                                          {/* Info Potongan Harga Dari Kode Referral Teman Baru */}
+                                          {myData?.referredBy && !myData?.hasUsedReferralDiscount && (
+                                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-indigo-500 animate-in slide-in-from-top-2">
+                                                <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconGift className="w-3 h-3"/> Diskon Referral Pertama</span>
+                                                <span className="font-mono font-black">- Rp 2.000</span>
+                                             </div>
+                                          )}
+                                          {activePromo && (
+                                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-green-500 animate-in slide-in-from-top-2">
+                                                <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconTag className="w-3 h-3"/> Diskon Promo ({activePromo.code})</span>
+                                                <span className="font-mono font-black">- {formatRupiah((selectedNominal.price + (selectedPayment?.fee||0)) - calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), activePromo))}</span>
+                                             </div>
+                                          )}
+                                          <div className="flex justify-between items-end mt-2">
+                                             <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Total Bayar</span>
+                                             <span className="font-black text-2xl md:text-3xl text-orange-500 drop-shadow-md">
+                                                {formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), activePromo))}
+                                             </span>
+                                          </div>
+                                       </div>
+                                    )}
+
+                                    <button onClick={handleCheckout} disabled={!isFormValid || isProcessing} className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all transform flex justify-center items-center gap-3 relative overflow-hidden group ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white hover:-translate-y-1 shadow-[0_10px_20px_rgba(249,115,22,0.3)]' : 'bg-gray-200 dark:bg-navy-800 text-gray-400 cursor-not-allowed border border-gray-300 dark:border-white/5'}`}>
+                                       {isFormValid && <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>}
+                                       {isProcessing ? <IconLoader className="w-6 h-6 animate-spin" /> : <><IconZap className="w-6 h-6" /> Pesan Sekarang</>}
+                                    </button>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     )}
+                  </div>
+               </div>
+            )}
+
+            {/* HISTORY VIEW */}
+            {currentView === 'history' && !isAdmin && (
+               <div className="animate-in fade-in pb-10 max-w-5xl mx-auto mt-4">
+                  <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
+                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-gray-200 dark:border-white/10 pb-6">
+                        <div className="flex items-center gap-4">
+                           <div className="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg text-white"><IconHistory className="w-7 h-7"/></div>
+                           <div>
+                              <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight">Riwayat Transaksi</h2>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">Pantau status pesanan top-up Anda di sini.</p>
+                           </div>
+                        </div>
+                        <div className="bg-gray-100 dark:bg-navy-800 px-4 py-2 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/5 flex items-center gap-2">
+                           Total Pesanan: <span className="text-orange-500 font-black">{userOrders.filter(o => o.status !== 'Dihapus').length}</span>
+                        </div>
+                     </div>
+                     
+                     <div className="space-y-4">
+                        {userOrders.filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => (
+                           <div key={order.id} className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 p-5 rounded-2xl flex flex-col md:flex-row justify-between md:items-center gap-5 hover:border-orange-300 dark:hover:border-orange-500/50 transition group shadow-sm">
+                              <div className="flex gap-4 items-center">
+                                 <img src={games?.find(g => g.id === order.gameId)?.image || DEFAULT_GAMES[0].image} className="w-16 h-16 rounded-xl object-cover shadow-sm border border-gray-200 dark:border-white/10 group-hover:scale-105 transition"/>
+                                 <div>
+                                    <div className="font-black text-gray-900 dark:text-white text-base">{order.gameName}</div>
+                                    <div className="text-xs text-orange-600 dark:text-orange-400 font-bold mb-1.5">{order.nominalName}</div>
+                                    <div className="flex flex-wrap gap-2">
+                                       <div className="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-white/10 px-2 py-0.5 rounded border border-gray-200 dark:border-white/5 font-mono uppercase shadow-inner">ID: {order.targetUserId} {order.targetZoneId && `(${order.targetZoneId})`}</div>
+                                       <div className="text-[10px] text-gray-500 font-bold py-0.5 flex items-center gap-1"><IconQrcode className="w-3 h-3"/> {order.paymentMethod}</div>
+                                    </div>
+                                 </div>
+                              </div>
+                              
+                              <div className="flex flex-col md:items-end gap-2 border-t md:border-t-0 border-gray-200 dark:border-white/10 pt-4 md:pt-0">
+                                 <div className="flex items-center justify-between md:justify-end w-full gap-4">
+                                    <span className="text-lg font-black text-gray-900 dark:text-white drop-shadow-sm">{formatRupiah(order.priceTotal)}</span>
+                                    <span className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm ${statusColor(order.status)}`}>{order.status}</span>
+                                 </div>
+                                 <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</div>
+                                 
+                                 {order.status === 'Pending' && (
+                                    <button onClick={() => requestQuickHelp(order)} className="mt-2 text-[10px] bg-red-50 hover:bg-red-500 text-red-600 hover:text-white dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20 px-4 py-2 rounded-xl font-black flex items-center justify-center gap-2 transition w-full md:w-auto shadow-sm uppercase tracking-widest">
+                                       <IconMessageSquare className="w-3 h-3"/> Butuh Bantuan?
+                                    </button>
+                                 )}
+                              </div>
+                           </div>
+                        )) : (
+                           <div className="text-center py-20 text-gray-500 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-[2rem] bg-gray-50 dark:bg-black/10">
+                              <IconHistory className="w-16 h-16 mx-auto mb-4 opacity-30"/>
+                              <p className="font-black text-lg text-gray-600 dark:text-gray-300">Belum Ada Transaksi</p>
+                              <p className="text-sm mt-1 font-medium opacity-80">Lakukan pemesanan pertama Anda di halaman Beranda.</p>
+                              <button onClick={()=>navigateTo('home')} className="mt-6 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-orange-500/30 transition">Mulai Top Up</button>
+                           </div>
+                        )}
+                     </div>
+                  </div>
+               </div>
+            )}
+
             {/* CHAT VIEW */}
             {currentView === 'chat' && !isAdmin && (
-               <div className="chat-container w-full max-w-4xl mx-auto">
+               <div className="chat-container w-full h-full border border-gray-200 dark:border-white/10 shadow-2xl">
                   <div className="bg-gradient-to-r from-orange-600 to-orange-500 p-5 flex items-center justify-between shadow-lg flex-shrink-0">
                      <div className="flex items-center gap-4 text-white">
                         <button onClick={()=>navigateTo('home')} className="hover:scale-110 transition p-2 bg-black/20 rounded-xl backdrop-blur-md"><IconChevronLeft className="w-6 h-6"/></button>
@@ -1308,7 +1594,6 @@
                         </div>
                      )}
 
-                     {/* ⚡ FIX: Grid layout tab Support */}
                      {activeAdminTab === 'support' && (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2.5rem] shadow-inner h-[700px] overflow-hidden relative z-10">
                            <div className={`border-r border-gray-200 dark:border-white/10 ${activeChatEmail ? 'hidden md:flex' : 'flex'} flex-col md:col-span-1 bg-white/50 dark:bg-navy-950/50 backdrop-blur-md`}>
@@ -1322,7 +1607,7 @@
                                        <div className="flex justify-between items-center mb-2.5">
                                           <div className="flex items-center gap-3 overflow-hidden">
                                              <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-100 to-gray-200 dark:from-navy-800 dark:to-navy-700 flex items-center justify-center text-gray-600 dark:text-gray-300 font-black text-lg shrink-0 shadow-inner border border-white dark:border-navy-600">
-                                                {c.id.charAt(0).toUpperCase()}
+                                                {c.id?.charAt(0).toUpperCase()}
                                              </div>
                                              <span className="font-black text-gray-900 dark:text-white text-sm truncate pr-2 tracking-wide">{c.id.split('@')[0]}</span>
                                           </div>
@@ -1333,7 +1618,7 @@
                                           )}
                                        </div>
                                        <div className="text-xs text-gray-500 dark:text-gray-400 truncate font-medium pl-13 bg-gray-50 dark:bg-black/20 p-2 rounded-lg border border-gray-100 dark:border-white/5">
-                                          {c.messages && c.messages.length > 0 ? c.messages[c.messages.length-1].text : 'Menunggu pesan...'}
+                                          {c.messages?.length > 0 ? c.messages[c.messages.length-1].text : 'Menunggu pesan...'}
                                        </div>
                                     </div>
                                  ))}
@@ -1345,7 +1630,7 @@
                                  <>
                                     <div className="p-5 border-b border-gray-200 dark:border-white/10 flex items-center gap-4 z-10 bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl shadow-sm">
                                        <button onClick={()=>setActiveChatEmail(null)} className="md:hidden p-2.5 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition shadow-sm"><IconChevronLeft className="w-5 h-5"/></button>
-                                       <div className="w-12 h-12 bg-gradient-to-tr from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/30 border border-white/20">{activeChatEmail.charAt(0).toUpperCase()}</div>
+                                       <div className="w-12 h-12 bg-gradient-to-tr from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/30 border border-white/20">{activeChatEmail?.charAt(0).toUpperCase()}</div>
                                        <div>
                                           <div className="font-black text-gray-900 dark:text-white leading-tight text-lg">{activeChatEmail.split('@')[0]}</div>
                                           <div className={`text-[10px] font-black uppercase tracking-widest mt-1 flex items-center gap-1.5 ${allUserChats.find(c => c.id === activeChatEmail)?.status === 'Selesai' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'}`}>
@@ -1390,7 +1675,6 @@
                         </div>
                      )}
 
-                     {/* TAB ORDERS ADMIN */}
                      {activeAdminTab === 'orders' && (
                         <div className="overflow-hidden relative z-10">
                            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -1457,7 +1741,6 @@
                         </div>
                      )}
 
-                     {/* Keep other Admin tabs rendering without major changes, assuming they were fine */}
                      {activeAdminTab === 'katalog' && (
                         <div className="space-y-8 relative z-10">
                            <div className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 md:p-8 shadow-inner">
@@ -1598,8 +1881,8 @@
                            <div className="lg:col-span-4 space-y-6">
                               <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-[2rem] p-6 text-white shadow-xl shadow-purple-500/30 relative overflow-hidden">
                                  <div className="absolute -right-4 -top-4 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
-                                 <h2 className="text-xl font-black mb-1 relative z-10 drop-shadow-md">Sistem Promo v2.2</h2>
-                                 <p className="text-xs font-medium text-white/80 mb-6 relative z-10">Gunakan sistem tipe promo baru untuk meningkatkan penjualan.</p>
+                                 <h2 className="text-xl font-black mb-1 relative z-10 drop-shadow-md">Sistem Promo v2.3</h2>
+                                 <p className="text-xs font-medium text-white/80 mb-6 relative z-10">Buat kupon eksklusif untuk pelanggan.</p>
                                  <form onSubmit={handleAddPromo} className="space-y-4 relative z-10">
                                     <div>
                                        <label className="block text-[10px] font-black text-white/70 mb-1.5 uppercase tracking-widest">Kode Promo Kupon</label>
@@ -1611,7 +1894,6 @@
                                           <select value={newPromoType} onChange={(e)=>setNewPromoType(e.target.value)} className="w-full bg-white/20 border border-white/30 rounded-xl py-3.5 px-3 text-white focus:outline-none focus:border-white font-bold text-xs backdrop-blur-md transition cursor-pointer appearance-none">
                                              <option value={PROMO_TYPES.PERCENTAGE} className="text-black">Persen (%)</option>
                                              <option value={PROMO_TYPES.FIXED} className="text-black">Nominal (Rp)</option>
-                                             <option value={PROMO_TYPES.BUY_ONE_GET_ONE} className="text-black">Beli 1 Gratis 1</option>
                                           </select>
                                        </div>
                                        <div>
@@ -1632,6 +1914,31 @@
                                     <button type="submit" className="w-full bg-white text-purple-600 hover:bg-purple-50 py-4 rounded-xl font-black transition shadow-lg shadow-black/20 uppercase tracking-widest text-xs mt-4">Buat Promo Canggih</button>
                                  </form>
                               </div>
+
+                              {/* NEW: Move Banner Promo Settings Here */}
+                              <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 p-6 rounded-[2rem] shadow-sm relative overflow-hidden">
+                                 <div className="absolute top-0 left-0 w-full h-2 bg-purple-500"></div>
+                                 <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest flex items-center gap-2 mt-2"><IconTag className="w-4 h-4 text-purple-500"/> Tampilkan Promo di Banner</h3>
+                                 <div className="space-y-4">
+                                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-white/5">
+                                       <input type="checkbox" id="promoToggle" checked={adminBannerPromoActive} onChange={(e)=>setAdminBannerPromoActive(e.target.checked)} className="w-5 h-5 accent-purple-500 rounded cursor-pointer" />
+                                       <label htmlFor="promoToggle" className="text-sm font-bold text-gray-700 dark:text-gray-300 cursor-pointer">Aktifkan Label Promo</label>
+                                    </div>
+                                    {adminBannerPromoActive && (
+                                       <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2">
+                                          <div>
+                                             <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Teks Label</label>
+                                             <input type="text" value={adminBannerPromoText} onChange={(e)=>setAdminBannerPromoText(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-gray-900 dark:text-white focus:border-purple-500 text-xs font-bold transition shadow-inner" placeholder="Spesial Hari Ini:" />
+                                          </div>
+                                          <div>
+                                             <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Kode Diskon</label>
+                                             <input type="text" value={adminBannerPromoCode} onChange={(e)=>setAdminBannerPromoCode(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-purple-600 dark:text-purple-400 font-mono uppercase focus:border-purple-500 text-xs font-black transition shadow-inner" placeholder="VIPER50" />
+                                          </div>
+                                       </div>
+                                    )}
+                                    <button onClick={saveBannerPromoConfig} className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-md shadow-purple-500/30">Simpan Tampilan Banner</button>
+                                 </div>
+                              </div>
                            </div>
 
                            <div className="lg:col-span-8 bg-gray-50 dark:bg-black/20 rounded-[2rem] p-6 border border-gray-200 dark:border-white/5 shadow-inner h-[650px] overflow-y-auto custom-scrollbar">
@@ -1645,30 +1952,29 @@
                                        <div className="flex justify-between items-start mb-4 relative z-10">
                                           <div>
                                              <div className="flex items-center gap-2 mb-2">
-                                               {isFlexible && <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] px-2 py-1 rounded font-black shadow-sm uppercase tracking-widest border border-white/20">v2.1</span>}
-                                               <div className="text-lg font-black text-gray-900 dark:text-white tracking-widest font-mono bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 px-3 py-1.5 rounded-lg inline-block shadow-inner">
-                                                 {p.code}
-                                               </div>
+                                                {isFlexible && <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[9px] px-2 py-1 rounded font-black shadow-sm uppercase tracking-widest border border-white/20">v2.3</span>}
+                                                <div className="text-lg font-black text-gray-900 dark:text-white tracking-widest font-mono bg-gray-100 dark:bg-black/30 border border-gray-200 dark:border-white/10 px-3 py-1.5 rounded-lg inline-block shadow-inner">
+                                                   {p.code}
+                                                </div>
                                              </div>
                                              <div className="text-xs font-bold text-gray-500 dark:text-gray-400 mt-2">
-                                               {p.type === PROMO_TYPES.PERCENTAGE ? `Diskon ${p.discount}%` : 
-                                                p.type === PROMO_TYPES.FIXED ? `Diskon ${formatRupiah(p.discount)}` : 
-                                                p.type === PROMO_TYPES.BUY_ONE_GET_ONE ? 'Promo Beli 1 Gratis 1' :
-                                                `Potongan: ${formatRupiah(p.discount)}`}
+                                                {p.type === PROMO_TYPES.PERCENTAGE ? `Diskon ${p.discount}%` : 
+                                                 p.type === PROMO_TYPES.FIXED ? `Diskon ${formatRupiah(p.discount)}` : 
+                                                 `Potongan: ${formatRupiah(p.discount)}`}
                                              </div>
                                              {(p.minPurchase > 0) && (
-                                               <div className="text-[10px] text-gray-400 mt-1 font-medium bg-gray-50 dark:bg-white/5 inline-block px-2 py-0.5 rounded">Min: {formatRupiah(p.minPurchase)}</div>
+                                                <div className="text-[10px] text-gray-400 mt-1 font-medium bg-gray-50 dark:bg-white/5 inline-block px-2 py-0.5 rounded">Min: {formatRupiah(p.minPurchase)}</div>
                                              )}
                                           </div>
-                                          <button onClick={() => handleDeletePromo(p.code)} className="p-2 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition shadow-sm"><IconTrash className="w-4 h-4"/></button>
+                                          <button onClick={() => handleDeletePromo(p.code)} className="p-2 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-500 rounded-xl hover:bg-red-50 hover:text-white transition shadow-sm"><IconTrash className="w-4 h-4"/></button>
                                        </div>
                                        <div className="bg-gray-50 dark:bg-black/40 rounded-2xl p-4 border border-gray-200 dark:border-white/5 relative z-10 shadow-inner mt-2">
                                           <div className="flex justify-between text-[10px] font-black mb-2 uppercase tracking-widest">
                                              <span className="text-gray-500">Pemakaian Total</span>
-                                             <span className={`${p.usedBy.length >= p.maxUses ? 'text-red-500' : 'text-green-500'}`}>{p.usedBy.length} / {p.maxUses}</span>
+                                             <span className={`${p.usedBy?.length >= p.maxUses ? 'text-red-500' : 'text-green-500'}`}>{p.usedBy?.length || 0} / {p.maxUses}</span>
                                           </div>
                                           <div className="w-full bg-gray-200 dark:bg-navy-950 rounded-full h-1.5 overflow-hidden shadow-inner">
-                                             <div className={`h-full rounded-full transition-all ${p.usedBy.length >= p.maxUses ? 'bg-red-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'}`} style={{width: `${(p.usedBy.length/p.maxUses)*100}%`}}></div>
+                                             <div className={`h-full rounded-full transition-all ${p.usedBy?.length >= p.maxUses ? 'bg-red-500' : 'bg-gradient-to-r from-purple-500 to-pink-500'}`} style={{width: `${((p.usedBy?.length||0)/p.maxUses)*100}%`}}></div>
                                           </div>
                                        </div>
                                      </div>
@@ -1687,7 +1993,7 @@
 
                      {activeAdminTab === 'members' && (
                         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
-                           <div className="lg:col-span-2 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-inner">
+                           <div className="lg:col-span-2 bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-inner overflow-hidden">
                               <h2 className="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3 border-b border-gray-200 dark:border-white/10 pb-4"><div className="p-2 bg-gradient-to-br from-green-400 to-emerald-600 rounded-xl shadow-lg"><IconUsers className="w-5 h-5 text-white"/></div> Data Member ({memberList.length})</h2>
                               <div className="overflow-x-auto custom-scrollbar bg-white dark:bg-navy-900 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm">
                                  <table className="w-full text-left text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">
@@ -1702,7 +2008,7 @@
                                                    {m.avatar ? (
                                                      <img src={m.avatar} className="w-10 h-10 rounded-full object-cover border-2 border-white dark:border-navy-800 shadow-sm" />
                                                    ) : (
-                                                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-600 text-gray-500 dark:text-gray-300 font-black flex items-center justify-center shadow-inner border-2 border-white dark:border-navy-800">{m.email.charAt(0).toUpperCase()}</div>
+                                                     <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-600 text-gray-500 dark:text-gray-300 font-black flex items-center justify-center shadow-inner border-2 border-white dark:border-navy-800">{m.email?.charAt(0).toUpperCase()}</div>
                                                    )}
                                                    <div>
                                                      <div className="font-black text-gray-900 dark:text-white text-base">{m.name || m.email.split('@')[0]}</div>
@@ -1767,29 +2073,6 @@
                                     <button onClick={toggleStore} className={`px-8 py-4 rounded-xl font-black text-xs transition uppercase tracking-widest shadow-xl ${isStoreOpen ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:scale-105 shadow-green-500/30' : 'bg-gradient-to-r from-red-600 to-red-500 text-white hover:scale-105 shadow-red-500/30'}`}>
                                        {isStoreOpen ? 'Toko Buka (Live)' : 'Toko Tutup (Off)'}
                                     </button>
-                                 </div>
-
-                                 <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 p-6 rounded-3xl shadow-sm">
-                                    <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest">Tampilkan Promo di Banner Depan</h3>
-                                    <div className="space-y-4">
-                                       <div className="flex items-center gap-3 bg-gray-50 dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-white/5">
-                                          <input type="checkbox" id="promoToggle" checked={adminBannerPromoActive} onChange={(e)=>setAdminBannerPromoActive(e.target.checked)} className="w-5 h-5 accent-orange-500 rounded cursor-pointer" />
-                                          <label htmlFor="promoToggle" className="text-sm font-bold text-gray-700 dark:text-gray-300 cursor-pointer">Aktifkan Label Promo</label>
-                                       </div>
-                                       {adminBannerPromoActive && (
-                                         <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2">
-                                           <div>
-                                              <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Teks Label</label>
-                                              <input type="text" value={adminBannerPromoText} onChange={(e)=>setAdminBannerPromoText(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-gray-900 dark:text-white focus:border-orange-500 text-xs font-bold transition shadow-inner" placeholder="Spesial Hari Ini:" />
-                                           </div>
-                                           <div>
-                                              <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Kode Diskon</label>
-                                              <input type="text" value={adminBannerPromoCode} onChange={(e)=>setAdminBannerPromoCode(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-orange-600 dark:text-orange-400 font-mono uppercase focus:border-orange-500 text-xs font-black transition shadow-inner" placeholder="VIPER50" />
-                                           </div>
-                                         </div>
-                                       )}
-                                       <button onClick={saveBannerPromoConfig} className="w-full bg-gray-900 dark:bg-white text-white dark:text-navy-950 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white dark:hover:text-white shadow-md">Simpan Promo Banner</button>
-                                    </div>
                                  </div>
                               </div>
                               
@@ -1872,536 +2155,18 @@
                   </div>
                </div>
             )}
+            
+            </div>
+          </main>
+          
+          <MainFooter socialLinks={socialLinks} />
+        </div>
+      );
+    }
 
-            {/* PROFILE VIEW */}
-            {currentView === 'profile' && (
-               <div className="animate-in fade-in slide-in-from-bottom-8 pb-10 max-w-3xl mx-auto mt-4">
-                  <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-2xl border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-12 shadow-2xl relative overflow-hidden">
-                     <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-orange-500/20 to-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                     <div className="absolute -bottom-20 -left-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
-                     
-                     <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-10 border-b border-gray-200 dark:border-white/10 pb-8 relative z-10">
-                        <div className="relative avatar-upload w-28 h-28 shrink-0">
-                           <div className="w-28 h-28 bg-gradient-to-tr from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(249,115,22,0.3)] text-white font-black text-4xl border-4 border-white dark:border-navy-800 overflow-hidden cursor-pointer group">
-                              {profileAvatar ? (
-                                <img src={profileAvatar} className="w-full h-full object-cover" />
-                              ) : (
-                                (myData?.name ? myData.name.charAt(0).toUpperCase() : authUser.email.charAt(0).toUpperCase())
-                              )}
-                              <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
-                                <IconCamera className="w-8 h-8 text-white" />
-                              </div>
-                           </div>
-                           <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 opacity-0 cursor-pointer" />
-                        </div>
-                        <div className="text-center md:text-left w-full">
-                           <h2 className="text-3xl font-black text-gray-900 dark:text-white leading-tight mb-1">{myData?.name || authUser.email.split('@')[0]}</h2>
-                           <p className="text-sm text-gray-500 dark:text-gray-400 font-mono mb-3">{authUser.email}</p>
-                           <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                             {isAdmin && <span className="bg-gradient-to-r from-red-600 to-red-500 text-white text-[10px] px-3 py-1.5 rounded-lg font-black uppercase tracking-widest shadow-sm">Super Admin</span>}
-                             <span className="bg-gradient-to-r from-gray-100 to-gray-200 dark:from-white/10 dark:to-white/5 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-white/10 text-[10px] px-3 py-1.5 rounded-lg font-black uppercase tracking-widest shadow-sm flex items-center gap-1"><IconUser className="w-3 h-3"/> Member</span>
-                           </div>
-                        </div>
-                     </div>
-
-                     {uploadingAvatar && (
-                       <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 rounded-2xl text-sm text-orange-600 dark:text-orange-400 font-bold flex items-center justify-center gap-3 animate-pulse">
-                         <IconLoader className="w-5 h-5 animate-spin" /> Sedang memperbarui foto profil...
-                       </div>
-                     )}
-                     {avatarMessage && (
-                       <div className={`mb-6 p-4 rounded-2xl text-sm font-bold flex items-center justify-center gap-2 animate-in zoom-in ${avatarMessage.type === 'error' ? 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/20' : 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/20'}`}>
-                         {avatarMessage.type === 'error' ? <IconX className="w-5 h-5" /> : <IconCheck className="w-5 h-5" />} {avatarMessage.text}
-                       </div>
-                     )}
-
-                     <form onSubmit={handleUpdateProfile} className="space-y-6 relative z-10 bg-gray-50/50 dark:bg-black/20 p-6 md:p-8 rounded-3xl border border-gray-200 dark:border-white/5">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                           <div>
-                              <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2.5 uppercase tracking-widest ml-1">Nama Lengkap</label>
-                              <div className="relative group">
-                                 <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                                 <input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full bg-white dark:bg-navy-950 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 font-medium transition shadow-inner" placeholder="Masukkan nama..." />
-                              </div>
-                           </div>
-                           <div>
-                              <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2.5 uppercase tracking-widest ml-1">Nomor WhatsApp</label>
-                              <div className="relative group">
-                                 <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                                 <input type="tel" value={profilePhone} onChange={(e)=>setProfilePhone(e.target.value)} className="w-full bg-white dark:bg-navy-950 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 font-medium transition shadow-inner" placeholder="08xxxxxxxx" />
-                              </div>
-                           </div>
-                        </div>
-
-                        {/* ⚡ Cek kelayakan untuk input kode referral (7 hari awal) */}
-                        {isEligibleForReferralInput && (
-                           <div className="bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 p-6 rounded-2xl relative overflow-hidden">
-                              <div className="absolute right-0 top-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
-                              <label className="block text-[10px] font-black text-orange-600 dark:text-orange-400 mb-3 uppercase tracking-widest flex items-center gap-2 relative z-10"><IconGift className="w-4 h-4"/> Punya Kode Undangan? (Opsional)</label>
-                              <input type="text" value={profileRefCode} onChange={(e)=>setProfileRefCode(e.target.value)} className="w-full relative z-10 bg-white dark:bg-black/40 border border-orange-200 dark:border-orange-500/30 rounded-xl py-3.5 px-5 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 font-mono uppercase font-black transition shadow-inner text-sm placeholder-orange-300 dark:placeholder-orange-700" placeholder="MASUKKAN KODE TEMAN..." />
-                              <p className="text-[10px] text-orange-600 dark:text-orange-500 mt-2.5 font-bold leading-relaxed relative z-10">*Dapatkan Potongan Rp 2.000 pada transaksi pertama Anda!</p>
-                           </div>
-                        )}
-
-                        <div className="pt-4">
-                           <button type="submit" className="w-full bg-gray-900 dark:bg-white text-white dark:text-navy-950 hover:bg-orange-500 dark:hover:bg-orange-500 hover:text-white py-4.5 rounded-2xl font-black transition-all transform hover:-translate-y-1 shadow-xl uppercase tracking-widest text-sm flex items-center justify-center gap-2">
-                              <IconCheckCircle className="w-5 h-5"/> Update Data Profil
-                           </button>
-                        </div>
-                     </form>
-
-                     <div className="mt-8 pt-8 border-t-2 border-dashed border-gray-200 dark:border-white/10 relative z-10">
-                        {!showPasswordForm ? (
-                           <button onClick={() => setShowPasswordForm(true)} className="w-full py-4.5 bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-2xl font-black transition flex items-center justify-center gap-3 text-sm uppercase tracking-widest shadow-sm">
-                              <IconKey className="w-5 h-5"/> Ingin Ubah Kata Sandi?
-                           </button>
-                        ) : (
-                           <div className="animate-in slide-in-from-top-4 fade-in duration-300 bg-white dark:bg-navy-950 border border-gray-200 dark:border-white/10 p-6 md:p-8 rounded-3xl shadow-lg">
-                             <div className="flex justify-between items-center mb-6">
-                               <h3 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3"><IconKey className="w-5 h-5 text-orange-500" /> Keamanan Akun</h3>
-                               <button type="button" onClick={() => {setShowPasswordForm(false); setPasswordMessage('');}} className="p-2 bg-gray-100 dark:bg-white/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-gray-500 hover:text-red-500 rounded-full transition"><IconX className="w-4 h-4"/></button>
-                             </div>
-
-                             <form onSubmit={handleChangePassword} className="space-y-5">
-                               <div>
-                                 <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-widest ml-1">Kata Sandi Lama</label>
-                                 <div className="relative group">
-                                   <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                                   <input type="password" value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 font-medium transition" placeholder="********" />
-                                 </div>
-                               </div>
-                               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                 <div>
-                                   <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-widest ml-1">Sandi Baru</label>
-                                   <div className="relative group">
-                                     <IconKey className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                                     <input type="password" value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 font-medium transition" placeholder="Min. 6 karakter" />
-                                   </div>
-                                 </div>
-                                 <div>
-                                   <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-widest ml-1">Konfirmasi Sandi</label>
-                                   <div className="relative group">
-                                     <IconCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
-                                     <input type="password" value={confirmNewPassword} onChange={(e)=>setConfirmNewPassword(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 font-medium transition" placeholder="Ulangi sandi" />
-                                   </div>
-                                 </div>
-                               </div>
-
-                               {passwordMessage && (
-                                 <div className={`p-4 rounded-xl text-xs font-bold flex items-center gap-3 animate-in fade-in ${passwordMessage.type === 'error' ? 'bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/20' : 'bg-green-50 dark:bg-green-500/10 text-green-600 dark:text-green-400 border border-green-200 dark:border-green-500/20'}`}>
-                                   {passwordMessage.type === 'error' ? <IconX className="w-4 h-4 shrink-0" /> : <IconCheck className="w-4 h-4 shrink-0" />} {passwordMessage.text}
-                                 </div>
-                               )}
-
-                               <button type="submit" className="w-full bg-gradient-to-r from-orange-600 to-orange-500 text-white py-4.5 rounded-2xl font-black transition-all hover:-translate-y-1 shadow-lg shadow-orange-500/30 uppercase tracking-widest text-sm mt-2">
-                                 Perbarui Keamanan
-                               </button>
-                             </form>
-                           </div>
-                        )}
-                     </div>
-                  </div>
-               </div>
-            )}
-
-            {/* REFERRAL VIEW */}
-            {currentView === 'referral' && (
-               <div className="animate-in fade-in pb-10 max-w-4xl mx-auto mt-4">
-                  <div className="bg-gradient-to-br from-purple-600 via-indigo-600 to-blue-700 rounded-[3rem] p-8 md:p-14 text-white shadow-2xl shadow-indigo-500/40 mb-8 relative overflow-hidden group">
-                     <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay"></div>
-                     <div className="absolute -top-32 -right-32 w-80 h-80 bg-white/20 rounded-full blur-3xl animate-pulse-slow"></div>
-                     <div className="absolute -bottom-32 -left-32 w-80 h-80 bg-cyan-400/30 rounded-full blur-3xl animate-pulse-slow delay-1000"></div>
-                     
-                     <div className="relative z-10 text-center">
-                        <div className="w-24 h-24 bg-white/20 rounded-[2rem] flex items-center justify-center mx-auto mb-6 border border-white/30 backdrop-blur-md shadow-xl animate-float">
-                           <IconUsers className="w-12 h-12 text-white drop-shadow-2xl" />
-                        </div>
-                        <h3 className="text-4xl md:text-6xl font-black mb-4 tracking-tight drop-shadow-lg">Ajak Teman, <br className="md:hidden"/>Dapat Cuan!</h3>
-                        <p className="text-indigo-100 font-medium mb-12 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-                           Bagikan kode unikmu! Teman baru akan mendapat potongan <span className="bg-white text-indigo-600 px-2 py-0.5 rounded font-black">Rp 2.000</span> di transaksi pertama. Kamu mendapat komisi <span className="bg-white text-indigo-600 px-2 py-0.5 rounded font-black">Rp 150</span> per transaksi sukses selamanya!
-                        </p>
-                        
-                        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] p-6 md:p-8 mb-10 shadow-inner max-w-2xl mx-auto">
-                           <p className="text-xs font-black uppercase tracking-widest text-indigo-200 mb-4">KODE REFERRAL EKSKLUSIF KAMU</p>
-                           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                              <div className="w-full sm:w-auto bg-white text-indigo-700 font-black font-mono text-3xl md:text-5xl px-8 py-5 rounded-2xl shadow-[inset_0_4px_15px_rgba(0,0,0,0.1)] tracking-widest border-4 border-indigo-200">
-                                 {myData?.myReferral || 'TUNGGU...'}
-                              </div>
-                              <button onClick={()=>{navigator.clipboard.writeText(myData?.myReferral); alert('Kode berhasil disalin!');}} 
-                                      className="w-full sm:w-auto bg-indigo-900 hover:bg-black text-white px-8 py-5 rounded-2xl transition-all transform hover:scale-105 shadow-xl flex items-center justify-center gap-3 font-black text-lg border border-indigo-400/30">
-                                 <IconCopy className="w-6 h-6"/> Salin
-                              </button>
-                           </div>
-                        </div>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center max-w-3xl mx-auto">
-                           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:bg-white/20 transition cursor-default">
-                              <div className="w-10 h-10 bg-indigo-500/50 rounded-full flex items-center justify-center mx-auto mb-3"><IconUsers className="w-5 h-5"/></div>
-                              <div className="text-4xl font-black drop-shadow-md mb-1">{memberList.filter(m => m.referredBy === myData?.myReferral).length}</div>
-                              <div className="text-[10px] uppercase tracking-widest opacity-80 font-bold">Teman Diundang</div>
-                           </div>
-                           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/10 hover:bg-white/20 transition cursor-default">
-                              <div className="w-10 h-10 bg-emerald-500/50 rounded-full flex items-center justify-center mx-auto mb-3"><IconCheckCircle className="w-5 h-5"/></div>
-                              <div className="text-4xl font-black drop-shadow-md mb-1">
-                                 {memberList.filter(m => m.referredBy === myData?.myReferral && allGlobalOrders.some(o => o.userEmail === m.email && o.status === 'Sukses')).length}
-                              </div>
-                              <div className="text-[10px] uppercase tracking-widest opacity-80 font-bold">Berhasil Transaksi</div>
-                           </div>
-                           <div className="bg-white/10 backdrop-blur-md rounded-3xl p-6 border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:scale-105 transition transform">
-                              <div className="w-10 h-10 bg-yellow-500/50 rounded-full flex items-center justify-center mx-auto mb-3"><IconWallet className="w-5 h-5"/></div>
-                              <div className="text-4xl font-black text-yellow-300 drop-shadow-lg mb-1">{formatRupiah(referralBalance)}</div>
-                              <div className="text-[10px] uppercase tracking-widest opacity-90 font-bold">Total Komisi (Rp)</div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-
-                  <div className="bg-white dark:bg-navy-900/50 backdrop-blur-md rounded-[3rem] p-6 md:p-10 border border-gray-200 dark:border-white/10 shadow-xl relative overflow-hidden">
-                     <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-8 flex items-center gap-3">
-                        <div className="p-3 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl shadow-md"><IconTrendingUp className="w-6 h-6 text-white"/></div> Riwayat Komisi
-                     </h3>
-                     
-                     {referralHistory.length > 0 ? (
-                       <div className="space-y-4">
-                         {referralHistory.map((item, index) => (
-                           <div key={index} className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 p-5 rounded-2xl flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-indigo-300 dark:hover:border-indigo-500/50 transition group">
-                             <div className="flex items-center gap-4">
-                               <div className="w-12 h-12 bg-white dark:bg-navy-800 rounded-full flex items-center justify-center font-black text-indigo-500 text-lg shadow-sm border border-gray-200 dark:border-white/10">
-                                 {item.friendEmail.charAt(0).toUpperCase()}
-                               </div>
-                               <div>
-                                 <div className="font-black text-gray-900 dark:text-white text-base">{item.friendEmail.split('@')[0]}</div><div className="text-[10px] text-gray-500 font-bold mt-1">{new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</div>
-                                       </div>
-                                     </div>
-                                     <div className="text-right mt-2 sm:mt-0">
-                                       <div className="text-sm font-black text-green-500 dark:text-green-400 bg-green-50 dark:bg-green-500/10 px-3 py-1.5 rounded-lg border border-green-200 dark:border-green-500/20 inline-block shadow-sm">+ {formatRupiah(item.commission)}</div>
-                                       <div className="text-[9px] text-gray-400 mt-1 uppercase tracking-widest font-bold pr-1">Pembelian {formatRupiah(item.orderAmount)}</div>
-                                     </div>
-                                   </div>
-                                 ))}
-                               </div>
-                             ) : (
-                               <div className="text-center py-16 text-gray-500 bg-gray-50 dark:bg-white/5 rounded-[2rem] border-2 border-dashed border-gray-200 dark:border-white/10 shadow-sm">
-                                 <IconGift className="w-12 h-12 mx-auto mb-3 opacity-30 text-indigo-500"/>
-                                 <p className="font-bold text-sm text-gray-600 dark:text-gray-300">Belum ada riwayat komisi.</p>
-                                 <p className="text-xs mt-1 font-medium opacity-70">Ajak temanmu mendaftar menggunakan kodemu sekarang!</p>
-                               </div>
-                             )}
-                          </div>
-                       </div>
-                    )}
-
-                    {/* HISTORY VIEW */}
-                    {currentView === 'history' && !isAdmin && (
-                       <div className="animate-in fade-in pb-10 max-w-5xl mx-auto mt-4">
-                          <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
-                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-gray-200 dark:border-white/10 pb-6">
-                                <div className="flex items-center gap-4">
-                                   <div className="w-14 h-14 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg text-white"><IconHistory className="w-7 h-7"/></div>
-                                   <div>
-                                      <h2 className="text-2xl font-black text-gray-900 dark:text-white leading-tight">Riwayat Transaksi</h2>
-                                      <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">Pantau status pesanan top-up Anda di sini.</p>
-                                   </div>
-                                </div>
-                                <div className="bg-gray-100 dark:bg-navy-800 px-4 py-2 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/5 flex items-center gap-2">
-                                   Total Pesanan: <span className="text-orange-500 font-black">{userOrders.filter(o => o.status !== 'Dihapus').length}</span>
-                                </div>
-                             </div>
-                             
-                             <div className="space-y-4">
-                                {userOrders.filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => (
-                                   <div key={order.id} className="bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 p-5 rounded-2xl flex flex-col md:flex-row justify-between md:items-center gap-5 hover:border-orange-300 dark:hover:border-orange-500/50 transition group shadow-sm">
-                                      <div className="flex gap-4 items-center">
-                                         <img src={games?.find(g => g.id === order.gameId)?.image || DEFAULT_GAMES[0].image} className="w-16 h-16 rounded-xl object-cover shadow-sm border border-gray-200 dark:border-white/10 group-hover:scale-105 transition"/>
-                                         <div>
-                                            <div className="font-black text-gray-900 dark:text-white text-base">{order.gameName}</div>
-                                            <div className="text-xs text-orange-600 dark:text-orange-400 font-bold mb-1.5">{order.nominalName}</div>
-                                            <div className="flex flex-wrap gap-2">
-                                               <div className="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-white/10 px-2 py-0.5 rounded border border-gray-200 dark:border-white/5 font-mono uppercase shadow-inner">ID: {order.targetUserId} {order.targetZoneId && `(${order.targetZoneId})`}</div>
-                                               <div className="text-[10px] text-gray-500 font-bold py-0.5 flex items-center gap-1"><IconQrcode className="w-3 h-3"/> {order.paymentMethod}</div>
-                                            </div>
-                                         </div>
-                                      </div>
-                                      
-                                      <div className="flex flex-col md:items-end gap-2 border-t md:border-t-0 border-gray-200 dark:border-white/10 pt-4 md:pt-0">
-                                         <div className="flex items-center justify-between md:justify-end w-full gap-4">
-                                            <span className="text-lg font-black text-gray-900 dark:text-white drop-shadow-sm">{formatRupiah(order.priceTotal)}</span>
-                                            <span className={`px-3.5 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm ${statusColor(order.status)}`}>{order.status}</span>
-                                         </div>
-                                         <div className="text-[10px] text-gray-400 font-bold uppercase tracking-widest">{new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</div>
-                                         
-                                         {order.status === 'Pending' && (
-                                            <button onClick={() => requestQuickHelp(order)} className="mt-2 text-[10px] bg-red-50 hover:bg-red-500 text-red-600 hover:text-white dark:bg-red-500/10 dark:text-red-400 border border-red-200 dark:border-red-500/20 px-4 py-2 rounded-xl font-black flex items-center justify-center gap-2 transition w-full md:w-auto shadow-sm uppercase tracking-widest">
-                                               <IconMessageSquare className="w-3 h-3"/> Butuh Bantuan?
-                                            </button>
-                                         )}
-                                      </div>
-                                   </div>
-                                )) : (
-                                   <div className="text-center py-20 text-gray-500 border-2 border-dashed border-gray-200 dark:border-white/10 rounded-[2rem] bg-gray-50 dark:bg-black/10">
-                                      <IconHistory className="w-16 h-16 mx-auto mb-4 opacity-30"/>
-                                      <p className="font-black text-lg text-gray-600 dark:text-gray-300">Belum Ada Transaksi</p>
-                                      <p className="text-sm mt-1 font-medium opacity-80">Lakukan pemesanan pertama Anda di halaman Beranda.</p>
-                                      <button onClick={()=>navigateTo('home')} className="mt-6 bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg shadow-orange-500/30 transition">Mulai Top Up</button>
-                                   </div>
-                                )}
-                             </div>
-                          </div>
-                       </div>
-                    )}
-
-                    {/* BERANDA (HOME VIEW) - CORE APP DENGAN OVERLAY FULLSCREEN */}
-                    {currentView === 'home' && (
-                       <div className="animate-in fade-in slide-in-from-bottom-4 pb-20">
-                          {/* Banner Section */}
-                          <BannerSlider items={banners} promoConfig={bannerPromoConfig} />
-
-                          <div className="relative">
-                             {/* STEP 1: PILIH GAME (GRID UTAMA) */}
-                             <div className="bg-white/90 dark:bg-navy-900/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-6 md:p-8 shadow-xl">
-                                <h2 className="text-xl md:text-2xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-3"><div className="bg-gradient-to-br from-orange-400 to-orange-600 p-2.5 rounded-xl shadow-md"><IconGamepad className="w-6 h-6 text-white"/></div> Pilih Game Tersedia</h2>
-                                
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-                                   {games.map(game => (
-                                      <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId('');}} className="cursor-pointer rounded-3xl overflow-hidden relative border border-gray-200 dark:border-white/10 hover:border-orange-500 hover:shadow-[0_10px_30px_rgba(249,115,22,0.3)] transition-all duration-300 group hover:-translate-y-2 bg-white dark:bg-navy-800">
-                                         <div className="aspect-square bg-gray-100 dark:bg-black p-2">
-                                            <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition duration-500 ease-out shadow-inner"/>
-                                         </div>
-                                         <div className="p-4 text-center">
-                                            <h3 className="font-black text-gray-900 dark:text-white text-sm md:text-base leading-tight mb-1">{game.name}</h3>
-                                            <p className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">{game.developer}</p>
-                                         </div>
-                                      </div>
-                                   ))}
-                                </div>
-                             </div>
-
-                             {/* OVERLAY FORM TOP UP (FULL SCREEN) */}
-                             {selectedGame && (
-                                <div className="fixed inset-0 z-[100] flex flex-col bg-gray-50 dark:bg-navy-950 animate-in slide-in-from-bottom-full duration-500">
-                                   <div className="flex justify-between items-center p-5 bg-white/80 dark:bg-navy-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-white/10 shadow-sm sticky top-0 z-50">
-                                      <div className="flex items-center gap-3">
-                                         <img src={selectedGame.image} className="w-10 h-10 rounded-xl object-cover shadow-sm"/>
-                                         <div>
-                                            <h3 className="font-black text-gray-900 dark:text-white leading-tight">{selectedGame.name}</h3>
-                                            <p className="text-[10px] text-orange-500 font-bold uppercase tracking-widest">Form Pemesanan</p>
-                                         </div>
-                                      </div>
-                                      <button onClick={() => setSelectedGame(null)} className="p-2.5 bg-gray-100 dark:bg-white/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-gray-600 dark:text-gray-300 hover:text-red-500 rounded-full transition shadow-sm"><IconX className="w-5 h-5"/></button>
-                                   </div>
-
-                                   <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
-                                      <div className="max-w-3xl mx-auto space-y-6 pb-20">
-                                         
-                                         {/* STEP 2: DATA AKUN */}
-                                         <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md">
-                                            <h2 className="text-lg font-black text-gray-900 dark:text-white flex items-center gap-3 mb-5"><div className="bg-blue-50 dark:bg-blue-500/20 p-2 rounded-xl text-blue-500"><IconUser className="w-5 h-5"/></div> 1. Masukkan ID Tujuan</h2>
-                                            
-                                            <div className="flex flex-col sm:flex-row gap-4">
-                                               <div className="flex-1 relative group">
-                                                  <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-                                                  <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID'} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
-                                               </div>
-                                               
-                                               {selectedGame?.inputType === 'id_zone' && (
-                                                  <div className="w-full sm:w-1/3 relative group">
-                                                     <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-                                                     <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
-                                                  </div>
-                                               )}
-                                               
-                                               {selectedGame?.inputType === 'riot_id' && (
-                                                  <div className="w-full sm:w-1/3 relative group">
-                                                     <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-                                                     <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 font-mono text-sm text-gray-900 dark:text-white font-bold transition shadow-inner placeholder-gray-400"/>
-                                                  </div>
-                                               )}
-                                            </div>
-                                         </div>
-
-                                         {/* STEP 3: PILIH NOMINAL */}
-                                         <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
-                                            <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-green-50 dark:bg-green-500/20 p-2 rounded-xl text-green-500"><IconBox className="w-5 h-5"/></div> 2. Pilih Nominal</h2>
-                                            
-                                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-                                               {(nominals[selectedGame?.id] || []).map(item => (
-                                                  <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all flex flex-col justify-center items-center text-center group ${selectedNominal?.id === item.id ? 'border-green-500 bg-green-50 dark:bg-green-500/10 shadow-md transform scale-95' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 hover:border-green-300 hover:-translate-y-1'}`}>
-                                                     <div className="font-black text-gray-900 dark:text-white text-xs md:text-sm mb-2 leading-tight">{item.name}</div>
-                                                     <div className="text-xs font-black text-green-600 dark:text-green-400 font-mono bg-white dark:bg-navy-950 px-2 py-1 rounded-md shadow-inner w-full border border-gray-100 dark:border-white/5">{formatRupiah(item.price)}</div>
-                                                     {selectedNominal?.id === item.id && <div className="absolute top-2 right-2"><IconCheckCircle className="w-4 h-4 text-green-500 animate-in zoom-in"/></div>}
-                                                  </div>
-                                               ))}
-                                               {(nominals[selectedGame?.id] || []).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-50 dark:bg-black/10 rounded-2xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
-                                            </div>
-                                         </div>
-
-                                         {/* STEP 4: PEMBAYARAN & CHECKOUT */}
-                                         <div className={`bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-md transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-50 pointer-events-none'}`}>
-                                            <h2 className="text-lg font-black text-gray-900 dark:text-white mb-5 flex items-center gap-3"><div className="bg-purple-50 dark:bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconWallet className="w-5 h-5"/></div> 3. Metode Pembayaran</h2>
-                                            
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                               {PAYMENTS.map(pay => (
-                                                  <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-purple-500 bg-purple-50 dark:bg-purple-500/10 shadow-md transform scale-95' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/20 hover:border-purple-300'}`}>
-                                                     <div className={`p-3 rounded-xl shadow-inner border border-gray-100 dark:border-white/5 ${selectedPayment?.id === pay.id ? 'bg-white dark:bg-navy-900 text-purple-600' : 'bg-white dark:bg-navy-800 text-gray-400'}`}>
-                                                        <IconQrcode className="w-6 h-6" />
-                                                     </div>
-                                                     <div>
-                                                        <div className="font-black text-gray-900 dark:text-white text-sm leading-tight">{pay.name}</div>
-                                                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">{pay.type}</div>
-                                                     </div>
-                                                     {selectedPayment?.id === pay.id && <IconCheckCircle className="w-5 h-5 text-purple-500 ml-auto animate-in zoom-in"/>}
-                                                  </div>
-                                               ))}
-                                            </div>
-
-                                            {/* SISTEM PROMO */}
-                                            <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 pl-1">Gunakan Kode Promo</p>
-                                            <div className="flex gap-3 mb-6 bg-gray-50 dark:bg-black/30 p-2.5 rounded-2xl border border-gray-200 dark:border-white/5 shadow-inner">
-                                               <div className="relative flex-1 group">
-                                                  <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-purple-500 transition-colors" />
-                                                  <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." className="w-full bg-white dark:bg-navy-950 border border-gray-200 dark:border-white/10 rounded-xl py-3.5 pl-11 pr-4 focus:outline-none focus:border-purple-500 font-mono text-sm uppercase text-gray-900 dark:text-white shadow-sm font-black transition disabled:opacity-50 disabled:bg-gray-100" disabled={activePromo} />
-                                               </div>
-                                               {activePromo ? (
-                                                  <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-50 hover:bg-red-500 text-red-500 hover:text-white border border-red-200 dark:border-red-500/30 px-6 rounded-xl font-black transition shadow-sm text-xs uppercase tracking-widest">Hapus</button>
-                                               ) : (
-                                                  <button onClick={handleApplyPromo} className="bg-purple-600 hover:bg-purple-500 text-white px-6 rounded-xl font-black transition shadow-lg shadow-purple-500/30 text-xs uppercase tracking-widest">Terapkan</button>
-                                               )}
-                                            </div>
-
-                                            {/* STRUK PREVIEW */}
-                                            {selectedNominal && (
-                                               <div className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-black/40 dark:to-navy-950 p-5 rounded-2xl border border-gray-200 dark:border-white/10 shadow-inner mb-6 relative overflow-hidden">
-                                                  <div className="absolute -right-4 -top-4 w-20 h-20 bg-orange-500/10 rounded-full blur-xl"></div>
-                                                  <div className="flex justify-between items-center mb-3">
-                                                     <span className="text-xs font-bold text-gray-500">Harga Item</span>
-                                                     <span className="font-mono font-bold text-gray-900 dark:text-white">{formatRupiah(selectedNominal.price)}</span>
-                                                  </div>
-                                                  <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10">
-                                                     <span className="text-xs font-bold text-gray-500">Biaya Layanan</span>
-                                                     <span className="font-mono font-bold text-gray-900 dark:text-white">{formatRupiah(selectedPayment?.fee || 0)}</span>
-                                                  </div>
-                                                  {/* Info Potongan Harga Dari Kode Referral Teman Baru */}
-                                                  {myData?.referredBy && !myData?.hasUsedReferralDiscount && (
-                                                     <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-indigo-500 animate-in slide-in-from-top-2">
-                                                        <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconGift className="w-3 h-3"/> Diskon Referral Pertama</span>
-                                                        <span className="font-mono font-black">- Rp 2.000</span>
-                                                     </div>
-                                                  )}
-                                                  {activePromo && (
-                                                     <div className="flex justify-between items-center mb-3 pb-3 border-b border-dashed border-gray-300 dark:border-white/10 text-green-500 animate-in slide-in-from-top-2">
-                                                        <span className="text-xs font-black uppercase tracking-widest flex items-center gap-1.5"><IconTag className="w-3 h-3"/> Diskon Promo ({activePromo.code})</span>
-                                                        <span className="font-mono font-black">- {formatRupiah((selectedNominal.price + (selectedPayment?.fee||0)) - calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), activePromo))}</span>
-                                                     </div>
-                                                  )}
-                                                  <div className="flex justify-between items-end mt-2">
-                                                     <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Total Bayar</span>
-                                                     <span className="font-black text-2xl md:text-3xl text-orange-500 drop-shadow-md">
-                                                        {formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), activePromo))}
-                                                     </span>
-                                                  </div>
-                                               </div>
-                                            )}
-
-                                            <button onClick={handleCheckout} disabled={!isFormValid || isProcessing} className={`w-full py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all transform flex justify-center items-center gap-3 relative overflow-hidden group ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white hover:-translate-y-1 shadow-[0_10px_20px_rgba(249,115,22,0.3)]' : 'bg-gray-200 dark:bg-navy-800 text-gray-400 cursor-not-allowed border border-gray-300 dark:border-white/5'}`}>
-                                               {isFormValid && <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>}
-                                               {isProcessing ? <IconLoader className="w-6 h-6 animate-spin" /> : <><IconZap className="w-6 h-6" /> Pesan Sekarang</>}
-                                            </button>
-                                         </div>
-                                      </div>
-                                   </div>
-                                </div>
-                             )}
-
-                          </div>
-                       </div>
-                    )}
-                 </main>
-
-                 {/* MODAL INVOICE & PEMBAYARAN (QRIS / CASH) */}
-                 {showModal && (
-                    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-navy-950/80 backdrop-blur-xl animate-in zoom-in duration-300">
-                       <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 max-w-sm w-full shadow-2xl relative overflow-hidden flex flex-col items-center text-center">
-                          {/* Banner Header Modal */}
-                          <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-orange-500 via-purple-500 to-blue-500"></div>
-                          
-                          {activeOrderDetails?.status === 'Sukses' ? (
-                             <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-[0_10px_25px_rgba(34,197,94,0.4)] text-white mb-5 border-4 border-white dark:border-navy-800 animate-in zoom-in">
-                                <IconCheckCircle className="w-10 h-10 animate-bounce-slow" />
-                             </div>
-                          ) : (
-                             <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center shadow-[0_10px_25px_rgba(249,115,22,0.4)] text-white mb-5 border-4 border-white dark:border-navy-800">
-                                <IconLoader className="w-10 h-10 animate-spin" />
-                             </div>
-                          )}
-                          
-                          <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">
-                             {activeOrderDetails?.status === 'Sukses' ? 'Pembayaran Sukses!' : 'Menunggu Pembayaran'}
-                          </h3>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs font-medium mb-6">
-                             {activeOrderDetails?.status === 'Sukses' ? 'Pesanan Anda sedang diproses oleh sistem.' : 'Silakan selesaikan pembayaran agar pesanan diproses.'}
-                          </p>
-
-                          {/* Order Summary Box */}
-                          <div className="w-full bg-gray-50 dark:bg-black/20 border border-gray-200 dark:border-white/5 rounded-3xl p-5 mb-6 shadow-inner text-left">
-                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-200 dark:border-white/10">
-                                <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">ID Transaksi</span>
-                                <span className="font-mono font-black text-gray-900 dark:text-white bg-white dark:bg-navy-800 px-2 py-1 rounded-md shadow-sm border border-gray-100 dark:border-white/5 text-xs">{lastOrderId}</span>
-                             </div>
-                             <div className="flex justify-between mb-3">
-                                <span className="text-xs font-bold text-gray-500">Produk</span>
-                                <span className="font-black text-gray-900 dark:text-white text-right text-sm">{selectedGame?.name}<br/><span className="text-orange-500 text-xs font-bold">{selectedNominal?.name}</span></span>
-                             </div>
-                             <div className="flex justify-between mb-3">
-                                <span className="text-xs font-bold text-gray-500">Tujuan</span>
-                                <span className="font-mono font-black text-gray-900 dark:text-white text-xs bg-gray-200 dark:bg-white/10 px-2 py-0.5 rounded">{userId} {zoneId && `(${zoneId})`}</span>
-                             </div>
-                             <div className="flex justify-between mt-4 pt-4 border-t border-dashed border-gray-300 dark:border-white/10 items-end">
-                                <span className="text-xs font-black text-gray-500 uppercase tracking-widest">Total Tagihan</span>
-                                <span className="font-black text-2xl text-green-500 dark:text-green-400 drop-shadow-sm">{formatRupiah(calculateFinalPrice(selectedNominal?.price + (selectedPayment?.fee||0), activePromo))}</span>
-                             </div>
-                          </div>
-
-                          {/* Dynamic Barcode/QR Generation (AKAN MENGHILANG OTOMATIS JIKA SUKSES) */}
-                          {activeOrderDetails?.status !== 'Sukses' && (
-                             <>
-                                {selectedPayment?.id === 'qris' && dynamicQrisUrl && (
-                                   <div className="mb-8 w-full flex flex-col items-center bg-gray-50 dark:bg-navy-950 p-5 rounded-3xl border border-gray-200 dark:border-white/5 shadow-inner animate-in fade-in">
-                                      <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2"><IconQrcode className="w-4 h-4"/> Scan QRIS Untuk Bayar</p>
-                                      <div className="p-4 bg-white rounded-2xl shadow-xl border-4 border-orange-500 w-fit relative group">
-                                         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 py-0.5 rounded-full text-[10px] font-black text-blue-600 uppercase border border-gray-200 shadow-sm">QRIS NOBU</div>
-                                         <img src={dynamicQrisUrl} alt="QRIS" className="w-48 h-48 md:w-56 md:h-56 object-contain mix-blend-multiply transition transform group-hover:scale-105" />
-                                      </div>
-                                      <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-5 font-bold bg-white dark:bg-black/30 px-4 py-2 rounded-xl border border-gray-200 dark:border-white/5">Otomatis terkonfirmasi dalam 10 detik setelah bayar.</p>
-                                   </div>
-                                )}
-
-                                {selectedPayment?.id === 'cash' && (
-                                   <div className="mb-8 w-full bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 p-5 rounded-3xl flex flex-col items-center animate-in fade-in">
-                                      <p className="text-[10px] font-black text-blue-600 dark:text-blue-400 uppercase tracking-widest mb-4 flex items-center gap-2"><IconQrcode className="w-4 h-4"/> Scan Barcode di Kasir</p>
-                                      <div className="p-4 bg-white rounded-2xl shadow-xl border-4 border-blue-500 w-fit relative">
-                                         {/* BARCODE GENERATOR DARI API */}
-                                         <img src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${lastOrderId}&margin=5`} alt="Cash Barcode" className="w-40 h-40 object-contain mix-blend-multiply" />
-                                      </div>
-                                      <p className="text-xs text-blue-700 dark:text-blue-300 font-medium mt-4">Tunjukkan kode QR ini ke admin/kasir Vipercell untuk dipindai.</p>
-                                   </div>
-                                )}
-                             </>
-                          )}
-
-                          <button onClick={() => {setShowModal(false); setSelectedGame(null); navigateTo('history');}} className={`w-full text-white py-4.5 rounded-2xl font-black uppercase tracking-widest text-sm transition-all hover:-translate-y-1 hover:shadow-xl shadow-lg flex items-center justify-center gap-2 ${activeOrderDetails?.status === 'Sukses' ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-900 dark:bg-white dark:text-navy-950'}`}>
-                             <IconList className="w-5 h-5"/> {activeOrderDetails?.status === 'Sukses' ? 'Lihat Detail Pesanan' : 'Tutup & Cek Status'}
-                          </button>
-                       </div>
-                    </div>
-                 )}
-                 
-              </div>
-           );
-        }
-
-        // Render the React app
-        const root = ReactDOM.createRoot(document.getElementById("root"));
-        root.render(<App />);
-    </script>
+    // Render the React app
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+  </script>
 </body>
 </html>
