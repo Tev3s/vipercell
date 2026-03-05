@@ -23,11 +23,20 @@
              'float': 'float 3s ease-in-out infinite',
              'glow': 'glow 2s ease-in-out infinite',
              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+             'marquee': 'marquee 20s linear infinite',
           },
           keyframes: {
              float: {
                '0%, 100%': { transform: 'translateY(0px)' },
                '50%': { transform: 'translateY(-10px)' },
+             },
+             glow: {
+               '0%, 100%': { filter: 'brightness(1) drop-shadow(0 0 10px rgba(249,115,22,0.5))' },
+               '50%': { filter: 'brightness(1.2) drop-shadow(0 0 20px rgba(249,115,22,0.8))' },
+             },
+             marquee: {
+               '0%': { transform: 'translateX(0%)' },
+               '100%': { transform: 'translateX(-50%)' }
              }
           }
         }
@@ -52,31 +61,20 @@
     
     .chat-container { height: calc(100vh - 120px); display: flex; flex-direction: column; border-radius: 1.5rem; overflow: hidden; }
     
-    /* Desain Elegan Voucher / Kupon */
-    .voucher-ticket {
-      position: relative;
-      border-radius: 1rem;
-      overflow: hidden;
-    }
+    /* Desain Kupon */
+    .voucher-ticket { position: relative; border-radius: 1rem; overflow: hidden; }
     .voucher-ticket::before, .voucher-ticket::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      width: 24px;
-      height: 24px;
-      background-color: rgb(249 250 251); /* gray-50 */
-      border-radius: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
+      content: ''; position: absolute; top: 50%; width: 24px; height: 24px;
+      background-color: rgb(249 250 251); border-radius: 50%; transform: translateY(-50%); z-index: 10;
     }
-    .dark .voucher-ticket::before, .dark .voucher-ticket::after {
-      background-color: rgb(2 6 23); /* navy-950 */
-    }
+    .dark .voucher-ticket::before, .dark .voucher-ticket::after { background-color: rgb(2 6 23); }
     .voucher-ticket::before { left: -12px; }
     .voucher-ticket::after { right: -12px; }
-    .voucher-ticket-dashed {
-      border-left: 2px dashed rgba(255,255,255,0.4);
-    }
+    .voucher-ticket-dashed { border-left: 2px dashed rgba(255,255,255,0.4); }
+
+    /* Infinite Marquee Fix */
+    .marquee-container { width: 100%; overflow: hidden; white-space: nowrap; display: flex; align-items: center; }
+    .marquee-content { display: flex; flex-shrink: 0; min-width: 100%; }
   </style>
 
   <!-- React & Babel -->
@@ -86,7 +84,7 @@
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body class="bg-gray-50 dark:bg-navy-950 text-gray-900 dark:text-gray-200 font-sans selection:bg-orange-500 selection:text-white transition-colors duration-700 min-h-screen flex flex-col overflow-x-hidden relative">
-  <div id="root" class="flex-grow flex flex-col"></div>
+  <div id="root" class="flex-grow flex flex-col min-h-screen"></div>
 
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo } = React;
@@ -212,7 +210,6 @@
     const IconHome = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
     const IconTrendingUp = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8 10 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>;
     const IconShield = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
-    const IconKey = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>;
     const IconWallet = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"></path></svg>;
     const IconPercent = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>;
     const IconInfo = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>;
@@ -292,7 +289,7 @@
     }
 
     // --- COMPONENT: BANNER SLIDER ---
-    const BannerSlider = ({ items, promoConfig }) => {
+    const BannerSlider = ({ items }) => {
        const [curr, setCurr] = useState(0);
        const [isPaused, setIsPaused] = useState(false);
 
@@ -303,13 +300,13 @@
        }, [items.length, isPaused]);
 
        if (items.length === 0) return (
-          <div className="w-full h-48 md:h-72 rounded-3xl overflow-hidden mb-8 relative border border-gray-200 dark:border-white/10 shadow-xl bg-white/50 dark:bg-navy-900/50 flex items-center justify-center backdrop-blur-md">
+          <div className="w-full h-48 md:h-72 rounded-3xl overflow-hidden mb-8 relative border border-gray-200 dark:border-white/10 shadow-xl bg-white/50 dark:bg-navy-900/50 flex items-center justify-center backdrop-blur-md mt-4">
              <h1 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white tracking-tight drop-shadow-lg">Top Up <span className="text-orange-500">Super Cepat</span></h1>
           </div>
        );
 
        return (
-          <div className="w-full h-48 md:h-72 rounded-3xl overflow-hidden mb-8 relative border border-gray-200 dark:border-white/10 shadow-xl bg-black group"
+          <div className="w-full h-48 md:h-72 rounded-3xl overflow-hidden mb-8 relative border border-gray-200 dark:border-white/10 shadow-xl bg-black group mt-4"
                onMouseEnter={() => setIsPaused(true)} onMouseLeave={() => setIsPaused(false)}>
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
@@ -322,7 +319,6 @@
              ))}
              <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent z-20 pointer-events-none"></div>
              
-             {/* Info Label Promo di Atas Banner Slider */}
              <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 max-w-md z-30 pointer-events-none">
                 <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight drop-shadow-lg">Top Up<br/><span className="text-orange-500">Super Cepat</span></h1>
                 <p className="text-gray-200 font-medium text-sm md:text-base drop-shadow-md mb-2">Harga jujur, proses instan otomatis.</p>
@@ -367,7 +363,6 @@
       const [regPhone, setRegPhone] = useState(''); 
       const [email, setEmail] = useState('');
       const [password, setPassword] = useState('');
-      const [referralInput, setReferralInput] = useState(''); 
       const [authLoading, setAuthLoading] = useState(false);
       const [authMessage, setAuthMessage] = useState({ text: '', type: '' });
       const [resetCooldown, setResetCooldown] = useState(0);
@@ -380,6 +375,12 @@
       const [passwordMessage, setPasswordMessage] = useState('');
       const [uploadingAvatar, setUploadingAvatar] = useState(false);
       const [avatarMessage, setAvatarMessage] = useState('');
+      const [profileName, setProfileName] = useState('');
+      const [profilePhone, setProfilePhone] = useState('');
+      const [profileRefCode, setProfileRefCode] = useState('');
+      const [profileAvatar, setProfileAvatar] = useState('');
+      const [referralBalance, setReferralBalance] = useState(0);
+      const [referralHistory, setReferralHistory] = useState([]);
 
       // Admin States
       const [adminList, setAdminList] = useState([]);
@@ -395,7 +396,8 @@
       const [nominals, setNominals] = useState(DEFAULT_NOMINALS);
       const [banners, setBanners] = useState([]); 
       const [promos, setPromos] = useState([]); 
-      const [bannerPromoConfig, setBannerPromoConfig] = useState({ active: false, text: 'Spesial Diskon', code: '' }); 
+      const [bannerPromoConfig, setBannerPromoConfig] = useState({ active: false, text: 'Spesial Diskon', code: '' });
+      const [runningTexts, setRunningTexts] = useState(['', '', '', '', '']); // Fitur Baru Teks Berjalan
       const [galleryData, setGalleryData] = useState([]);
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
 
@@ -419,7 +421,6 @@
       const [newItemName, setNewItemName] = useState('');
       const [newItemPrice, setNewItemPrice] = useState('');
       const [itemNotice, setItemNotice] = useState('');
-
       const [editingGameId, setEditingGameId] = useState(null);
       const [newGameId, setNewGameId] = useState('');
       const [newGameName, setNewGameName] = useState('');
@@ -427,13 +428,12 @@
       const [newGameImg, setNewGameImg] = useState('');
       const [newGameInput, setNewGameInput] = useState('id_zone');
       const [uploadingGameImg, setUploadingGameImg] = useState(false);
-      
       const [adminBannerUrl, setAdminBannerUrl] = useState('');
       const [adminIG, setAdminIG] = useState('');
       const [adminWA, setAdminWA] = useState('');
       const [adminTT, setAdminTT] = useState('');
       const [adminTG, setAdminTG] = useState('');
-
+      
       // Move promo banner settings to Promo Tab
       const [adminBannerPromoText, setAdminBannerPromoText] = useState('');
       const [adminBannerPromoCode, setAdminBannerPromoCode] = useState('');
@@ -444,9 +444,7 @@
       const [newPromoDiscount, setNewPromoDiscount] = useState('');
       const [newPromoMax, setNewPromoMax] = useState('');
       const [newPromoMinPurchase, setNewPromoMinPurchase] = useState('');
-      const [newPromoApplicableGames, setNewPromoApplicableGames] = useState([]);
-      const [newPromoDescription, setNewPromoDescription] = useState('');
-
+      
       const [newAdminEmail, setNewAdminEmail] = useState('');
       const [activeChatEmail, setActiveChatEmail] = useState(null);
       const [adminReplyText, setAdminReplyText] = useState('');
@@ -476,14 +474,6 @@
       const [adminChats, setAdminChats] = useState([]);
       const [chatInput, setChatInput] = useState('');
       const chatEndRef = useRef(null);
-
-      const [profileName, setProfileName] = useState('');
-      const [profilePhone, setProfilePhone] = useState('');
-      const [profileRefCode, setProfileRefCode] = useState('');
-      const [profileAvatar, setProfileAvatar] = useState('');
-
-      const [referralBalance, setReferralBalance] = useState(0);
-      const [referralHistory, setReferralHistory] = useState([]);
 
       const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
 
@@ -579,6 +569,7 @@
                if (data.promosData) setPromos(JSON.parse(data.promosData));
                if (data.galleryData) setGalleryData(JSON.parse(data.galleryData));
                if (data.bannerPromoConfig) setBannerPromoConfig(JSON.parse(data.bannerPromoConfig));
+               if (data.runningTextData) setRunningTexts(JSON.parse(data.runningTextData));
                if (data.igLink !== undefined) setSocialLinks(prev => ({...prev, ig: data.igLink}));
                if (data.waLink !== undefined) setSocialLinks(prev => ({...prev, wa: data.waLink}));
                if (data.ttLink !== undefined) setSocialLinks(prev => ({...prev, tt: data.ttLink}));
@@ -663,7 +654,7 @@
          if(isSuperAdmin) {
             const settingsRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings');
             getDoc(settingsRef).then(d => {
-               if(!d.exists()) setDoc(settingsRef, { isOpen: true, gamesData: JSON.stringify(DEFAULT_GAMES), nominalsData: JSON.stringify(DEFAULT_NOMINALS), bannersData: JSON.stringify([]), promosData: JSON.stringify([]), galleryData: JSON.stringify([]) }).catch(()=>{});
+               if(!d.exists()) setDoc(settingsRef, { isOpen: true, gamesData: JSON.stringify(DEFAULT_GAMES), nominalsData: JSON.stringify(DEFAULT_NOMINALS), bannersData: JSON.stringify([]), promosData: JSON.stringify([]), galleryData: JSON.stringify([]), runningTextData: JSON.stringify(['Selamat Datang di Vipercell', 'Top Up Game Terpercaya']), bannerPromoConfig: JSON.stringify({ active: false, text: 'Spesial Diskon', code: '' }) }).catch(()=>{});
             })
          }
       }, [isSuperAdmin]);
@@ -704,7 +695,7 @@
              const myCode = generateUniqueCode();
              const now = new Date().toISOString();
              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
-                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, myReferral: myCode, referredBy: referralInput ? referralInput.toUpperCase() : '', referralBalance: 0, referralHistory: [], avatar: '', hasUsedReferralDiscount: false
+                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, myReferral: myCode, referredBy: '', referralBalance: 0, referralHistory: [], avatar: '', hasUsedReferralDiscount: false
              });
              await sendEmailVerification(cred.user); await signOut(auth); 
              setAuthMessage({ text: 'Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', type: 'success' }); setAuthMode('login');
@@ -754,7 +745,6 @@
          setActivePromo(promo);
       };
 
-      // Handler untuk click voucher dari home
       const handleVoucherClick = (promoCode) => {
          setInputPromo(promoCode);
          setTimeout(() => {
@@ -882,6 +872,17 @@
       };
       const handleDeletePromo = (code) => requestConfirm(`Hapus promo ${code}?`, async () => { const newPromos = promos.filter(p => p.code !== code); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { promosData: JSON.stringify(newPromos) }, { merge: true }); });
 
+      // Handle Running Text Updates
+      const handleRunningTextChange = (index, value) => {
+         const newTexts = [...runningTexts];
+         newTexts[index] = value;
+         setRunningTexts(newTexts);
+      };
+      const saveRunningTexts = async () => {
+         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { runningTextData: JSON.stringify(runningTexts) }, { merge: true });
+         setItemNotice('Teks Berjalan disimpan!'); setTimeout(()=>setItemNotice(''), 2000);
+      };
+
       const saveBannerPromoConfig = async () => {
         await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'storeConfig', 'settings'), { bannerPromoConfig: JSON.stringify({ active: adminBannerPromoActive, text: adminBannerPromoText, code: adminBannerPromoCode }) }, { merge: true });
         setItemNotice('Pengaturan banner promo disimpan!'); setTimeout(()=>setItemNotice(''), 2000);
@@ -928,18 +929,31 @@
                     <span className="text-3xl font-black tracking-wider">VIPER<span className="text-orange-500">CELL</span></span>
                   </div>
                   <h2 className="text-4xl font-black text-gray-900 dark:text-white leading-tight mb-4">Top Up Games <br/>Lebih Cepat & Murah!</h2>
-                  <p className="text-gray-600 dark:text-gray-300 font-medium">Bergabunglah dengan ribuan *gamers* lainnya dan nikmati transaksi super instan tanpa ribet.</p>
-                </div>
-                <div className="relative z-10 bg-white/40 dark:bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/20">
-                  <div className="flex items-center gap-4 mb-3">
-                    <div className="flex -space-x-3">
-                      <div className="w-10 h-10 rounded-full bg-orange-400 border-2 border-white flex items-center justify-center text-xs font-bold text-white">VT</div>
-                      <div className="w-10 h-10 rounded-full bg-purple-500 border-2 border-white flex items-center justify-center text-xs font-bold text-white">AR</div>
-                      <div className="w-10 h-10 rounded-full bg-blue-500 border-2 border-white flex items-center justify-center text-xs font-bold text-white">5k+</div>
-                    </div>
-                    <div className="text-sm font-bold text-gray-800 dark:text-white">Pelanggan Aktif</div>
+                  
+                  {/* TENTANG KAMI - DI PINDAH KE KIRI HALAMAN LOGIN */}
+                  <div className="bg-white/40 dark:bg-black/30 backdrop-blur-sm p-6 rounded-2xl border border-white/20 mt-4 mb-6 shadow-inner">
+                     <h3 className="font-black text-gray-900 dark:text-white mb-2 flex items-center gap-2"><IconInfo className="w-5 h-5 text-orange-500"/> Tentang Kami</h3>
+                     <p className="text-xs text-gray-700 dark:text-gray-300 font-medium leading-relaxed">
+                        Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Kami berkomitmen memberikan pengalaman transaksi instan otomatis 24/7 dengan sistem keamanan tingkat tinggi untuk seluruh gamers di Indonesia.
+                     </p>
                   </div>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 font-medium">"Prosesnya beneran hitungan detik. Keren banget UI-nya!" - Review User</p>
+                  
+                  {/* SOCIAL MEDIA ICONS - DI PINDAH KE KIRI HALAMAN LOGIN */}
+                  <div className="flex gap-3">
+                     {socialLinks?.ig && (
+                        <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-orange-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconInstagram className="w-5 h-5"/></a>
+                     )}
+                     {socialLinks?.wa && (
+                        <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-green-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconWhatsapp className="w-5 h-5"/></a>
+                     )}
+                     {socialLinks?.tt && (
+                        <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-gray-900 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconTiktok className="w-5 h-5"/></a>
+                     )}
+                     {socialLinks?.tg && (
+                        <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/50 dark:bg-black/50 hover:bg-blue-500 hover:text-white text-gray-800 dark:text-white rounded-xl transition shadow-sm transform hover:-translate-y-1"><IconSend className="w-5 h-5"/></a>
+                     )}
+                  </div>
+
                 </div>
               </div>
 
@@ -1008,9 +1022,6 @@
                 </div>
               </div>
             </div>
-            
-            <MainFooter socialLinks={socialLinks} />
-            <div className="fixed bottom-3 right-5 text-[10px] text-gray-400 font-mono font-black z-0 uppercase tracking-widest">V2.3</div>
           </div>
         );
       }
@@ -1132,6 +1143,24 @@
               </div>
             </div>
           </nav>
+
+          {/* TEKS BERJALAN (MARQUEE) - NEW PROMO FEATURE */}
+          {runningTexts.some(t => t.trim() !== '') && (
+             <div className="w-full bg-orange-500 text-white py-2 overflow-hidden flex whitespace-nowrap shadow-sm border-b border-orange-600 relative">
+                <div className="animate-marquee inline-block text-[10px] font-black uppercase tracking-widest">
+                   {runningTexts.filter(t => t.trim() !== '').map((text, idx) => (
+                      <span key={idx} className="mx-8 flex-inline items-center gap-2">
+                         <IconZap className="w-3 h-3 inline pb-0.5 text-yellow-300"/> {text}
+                      </span>
+                   ))}
+                   {runningTexts.filter(t => t.trim() !== '').map((text, idx) => (
+                      <span key={'dup-'+idx} className="mx-8 flex-inline items-center gap-2">
+                         <IconZap className="w-3 h-3 inline pb-0.5 text-yellow-300"/> {text}
+                      </span>
+                   ))}
+                </div>
+             </div>
+          )}
 
           {/* MOBILE SIDEBAR OVERLAY MENU */}
           {mobileMenuOpen && (
@@ -1267,33 +1296,7 @@
             {/* BERANDA (HOME VIEW) */}
             {currentView === 'home' && (
                <div className="animate-in fade-in slide-in-from-bottom-4 pb-20">
-                  <BannerSlider items={banners} promoConfig={bannerPromoConfig} />
-
-                  {/* KUPON VOUCHER SECTION PADA HOME */}
-                  {promos.length > 0 && (
-                     <div className="mb-8">
-                        <h3 className="text-sm font-black text-gray-500 uppercase tracking-widest mb-4 flex items-center gap-2"><IconPercent className="w-4 h-4"/> Spesial Untuk Kamu</h3>
-                        <div className="flex gap-4 overflow-x-auto pb-4 custom-scrollbar snap-x">
-                           {promos.map(p => (
-                              <div key={p.code} onClick={() => handleVoucherClick(p.code)} className="voucher-ticket bg-gradient-to-r from-purple-600 to-indigo-600 flex-shrink-0 w-64 p-4 text-white shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300 snap-center group">
-                                 <div className="flex items-start justify-between mb-2">
-                                    <div className="font-black font-mono text-lg tracking-widest">{p.code}</div>
-                                    <IconTag className="w-5 h-5 opacity-50 group-hover:rotate-12 transition" />
-                                 </div>
-                                 <div className="text-sm font-bold opacity-90">
-                                    {p.type === PROMO_TYPES.PERCENTAGE ? `Diskon ${p.discount}%` : 
-                                     p.type === PROMO_TYPES.FIXED ? `Potongan ${formatRupiah(p.discount)}` : 
-                                     `Diskon ${formatRupiah(p.discount)}`}
-                                 </div>
-                                 <div className="mt-3 pt-3 voucher-ticket-dashed flex justify-between items-center text-[9px] uppercase tracking-widest font-bold">
-                                    <span className="opacity-70">{p.minPurchase > 0 ? `Min: ${formatRupiah(p.minPurchase)}` : 'Tanpa Min. Beli'}</span>
-                                    <span className="bg-white text-indigo-600 px-2 py-1 rounded-md shadow-sm group-hover:bg-orange-500 group-hover:text-white transition">Pakai</span>
-                                 </div>
-                              </div>
-                           ))}
-                        </div>
-                     </div>
-                  )}
+                  <BannerSlider items={banners} />
 
                   <div className="relative">
                      {/* STEP 1: PILIH GAME (GRID UTAMA) */}
@@ -1318,7 +1321,7 @@
                      {/* GALERI BUKTI TRANSAKSI DI HOME */}
                      {galleryData.length > 0 && (
                         <div className="bg-white/50 dark:bg-navy-900/50 backdrop-blur-md border border-gray-200 dark:border-white/10 rounded-[2rem] p-6 shadow-sm">
-                           <h3 className="text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><IconImage className="w-4 h-4"/> Bukti Testimoni Transaksi</h3>
+                           <h3 className="text-sm font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2"><IconImage className="w-4 h-4"/> Galeri</h3>
                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                               {galleryData.map((img, i) => (
                                  <div key={i} className="aspect-square rounded-2xl overflow-hidden border-2 border-white dark:border-navy-800 shadow-md group relative">
@@ -1963,27 +1966,19 @@
                                  </form>
                               </div>
 
+                              {/* NEW: Move Banner Promo Settings Here */}
                               <div className="bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 p-6 rounded-[2rem] shadow-sm relative overflow-hidden">
                                  <div className="absolute top-0 left-0 w-full h-2 bg-purple-500"></div>
-                                 <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest flex items-center gap-2 mt-2"><IconTag className="w-4 h-4 text-purple-500"/> Tampilkan Promo di Banner</h3>
+                                 <h3 className="font-black text-gray-900 dark:text-white mb-4 text-sm uppercase tracking-widest flex items-center gap-2 mt-2"><IconTag className="w-4 h-4 text-purple-500"/> Pengaturan Teks Berjalan</h3>
                                  <div className="space-y-4">
-                                    <div className="flex items-center gap-3 bg-gray-50 dark:bg-black/30 p-4 rounded-xl border border-gray-200 dark:border-white/5">
-                                       <input type="checkbox" id="promoToggle" checked={adminBannerPromoActive} onChange={(e)=>setAdminBannerPromoActive(e.target.checked)} className="w-5 h-5 accent-purple-500 rounded cursor-pointer" />
-                                       <label htmlFor="promoToggle" className="text-sm font-bold text-gray-700 dark:text-gray-300 cursor-pointer">Aktifkan Label Promo</label>
-                                    </div>
-                                    {adminBannerPromoActive && (
-                                       <div className="grid grid-cols-2 gap-3 animate-in fade-in slide-in-from-top-2">
-                                          <div>
-                                             <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Teks Label</label>
-                                             <input type="text" value={adminBannerPromoText} onChange={(e)=>setAdminBannerPromoText(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-gray-900 dark:text-white focus:border-purple-500 text-xs font-bold transition shadow-inner" placeholder="Spesial Hari Ini:" />
-                                          </div>
-                                          <div>
-                                             <label className="block text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1.5">Kode Diskon</label>
-                                             <input type="text" value={adminBannerPromoCode} onChange={(e)=>setAdminBannerPromoCode(e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-3 text-purple-600 dark:text-purple-400 font-mono uppercase focus:border-purple-500 text-xs font-black transition shadow-inner" placeholder="VIPER50" />
-                                          </div>
+                                    <p className="text-[10px] font-bold text-gray-500">Tambahkan informasi promo atau pengumuman yang akan berjalan di bagian atas web (Maksimal 5).</p>
+                                    {runningTexts.map((text, idx) => (
+                                       <div key={idx} className="flex items-center gap-3">
+                                          <span className="text-[10px] font-black text-gray-400">{idx + 1}.</span>
+                                          <input type="text" value={text} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-gray-50 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-gray-900 dark:text-white focus:border-purple-500 text-xs font-bold transition shadow-inner" placeholder="Tulis kalimat promo..." />
                                        </div>
-                                    )}
-                                    <button onClick={saveBannerPromoConfig} className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-md shadow-purple-500/30">Simpan Tampilan Banner</button>
+                                    ))}
+                                    <button onClick={saveRunningTexts} className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-md shadow-purple-500/30">Simpan Teks Berjalan</button>
                                  </div>
                               </div>
                            </div>
@@ -2136,10 +2131,6 @@
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                        <div>
-                                          <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-widest ml-1">TikTok</label>
-                                          <input type="text" value={adminTT} onChange={(e)=>setAdminTT(e.target.value)} className="w-full bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 rounded-xl py-3.5 px-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 text-sm font-medium transition shadow-sm" placeholder="https://tiktok.com/@..." />
-                                       </div>
-                                       <div>
                                           <label className="block text-[10px] font-black text-gray-500 dark:text-gray-400 mb-1.5 uppercase tracking-widest ml-1">Telegram</label>
                                           <input type="text" value={adminTG} onChange={(e)=>setAdminTG(e.target.value)} className="w-full bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/5 rounded-xl py-3.5 px-4 text-gray-900 dark:text-white focus:outline-none focus:border-orange-500 text-sm font-medium transition shadow-sm" placeholder="https://t.me/..." />
                                        </div>
@@ -2193,7 +2184,7 @@
                                           <button onClick={()=>handleRemoveGallery(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-6 h-6 text-white"/></button>
                                        </div>
                                     ))}
-                                    {galleryData.length === 0 && <div className="col-span-3 text-center py-12 text-xs font-bold text-gray-500 border border-dashed border-gray-200 dark:border-white/10 rounded-3xl bg-white dark:bg-navy-900 shadow-sm">Belum ada foto bukti tranksasi.</div>}
+                                    {galleryData.length === 0 && <div className="col-span-3 text-center py-12 text-xs font-bold text-gray-500 border border-dashed border-gray-200 dark:border-white/10 rounded-3xl bg-white dark:bg-navy-900 shadow-sm">Belum ada foto bukti transaksi.</div>}
                                  </div>
                               </div>
                            </div>
