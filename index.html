@@ -689,17 +689,19 @@
       const openChatsCount = (activeSupportChats || []).filter(c => c.status === 'Open').length || 0;
       const userHasUnread = userChat?.status === 'Dijawab';
 
-      // QR Scanner Logic - Barcode & QR Supported
+      // QR Scanner Logic - Barcode ONLY (CODE_128)
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
-            html5QrCode = new Html5Qrcode("reader");
-            // By not specifying formats, Html5Qrcode defaults to supporting all (QR & 1D Barcodes like Code128)
-            html5QrCode.start({ facingMode: cameraFacingMode }, { fps: 10, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.7), height: Math.floor(Math.min(w,h)*0.7) }), aspectRatio: window.innerHeight / window.innerWidth },
+            // Mengkonfigurasi scanner HANYA untuk membaca Barcode 1D (Code 128)
+            html5QrCode = new Html5Qrcode("reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_128 ] });
+            
+            // Rasio kotak scan (qrbox) diubah jadi persegi panjang agar lebih optimal menangkap Barcode
+            html5QrCode.start({ facingMode: cameraFacingMode }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.9), height: Math.floor(Math.min(w,h)*0.4) }), aspectRatio: window.innerHeight / window.innerWidth },
                (decodedText) => {
                   const matchedOrder = (adminOrders || []).find(o => o.id === decodedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === decodedText);
                   if (matchedOrder) { playSuccessBeep(); setScannedOrder(matchedOrder); setIsScannerOpen(false); } 
-                  else { setScannerError("ID Pesanan tidak valid."); setTimeout(() => setScannerError(''), 3500); }
+                  else { setScannerError("Barcode tidak valid atau bukan dari sistem ini."); setTimeout(() => setScannerError(''), 3500); }
                }, (err) => {}
             ).catch(err => { alert("Kamera tidak dapat diakses."); setIsScannerOpen(false); });
          }
@@ -1303,7 +1305,7 @@
                    </div>
                 )}
                 <div id="reader" className="w-full h-full flex-1"></div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl"><IconQrcode className="w-4 h-4"/> Posisikan Barcode / QR di Kotak</div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl"><IconQrcode className="w-4 h-4"/> Posisikan Barcode di Kotak</div>
              </div>
           )}
 
