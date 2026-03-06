@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v3.2</title>
+  <title>Vipercell - Premium Top Up v3.6</title>
   
   <!-- Tailwind CSS & Custom Config -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -61,9 +61,9 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .light .glass-panel, body:not(.dark) .glass-panel {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       border: 1px solid rgba(0, 0, 0, 0.05);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
     }
 
     #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; }
@@ -185,6 +185,7 @@
     const IconTag = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>;
     const IconInstagram = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
     const IconWhatsapp = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>;
+    const IconTiktok = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>;
     const IconImage = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>;
     const IconShieldAlert = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>;
     const IconSearch = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -242,7 +243,7 @@
                   Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
                </p>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-gray-100 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 dark:text-orange-400 border border-gray-200 dark:border-white/5">v3.2</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-gray-100 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 dark:text-orange-400 border border-gray-200 dark:border-white/5">v3.6</span>
                </div>
             </div>
          </footer>
@@ -253,12 +254,12 @@
     const BannerSlider = ({ items }) => {
        const [curr, setCurr] = useState(0);
        useEffect(() => {
-          if(items.length <= 1) return;
+          if(items?.length <= 1) return;
           const t = setInterval(() => setCurr(c => (c+1)%items.length), 5000);
           return () => clearInterval(t);
-       }, [items.length]);
+       }, [items?.length]);
 
-       if (items.length === 0) return (
+       if (!items || items.length === 0) return (
           <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative glass-panel flex items-center justify-center mt-6 bg-white dark:bg-transparent">
              <h1 className="text-3xl md:text-5xl font-black tracking-tight drop-shadow-lg text-gray-900 dark:text-white">Top Up <span className="text-orange-500">Super Cepat</span></h1>
           </div>
@@ -342,6 +343,9 @@
       const [galleryData, setGalleryData] = useState([]);
       const [runningTexts, setRunningTexts] = useState(['', '', '', '', '']); // SAFE DEFAULTS
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
+      
+      // Error Boundary for Firebase
+      const [dbError, setDbError] = useState('');
 
       // Admin & Data States
       const [adminList, setAdminList] = useState([]);
@@ -350,7 +354,7 @@
       const [adminChats, setAdminChats] = useState([]); 
       
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL;
-      const isAdmin = isSuperAdmin || adminList.includes(authUser?.email);
+      const isAdmin = isSuperAdmin || adminList?.includes(authUser?.email);
 
       // --- VIEW CONTROLLERS ---
       const [currentView, setCurrentView] = useState('home'); 
@@ -426,11 +430,11 @@
       const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
       useEffect(() => {
-         if (games.length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id);
+         if (games?.length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id);
       }, [games, adminSelectedGame]);
 
       useEffect(() => {
-        if(lastOrderId && allGlobalOrders.length > 0) {
+        if(lastOrderId && allGlobalOrders?.length > 0) {
            const found = allGlobalOrders.find(o => o.id === lastOrderId);
            setActiveOrderDetails(found || null);
         }
@@ -454,7 +458,7 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen]);
 
-      // --- REFACTORED DB FETCHING (SAFE ARRAYS) ---
+      // --- REFACTORED DB FETCHING (SAFE ARRAYS & ERROR BOUNDARY) ---
       useEffect(() => {
          const globalRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global');
          const unsubGlobal = onSnapshot(globalRef, (snap) => {
@@ -463,7 +467,6 @@
                setIsStoreOpen(d.isOpen ?? true);
                setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', tg: d.tgLink||'' });
                
-               // SAFE: Always ensure exactly 5 string elements
                let rTexts = d.runningTexts || [];
                if (!Array.isArray(rTexts)) rTexts = [];
                const safeTexts = [...rTexts, '', '', '', '', ''].slice(0, 5);
@@ -476,22 +479,26 @@
                  setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman', '', '', ''], banners: [], gallery: [] }).catch(()=>{});
                }
             }
+         }, (error) => { 
+            console.error("Firebase Rules Error (Global Config):", error); 
+            if(error.code === 'permission-denied') setDbError('Akses Ditolak. Update Rules Firebase Anda.');
+            else setDbError(error.message);
          });
 
          const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => {
              const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()}));
              setGames(g);
-         });
+         }, (error) => { console.error("Firebase Rules Error (Games):", error); });
 
          const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => {
              const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()}));
              setItems(i);
-         });
+         }, (error) => { console.error("Firebase Rules Error (Items):", error); });
 
          const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => {
              const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()}));
              setPromos(p);
-         });
+         }, (error) => { console.error("Firebase Rules Error (Promos):", error); });
 
          return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
       }, [isSuperAdmin]);
@@ -503,7 +510,7 @@
           if(user) {
              getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins')).then(d => { 
                 if(d.exists()) setAdminList(d.data().emails || []); 
-             });
+             }).catch(err => console.error("Firebase Rules Error (Admin Check):", err));
           }
         });
         return () => unsubscribe();
@@ -517,9 +524,9 @@
             if(docSnap.exists()) {
                setCurrentUserData({ id: docSnap.id, ...docSnap.data() });
             } else {
-               setDoc(userRef, { email: authUser.email, name: authUser.email.split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() });
+               setDoc(userRef, { email: authUser.email, name: authUser.email.split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() }).catch(()=>{});
             }
-         });
+         }, (error) => { console.error("Firebase Rules Error (Profile Fetch):", error); });
          return () => unsubUser();
       }, [authUser]);
 
@@ -531,25 +538,25 @@
          unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
             const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
             const getStatusScore = (s) => s === 'Pending' ? 1 : s === 'Sukses' ? 2 : 3;
-            fetchedAll.sort((a,b) => getStatusScore(a.status) !== getStatusScore(b.status) ? getStatusScore(a.status) - getStatusScore(b.status) : new Date(b.createdAt) - new Date(a.createdAt));
+            fetchedAll.sort((a,b) => getStatusScore(a.status) !== getStatusScore(b.status) ? getStatusScore(a.status) - getStatusScore(b.status) : new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
             setAllGlobalOrders(fetchedAll);
             if (isAdmin) setAdminOrders(fetchedAll); else setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email));
-         }));
+         }, (error) => { console.error("Firebase Rules Error (Orders):", error); }));
 
          if (isAdmin) {
             unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => {
                const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()}));
-               m.sort((a,b) => new Date(b.lastLogin) - new Date(a.lastLogin)); setMemberList(m);
-            }));
+               m.sort((a,b) => new Date(b.lastLogin || 0) - new Date(a.lastLogin || 0)); setMemberList(m);
+            }, (error) => { console.error("Firebase Rules Error (Members):", error); }));
             
             unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => {
                const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() }));
-               fetched.sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt)); setAdminChats(fetched);
-            }));
+               fetched.sort((a,b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0)); setAdminChats(fetched);
+            }, (error) => { console.error("Firebase Rules Error (Chats):", error); }));
          } else {
             unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => {
                if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] });
-            }));
+            }, (error) => { console.error("Firebase Rules Error (User Chat):", error); }));
          }
 
          return () => unsubs.forEach(fn => fn());
@@ -567,25 +574,33 @@
 
       useEffect(() => {
          if(currentView === 'admin' && activeAdminTab === 'settings') {
-            setAdminIG(socialLinks.ig || ''); setAdminWA(socialLinks.wa || ''); setAdminTT(socialLinks.tt || ''); setAdminTG(socialLinks.tg || '');
+            setAdminIG(socialLinks?.ig || ''); setAdminWA(socialLinks?.wa || ''); setAdminTT(socialLinks?.tt || ''); setAdminTG(socialLinks?.tg || '');
          }
       }, [currentView, activeAdminTab, socialLinks]);
 
-      const pendingOrdersCount = adminOrders.filter(o => o.status === 'Pending').length;
-      const openChatsCount = adminChats.filter(c => c.status === 'Open').length;
-      const userHasUnread = userChat?.status === 'Dijawab';
+      const pendingOrdersCount = adminOrders?.filter(o => o.status === 'Pending').length || 0;
+      
+      // ADMIN CHAT FILTERING (SAFE)
+      const activeSupportChats = useMemo(() => {
+          if (!isAdmin || !adminChats) return [];
+          return adminChats
+              .filter(c => c.messages && c.messages.length > 0)
+              .map(chat => {
+                  const member = memberList?.find(m => m.email === chat.id);
+                  return {
+                      ...chat,
+                      userName: member ? (member.name || (member.email || '').split('@')[0]) : ((chat.id || '').split('@')[0] || 'User'),
+                      userAvatar: member ? member.avatar : null
+                  };
+              }).sort((a, b) => {
+                  if (a.status === 'Open' && b.status !== 'Open') return -1;
+                  if (b.status === 'Open' && a.status !== 'Open') return 1;
+                  return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
+              });
+      }, [adminChats, memberList, isAdmin]);
 
-      const allUserChats = useMemo(() => {
-          if (!isAdmin) return [];
-          return memberList.map(member => {
-              const existingChat = adminChats.find(c => c.id === member.email);
-              return existingChat || { id: member.email, messages: [], status: 'Selesai', updatedAt: member.lastLogin };
-          }).sort((a, b) => {
-              if (a.status === 'Open' && b.status !== 'Open') return -1;
-              if (b.status === 'Open' && a.status !== 'Open') return 1;
-              return new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0);
-          });
-      }, [memberList, adminChats, isAdmin]);
+      const openChatsCount = activeSupportChats?.filter(c => c.status === 'Open').length || 0;
+      const userHasUnread = userChat?.status === 'Dijawab';
 
       // QR Scanner Logic
       useEffect(() => {
@@ -594,7 +609,7 @@
             html5QrCode = new Html5Qrcode("reader");
             html5QrCode.start({ facingMode: "environment" }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.8), height: Math.floor(Math.min(w,h)*0.8) }), aspectRatio: window.innerHeight / window.innerWidth },
                (decodedText) => {
-                  const matchedOrder = adminOrders.find(o => o.id === decodedText);
+                  const matchedOrder = adminOrders?.find(o => o.id === decodedText);
                   if (matchedOrder) { playSuccessBeep(); setScannedOrder(matchedOrder); setIsScannerOpen(false); } 
                   else { setScannerError("ID Pesanan tidak valid."); setTimeout(() => setScannerError(''), 3500); }
                }, (err) => {}
@@ -674,7 +689,7 @@
       };
 
       const handleApplyPromo = () => {
-         const promo = promos.find(p => p.code.toUpperCase() === inputPromo.toUpperCase() && p.isActive !== false);
+         const promo = promos?.find(p => (p.code || '').toUpperCase() === inputPromo.toUpperCase() && p.isActive !== false);
          if (!promo) return alert('Kode promo tidak valid atau kadaluarsa.');
          if (promo.usedBy && promo.usedBy.includes(authUser.email)) return alert('Anda sudah pernah menggunakan kode promo ini.');
          if (promo.usedBy && promo.usedBy.length >= promo.maxUses) return alert('Kuota kode promo sudah habis digunakan orang lain.');
@@ -701,9 +716,9 @@
            const pDoc = await getDoc(promoRef);
            if(pDoc.exists()) {
               let livePromo = pDoc.data();
-              if (livePromo.usedBy.length < livePromo.maxUses && !livePromo.usedBy.includes(authUser.email)) {
+              if (livePromo.usedBy?.length < livePromo.maxUses && !livePromo.usedBy?.includes(authUser.email)) {
                  appliedPromoCode = livePromo.code; 
-                 await setDoc(promoRef, { usedBy: [...livePromo.usedBy, authUser.email] }, { merge: true });
+                 await setDoc(promoRef, { usedBy: [...(livePromo.usedBy||[]), authUser.email] }, { merge: true });
               } else {
                  alert("Mohon maaf, kuota promo baru saja habis digunakan."); setActivePromo(null); setIsProcessing(false); return;
               }
@@ -796,7 +811,7 @@
       
       const saveRunningTexts = async () => { 
          try { 
-            const safeTexts = [...runningTexts];
+            const safeTexts = Array.isArray(runningTexts) ? [...runningTexts] : ['', '', '', '', ''];
             while(safeTexts.length < 5) safeTexts.push('');
             await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: safeTexts.slice(0,5) }, { merge: true }); 
             alert('Teks Berjalan berhasil disimpan!'); 
@@ -804,33 +819,43 @@
       };
       
       const handleAddBanner = async (type, url) => { 
-         if(!url) return; const newBanners = [...banners, { type, url }]; 
+         if(!url) return; const newBanners = [...(banners||[]), { type, url }]; 
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); } catch(e) { alert("Gagal tambah banner: " + e.message); }
       };
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if (file) { const compressed = await compressImage(file, 800); handleAddBanner('image', compressed); } };
       const handleDeleteBanner = (index) => requestConfirm('Hapus banner?', async () => { 
-         const newBanners = [...banners]; newBanners.splice(index, 1); 
+         const newBanners = [...(banners||[])]; newBanners.splice(index, 1); 
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); } catch(e) { alert("Gagal hapus banner: " + e.message); }
       });
       const handleGalleryUpload = async (e) => { 
-         const file = e.target.files[0]; if (file) { if (galleryData.length >= 10) return alert('Maksimal 10 foto!'); const compressed = await compressImage(file, 400); 
-         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...galleryData, compressed] }, { merge: true }); } catch(e) { alert("Gagal upload foto: " + e.message); }
+         const file = e.target.files[0]; if (file) { if (galleryData?.length >= 16) return alert('Maksimal 16 foto!'); const compressed = await compressImage(file, 400); 
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); } catch(e) { alert("Gagal upload foto: " + e.message); }
       }};
       const handleRemoveGallery = async (index) => requestConfirm('Hapus foto?', async () => { 
-         const newGallery = [...galleryData]; newGallery.splice(index, 1); 
+         const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); 
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); } catch(e) { alert("Gagal hapus foto: " + e.message); }
       });
       const saveSettingsLinks = async () => { 
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminIG, waLink: adminWA, ttLink: adminTT, tgLink: adminTG }, { merge: true }); alert('Kontak diperbarui!'); } catch(e) { alert("Gagal simpan kontak: " + e.message); }
       };
-      const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !newAdminEmail.includes('@') || adminList.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: [...adminList, newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
-      const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: adminList.filter(e => e !== email) }, { merge: true }); });
+      const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !newAdminEmail.includes('@') || adminList?.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: [...(adminList||[]), newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
+      const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: adminList?.filter(e => e !== email) }, { merge: true }); });
+
+      // DELETE MEMBER HANDLER
+      const handleDeleteMember = async (memberId) => {
+         requestConfirm('Hapus akun pelanggan ini permanen?', async () => {
+            try {
+               await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId));
+               alert('Member berhasil dihapus dari database!');
+            } catch(e) { alert('Gagal menghapus member: ' + e.message); }
+         });
+      };
 
       const handleAdminSendChat = async (e) => {
          if(e) e.preventDefault(); if (!adminReplyText.trim() || !activeChatEmail) return;
          try {
             const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail);
-            const activeChat = adminChats.find(c => c.id === activeChatEmail);
+            const activeChat = adminChats?.find(c => c.id === activeChatEmail);
             const roleName = authUser.email === ADMIN_EMAIL ? 'Super Admin' : 'Admin';
             const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: adminReplyText, time: new Date().toISOString(), role: roleName }];
             await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true });
@@ -842,12 +867,12 @@
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Selesai' }, { merge: true }); } catch(e) { alert("Gagal update status: " + e.message); }
       };
       
-      const flashSalePromos = promos.filter(p => p.isFlashSale && p.isActive);
+      const flashSalePromos = promos?.filter(p => p.isFlashSale && p.isActive) || [];
 
       // --- RENDERING ---
       if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#050505]"><IconLoader className="w-12 h-12 text-orange-500 animate-spin"/></div>;
 
-      // LOGIN UI REDESIGN (v3.2 Light/Dark Full Support)
+      // LOGIN UI REDESIGN (v3.6 Light/Dark Full Support)
       if (!authUser) {
         return (
           <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-[#050505] text-gray-900 dark:text-white transition-colors duration-500">
@@ -952,6 +977,18 @@
         <div className="flex-grow flex flex-col relative z-10 min-h-screen">
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
           
+          {/* TOAST DATABASE ERROR (FOR ADMIN) */}
+          {dbError && isAdmin && (
+             <div className="fixed top-4 right-4 z-[9999] bg-red-600 text-white px-4 py-3 rounded-xl shadow-2xl text-xs font-bold flex items-center gap-3 max-w-sm animate-in slide-in-from-top-4">
+                <IconShieldAlert className="w-6 h-6 shrink-0"/> 
+                <div>
+                   <p className="text-sm">Database Error</p>
+                   <p className="text-[10px] font-medium opacity-90 line-clamp-2">{dbError}</p>
+                </div>
+                <button onClick={()=>setDbError('')} className="ml-auto p-1 bg-white/20 rounded-md hover:bg-white/40"><IconX className="w-4 h-4"/></button>
+             </div>
+          )}
+
           {/* CAMERA FULL SCREEN OVERLAY */}
           {isScannerOpen && (
              <div className="fixed inset-0 bg-black z-[9999] flex flex-col animate-in fade-in duration-200">
@@ -1038,11 +1075,11 @@
                       {currentUserData?.avatar ? (
                         <img src={currentUserData.avatar} className="w-full h-full object-cover" />
                       ) : (
-                        (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : authUser.email.charAt(0).toUpperCase())
+                        (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : authUser.email?.charAt(0).toUpperCase() || 'U')
                       )}
                    </div>
                    <div className="hidden sm:block text-left">
-                      <div className="text-sm font-black leading-tight max-w-[100px] truncate text-gray-900 dark:text-white">{currentUserData?.name || authUser.email.split('@')[0]}</div>
+                      <div className="text-sm font-black leading-tight max-w-[100px] truncate text-gray-900 dark:text-white">{currentUserData?.name || authUser.email?.split('@')[0] || 'User'}</div>
                    </div>
                 </div>
               </div>
@@ -1081,10 +1118,10 @@
                          {currentUserData?.avatar ? (
                            <img src={currentUserData.avatar} className="w-full h-full object-cover" />
                          ) : (
-                           (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : authUser.email.charAt(0).toUpperCase())
+                           (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : authUser.email?.charAt(0).toUpperCase() || 'U')
                          )}
                        </div>
-                       <h3 className="font-black text-lg text-gray-900 dark:text-white">{currentUserData?.name || authUser.email.split('@')[0]}</h3>
+                       <h3 className="font-black text-lg text-gray-900 dark:text-white">{currentUserData?.name || authUser.email?.split('@')[0] || 'User'}</h3>
                        <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{authUser.email}</p>
                    </div>
 
@@ -1129,7 +1166,7 @@
                   <BannerSlider items={banners} />
                   
                   {/* FLASH SALE PROMO SECTION */}
-                  {flashSalePromos.length > 0 && (
+                  {flashSalePromos?.length > 0 && (
                      <div className="mb-10 animate-in zoom-in-95 duration-500">
                         <div className="flex items-center gap-2 mb-4 pl-1">
                            <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
@@ -1168,7 +1205,7 @@
                         </div>
                         
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-                           {games.map(game => (
+                           {games?.map(game => (
                               <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId('');}} className="cursor-pointer rounded-3xl overflow-hidden relative bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/5 hover:border-orange-500 hover:shadow-[0_10px_30px_rgba(249,115,22,0.15)] transition-all duration-300 group hover:-translate-y-2">
                                  <div className="aspect-square bg-gray-200 dark:bg-black p-2">
                                     <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-2xl group-hover:scale-110 transition duration-700 ease-out opacity-90 group-hover:opacity-100 shadow-inner"/>
@@ -1179,12 +1216,12 @@
                                  </div>
                               </div>
                            ))}
-                           {games.length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada game tersedia.</div>}
+                           {games?.length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border-2 border-dashed border-gray-300 dark:border-white/10">Belum ada game tersedia.</div>}
                         </div>
                      </div>
 
                      {/* GALERI KOMPAK DI BAWAH HOME */}
-                     {galleryData.length > 0 && (
+                     {galleryData?.length > 0 && (
                         <div className="mt-12 glass-panel bg-white dark:bg-transparent rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-gray-200 dark:border-white/10">
                            <h3 className="text-sm font-black text-gray-700 dark:text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2 pl-2">
                               <IconImage className="w-5 h-5 text-orange-500"/> Galeri Bukti Transaksi
@@ -1256,14 +1293,14 @@
                                     </div>
                                     
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-                                       {items.filter(i => i.gameId === selectedGame?.id).map(item => (
+                                       {items?.filter(i => i.gameId === selectedGame?.id).map(item => (
                                           <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 transition-all flex flex-col justify-center items-center text-center group relative overflow-hidden ${selectedNominal?.id === item.id ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)] transform scale-[0.98]' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/40 hover:border-emerald-400 dark:hover:border-emerald-500/50 hover:-translate-y-1'}`}>
                                              <div className="font-black text-sm mb-2 leading-tight relative z-10 text-gray-900 dark:text-white">{item.name}</div>
                                              <div className="text-xs font-black text-emerald-600 dark:text-emerald-400 font-mono bg-white dark:bg-black/60 px-3 py-1.5 rounded-lg shadow-inner w-full border border-gray-200 dark:border-white/5 relative z-10">{formatRupiah(item.price)}</div>
                                              {selectedNominal?.id === item.id && <div className="absolute top-2 right-2 z-10"><IconCheckCircle className="w-4 h-4 text-emerald-500 animate-in zoom-in"/></div>}
                                           </div>
                                        ))}
-                                       {items.filter(i => i.gameId === selectedGame?.id).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
+                                       {items?.filter(i => i.gameId === selectedGame?.id).length === 0 && <div className="col-span-full py-10 text-center text-gray-500 text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border border-dashed border-gray-300 dark:border-white/10">Belum ada produk untuk game ini.</div>}
                                     </div>
                                  </div>
 
@@ -1374,7 +1411,7 @@
                      ) : (
                         <>
                            {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 py-3 px-6 rounded-xl text-xs font-bold w-fit mx-auto shadow-sm backdrop-blur-md">✔ Tiket obrolan telah ditutup. Jika ada pertanyaan lain, silakan kirim pesan baru.</div>)}
-                           {(!userChat || userChat.messages.length === 0) && (
+                           {(!userChat || userChat.messages?.length === 0) && (
                               <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
                                  <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-gray-300 dark:border-white/5"><IconMessageSquare className="w-10 h-10 opacity-30" /></div>
                                  <p className="font-bold text-sm">Kirim pesan untuk meminta bantuan Customer Service.</p>
@@ -1415,7 +1452,7 @@
                         <div className="relative group">
                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 p-1 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
                               <div className="w-full h-full bg-white dark:bg-[#0a0a0a] rounded-full flex items-center justify-center overflow-hidden relative">
-                                 {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-gray-400 dark:text-gray-500">{currentUserData?.name?.charAt(0).toUpperCase() || authUser.email.charAt(0).toUpperCase()}</span>}
+                                 {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-gray-400 dark:text-gray-500">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}
                                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm cursor-pointer">
                                     <IconCamera className="w-8 h-8 text-white"/>
                                  </div>
@@ -1568,7 +1605,7 @@
                                           <div className="flex items-center gap-4">
                                              <div className={`w-2 h-2 rounded-full ${o.status==='Pending'?'bg-orange-500 animate-pulse':o.status==='Sukses'?'bg-emerald-500':'bg-red-500'}`}></div>
                                              <div>
-                                                <div className="text-sm font-bold text-gray-900 dark:text-white">{o.userEmail.split('@')[0]} <span className="text-xs text-gray-500 font-medium">memesan</span> {o.gameName}</div>
+                                                <div className="text-sm font-bold text-gray-900 dark:text-white">{(o.userEmail || '').split('@')[0]} <span className="text-xs text-gray-500 font-medium">memesan</span> {o.gameName}</div>
                                                 <div className="text-[10px] font-mono text-gray-400 mt-1">{o.id}</div>
                                              </div>
                                           </div>
@@ -1603,10 +1640,10 @@
                                        <tr><th className="px-6 py-4">Pembeli / ID</th><th className="px-6 py-4">Produk</th><th className="px-6 py-4">Tujuan</th><th className="px-6 py-4">Total Tagihan</th><th className="px-6 py-4">Status</th><th className="px-6 py-4 text-right">Aksi Panel</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                                    {adminOrders.filter(o => o.status !== 'Dihapus' && (o.id.includes(adminOrderSearch) || o.userEmail.includes(adminOrderSearch))).map(order => (
+                                    {adminOrders?.filter(o => o.status !== 'Dihapus' && ((o.id || '').toLowerCase().includes(adminOrderSearch.toLowerCase()) || (o.userEmail || '').toLowerCase().includes(adminOrderSearch.toLowerCase()))).map(order => (
                                        <tr key={order.id} className="hover:bg-white dark:hover:bg-white/[0.02] transition">
                                           <td className="px-6 py-4">
-                                             <div className="font-bold text-gray-900 dark:text-white">{order.userEmail.split('@')[0]}</div>
+                                             <div className="font-bold text-gray-900 dark:text-white">{(order.userEmail || '').split('@')[0]}</div>
                                              <div className="text-[9px] text-gray-500 font-mono mt-1">{order.id}</div>
                                           </td>
                                           <td className="px-6 py-4">
@@ -1635,7 +1672,7 @@
                                           </td>
                                        </tr>
                                     ))}
-                                    {adminOrders.filter(o => o.status !== 'Dihapus').length === 0 && (<tr><td colSpan="6" className="text-center py-16 text-gray-500 font-bold">Tidak ada pesanan yang sesuai.</td></tr>)}
+                                    {adminOrders?.filter(o => o.status !== 'Dihapus').length === 0 && (<tr><td colSpan="6" className="text-center py-16 text-gray-500 font-bold">Tidak ada pesanan yang sesuai.</td></tr>)}
                                     </tbody>
                                  </table>
                               </div>
@@ -1654,15 +1691,15 @@
                                        <h3 className="font-black text-sm flex items-center gap-2 mb-2 text-gray-900 dark:text-white"><IconGamepad className="w-4 h-4 text-red-500"/> {editingGameId ? 'Edit Game' : 'Tambah Game'}</h3>
                                        <div>
                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">ID Unik Database</label>
-                                          <input type="text" required value={newGameId} onChange={(e)=>setNewGameId(e.target.value)} disabled={editingGameId !== null} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 disabled:opacity-50 transition shadow-sm" placeholder="cth: mlbb" />
+                                          <input type="text" required value={newGameId} onChange={(e)=>setNewGameId(e.target.value)} disabled={editingGameId !== null} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 disabled:opacity-50 transition shadow-sm text-gray-900 dark:text-white" placeholder="cth: mlbb" />
                                        </div>
                                        <div>
                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Nama Tampilan</label>
-                                          <input type="text" required value={newGameName} onChange={(e)=>setNewGameName(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 transition shadow-sm" placeholder="Mobile Legends" />
+                                          <input type="text" required value={newGameName} onChange={(e)=>setNewGameName(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 transition shadow-sm text-gray-900 dark:text-white" placeholder="Mobile Legends" />
                                        </div>
                                        <div>
                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Tipe Input ID</label>
-                                          <select value={newGameInput} onChange={(e)=>setNewGameInput(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 appearance-none font-bold transition shadow-sm">
+                                          <select value={newGameInput} onChange={(e)=>setNewGameInput(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 text-sm focus:border-red-500 appearance-none font-bold transition shadow-sm text-gray-900 dark:text-white">
                                              <option value="id_zone">User ID + Zone ID</option>
                                              <option value="id_only">Hanya User ID</option>
                                              <option value="riot_id">Riot ID + Tagline</option>
@@ -1693,9 +1730,9 @@
 
                                     {/* LIST GAMES */}
                                     <div className="bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/5 rounded-[2rem] p-4 flex-1 shadow-inner h-[400px] overflow-y-auto custom-scrollbar">
-                                       <h3 className="text-xs font-black text-gray-600 dark:text-gray-500 mb-4 px-2">Daftar Game ({games.length})</h3>
+                                       <h3 className="text-xs font-black text-gray-600 dark:text-gray-500 mb-4 px-2">Daftar Game ({games?.length || 0})</h3>
                                        <div className="space-y-2">
-                                          {games.map(g => (
+                                          {games?.map(g => (
                                              <div key={g.id} onClick={()=>setAdminSelectedGame(g.id)} className={`flex items-center justify-between p-3 rounded-2xl cursor-pointer border transition-all ${adminSelectedGame === g.id ? 'bg-red-50 dark:bg-red-500/10 border-red-200 dark:border-red-500/30' : 'bg-white dark:bg-white/5 border-transparent hover:border-gray-200 dark:hover:border-white/10 shadow-sm'}`}>
                                                 <div className="flex items-center gap-3">
                                                    <img src={g.image} className="w-10 h-10 rounded-lg object-cover bg-gray-200 dark:bg-black"/>
@@ -1710,7 +1747,7 @@
                                                 </div>
                                              </div>
                                           ))}
-                                          {games.length === 0 && <p className="text-center text-gray-500 dark:text-gray-600 text-xs py-4">Belum ada game.</p>}
+                                          {games?.length === 0 && <p className="text-center text-gray-500 dark:text-gray-600 text-xs py-4">Belum ada game.</p>}
                                        </div>
                                     </div>
                                  </div>
@@ -1721,7 +1758,7 @@
                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                           <div>
                                              <h3 className="font-black text-lg flex items-center gap-2 text-gray-900 dark:text-white"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h3>
-                                             <p className="text-xs text-gray-500 font-medium mt-1">Target Game: <span className="text-emerald-600 dark:text-emerald-400 font-bold px-2 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 rounded-md border border-emerald-200 dark:border-emerald-500/20 ml-1">{games.find(g=>g.id === adminSelectedGame)?.name || 'Pilih game di samping'}</span></p>
+                                             <p className="text-xs text-gray-500 font-medium mt-1">Target Game: <span className="text-emerald-600 dark:text-emerald-400 font-bold px-2 py-0.5 bg-emerald-50 dark:bg-emerald-500/10 rounded-md border border-emerald-200 dark:border-emerald-500/20 ml-1">{games?.find(g=>g.id === adminSelectedGame)?.name || 'Pilih game di samping'}</span></p>
                                           </div>
                                        </div>
 
@@ -1740,7 +1777,7 @@
                                        </form>
 
                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-y-auto custom-scrollbar flex-1 pb-4">
-                                          {items.filter(i => i.gameId === adminSelectedGame).map(item => (
+                                          {items?.filter(i => i.gameId === adminSelectedGame).map(item => (
                                              <div key={item.id} className="flex items-center justify-between bg-white dark:bg-white/5 border border-gray-200 dark:border-white/5 p-4 rounded-2xl hover:border-emerald-300 dark:hover:border-emerald-500/50 transition group shadow-sm">
                                                 <div>
                                                    <div className="font-bold text-sm text-gray-900 dark:text-white">{item.name}</div>
@@ -1752,7 +1789,7 @@
                                                 </div>
                                              </div>
                                           ))}
-                                          {items.filter(i => i.gameId === adminSelectedGame).length === 0 && (
+                                          {items?.filter(i => i.gameId === adminSelectedGame).length === 0 && (
                                              <div className="col-span-full flex flex-col items-center justify-center py-16 text-gray-500 dark:text-gray-600 border border-dashed border-gray-300 dark:border-white/10 rounded-3xl bg-white dark:bg-white/[0.02]">
                                                 <IconBox className="w-10 h-10 mb-3 opacity-50"/>
                                                 <span className="text-xs font-bold">Produk kosong atau belum ada game terpilih.</span>
@@ -1816,7 +1853,7 @@
                               <div className="lg:col-span-7 bg-gray-50 dark:bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-gray-200 dark:border-white/5 shadow-inner h-full flex flex-col">
                                  <h3 className="text-sm font-black text-gray-600 dark:text-gray-500 uppercase tracking-widest mb-6">Database Kupon Aktif</h3>
                                  <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
-                                    {promos.map(p => (
+                                    {promos?.map(p => (
                                        <div key={p.code} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all bg-white dark:bg-transparent shadow-sm ${p.isFlashSale ? 'border-orange-300 dark:border-orange-500/30 bg-orange-50/50 dark:bg-orange-500/10' : 'border-gray-200 dark:border-white/10 dark:bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
                                           <div>
                                              <div className="flex items-center gap-2 mb-1.5">
@@ -1839,7 +1876,7 @@
                                           </div>
                                        </div>
                                     ))}
-                                    {promos.length === 0 && (
+                                    {promos?.length === 0 && (
                                       <div className="flex flex-col items-center justify-center py-20 text-gray-500 dark:text-gray-600 border border-dashed border-gray-300 dark:border-white/10 rounded-3xl bg-white dark:bg-white/5">
                                         <IconPercent className="w-12 h-12 mb-3 opacity-30"/>
                                         <span className="font-bold text-sm">Sistem promo masih kosong.</span>
@@ -1859,19 +1896,19 @@
                                  <input type="text" placeholder="Cari nama atau email member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full sm:w-96 bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-gray-900 dark:text-white font-medium placeholder-gray-500 dark:placeholder-gray-600 transition shadow-inner" />
                               </div>
                               <div className="flex-1 overflow-auto custom-scrollbar bg-gray-50 dark:bg-[#0a0a0a] rounded-[2rem] border border-gray-200 dark:border-white/5 shadow-inner">
-                                 <table className="w-full text-left text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap min-w-[700px]">
+                                 <table className="w-full text-left text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap min-w-[800px]">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-gray-100 dark:bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-gray-200 dark:border-white/10">
-                                       <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Waktu Daftar</th><th className="px-6 py-4 text-right">Terakhir Login</th></tr>
+                                       <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Waktu Daftar</th><th className="px-6 py-4">Terakhir Login</th><th className="px-6 py-4 text-right">Aksi</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                                       {memberList.filter(m => (m.name?.toLowerCase().includes(adminMemberSearch.toLowerCase()) || m.email?.toLowerCase().includes(adminMemberSearch.toLowerCase()))).map(m => (
+                                       {memberList?.filter(m => ((m.name || '').toLowerCase().includes(adminMemberSearch.toLowerCase()) || (m.email || '').toLowerCase().includes(adminMemberSearch.toLowerCase()))).map(m => (
                                           <tr key={m.id} className="hover:bg-white dark:hover:bg-white/[0.02] transition">
                                              <td className="px-6 py-4">
                                                 <div className="flex items-center gap-4">
                                                    {m.avatar ? (
                                                       <img src={m.avatar} className="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-white/10 shadow-sm" />
                                                    ) : (
-                                                      <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 font-black flex items-center justify-center shadow-inner">{m.email?.charAt(0).toUpperCase()}</div>
+                                                      <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 font-black flex items-center justify-center shadow-inner">{(m.email || 'U').charAt(0).toUpperCase()}</div>
                                                    )}
                                                    <div>
                                                       <div className="font-black text-gray-900 dark:text-white">{m.name || 'Member VIP'}</div>
@@ -1884,7 +1921,10 @@
                                                 <div className="text-[10px] text-gray-500 mt-1">{m.phone || 'Belum diatur'}</div>
                                              </td>
                                              <td className="px-6 py-4 text-xs text-gray-500 dark:text-gray-400">{m.createdAt ? new Date(m.createdAt).toLocaleDateString('id-ID') : '-'}</td>
-                                             <td className="px-6 py-4 text-right font-medium text-emerald-600 dark:text-emerald-400">{m.lastLogin ? new Date(m.lastLogin).toLocaleDateString('id-ID') : '-'}</td>
+                                             <td className="px-6 py-4 text-xs font-medium text-emerald-600 dark:text-emerald-400">{m.lastLogin ? new Date(m.lastLogin).toLocaleDateString('id-ID') : '-'}</td>
+                                             <td className="px-6 py-4 text-right">
+                                                <button onClick={() => handleDeleteMember(m.id)} className="p-2.5 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 rounded-xl hover:bg-red-500 hover:border-red-500 hover:text-white transition shadow-sm tooltip" title="Hapus Permanen Akun Ini"><IconTrash className="w-4 h-4" /></button>
+                                             </td>
                                           </tr>
                                        ))}
                                     </tbody>
@@ -1902,10 +1942,10 @@
                                     <h2 className="font-black text-lg flex items-center gap-2 text-gray-900 dark:text-white"><IconMessageSquare className="w-5 h-5 text-orange-500"/> Tiket Masuk</h2>
                                  </div>
                                  <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
-                                    {allUserChats.map(c => (
+                                    {activeSupportChats.map(c => (
                                        <div key={c.id} onClick={() => setActiveChatEmail(c.id)} className={`p-4 rounded-xl cursor-pointer border transition-all ${activeChatEmail === c.id ? 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/30 shadow-sm' : 'bg-white dark:bg-white/5 border-transparent hover:border-gray-200 dark:hover:border-white/10'}`}>
                                           <div className="flex justify-between items-center mb-2">
-                                             <span className="font-bold text-sm text-gray-900 dark:text-white truncate max-w-[140px]">{c.id.split('@')[0]}</span>
+                                             <span className="font-bold text-sm text-gray-900 dark:text-white truncate max-w-[140px]">{c.userName}</span>
                                              {c.status === 'Open' ? (
                                                 <span className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_red]"></span>
                                              ) : (
@@ -1915,6 +1955,7 @@
                                           <div className="text-xs text-gray-500 truncate">{c.messages?.length > 0 ? c.messages[c.messages.length-1].text : 'Belum ada pesan.'}</div>
                                        </div>
                                     ))}
+                                    {activeSupportChats.length === 0 && <p className="text-center text-gray-500 text-xs py-10 font-bold">Tidak ada pesan masuk.</p>}
                                  </div>
                               </div>
 
@@ -1925,16 +1966,16 @@
                                        <div className="p-5 border-b border-gray-200 dark:border-white/10 flex items-center gap-4 bg-white/80 dark:bg-white/5 backdrop-blur-sm z-10 shadow-sm">
                                           <button onClick={()=>setActiveChatEmail(null)} className="md:hidden p-2 bg-gray-100 dark:bg-white/10 rounded-lg text-gray-800 dark:text-white"><IconChevronLeft className="w-5 h-5"/></button>
                                           <div>
-                                             <div className="font-black text-gray-900 dark:text-white text-lg">{activeChatEmail.split('@')[0]}</div>
+                                             <div className="font-black text-gray-900 dark:text-white text-lg">{activeSupportChats.find(c => c.id === activeChatEmail)?.userName}</div>
                                              <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono mt-0.5">{activeChatEmail}</div>
                                           </div>
-                                          {allUserChats.find(c => c.id === activeChatEmail)?.status !== 'Selesai' && (
+                                          {activeSupportChats.find(c => c.id === activeChatEmail)?.status !== 'Selesai' && (
                                              <button onClick={markChatDone} className="ml-auto bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition flex items-center gap-1.5 shadow-lg"><IconCheckCircle className="w-3.5 h-3.5"/> Selesai</button>
                                           )}
                                        </div>
                                        
                                        <div className="flex-1 overflow-y-auto p-6 space-y-5 bg-white dark:bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-10 custom-scrollbar">
-                                          {allUserChats.find(c => c.id === activeChatEmail)?.messages?.map((msg, i) => (
+                                          {activeSupportChats.find(c => c.id === activeChatEmail)?.messages?.map((msg, i) => (
                                              <div key={i} className={`flex w-full ${msg.sender === 'admin' ? 'justify-end' : 'justify-start'}`}>
                                                 <div className={`flex flex-col ${msg.sender === 'admin' ? 'items-end' : 'items-start'} max-w-[80%]`}>
                                                    <div className={`p-4 text-sm font-medium leading-relaxed border shadow-sm ${msg.sender === 'admin' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm border-orange-400/30' : 'bg-gray-100 dark:bg-black text-gray-800 dark:text-gray-200 border-gray-200 dark:border-white/10 rounded-2xl rounded-tl-sm'}`}>
@@ -2042,9 +2083,9 @@
                                        </div>
                                     </div>
                                     <div className="flex gap-3 overflow-x-auto pb-2 custom-scrollbar">
-                                       {banners.map((b, i) => (
+                                       {banners?.map((b, i) => (
                                           <div key={i} className="relative w-32 h-20 flex-shrink-0 rounded-xl overflow-hidden border border-gray-200 dark:border-white/10 group bg-gray-200 dark:bg-black shadow-sm">
-                                             <img src={b.type === 'youtube' ? `https://img.youtube.com/vi/${getYouTubeId(b.url)}/hqdefault.jpg` : b.url} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition duration-500" />
+                                             <img src={b?.type === 'youtube' ? `https://img.youtube.com/vi/${getYouTubeId(b?.url)}/hqdefault.jpg` : b?.url} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition duration-500" />
                                              <button onClick={() => handleDeleteBanner(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-5 h-5 text-white"/></button>
                                           </div>
                                        ))}
@@ -2056,20 +2097,20 @@
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-gray-200 dark:border-white/5 shadow-inner flex flex-col">
                                     <div className="flex justify-between items-center mb-4">
-                                       <h3 className="text-sm font-black text-gray-900 dark:text-white">Galeri Toko <span className="text-[9px] bg-gray-200 dark:bg-white/10 px-2 py-0.5 rounded-md font-mono align-middle ml-1">{galleryData.length}/10</span></h3>
+                                       <h3 className="text-sm font-black text-gray-900 dark:text-white">Galeri Toko <span className="text-[9px] bg-gray-200 dark:bg-white/10 px-2 py-0.5 rounded-md font-mono align-middle ml-1">{galleryData?.length || 0}/16</span></h3>
                                        <div className="relative group w-8 h-8">
                                           <input type="file" accept="image/*" onChange={handleGalleryUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                           <button className="absolute inset-0 bg-white dark:bg-white/10 hover:bg-gray-100 dark:hover:bg-white/20 border border-gray-200 dark:border-white/10 rounded-lg flex items-center justify-center font-black transition text-sm">+</button>
                                        </div>
                                     </div>
                                     <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 gap-2">
-                                       {galleryData.map((img, i) => (
+                                       {galleryData?.map((img, i) => (
                                           <div key={i} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-white/10 group bg-gray-100 dark:bg-black shadow-sm">
                                              <img src={img} className="w-full h-full object-cover opacity-80 group-hover:scale-110 transition duration-500" />
                                              <button onClick={()=>handleRemoveGallery(i)} className="absolute inset-0 bg-red-500/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm"><IconTrash className="w-3 h-3 text-white"/></button>
                                           </div>
                                        ))}
-                                       {galleryData.length === 0 && <p className="col-span-full text-xs text-gray-500 font-bold">Galeri kosong.</p>}
+                                       {(!galleryData || galleryData.length === 0) && <p className="col-span-full text-xs text-gray-500 font-bold">Galeri kosong.</p>}
                                     </div>
                                  </div>
 
@@ -2087,7 +2128,7 @@
                                              <span className="text-xs font-black text-red-700 dark:text-red-300 truncate">{ADMIN_EMAIL}</span>
                                              <span className="text-[8px] bg-red-600 text-white px-2 py-0.5 rounded font-black uppercase tracking-widest ml-2">Owner</span>
                                           </div>
-                                          {adminList.map(em => (
+                                          {adminList?.map(em => (
                                              <div key={em} className="flex justify-between items-center bg-white dark:bg-black/40 border border-gray-200 dark:border-white/5 p-3 rounded-xl transition shadow-sm">
                                                 <span className="text-xs text-gray-700 dark:text-gray-300 font-bold truncate">{em}</span>
                                                 <button onClick={() => handleRemoveAdmin(em)} className="text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition bg-gray-50 dark:bg-white/5 p-1.5 rounded-lg ml-2"><IconX className="w-3 h-3"/></button>
