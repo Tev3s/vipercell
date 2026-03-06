@@ -23,6 +23,8 @@
              'marquee': 'marquee 20s linear infinite',
              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
              'shimmer': 'shimmer 2s linear infinite',
+             'accordion-down': 'accordion-down 0.2s ease-out',
+             'accordion-up': 'accordion-up 0.2s ease-in',
           },
           keyframes: {
              blob: {
@@ -42,6 +44,14 @@
              shimmer: {
                 'from': { backgroundPosition: '200% 0' },
                 'to': { backgroundPosition: '-200% 0' }
+             },
+             'accordion-down': {
+                from: { height: 0, opacity: 0 },
+                to: { height: 'var(--radix-accordion-content-height)', opacity: 1 }
+             },
+             'accordion-up': {
+                from: { height: 'var(--radix-accordion-content-height)', opacity: 1 },
+                to: { height: 0, opacity: 0 }
              }
           }
         }
@@ -50,8 +60,8 @@
   </script>
   
   <style>
-    body { background-color: #f3f4f6; transition: background-color 0.5s ease; color: #111827; }
-    body.dark { background-color: #050505; color: #f3f4f6; }
+    body { background-color: #f8fafc; transition: background-color 0.5s ease; color: #0f172a; }
+    body.dark { background-color: #050505; color: #f8fafc; }
     
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -66,10 +76,15 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
     .light .glass-panel, body:not(.dark) .glass-panel {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       box-shadow: 0 10px 40px -10px rgba(0,0,0,0.08);
     }
+    
+    body:not(.dark) .input-light {
+       background: #f1f5f9; border-color: #e2e8f0; color: #0f172a;
+    }
+    body:not(.dark) .input-light::placeholder { color: #94a3b8; }
 
     #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; }
     #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
@@ -88,7 +103,7 @@
     const { useState, useEffect, useRef, useMemo } = React;
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, deleteDoc, query, where, getDocs, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -147,35 +162,26 @@
        return match ? match[1] : null;
     };
 
-    const compressImage = async (file, maxWidth = 300) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = (e) => {
-          const img = new Image(); img.src = e.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            let w = img.width, h = img.height;
-            if (w > h) { if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; } } 
-            else { if (h > maxWidth) { w *= maxWidth / h; h = maxWidth; } }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/jpeg', 0.8));
-          };
-        }; reader.onerror = reject;
-      });
+    const generateRefCode = (name) => {
+       const cleanName = (name || 'USER').replace(/[^a-zA-Z0-9]/g, '').substring(0, 4).toUpperCase();
+       const randomNums = Math.floor(1000 + Math.random() * 9000);
+       return `${cleanName}${randomNums}`;
     };
-    
+
     const formatWA = (phone) => {
         if(!phone) return '';
         let p = phone.replace(/\D/g, '');
         if(p.startsWith('0')) p = '62' + p.substring(1);
         return p;
     };
+    
+    const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
     // --- ICONS ---
     const IconZap = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>;
     const IconChevronLeft = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="15 18 9 12 15 6"></polyline></svg>;
     const IconChevronRight = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="9 18 15 12 9 6"></polyline></svg>;
+    const IconChevronDown = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="6 9 12 15 18 9"></polyline></svg>;
     const IconCheckCircle = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>;
     const IconLoader = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`animate-spin ${className}`}><line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line></svg>;
     const IconMail = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M2 4l10 8 10-8"></path></svg>;
@@ -215,6 +221,7 @@
     const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
     const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
     const IconMoreVertical = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>;
+    const IconGift = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>;
 
     // --- DEFAULT DATA & CONSTANTS ---
     const PAYMENTS = [
@@ -223,9 +230,10 @@
     ];
 
     const PROMO_TYPES = { PERCENTAGE: 'percentage', FIXED: 'fixed' };
+    const REF_VOUCHERS = [1000, 2000, 3000, 4000, 5000, 10000];
 
     // --- CUSTOM CONFIRM MODAL ---
-    const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
+    const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel, requiresPassword, onPasswordChange, passwordValue, verifyError }) => {
        if (!isOpen) return null;
        return (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -233,10 +241,19 @@
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-red-500"></div>
                 <div className="w-16 h-16 bg-red-50 dark:bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-200 dark:border-red-500/20"><IconTrash className="w-8 h-8" /></div>
                 <h3 className="text-xl font-black mb-2 text-gray-900 dark:text-white">Konfirmasi Aksi</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-8 font-medium">{message}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 font-medium">{message}</p>
+                
+                {requiresPassword && (
+                   <div className="mb-6 text-left">
+                      <label className="block text-[10px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Verifikasi Kata Sandi Admin</label>
+                      <input type="password" value={passwordValue} onChange={(e) => onPasswordChange(e.target.value)} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-red-500 transition text-gray-900 dark:text-white" placeholder="Masukkan sandi Anda..." />
+                      {verifyError && <p className="text-xs text-red-500 font-bold mt-2">{verifyError}</p>}
+                   </div>
+                )}
+                
                 <div className="flex gap-3">
                    <button onClick={onCancel} className="flex-1 py-3 rounded-xl font-bold bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition text-gray-800 dark:text-white">Batal</button>
-                   <button onClick={onConfirm} className="flex-1 py-3 rounded-xl font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition">Ya, Lanjutkan</button>
+                   <button onClick={onConfirm} disabled={requiresPassword && !passwordValue} className="flex-1 py-3 rounded-xl font-bold bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white shadow-lg shadow-red-500/30 transition">Ya, Lanjutkan</button>
                 </div>
              </div>
           </div>
@@ -309,13 +326,26 @@
     function App() {
       // --- THEME & GLOBAL UI ---
       const [isDarkMode, setIsDarkMode] = useState(true);
-      const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
+      const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null, reqPwd: false, pwd: '', err: '' });
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
       const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-      const requestConfirm = (msg, action) => setConfirmModal({ isOpen: true, msg, action });
-      const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null }); };
-      const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null });
+      const requestConfirm = (msg, action, reqPwd=false) => setConfirmModal({ isOpen: true, msg, action, reqPwd, pwd: '', err: '' });
+      const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null, reqPwd: false, pwd: '', err: '' });
+      
+      const executeConfirm = async () => { 
+         if(confirmModal.reqPwd) {
+            try {
+               const credential = EmailAuthProvider.credential(authUser.email, confirmModal.pwd);
+               await reauthenticateWithCredential(auth.currentUser, credential);
+               if(confirmModal.action) confirmModal.action(); 
+               cancelConfirm();
+            } catch(e) { setConfirmModal(prev => ({...prev, err: 'Kata sandi salah!'})); }
+         } else {
+            if(confirmModal.action) confirmModal.action(); 
+            cancelConfirm(); 
+         }
+      };
 
       useEffect(() => {
         if (isDarkMode) document.body.classList.add('dark');
@@ -334,7 +364,7 @@
       const [authMessage, setAuthMessage] = useState({ text: '', type: '' });
       const [resetCooldown, setResetCooldown] = useState(0);
 
-      // --- PROFILE STATE ---
+      // --- PROFILE & DB STATES ---
       const [currentUserData, setCurrentUserData] = useState(null);
       const [showPasswordForm, setShowPasswordForm] = useState(false);
       const [currentPassword, setCurrentPassword] = useState('');
@@ -348,7 +378,6 @@
       const [profileAvatar, setProfileAvatar] = useState('');
       const [profileSaveMsg, setProfileSaveMsg] = useState('');
 
-      // --- DB STATES ---
       const [isStoreOpen, setIsStoreOpen] = useState(true);
       const [games, setGames] = useState([]);
       const [items, setItems] = useState([]); 
@@ -357,25 +386,22 @@
       const [galleryData, setGalleryData] = useState([]);
       const [runningTexts, setRunningTexts] = useState([]);
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
-      
-      // Error Boundary for Firebase
       const [dbError, setDbError] = useState('');
 
-      // Admin & Data States
       const [adminList, setAdminList] = useState([]);
       const [allGlobalOrders, setAllGlobalOrders] = useState([]); 
       const [memberList, setMemberList] = useState([]); 
       const [adminChats, setAdminChats] = useState([]); 
+      const [referralHistory, setReferralHistory] = useState([]);
       
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL;
-      const isAdmin = isSuperAdmin || adminList?.includes(authUser?.email);
+      const isAdmin = isSuperAdmin || (adminList||[]).includes(authUser?.email);
 
       // --- VIEW CONTROLLERS ---
       const [currentView, setCurrentView] = useState('home'); 
-      const [isMenuOpen, setIsMenuOpen] = useState(false);
 
       const navigateTo = (view) => {
-         setCurrentView(view); setIsMenuOpen(false); setMobileMenuOpen(false); setProfileDropdownOpen(false);
+         setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false);
          if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); }
       };
 
@@ -416,12 +442,9 @@
       const [scannedOrder, setScannedOrder] = useState(null);
       const [scannerError, setScannerError] = useState('');
 
-      // Chat Admin States
       const [activeChatEmail, setActiveChatEmail] = useState(null);
       const [adminReplyText, setAdminReplyText] = useState('');
       const adminChatEndRef = useRef(null);
-
-      // WA Quick Action Modal State
       const [waModalMember, setWaModalMember] = useState(null);
 
       // --- USER APP STATE ---
@@ -439,12 +462,16 @@
       const [activeOrderDetails, setActiveOrderDetails] = useState(null); 
       const [userOrders, setUserOrders] = useState([]);
       const [adminOrders, setAdminOrders] = useState([]);
+      const [expandedOrderId, setExpandedOrderId] = useState(null);
       
-      // Chat User State
       const [userChat, setUserChat] = useState(null);
       const [chatInput, setChatInput] = useState('');
       const [loadingChat, setLoadingChat] = useState(false);
       const chatEndRef = useRef(null);
+
+      // Referral UI State
+      const [inputFriendCode, setInputFriendCode] = useState('');
+      const [refMessage, setRefMessage] = useState('');
 
       const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
@@ -470,15 +497,14 @@
                else if (isScannerOpen) setIsScannerOpen(false);
                else if (scannedOrder) setScannedOrder(null);
                else if (waModalMember) setWaModalMember(null);
-               else if (isMenuOpen) setIsMenuOpen(false);
                else if (mobileMenuOpen) setMobileMenuOpen(false);
                else if (selectedGame && currentView === 'home') { setSelectedGame(null); setActivePromo(null); setInputPromo(''); }
             }
          };
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen, waModalMember]);
+      }, [confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, mobileMenuOpen, waModalMember]);
 
-      // --- REFACTORED DB FETCHING (SAFE ARRAYS & ERROR BOUNDARY) ---
+      // --- REFACTORED DB FETCHING ---
       useEffect(() => {
          const globalRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global');
          const unsubGlobal = onSnapshot(globalRef, (snap) => {
@@ -486,38 +512,25 @@
                const d = snap.data();
                setIsStoreOpen(d.isOpen ?? true);
                setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', tg: d.tgLink||'' });
-               
-               let rTexts = d.runningTexts || [];
-               if (!Array.isArray(rTexts)) rTexts = [];
-               setRunningTexts(rTexts);
-               
+               setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []);
                setBanners(Array.isArray(d.banners) ? d.banners : []);
                setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
             } else {
-               if(isSuperAdmin) {
-                 setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'], banners: [], gallery: [] }).catch(()=>{});
-               }
+               if(isSuperAdmin) setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'], banners: [], gallery: [] }).catch(()=>{});
             }
-         }, (error) => { 
-            console.error("Firebase Rules Error (Global Config):", error); 
-            if(error.code === 'permission-denied') setDbError('Akses Ditolak. Update Rules Firebase Anda.');
-            else setDbError(error.message);
-         });
+         }, (err) => { setDbError(err.message); });
 
          const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => {
-             const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()}));
-             setGames(g);
-         }, (error) => { console.error("Firebase Rules Error (Games):", error); });
+             const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g);
+         });
 
          const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => {
-             const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()}));
-             setItems(i);
-         }, (error) => { console.error("Firebase Rules Error (Items):", error); });
+             const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i);
+         });
 
          const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => {
-             const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()}));
-             setPromos(p);
-         }, (error) => { console.error("Firebase Rules Error (Promos):", error); });
+             const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p);
+         });
 
          return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
       }, [isSuperAdmin]);
@@ -529,91 +542,77 @@
           if(user) {
              getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins')).then(d => { 
                 if(d.exists()) setAdminList(d.data().emails || []); 
-             }).catch(err => console.error("Firebase Rules Error (Admin Check):", err));
+             }).catch(err => console.error(err));
           }
         });
         return () => unsubscribe();
       }, []);
-
-      // Current User Profile Listener
-      useEffect(() => {
-         if(!authUser) return;
-         const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid);
-         const unsubUser = onSnapshot(userRef, (docSnap) => {
-            if(docSnap.exists()) {
-               setCurrentUserData({ id: docSnap.id, ...docSnap.data() });
-            } else {
-               setDoc(userRef, { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString() }).catch(()=>{});
-            }
-         }, (error) => { console.error("Firebase Rules Error (Profile Fetch):", error); });
-         return () => unsubUser();
-      }, [authUser]);
 
       // Restricted Data Listeners
       useEffect(() => {
          if (!authUser) return;
          let unsubs = [];
 
+         const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid);
+         unsubs.push(onSnapshot(userRef, (docSnap) => {
+            if(docSnap.exists()) {
+               setCurrentUserData({ id: docSnap.id, ...docSnap.data() });
+            } else {
+               const newRefCode = generateRefCode(authUser.email.split('@')[0]);
+               setDoc(userRef, { email: authUser.email, name: authUser.email.split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), refCode: newRefCode, refBalance: 0, usedRefCode: null, myVouchers: [] }).catch(()=>{});
+            }
+         }));
+
          unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
             const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
             const getStatusScore = (s) => s === 'Pending' ? 1 : s === 'Sukses' ? 2 : 3;
             fetchedAll.sort((a,b) => getStatusScore(a.status) !== getStatusScore(b.status) ? getStatusScore(a.status) - getStatusScore(b.status) : new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
             setAllGlobalOrders(fetchedAll);
-            // ALWAYS set user orders regardless of admin status
             setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email));
             if (isAdmin) setAdminOrders(fetchedAll); 
-         }, (error) => { console.error("Firebase Rules Error (Orders):", error); }));
+         }));
 
          if (isAdmin) {
             unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => {
                const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()}));
                m.sort((a,b) => new Date(b.lastLogin || 0) - new Date(a.lastLogin || 0)); setMemberList(m);
-            }, (error) => { console.error("Firebase Rules Error (Members):", error); }));
+            }));
             
             unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => {
                const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() }));
                fetched.sort((a,b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0)); setAdminChats(fetched);
-            }, (error) => { console.error("Firebase Rules Error (Chats):", error); }));
+            }));
          }
          
-         // Always fetch own chat for universal access
          unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => {
             if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] });
-         }, (error) => { console.error("Firebase Rules Error (User Chat):", error); }));
+         }));
+
+         // Referral History Listener (Where this user's code was used and paid)
+         unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'referrals'), (snap) => {
+            const refs = []; snap.forEach(d => { if(d.data().ownerEmail === authUser.email) refs.push({id: d.id, ...d.data()}) });
+            refs.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+            setReferralHistory(refs);
+         }));
 
          return () => unsubs.forEach(fn => fn());
       }, [authUser, isAdmin]);
 
-      // Inputs state sync
       useEffect(() => {
          if (currentView === 'profile' && currentUserData) {
-            setProfileName(currentUserData.name || ''); 
-            setProfilePhone(currentUserData.phone || '');
-            setProfileAvatar(currentUserData.avatar || '');
-            setProfileSaveMsg('');
+            setProfileName(currentUserData.name || ''); setProfilePhone(currentUserData.phone || ''); setProfileAvatar(currentUserData.avatar || ''); setProfileSaveMsg('');
          }
-      }, [currentView, currentUserData]);
-
-      useEffect(() => {
-         if(currentView === 'admin' && activeAdminTab === 'settings') {
+         if (currentView === 'admin' && activeAdminTab === 'settings') {
             setAdminIG(socialLinks?.ig || ''); setAdminWA(socialLinks?.wa || ''); setAdminTT(socialLinks?.tt || ''); setAdminTG(socialLinks?.tg || '');
          }
-      }, [currentView, activeAdminTab, socialLinks]);
+      }, [currentView, activeAdminTab, currentUserData, socialLinks]);
 
       const pendingOrdersCount = adminOrders?.filter(o => o.status === 'Pending').length || 0;
-      
-      // ADMIN CHAT FILTERING (SAFE & ONLY OPEN/ACTIVE)
       const activeSupportChats = useMemo(() => {
           if (!isAdmin || !adminChats) return [];
-          return adminChats
-              .filter(c => c.messages && c.messages.length > 0)
-              .map(chat => {
+          return adminChats.filter(c => c.messages && c.messages.length > 0).map(chat => {
                   const member = memberList?.find(m => m.email === chat.id);
-                  return {
-                      ...chat,
-                      userName: member ? (member.name || (member.email || '').split('@')[0]) : ((chat.id || '').split('@')[0] || 'User'),
-                      userAvatar: member ? member.avatar : null
-                  };
+                  return { ...chat, userName: member ? (member.name || (member.email || '').split('@')[0]) : ((chat.id || '').split('@')[0] || 'User'), userAvatar: member ? member.avatar : null };
               }).sort((a, b) => {
                   if (a.status === 'Open' && b.status !== 'Open') return -1;
                   if (b.status === 'Open' && a.status !== 'Open') return 1;
@@ -624,27 +623,31 @@
       const openChatsCount = activeSupportChats?.filter(c => c.status === 'Open').length || 0;
       const userHasUnread = userChat?.status === 'Dijawab';
 
-      // QR Scanner Logic
+      // QR Scanner
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
             html5QrCode = new Html5Qrcode("reader");
-            html5QrCode.start({ facingMode: "environment" }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.8), height: Math.floor(Math.min(w,h)*0.8) }), aspectRatio: window.innerHeight / window.innerWidth },
+            html5QrCode.start({ facingMode: "environment" }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.8), height: Math.floor(Math.min(w,h)*0.4) }), aspectRatio: window.innerHeight / window.innerWidth, formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_128, Html5QrcodeSupportedFormats.QR_CODE ] },
                (decodedText) => {
-                  const matchedOrder = adminOrders?.find(o => o.id === decodedText);
+                  let searchId = decodedText;
+                  if(searchId.startsWith('VPC-')) {
+                      // Extracted short ID from VPC-XXXXXX-PRICE format
+                      const parts = searchId.split('-');
+                      if(parts.length >= 2) searchId = parts[1].toLowerCase();
+                  }
+                  const matchedOrder = adminOrders?.find(o => (o.id||'').toLowerCase().includes(searchId) || (o.id||'') === decodedText);
                   if (matchedOrder) { playSuccessBeep(); setScannedOrder(matchedOrder); setIsScannerOpen(false); } 
-                  else { setScannerError("ID Pesanan tidak valid."); setTimeout(() => setScannerError(''), 3500); }
+                  else { setScannerError("Barcode tidak valid."); setTimeout(() => setScannerError(''), 3000); }
                }, (err) => {}
             ).catch(err => { alert("Kamera tidak dapat diakses."); setIsScannerOpen(false); });
          }
-         return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => console.log(e)); };
+         return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders]);
 
-      // --- WA ACTION GENERATOR ---
       const openWA = (phone, templateText) => {
          if(!phone) return alert('Member ini belum mengatur nomor WhatsApp!');
-         let p = phone.replace(/\D/g, '');
-         if(p.startsWith('0')) p = '62' + p.substring(1);
+         let p = phone.replace(/\D/g, ''); if(p.startsWith('0')) p = '62' + p.substring(1);
          window.open(`https://wa.me/${p}?text=${encodeURIComponent(templateText)}`, '_blank');
       }
 
@@ -657,7 +660,7 @@
              const cred = await createUserWithEmailAndPassword(auth, email, password);
              const now = new Date().toISOString();
              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
-                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, avatar: ''
+                email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, avatar: '', refCode: generateRefCode(regName), refBalance: 0, usedRefCode: null, myVouchers: []
              });
              await sendEmailVerification(cred.user); await signOut(auth); 
              setAuthMessage({ text: 'Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', type: 'success' }); setAuthMode('login');
@@ -709,22 +712,64 @@
         if (newPassword.length < 6) return setPasswordMessage({ text: 'Password minimal 6 karakter!', type: 'error' });
 
         try {
-          const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword);
-          await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword);
+          const credential = EmailAuthProvider.credential(authUser.email, currentPassword);
+          await reauthenticateWithCredential(auth.currentUser, credential); await updatePassword(auth.currentUser, newPassword);
           setPasswordMessage({ text: 'Password berhasil diubah!', type: 'success' });
           setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false);
-        } catch (error) {
-          setPasswordMessage({ text: error.code === 'auth/wrong-password' ? 'Password saat ini salah!' : 'Gagal mengubah password.', type: 'error' });
-        }
+        } catch (error) { setPasswordMessage({ text: 'Gagal mengubah password.', type: 'error' }); }
       };
 
+      // --- REFERRAL LOGIC ---
+      const handleInputReferral = async (e) => {
+         e.preventDefault(); setRefMessage('');
+         if(!inputFriendCode) return;
+         if(inputFriendCode.toUpperCase() === currentUserData.refCode) return setRefMessage('Tidak bisa memakai kode sendiri!');
+         if(currentUserData.usedRefCode) return setRefMessage('Anda sudah pernah memakai kode referral!');
+
+         try {
+            // Find owner of this code
+            const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('refCode', '==', inputFriendCode.toUpperCase()));
+            const querySnapshot = await getDocs(q);
+            if(querySnapshot.empty) return setRefMessage('Kode referral tidak valid!');
+            
+            // Success! Update my doc
+            const myVouchers = [...(currentUserData.myVouchers||[]), { code: 'WELCOME3K', discount: 3000, type: 'fixed', isUsed: false }];
+            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { usedRefCode: inputFriendCode.toUpperCase(), myVouchers }, { merge: true });
+            setRefMessage('Kode berhasil digunakan! Voucher Rp3.000 ditambahkan.');
+         } catch(e) { setRefMessage('Error: ' + e.message); }
+      }
+
+      const handleExchangeRefBalance = async (amount) => {
+         if((currentUserData?.refBalance||0) < amount) return alert('Saldo tidak cukup!');
+         requestConfirm(`Tukar saldo Rp${amount} menjadi Voucher Belanja?`, async () => {
+            try {
+               const newVoucher = { code: `REF${amount/1000}K-${Math.floor(1000+Math.random()*9000)}`, discount: amount, type: 'fixed', isUsed: false };
+               const myVouchers = [...(currentUserData.myVouchers||[]), newVoucher];
+               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { refBalance: (currentUserData.refBalance||0) - amount, myVouchers }, { merge: true });
+               await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'referrals'), { ownerEmail: authUser.email, fromUserEmail: 'SISTEM', amount: -amount, type: 'exchange', createdAt: new Date().toISOString() });
+               alert('Berhasil ditukar! Cek kupon di menu saat Checkout.');
+            } catch(e) { alert('Gagal tukar: ' + e.message); }
+         });
+      }
+
+      // --- CHECKOUT LOGIC ---
       const handleApplyPromo = () => {
-         const promo = promos?.find(p => (p.code || '').toUpperCase() === inputPromo.toUpperCase() && p.isActive !== false);
+         // Check Global Promo
+         let promo = promos?.find(p => (p.code || '').toUpperCase() === inputPromo.toUpperCase() && p.isActive !== false);
+         let isGlobal = true;
+
+         // Check Personal Vouchers
+         if(!promo && currentUserData?.myVouchers) {
+             const v = currentUserData.myVouchers.find(v => v.code.toUpperCase() === inputPromo.toUpperCase() && !v.isUsed);
+             if(v) { promo = { ...v, maxUses: 1, usedBy: [] }; isGlobal = false; }
+         }
+
          if (!promo) return alert('Kode promo tidak valid atau kadaluarsa.');
-         if (promo.usedBy && promo.usedBy.includes(authUser.email)) return alert('Anda sudah pernah menggunakan kode promo ini.');
-         if (promo.usedBy && promo.usedBy.length >= promo.maxUses) return alert('Kuota kode promo sudah habis digunakan orang lain.');
+         if (isGlobal && promo.usedBy && promo.usedBy.includes(authUser.email)) return alert('Anda sudah pernah menggunakan kode promo ini.');
+         if (isGlobal && promo.usedBy && promo.usedBy.length >= promo.maxUses) return alert('Kuota kode promo sudah habis.');
          if (promo.minPurchase && selectedNominal && selectedNominal.price < promo.minPurchase) return alert(`Minimal pembelian ${formatRupiah(promo.minPurchase)} untuk promo ini.`);
-         setActivePromo(promo);
+         
+         setActivePromo({...promo, isGlobal});
       };
 
       const calculateFinalPrice = (basePrice, promo) => {
@@ -742,29 +787,47 @@
         let appliedPromoCode = '';
 
         if (activePromo) {
-           const promoRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id);
-           const pDoc = await getDoc(promoRef);
-           if(pDoc.exists()) {
-              let livePromo = pDoc.data();
-              if (livePromo.usedBy?.length < livePromo.maxUses && !livePromo.usedBy?.includes(authUser.email)) {
-                 appliedPromoCode = livePromo.code; 
-                 await setDoc(promoRef, { usedBy: [...(livePromo.usedBy||[]), authUser.email] }, { merge: true });
-              } else {
-                 alert("Mohon maaf, kuota promo baru saja habis digunakan."); setActivePromo(null); setIsProcessing(false); return;
+           if(activePromo.isGlobal) {
+              const promoRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id);
+              const pDoc = await getDoc(promoRef);
+              if(pDoc.exists()) {
+                 let livePromo = pDoc.data();
+                 if (livePromo.usedBy?.length < livePromo.maxUses && !livePromo.usedBy?.includes(authUser.email)) {
+                    appliedPromoCode = livePromo.code; 
+                    await setDoc(promoRef, { usedBy: [...(livePromo.usedBy||[]), authUser.email] }, { merge: true });
+                 } else {
+                    alert("Kupon promo global habis."); setActivePromo(null); setIsProcessing(false); return;
+                 }
               }
+           } else {
+              // Personal voucher
+              appliedPromoCode = activePromo.code;
+              const updatedVouchers = currentUserData.myVouchers.map(v => v.code === activePromo.code ? {...v, isUsed: true} : v);
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { myVouchers: updatedVouchers }, { merge: true });
            }
         }
 
         try {
           const docRef = await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), {
-            gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode, paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString()
+            gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode, paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString(), refCodeUsed: currentUserData?.usedRefCode || null
           });
           setLastOrderId(docRef.id);
           
+          // If Cash, no need to call api for QRIS. QRIS calls api.
           if (selectedPayment.id === 'qris') setDynamicQrisUrl(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, finalPrice))}&margin=10`);
           setShowModal(true);
         } catch (error) { alert("Gagal memproses pesanan."); } finally { setIsProcessing(false); }
       };
+
+      const requestHelpOrder = async (orderId) => {
+         try {
+            setLoadingChat(true); const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email);
+            const newMessages = [...(userChat?.messages || []), { sender: 'user', text: `Halo CS, mohon bantuan untuk pesanan ID: ${orderId}`, time: new Date().toISOString(), role: 'Pelanggan' }];
+            await setDoc(chatRef, { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true });
+            setLoadingChat(false);
+            navigateTo('chat');
+         } catch (err) { alert('Gagal membuat tiket bantuan: ' + err.message); setLoadingChat(false); }
+      }
 
       const handleSendChatUser = async (e) => {
          e.preventDefault(); if (!chatInput.trim()) return;
@@ -779,15 +842,29 @@
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const statusColor = (status) => { if(status === 'Sukses' || status === 'Selesai' || status === 'Dijawab') return 'text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30'; if(status === 'Batal' || status === 'Dihapus') return 'text-red-600 bg-red-50 dark:bg-red-500/10 dark:text-red-400 border-red-200 dark:border-red-500/30'; return 'text-orange-600 bg-orange-50 dark:bg-orange-500/10 dark:text-orange-400 border-orange-200 dark:border-orange-500/30'; };
 
-      // --- ADMIN HANDLERS (WITH PROPER ERROR CATCHING) ---
+      // --- ADMIN HANDLERS ---
       const toggleStore = async () => {
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); } 
          catch (e) { alert("Gagal mengubah status: " + e.message); }
       };
-      const updateOrderStatus = async (orderId, newStatus) => { 
-         try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); } 
-         catch (e) { alert("Gagal update pesanan: " + e.message); } 
+      const updateOrderStatus = async (order, newStatus) => { 
+         try { 
+            await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', order.id), { status: newStatus }); 
+            
+            // Check Referral Commission Trigger
+            if(newStatus === 'Sukses' && order.refCodeUsed) {
+               // Find the owner of this ref code to give 150 balance
+               const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('refCode', '==', order.refCodeUsed));
+               const snap = await getDocs(q);
+               if(!snap.empty) {
+                  const ownerDoc = snap.docs[0];
+                  await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', ownerDoc.id), { refBalance: (ownerDoc.data().refBalance||0) + 150 }, { merge: true });
+                  await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'referrals'), { ownerEmail: ownerDoc.data().email, fromUserEmail: order.userEmail, amount: 150, type: 'earn', createdAt: new Date().toISOString() });
+               }
+            }
+         } catch (e) { alert("Gagal update pesanan: " + e.message); } 
       };
+      
       const deleteOrder = async (orderId) => requestConfirm('Riwayat pesanan ini akan ditandai terhapus.', async () => {
          try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); }
          catch(e) { alert("Gagal menghapus pesanan: " + e.message); }
@@ -821,6 +898,11 @@
          try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); } catch(e) { alert("Gagal menghapus item: " + e.message); }
       });
 
+      // Item Promo Action (from Promo Tab)
+      const toggleItemPromo = async (itemId, currentPromoState) => {
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId), { isPromo: !currentPromoState }, { merge: true }); } catch(e) { alert("Gagal update item: " + e.message); }
+      };
+
       const handleAddPromo = async (e) => {
          e.preventDefault(); if (!newPromoCode || !newPromoDiscount || !newPromoMax) return;
          try {
@@ -837,13 +919,10 @@
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); } catch(e) { alert("Gagal update status promo: " + e.message); }
       };
 
-      const handleAddRunningText = () => { if(newRunningText.trim()) setRunningTexts(r => [...r, newRunningText]); setNewRunningText(''); }
-      const handleRemoveRunningText = (idx) => { setRunningTexts(r => r.filter((_, i) => i !== idx)); }
+      const handleAddRunningText = () => { if(newRunningText.trim()) setRunningTexts(r => [...(r||[]), newRunningText]); setNewRunningText(''); }
+      const handleRemoveRunningText = (idx) => { setRunningTexts(r => (r||[]).filter((_, i) => i !== idx)); }
       const saveRunningTexts = async () => { 
-         try { 
-            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: runningTexts }, { merge: true }); 
-            alert('Teks Berjalan berhasil disimpan!'); 
-         } catch(e) { alert("Gagal simpan teks: " + e.message); }
+         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { runningTexts: runningTexts }, { merge: true }); alert('Teks Berjalan berhasil disimpan!'); } catch(e) { alert("Gagal simpan teks: " + e.message); }
       };
       
       const handleAddBanner = async (type, url) => { 
@@ -869,14 +948,24 @@
       const handleAddAdmin = async (e) => { e.preventDefault(); if (!newAdminEmail || !(newAdminEmail||'').includes('@') || adminList?.includes(newAdminEmail)) return; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: [...(adminList||[]), newAdminEmail] }, { merge: true }); setNewAdminEmail(''); };
       const handleRemoveAdmin = async (email) => requestConfirm(`Cabut Admin ${email}?`, async () => { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins'), { emails: adminList?.filter(e => e !== email) }, { merge: true }); });
 
-      // DELETE MEMBER HANDLER
+      const clearAllData = async () => {
+         try {
+            const b = writeBatch(db);
+            const ordSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
+            ordSnap.forEach(d => b.delete(d.ref));
+            const chatSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'));
+            chatSnap.forEach(d => b.delete(d.ref));
+            await b.commit(); alert('Database transaksi dan chat berhasil dibersihkan permanen!');
+         } catch(e) { alert('Gagal hapus data: ' + e.message); }
+      }
+
       const handleDeleteMember = async (memberId) => {
-         requestConfirm('Hapus akun pelanggan ini permanen?', async () => {
+         requestConfirm('Hapus akun pelanggan ini permanen? Saldo dan akses mereka akan hilang.', async () => {
             try {
                await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId));
                alert('Member berhasil dihapus dari database!');
             } catch(e) { alert('Gagal menghapus member: ' + e.message); }
-         });
+         }, true); // Requires Password
       };
 
       const handleAdminSendChat = async (e) => {
@@ -900,7 +989,7 @@
       // --- RENDERING ---
       if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#050505]"><IconLoader className="w-12 h-12 text-orange-500 animate-spin"/></div>;
 
-      // LOGIN UI REDESIGN (v4.0 Light/Dark Full Support)
+      // LOGIN UI REDESIGN
       if (!authUser) {
         return (
           <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-gray-50 dark:bg-[#050505] text-gray-900 dark:text-white transition-colors duration-500">
@@ -932,24 +1021,24 @@
                         <div className="animate-in fade-in slide-in-from-top-2 space-y-4">
                            <div className="relative group">
                               <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                              <input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nama Lengkap" />
+                              <input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="input-light w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nama Lengkap" />
                            </div>
                            <div className="relative group">
                               <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                              <input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nomor WhatsApp" />
+                              <input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="input-light w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nomor WhatsApp" />
                            </div>
                         </div>
                      )}
                      
                      <div className="relative group">
                         <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                        <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Alamat Email" />
+                        <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="input-light w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Alamat Email" />
                      </div>
                      
                      {authMode !== 'forgot' && (
                         <div className="relative group">
                            <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                           <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Kata Sandi (Min. 6 Karakter)" />
+                           <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="input-light w-full bg-gray-100 dark:bg-black/40 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Kata Sandi (Min. 6 Karakter)" />
                         </div>
                      )}
 
@@ -961,7 +1050,7 @@
                      )}
 
                      <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0)} className={`w-full py-4 rounded-2xl font-black transition-all transform flex justify-center items-center gap-2 text-sm uppercase tracking-widest relative overflow-hidden group mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-gray-300 dark:bg-white/5 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/20 hover:scale-[1.02]'}`}>
-                        {authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Tautan')}
+                        {authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk Sesi' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Tautan')}
                      </button>
                   </form>
 
@@ -1003,7 +1092,7 @@
 
       return (
         <div className="flex-grow flex flex-col relative z-10 min-h-screen">
-          <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
+          <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} requiresPassword={confirmModal.reqPwd} passwordValue={confirmModal.pwd} onPasswordChange={(val)=>setConfirmModal(prev=>({...prev, pwd:val}))} verifyError={confirmModal.err} />
           
           {/* TOAST DATABASE ERROR */}
           {dbError && isAdmin && (
@@ -1033,9 +1122,9 @@
                          <div className="w-full text-left bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 p-3 rounded-xl text-gray-800 dark:text-gray-200 text-sm font-bold flex justify-between items-center cursor-pointer">
                             🎁 Kirim Info Promo <IconChevronRight className="w-4 h-4"/>
                          </div>
-                         <div className="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-white dark:bg-navy-900 border border-gray-200 dark:border-white/10 rounded-xl shadow-xl p-2 z-10">
+                         <div className="hidden group-hover:block absolute left-full top-0 ml-2 w-48 bg-white dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/10 rounded-xl shadow-xl p-2 z-10 max-h-48 overflow-y-auto custom-scrollbar">
                             {(promos||[]).filter(p=>p.isActive).map(p => (
-                               <div key={p.code} onClick={() => { openWA(waModalMember.phone, `Spesial buat kamu! Gunakan kode promo *${p.code}* untuk diskon ${p.type === 'percentage' ? p.discount+'%' : formatRupiah(p.discount)} di Vipercell. Yuk top up sekarang!`); setWaModalMember(null); }} className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg cursor-pointer text-xs font-bold text-gray-700 dark:text-gray-300">Kirim Kupon {p.code}</div>
+                               <div key={p.code} onClick={() => { openWA(waModalMember.phone, `Spesial buat kamu! Gunakan kode promo *${p.code}* untuk diskon ${p.type === 'percentage' ? p.discount+'%' : formatRupiah(p.discount)} di Vipercell. Yuk top up sekarang!`); setWaModalMember(null); }} className="p-2 hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg cursor-pointer text-xs font-bold text-gray-700 dark:text-gray-300">Kupon: {p.code}</div>
                             ))}
                             {(!promos || promos.filter(p=>p.isActive).length === 0) && <div className="text-xs text-gray-500 p-2 text-center">Tidak ada promo aktif</div>}
                          </div>
@@ -1052,7 +1141,7 @@
           {isScannerOpen && (
              <div className="fixed inset-0 bg-black z-[9999] flex flex-col animate-in fade-in duration-200">
                 <div className="flex justify-between items-center p-5 z-10 bg-gradient-to-b from-black/80 to-transparent absolute top-0 w-full">
-                   <p className="text-white font-black text-lg drop-shadow-md flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Pemindai QR Aktif</p>
+                   <p className="text-white font-black text-lg drop-shadow-md flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Pemindai Barcode Kasir</p>
                    <button onClick={()=>setIsScannerOpen(false)} className="text-white bg-red-500 hover:bg-red-600 transition rounded-full p-2.5 shadow-xl"><IconX className="w-6 h-6"/></button>
                 </div>
                 {scannerError && (
@@ -1060,8 +1149,8 @@
                       {scannerError}
                    </div>
                 )}
-                <div id="reader" className="w-full h-full flex-1"></div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl"><IconQrcode className="w-4 h-4"/> Posisikan Barcode Tepat di Kotak</div>
+                <div id="reader" className="w-full h-full flex-1 flex items-center justify-center relative"></div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl whitespace-nowrap"><IconQrcode className="w-4 h-4"/> Arahkan Barcode ke Kotak</div>
              </div>
           )}
 
@@ -1095,7 +1184,7 @@
 
                    <div className="flex gap-3">
                       <button onClick={() => setScannedOrder(null)} className="flex-1 bg-gray-200 dark:bg-white/10 hover:bg-gray-300 dark:hover:bg-white/20 font-bold py-3.5 rounded-xl transition text-gray-800 dark:text-white">Batal</button>
-                      <button onClick={() => { updateOrderStatus(scannedOrder.id, 'Sukses'); setScannedOrder(null); alert('Pembayaran Berhasil Diproses!'); }} className="flex-1 bg-green-500 hover:bg-green-600 text-white font-black py-3.5 rounded-xl transition shadow-lg shadow-green-500/30 uppercase tracking-wider text-sm">Validasi Lunas</button>
+                      <button onClick={() => { updateOrderStatus(scannedOrder, 'Sukses'); setScannedOrder(null); alert('Pembayaran Berhasil Diproses!'); }} className="flex-1 bg-green-500 hover:bg-green-600 text-white font-black py-3.5 rounded-xl transition shadow-lg shadow-green-500/30 uppercase tracking-wider text-sm">Validasi Lunas</button>
                    </div>
                 </div>
              </div>
@@ -1122,6 +1211,7 @@
                  <button onClick={()=>navigateTo('chat')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'chat' ? 'bg-orange-500 text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}>
                     Bantuan CS {userHasUnread && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse shadow-[0_0_5px_red]"></span>}
                  </button>
+                 <button onClick={()=>navigateTo('referral')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'referral' ? 'bg-orange-500 text-white' : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'}`}><IconGift className="w-3.5 h-3.5"/> Undang Teman</button>
                  {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold transition uppercase tracking-wider flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-500 text-white' : 'text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount}</span>}</button>}
               </div>
 
@@ -1130,17 +1220,28 @@
                    {isDarkMode ? <IconSun className="w-4 h-4"/> : <IconMoon className="w-4 h-4"/>}
                 </button>
                 <div className="relative">
-                   <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="p-2 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-full shadow-sm text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-white/10 transition hidden md:block">
-                      <IconMoreVertical className="w-5 h-5"/>
-                   </button>
+                   <div onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="cursor-pointer flex items-center gap-3 hover:opacity-80 transition bg-gray-100 dark:bg-white/5 pr-2 sm:pr-4 rounded-full border border-gray-200 dark:border-white/10 select-none">
+                      <div className="w-10 h-10 bg-gradient-to-tr from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-inner text-white font-black overflow-hidden border border-white/20 shrink-0">
+                         {currentUserData?.avatar ? (
+                           <img src={currentUserData.avatar} className="w-full h-full object-cover" />
+                         ) : (
+                           (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : (authUser.email||'U').charAt(0).toUpperCase())
+                         )}
+                      </div>
+                      <div className="hidden md:block text-left py-1 pr-1">
+                         <div className="text-sm font-black leading-tight max-w-[100px] truncate text-gray-900 dark:text-white">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</div>
+                         <div className="text-[9px] text-gray-500 font-bold uppercase tracking-widest">{isAdmin ? 'Admin' : 'Member'}</div>
+                      </div>
+                      <IconChevronDown className="w-4 h-4 text-gray-500 hidden md:block" />
+                   </div>
                    {profileDropdownOpen && (
                       <div className="absolute right-0 mt-3 w-48 bg-white dark:bg-[#0a0a0a] rounded-2xl shadow-2xl border border-gray-200 dark:border-white/10 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2">
-                         <div className="px-4 py-2 border-b border-gray-100 dark:border-white/5 mb-2">
+                         <div className="px-4 py-2 border-b border-gray-100 dark:border-white/5 mb-2 md:hidden">
                             <p className="text-xs font-black text-gray-900 dark:text-white truncate">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</p>
                             <p className="text-[10px] text-gray-500 truncate">{authUser.email}</p>
                          </div>
-                         <button onClick={() => navigateTo('profile')} className="w-full text-left px-4 py-2 text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-orange-50 dark:hover:bg-orange-500/10 hover:text-orange-500 flex items-center gap-2"><IconUser className="w-4 h-4"/> Profil Saya</button>
-                         <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-2"><IconLogOut className="w-4 h-4"/> Keluar</button>
+                         <button onClick={() => navigateTo('profile')} className="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-orange-500 flex items-center gap-3"><IconUser className="w-4 h-4"/> Profil Saya</button>
+                         <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 flex items-center gap-3"><IconLogOut className="w-4 h-4"/> Keluar Akun</button>
                       </div>
                    )}
                 </div>
@@ -1174,7 +1275,7 @@
                 <div className="fixed inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300" onClick={()=>setMobileMenuOpen(false)}></div>
                 <div className="w-[85%] max-w-sm bg-white dark:bg-[#0a0a0a] h-full shadow-2xl relative z-10 flex flex-col animate-slide-in-left border-r border-gray-200 dark:border-white/10">
                    
-                   <div className="p-6 border-b border-gray-200 dark:border-white/5 bg-gradient-to-br from-orange-50 to-gray-50 dark:from-navy-900 dark:to-black flex flex-col relative overflow-hidden">
+                   <div className="p-6 border-b border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black flex flex-col relative overflow-hidden">
                        <button onClick={()=>setMobileMenuOpen(false)} className="absolute top-4 right-4 p-2 bg-gray-200 dark:bg-white/10 rounded-full text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition"><IconX className="w-4 h-4"/></button>
                        <div className="w-16 h-16 bg-gradient-to-tr from-orange-500 to-orange-400 rounded-full flex items-center justify-center shadow-lg text-white font-black text-2xl mb-4 border border-white/20 overflow-hidden">
                          {currentUserData?.avatar ? (
@@ -1198,12 +1299,15 @@
                           <IconMessageSquare className="w-5 h-5"/> Hubungi CS
                           {userHasUnread && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,1)] animate-pulse"></span>}
                        </button>
+                       <button onClick={()=>navigateTo('referral')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition ${currentView === 'referral' ? 'bg-orange-50 dark:bg-orange-500/20 border border-orange-200 dark:border-orange-500/50 text-orange-500 dark:text-orange-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'}`}>
+                           <IconGift className="w-5 h-5"/> Undang Teman
+                       </button>
                        <button onClick={()=>navigateTo('profile')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition ${currentView === 'profile' ? 'bg-orange-50 dark:bg-orange-500/20 border border-orange-200 dark:border-orange-500/50 text-orange-500 dark:text-orange-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white'}`}>
                            <IconUser className="w-5 h-5"/> Akun & Keamanan
                        </button>
 
                        {isAdmin && (
-                          <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition mt-4 ${currentView === 'admin' ? 'bg-red-50 dark:bg-red-500/20 border border-red-200 dark:border-red-500/50 text-red-500 dark:text-red-400' : 'text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}>
+                          <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold transition mt-4 ${currentView === 'admin' ? 'bg-red-50 dark:bg-red-500/20 border border-red-200 dark:border-red-500/50 text-red-600 dark:text-red-400' : 'text-red-600 dark:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10'}`}>
                               <IconShieldAlert className="w-5 h-5"/> Dashboard Admin
                               {(pendingOrdersCount + openChatsCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full shadow-sm">{pendingOrdersCount + openChatsCount}</span>}
                           </button>
@@ -1245,9 +1349,9 @@
                                        <IconPercent className="w-4 h-4"/> Diskon {promo.type === 'percentage' ? `${promo.discount}%` : formatRupiah(promo.discount)}
                                     </div>
                                     <div className="mt-4 w-full bg-black/20 rounded-full h-1.5 overflow-hidden">
-                                       <div className="bg-white h-full rounded-full" style={{width: `${((promo.maxUses-(promo.usedBy?.length||0))/promo.maxUses)*100}%`}}></div>
+                                       <div className="bg-white h-full rounded-full" style={{width: `${((promo.maxUses-((promo.usedBy||[]).length||0))/promo.maxUses)*100}%`}}></div>
                                     </div>
-                                    <div className="text-[9px] mt-2 font-bold opacity-80 uppercase tracking-widest text-right">Tersisa {(promo.maxUses - (promo.usedBy?.length || 0))} Kuota</div>
+                                    <div className="text-[9px] mt-2 font-bold opacity-80 uppercase tracking-widest text-right">Tersisa {(promo.maxUses - ((promo.usedBy||[]).length || 0))} Kuota</div>
                                  </div>
                               </div>
                            ))}
@@ -1338,20 +1442,20 @@
                                     <div className="flex flex-col sm:flex-row gap-4">
                                        <div className="flex-1 relative group">
                                           <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors" />
-                                          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID'} className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
+                                          <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID'} className="input-light w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
                                        </div>
                                        
                                        {selectedGame?.inputType === 'id_zone' && (
                                           <div className="w-full sm:w-1/3 relative group">
                                              <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors" />
-                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
+                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="input-light w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
                                           </div>
                                        )}
                                        
                                        {selectedGame?.inputType === 'riot_id' && (
                                           <div className="w-full sm:w-1/3 relative group">
                                              <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-blue-500 transition-colors" />
-                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
+                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="input-light w-full bg-gray-50 dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-inner placeholder-gray-500 dark:placeholder-gray-600"/>
                                           </div>
                                        )}
                                     </div>
@@ -1367,7 +1471,7 @@
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
                                        {items?.filter(i => i.gameId === selectedGame?.id).map(item => (
                                           <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 transition-all flex flex-col justify-center items-center text-center group relative overflow-hidden ${selectedNominal?.id === item.id ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 shadow-[0_0_15px_rgba(16,185,129,0.15)] transform scale-[0.98]' : 'border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-black/40 hover:border-emerald-400 dark:hover:border-emerald-500/50 hover:-translate-y-1'}`}>
-                                             {item.isPromo && <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl z-10 animate-pulse shadow-sm">PROMO</div>}
+                                             {item.isPromo && <div className="absolute top-0 right-0 bg-red-500 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl z-10 animate-pulse shadow-sm">🔥 PROMO</div>}
                                              <div className="font-black text-sm mb-2 leading-tight relative z-10 text-gray-900 dark:text-white">{item.name}</div>
                                              
                                              <div className="text-xs font-black text-emerald-600 dark:text-emerald-400 font-mono bg-white dark:bg-black/60 px-3 py-1.5 rounded-lg shadow-inner w-full border border-gray-200 dark:border-white/5 relative z-10">
@@ -1409,12 +1513,17 @@
                                        ))}
                                     </div>
 
-                                    {/* PROMO INPUT */}
+                                    {/* PROMO INPUT (Now supports My Vouchers) */}
                                     <div className="mb-8">
-                                       <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-2 ml-1 flex items-center gap-1.5"><IconTag className="w-3 h-3 text-orange-500"/> Kode Kupon Promo</p>
+                                       <div className="flex justify-between items-end mb-2 ml-1">
+                                          <p className="text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest flex items-center gap-1.5"><IconTag className="w-3 h-3 text-orange-500"/> Kode Kupon Promo</p>
+                                          {currentUserData?.myVouchers?.filter(v=>!v.isUsed).length > 0 && (
+                                             <p className="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">{currentUserData.myVouchers.filter(v=>!v.isUsed).length} Voucher Tersedia</p>
+                                          )}
+                                       </div>
                                        <div className="flex gap-3 bg-gray-50 dark:bg-black/40 p-2 rounded-[1.5rem] border border-gray-200 dark:border-white/10 shadow-inner">
                                           <div className="relative flex-1">
-                                             <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." className="w-full bg-transparent py-3 pl-4 pr-4 focus:outline-none font-mono text-sm uppercase font-black text-gray-900 dark:text-white transition disabled:opacity-50" disabled={activePromo} />
+                                             <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." className="input-light w-full bg-transparent py-3 pl-4 pr-4 focus:outline-none font-mono text-sm uppercase font-black text-gray-900 dark:text-white transition disabled:opacity-50" disabled={activePromo} />
                                           </div>
                                           {activePromo ? (
                                              <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-50 dark:bg-red-500/20 hover:bg-red-500 text-red-500 dark:text-red-400 hover:text-white border border-red-200 dark:border-red-500/30 px-6 rounded-xl font-black transition shadow-sm text-xs uppercase tracking-widest">Hapus</button>
@@ -1422,6 +1531,11 @@
                                              <button onClick={handleApplyPromo} className="bg-gray-900 dark:bg-white hover:bg-gray-700 dark:hover:bg-gray-200 text-white dark:text-black px-6 rounded-xl font-black transition shadow-lg text-xs uppercase tracking-widest">Gunakan</button>
                                           )}
                                        </div>
+                                       {!activePromo && currentUserData?.myVouchers?.filter(v=>!v.isUsed).map(v => (
+                                          <button key={v.code} onClick={()=>{setInputPromo(v.code);}} className="mt-2 text-[9px] font-black bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-500/30 uppercase tracking-widest hover:bg-emerald-500 hover:text-white transition mr-2">
+                                             Pakai {v.code}
+                                          </button>
+                                       ))}
                                     </div>
 
                                     {/* STRUK PREVIEW */}
@@ -1473,73 +1587,191 @@
                </div>
             )}
 
+            {/* TAB REFERRAL */}
+            {currentView === 'referral' && (
+               <div className="animate-in fade-in pb-10 max-w-5xl mx-auto pt-4 w-full">
+                  <div className="glass-panel bg-white dark:bg-transparent border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl overflow-hidden relative">
+                     <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                     <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                     <div className="flex items-center gap-5 mb-10 border-b border-gray-200 dark:border-white/10 pb-8 relative z-10">
+                        <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(249,115,22,0.3)] text-white"><IconGift className="w-8 h-8"/></div>
+                        <div>
+                           <h2 className="text-2xl md:text-3xl font-black leading-tight drop-shadow-sm text-gray-900 dark:text-white">Undang Teman</h2>
+                           <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1.5">Bagikan kode Anda dan tukar saldo dengan Voucher Gratis.</p>
+                        </div>
+                     </div>
+
+                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 relative z-10">
+                        {/* KIRI: INFO KODE SAYA & INPUT KODE TEMAN */}
+                        <div className="space-y-8">
+                           <div className="bg-gradient-to-br from-gray-900 to-black rounded-[2rem] p-8 text-white shadow-2xl relative overflow-hidden border border-gray-800">
+                              <h3 className="text-xs font-black uppercase tracking-widest text-gray-400 mb-2">Kode Undangan Anda</h3>
+                              <div className="flex items-center justify-between gap-4">
+                                 <div className="text-3xl md:text-4xl font-black font-mono tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600 drop-shadow-md">
+                                    {currentUserData?.refCode || 'MEMUAT...'}
+                                 </div>
+                                 <button onClick={()=>{navigator.clipboard.writeText(currentUserData?.refCode||''); alert('Kode disalin!');}} className="p-3 bg-white/10 hover:bg-white/20 rounded-xl transition text-white shadow-sm"><IconBox className="w-5 h-5"/></button>
+                              </div>
+                              <p className="text-[10px] text-gray-500 font-medium mt-4 leading-relaxed">
+                                 Bagikan kode ini. Anda akan mendapatkan saldo <span className="text-emerald-400 font-bold">Rp150</span> setiap kali teman Anda bertransaksi menggunakan kode Anda.
+                              </p>
+                           </div>
+
+                           <div className="bg-gray-50 dark:bg-[#0a0a0a] rounded-[2rem] p-6 border border-gray-200 dark:border-white/5 shadow-inner">
+                              <h3 className="text-sm font-black text-gray-900 dark:text-white mb-2 flex items-center gap-2"><IconUser className="w-4 h-4 text-emerald-500"/> Masukkan Kode Teman</h3>
+                              <p className="text-[10px] text-gray-500 mb-4">Gunakan kode referensi teman untuk mendapatkan Voucher Rp3.000 (Khusus pengguna baru).</p>
+                              
+                              {currentUserData?.usedRefCode ? (
+                                 <div className="bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 p-4 rounded-xl text-xs font-bold flex items-center gap-2">
+                                    <IconCheckCircle className="w-5 h-5 shrink-0"/> Anda telah menggunakan kode: {currentUserData.usedRefCode}
+                                 </div>
+                              ) : (
+                                 <form onSubmit={handleInputReferral} className="flex gap-2">
+                                    <input type="text" value={inputFriendCode} onChange={(e)=>setInputFriendCode(e.target.value.replace(/\s/g, '').toUpperCase())} placeholder="KODE TEMAN..." className="input-light w-full bg-white dark:bg-black/50 border border-gray-200 dark:border-white/10 rounded-xl py-3.5 pl-4 pr-4 focus:outline-none focus:border-emerald-500 font-mono text-sm font-bold text-gray-900 dark:text-white transition shadow-sm dark:shadow-inner uppercase" />
+                                    <button type="submit" disabled={!inputFriendCode.trim()} className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 rounded-xl font-black transition disabled:opacity-50 text-xs uppercase tracking-widest shadow-lg flex items-center justify-center">Klaim</button>
+                                 </form>
+                              )}
+                              {refMessage && <p className={`text-[10px] font-bold mt-3 ${refMessage.includes('berhasil') ? 'text-emerald-500' : 'text-red-500'}`}>{refMessage}</p>}
+                           </div>
+                        </div>
+
+                        {/* KANAN: SALDO & PENUKARAN */}
+                        <div className="bg-gray-50 dark:bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-gray-200 dark:border-white/5 shadow-inner flex flex-col h-full">
+                           <div className="flex justify-between items-end mb-6 border-b border-gray-200 dark:border-white/5 pb-6">
+                              <div>
+                                 <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 mb-1">Saldo Referral</h3>
+                                 <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono drop-shadow-sm">{formatRupiah(currentUserData?.refBalance || 0)}</div>
+                              </div>
+                              <IconWallet className="w-8 h-8 text-gray-300 dark:text-gray-700"/>
+                           </div>
+
+                           <h3 className="text-sm font-black text-gray-900 dark:text-white mb-4">Tukar Menjadi Voucher</h3>
+                           <div className="grid grid-cols-2 gap-3 flex-1 overflow-y-auto custom-scrollbar pr-1 pb-4">
+                              {REF_VOUCHERS.map(amount => {
+                                 const canAfford = (currentUserData?.refBalance || 0) >= amount;
+                                 return (
+                                    <div key={amount} className={`relative p-4 rounded-2xl border-2 transition-all flex flex-col items-center justify-center text-center ${canAfford ? 'border-orange-500 bg-white dark:bg-[#050505] shadow-md hover:-translate-y-1' : 'border-gray-200 dark:border-white/5 bg-gray-100 dark:bg-black/40 opacity-50 grayscale'}`}>
+                                       <span className="font-black text-lg text-gray-900 dark:text-white font-mono">{formatRupiah(amount)}</span>
+                                       <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mt-1 mb-3">Harga: {formatRupiah(amount)} Saldo</span>
+                                       <button onClick={() => handleExchangeRefBalance(amount)} disabled={!canAfford} className="w-full bg-gray-900 dark:bg-white text-white dark:text-black py-2 rounded-lg text-[10px] font-black uppercase tracking-widest disabled:opacity-0 transition">Tukar</button>
+                                    </div>
+                                 )
+                              })}
+                           </div>
+                           
+                           {/* Referal History Mini */}
+                           <div className="mt-4 pt-4 border-t border-gray-200 dark:border-white/5">
+                              <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3">Riwayat Saldo</h3>
+                              <div className="space-y-2 max-h-32 overflow-y-auto custom-scrollbar">
+                                 {referralHistory.map(h => (
+                                    <div key={h.id} className="flex justify-between items-center text-xs p-2 bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-transparent">
+                                       <span className="text-gray-500 font-medium">{h.type === 'earn' ? `Dari: ${h.fromUserEmail?.split('@')[0]}` : 'Penukaran Voucher'}</span>
+                                       <span className={`font-black font-mono ${h.amount > 0 ? 'text-emerald-500' : 'text-red-500'}`}>{h.amount > 0 ? '+' : ''}{h.amount}</span>
+                                    </div>
+                                 ))}
+                                 {referralHistory.length === 0 && <p className="text-[10px] text-center text-gray-400 py-2 font-medium">Belum ada riwayat pendapatan.</p>}
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            )}
+
             {/* TAB RIWAYAT PESANAN */}
             {currentView === 'history' && (
                <div className="animate-in fade-in pb-10 max-w-5xl mx-auto pt-4 w-full">
-                  <div className="glass-panel bg-white dark:bg-transparent border border-gray-200 dark:border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
-                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10 border-b border-gray-200 dark:border-white/10 pb-8">
-                        <div className="flex items-center gap-5">
-                           <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(168,85,247,0.3)] text-white"><IconHistory className="w-8 h-8"/></div>
+                  <div className="glass-panel bg-white dark:bg-transparent border border-gray-200 dark:border-white/10 rounded-[3rem] p-4 sm:p-6 md:p-10 shadow-2xl">
+                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8 sm:mb-10 border-b border-gray-200 dark:border-white/10 pb-6 sm:pb-8">
+                        <div className="flex items-center gap-4 sm:gap-5">
+                           <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(168,85,247,0.3)] text-white shrink-0"><IconHistory className="w-6 h-6 sm:w-8 sm:h-8"/></div>
                            <div>
-                              <h2 className="text-2xl md:text-3xl font-black leading-tight drop-shadow-sm text-gray-900 dark:text-white">Riwayat Transaksi</h2>
-                              <p className="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1.5">Pantau status pesanan top-up Anda secara real-time.</p>
+                              <h2 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight drop-shadow-sm text-gray-900 dark:text-white">Riwayat Transaksi</h2>
+                              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium mt-1 sm:mt-1.5">Klik pesanan untuk melihat detail & barcode pembayaran.</p>
                            </div>
                         </div>
-                        <div className="bg-gray-50 dark:bg-white/5 px-5 py-3 rounded-2xl text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 flex items-center gap-3 shadow-inner">
-                           Total Pemesanan: <span className="text-gray-900 dark:text-white text-lg font-black font-mono bg-gray-200 dark:bg-white/10 px-3 py-0.5 rounded-lg">{userOrders?.filter(o => o.status !== 'Dihapus').length || 0}</span>
+                        <div className="bg-gray-50 dark:bg-white/5 px-4 py-2 sm:px-5 sm:py-3 rounded-2xl text-[10px] sm:text-xs font-bold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-white/10 flex items-center justify-between sm:justify-start gap-3 shadow-inner w-full sm:w-auto">
+                           Total Pemesanan: <span className="text-gray-900 dark:text-white text-base sm:text-lg font-black font-mono bg-gray-200 dark:bg-white/10 px-3 py-0.5 rounded-lg">{userOrders?.filter(o => o.status !== 'Dihapus').length || 0}</span>
                         </div>
                      </div>
                      
-                     <div className="space-y-5">
-                        {userOrders?.filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => (
-                           <div key={order.id} className="bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/5 p-6 rounded-[2rem] flex flex-col md:flex-row justify-between md:items-center gap-6 hover:border-orange-300 dark:hover:border-white/20 transition-all duration-300 group shadow-sm dark:shadow-lg">
-                              <div className="flex gap-5 items-center w-full md:w-auto">
-                                 <div className="relative shrink-0">
-                                    <img src={games?.find(g => g.id === order.gameId)?.image || 'https://via.placeholder.com/300'} className="w-20 h-20 rounded-[1.5rem] object-cover shadow-md border border-gray-200 dark:border-white/10 group-hover:scale-105 transition duration-500"/>
-                                    <div className={`absolute -bottom-2 -right-2 w-8 h-8 rounded-xl flex items-center justify-center shadow-lg border border-white/10 backdrop-blur-md ${order.status === 'Sukses' ? 'bg-emerald-500/90' : order.status === 'Batal' ? 'bg-red-500/90' : 'bg-orange-500/90'}`}>
-                                       {order.status === 'Sukses' ? <IconCheckCircle className="w-4 h-4 text-white"/> : order.status === 'Batal' ? <IconX className="w-4 h-4 text-white"/> : <IconLoader className="w-4 h-4 text-white animate-spin"/>}
+                     <div className="space-y-4">
+                        {(userOrders||[]).filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => {
+                           const isExpanded = expandedOrderId === order.id;
+                           return (
+                           <div key={order.id} className="bg-gray-50 dark:bg-[#0a0a0a] border border-gray-200 dark:border-white/5 rounded-[1.5rem] sm:rounded-[2rem] hover:border-orange-300 dark:hover:border-white/20 transition-all duration-300 shadow-sm dark:shadow-lg overflow-hidden flex flex-col">
+                              {/* Header Card (Clickable) */}
+                              <div onClick={() => setExpandedOrderId(isExpanded ? null : order.id)} className="p-4 sm:p-6 flex items-center justify-between cursor-pointer group select-none">
+                                 <div className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-[1.5rem] overflow-hidden shrink-0 border border-gray-200 dark:border-white/10 relative">
+                                       <img src={games?.find(g => g.id === order.gameId)?.image || 'https://via.placeholder.com/300'} className="w-full h-full object-cover group-hover:scale-110 transition duration-500"/>
+                                       <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition"></div>
+                                    </div>
+                                    <div className="flex-1 min-w-0 pr-2">
+                                       <div className="font-black text-sm sm:text-base text-gray-900 dark:text-white truncate">{order.gameName || 'Game'}</div>
+                                       <div className="text-xs text-orange-500 dark:text-gray-400 font-bold mt-0.5 truncate">{order.nominalName || 'Item'}</div>
+                                       <div className="text-[9px] text-gray-500 mt-1 sm:mt-1.5 flex items-center gap-1"><IconHistory className="w-3 h-3 shrink-0"/> {order.createdAt ? new Date(order.createdAt).toLocaleDateString('id-ID', {day: 'numeric', month: 'short'}) : ''}</div>
                                     </div>
                                  </div>
-                                 <div className="flex-1 min-w-0">
-                                    <div className="font-black text-lg text-gray-900 dark:text-white mb-1 tracking-wide truncate">{order.gameName || 'Game'}</div>
-                                    <div className="text-sm text-orange-500 dark:text-gray-400 font-bold mb-3 truncate">{order.nominalName || 'Item'}</div>
-                                    <div className="flex flex-wrap gap-2">
-                                       <div className="text-[10px] text-gray-600 dark:text-gray-300 bg-white dark:bg-white/5 px-2.5 py-1 rounded-lg border border-gray-200 dark:border-white/5 font-mono uppercase tracking-wider shadow-sm truncate max-w-[150px] sm:max-w-full">ID: {(order.targetUserId || '')} {(order.targetZoneId || '') && `(${(order.targetZoneId || '')})`}</div>
-                                       <div className="text-[10px] text-gray-600 dark:text-gray-400 font-bold px-2 py-1 rounded-lg border border-gray-200 dark:border-white/5 bg-white dark:bg-black/50 flex items-center gap-1.5 uppercase tracking-wider shadow-sm whitespace-nowrap"><IconQrcode className="w-3 h-3"/> {order.paymentMethod || 'Metode'}</div>
-                                    </div>
+                                 <div className="flex flex-col items-end gap-2 shrink-0">
+                                    <span className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[9px] sm:text-[10px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-sm ${statusColor(order.status)}`}>{order.status}</span>
+                                    <div className="font-black text-sm sm:text-base text-gray-900 dark:text-white font-mono">{formatRupiah(order.priceTotal)}</div>
                                  </div>
                               </div>
-                              
-                              <div className="flex flex-col md:items-end gap-4 border-t md:border-t-0 border-gray-200 dark:border-white/5 pt-5 md:pt-0 w-full md:w-auto md:pl-6 md:border-l shrink-0">
-                                 <div className="flex flex-col md:items-end gap-1 w-full text-left md:text-right">
-                                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Total Pembayaran</span>
-                                    <span className="text-2xl font-black text-gray-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-gray-400 font-mono drop-shadow-sm">{formatRupiah(order.priceTotal)}</span>
-                                 </div>
-                                 
-                                 <div className="flex items-center justify-between md:justify-end w-full gap-4 mt-2">
-                                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest flex items-center gap-1.5 bg-white dark:bg-black/40 px-3 py-1.5 rounded-lg border border-gray-200 dark:border-white/5 shadow-sm"><IconHistory className="w-3 h-3"/> {order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'}) : ''}</div>
-                                    <span className={`px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest border shadow-sm backdrop-blur-sm ${statusColor(order.status)}`}>{order.status}</span>
-                                 </div>
-                                 
-                                 {order.status === 'Pending' && (
-                                    <div className="mt-4 p-5 bg-white dark:bg-black border border-orange-200 dark:border-orange-500/30 rounded-2xl flex flex-col items-center shadow-inner w-full animate-in zoom-in relative overflow-hidden">
-                                       <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 animate-pulse"></div>
-                                       {(order.paymentMethod || '').includes('QRIS') ? (
-                                          <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-28 h-28 object-contain mix-blend-multiply dark:mix-blend-screen dark:bg-white rounded-xl p-2" />
-                                       ) : (
-                                          <img src={`https://barcode.orcascan.com/?type=code128&data=VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}`} className="w-36 h-20 object-cover mix-blend-multiply dark:mix-blend-screen dark:bg-white rounded-xl p-2" />
-                                       )}
-                                       <p className="text-[10px] text-orange-600 dark:text-orange-400 font-black mt-3 text-center uppercase tracking-widest bg-orange-50 dark:bg-orange-500/10 px-4 py-1.5 rounded-full border border-orange-200 dark:border-orange-500/20">{(order.paymentMethod || '').includes('QRIS') ? 'Scan QRIS Untuk Bayar' : 'Tunjukkan Barcode Ke Kasir'}</p>
+
+                              {/* Expanded Content */}
+                              {isExpanded && (
+                                 <div className="p-4 sm:p-6 border-t border-gray-200 dark:border-white/5 bg-white dark:bg-black/40 animate-accordion-down flex flex-col md:flex-row gap-6 items-start">
+                                    <div className="flex-1 w-full space-y-3 text-xs sm:text-sm">
+                                       <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-2">
+                                          <span className="text-gray-500 font-medium">ID Transaksi</span>
+                                          <span className="font-mono font-bold text-gray-900 dark:text-white">{order.id}</span>
+                                       </div>
+                                       <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-2">
+                                          <span className="text-gray-500 font-medium">Data Tujuan</span>
+                                          <span className="font-mono font-bold text-gray-900 dark:text-white">{(order.targetUserId || '')} {(order.targetZoneId || '') && `(${(order.targetZoneId || '')})`}</span>
+                                       </div>
+                                       <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-2">
+                                          <span className="text-gray-500 font-medium">Waktu Pesan</span>
+                                          <span className="font-mono text-gray-900 dark:text-white">{order.createdAt ? new Date(order.createdAt).toLocaleTimeString('id-ID') : ''}</span>
+                                       </div>
+                                       <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-2">
+                                          <span className="text-gray-500 font-medium">Metode Pembayaran</span>
+                                          <span className="font-bold text-gray-900 dark:text-white flex items-center gap-1"><IconQrcode className="w-3.5 h-3.5 text-orange-500"/> {order.paymentMethod}</span>
+                                       </div>
+                                       
+                                       <button onClick={() => requestHelpOrder(order.id)} className="mt-4 w-full sm:w-auto bg-gray-100 dark:bg-white/10 hover:bg-orange-50 dark:hover:bg-orange-500/20 text-gray-700 dark:text-white hover:text-orange-500 px-4 py-2.5 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 border border-gray-200 dark:border-transparent">
+                                          <IconMessageSquare className="w-4 h-4"/> Bantuan CS
+                                       </button>
                                     </div>
-                                 )}
-                              </div>
+                                    
+                                    {order.status === 'Pending' && (
+                                       <div className="w-full md:w-64 shrink-0 bg-gray-50 dark:bg-[#050505] border border-orange-200 dark:border-orange-500/30 rounded-2xl p-4 flex flex-col items-center shadow-inner relative overflow-hidden">
+                                          <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 animate-pulse"></div>
+                                          <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3 text-center">Petunjuk Pembayaran</div>
+                                          
+                                          {(order.paymentMethod || '').toLowerCase().includes('qris') ? (
+                                             <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-32 h-32 object-contain mix-blend-multiply dark:mix-blend-screen bg-white rounded-xl p-2 shadow-sm" />
+                                          ) : (
+                                             <img src={`https://barcode.orcascan.com/?type=code128&data=VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}`} className="w-full h-20 object-cover mix-blend-multiply dark:mix-blend-screen bg-white rounded-xl p-2 shadow-sm" />
+                                          )}
+                                          
+                                          <p className="text-[9px] text-orange-600 dark:text-orange-400 font-black mt-3 text-center uppercase tracking-widest bg-orange-50 dark:bg-orange-500/10 px-3 py-1.5 rounded-full border border-orange-200 dark:border-orange-500/20 w-full truncate">
+                                             {(order.paymentMethod || '').toLowerCase().includes('qris') ? 'Scan QRIS Aplikasi' : 'Scan Barcode Di Kasir'}
+                                          </p>
+                                       </div>
+                                    )}
+                                 </div>
+                              )}
                            </div>
-                        )) : (
-                           <div className="text-center py-24 text-gray-500 border border-dashed border-gray-300 dark:border-white/10 rounded-[3rem] bg-gray-50 dark:bg-white/5 shadow-inner">
-                              <div className="w-24 h-24 bg-white dark:bg-black/50 rounded-full flex items-center justify-center mx-auto mb-6 border border-gray-200 dark:border-white/5 shadow-sm"><IconHistory className="w-10 h-10 text-gray-400 dark:opacity-30 dark:text-white"/></div>
-                              <p className="font-black text-xl text-gray-900 dark:text-white mb-2">Belum Ada Transaksi</p>
-                              <p className="text-sm font-medium opacity-80 max-w-sm mx-auto">Riwayat pesanan Anda masih kosong. Lakukan top up pertama Anda sekarang juga.</p>
-                              <button onClick={()=>navigateTo('home')} className="mt-8 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-700 dark:hover:bg-gray-200 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl transition hover:-translate-y-1">Mulai Top Up</button>
+                           )
+                        }) : (
+                           <div className="text-center py-20 sm:py-24 text-gray-500 border border-dashed border-gray-300 dark:border-white/10 rounded-[3rem] bg-gray-50 dark:bg-white/5 shadow-inner px-4">
+                              <div className="w-20 h-20 sm:w-24 sm:h-24 bg-white dark:bg-black/50 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 border border-gray-200 dark:border-white/5 shadow-sm"><IconHistory className="w-8 h-8 sm:w-10 sm:h-10 text-gray-400 dark:opacity-30 dark:text-white"/></div>
+                              <p className="font-black text-lg sm:text-xl text-gray-900 dark:text-white mb-2">Belum Ada Transaksi</p>
+                              <p className="text-xs sm:text-sm font-medium opacity-80 max-w-sm mx-auto leading-relaxed">Riwayat pesanan Anda masih kosong. Lakukan top up pertama Anda sekarang juga.</p>
+                              <button onClick={()=>navigateTo('home')} className="mt-6 sm:mt-8 bg-gray-900 dark:bg-white text-white dark:text-black hover:bg-gray-700 dark:hover:bg-gray-200 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl sm:rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl transition hover:-translate-y-1">Mulai Top Up</button>
                            </div>
                         )}
                      </div>
@@ -1547,41 +1779,41 @@
                </div>
             )}
 
-            {/* TAB CHAT / BANTUAN */}
+            {/* TAB CHAT / BANTUAN (USER FULL SCREEN) */}
             {currentView === 'chat' && (
-               <div className="flex flex-col h-[calc(100vh-140px)] glass-panel bg-white dark:bg-transparent border border-gray-200 dark:border-white/10 rounded-[2rem] shadow-2xl overflow-hidden mt-4 relative max-w-4xl mx-auto w-full">
+               <div className="flex flex-col h-[calc(100vh-100px)] md:h-[calc(100vh-120px)] glass-panel bg-white dark:bg-transparent border border-gray-200 dark:border-white/10 rounded-[2rem] shadow-2xl overflow-hidden mt-4 relative max-w-4xl mx-auto w-full">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
                   
-                  <div className="p-6 border-b border-gray-200 dark:border-white/10 flex items-center gap-4 bg-gray-50/50 dark:bg-white/5 backdrop-blur-sm z-10 shrink-0">
-                     <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg"><IconMessageSquare className="w-7 h-7 text-white"/></div>
+                  <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-white/10 flex items-center gap-3 sm:gap-4 bg-gray-50/50 dark:bg-white/5 backdrop-blur-sm z-10 shrink-0">
+                     <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg"><IconMessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-white"/></div>
                      <div>
-                        <h2 className="text-xl font-black leading-tight text-gray-900 dark:text-white">CS Vipercell</h2>
-                        <p className="text-[10px] text-emerald-500 dark:text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span> Tim Sedang Online</p>
+                        <h2 className="text-lg sm:text-xl font-black leading-tight text-gray-900 dark:text-white">CS Vipercell</h2>
+                        <p className="text-[9px] sm:text-[10px] text-emerald-500 dark:text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-1"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span> Tim Sedang Online</p>
                      </div>
                   </div>
                   
-                  <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-gray-50 dark:bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-10">
-                     <div className="text-center text-[9px] uppercase tracking-widest text-gray-500 font-black bg-white dark:bg-black/40 py-2 px-5 rounded-full w-fit mx-auto shadow-sm dark:shadow-inner border border-gray-200 dark:border-white/5">Enkripsi Ujung ke Ujung</div>
+                  <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 sm:space-y-6 custom-scrollbar bg-gray-50 dark:bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-10">
+                     <div className="text-center text-[8px] sm:text-[9px] uppercase tracking-widest text-gray-500 font-black bg-white dark:bg-black/40 py-1.5 px-4 sm:py-2 sm:px-5 rounded-full w-fit mx-auto shadow-sm dark:shadow-inner border border-gray-200 dark:border-white/5">Enkripsi Ujung ke Ujung</div>
                      
                      {loadingChat ? (
-                        <div className="flex flex-col items-center justify-center py-20"><IconLoader className="w-10 h-10 text-orange-500 animate-spin mb-4" /><span className="text-gray-500 font-bold text-xs uppercase tracking-widest">Sinkronisasi Chat...</span></div>
+                        <div className="flex flex-col items-center justify-center py-20"><IconLoader className="w-8 h-8 sm:w-10 sm:h-10 text-orange-500 animate-spin mb-4" /><span className="text-gray-500 font-bold text-[10px] sm:text-xs uppercase tracking-widest">Sinkronisasi Chat...</span></div>
                      ) : (
                         <>
-                           {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 py-3 px-6 rounded-xl text-xs font-bold w-fit mx-auto shadow-sm backdrop-blur-md">✔ Tiket obrolan telah ditutup. Jika ada pertanyaan lain, silakan kirim pesan baru.</div>)}
-                           {(!userChat || !userChat.messages || userChat.messages.length === 0) && (
-                              <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
-                                 <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-gray-300 dark:border-white/5"><IconMessageSquare className="w-10 h-10 opacity-30" /></div>
-                                 <p className="font-bold text-sm text-center">Kirim pesan untuk meminta bantuan Customer Service.</p>
+                           {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20 py-2 sm:py-3 px-4 sm:px-6 rounded-xl text-[10px] sm:text-xs font-bold w-fit mx-auto shadow-sm backdrop-blur-md">✔ Tiket obrolan telah ditutup. Jika ada pertanyaan lain, silakan kirim pesan baru.</div>)}
+                           {(!userChat || !(userChat.messages||[]).length) && (
+                              <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-gray-400 dark:text-gray-500 px-4">
+                                 <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-4 sm:mb-6 border border-gray-300 dark:border-white/5"><IconMessageSquare className="w-8 h-8 sm:w-10 sm:h-10 opacity-30" /></div>
+                                 <p className="font-bold text-xs sm:text-sm text-center">Kirim pesan untuk meminta bantuan Customer Service.</p>
                               </div>
                            )}
                            {(userChat?.messages || []).map((msg, i) => (
                               <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
                                  <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
-                                    {msg.role && msg.sender === 'admin' && <span className="text-[9px] text-orange-500 font-bold uppercase tracking-widest mb-1.5 ml-1">{msg.role}</span>}
-                                    <div className={`p-4 rounded-2xl text-sm shadow-md font-medium leading-relaxed border ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-tr-sm border-orange-400/30' : 'bg-white dark:bg-[#0a0a0a] text-gray-800 dark:text-gray-200 border-gray-200 dark:border-white/10 rounded-tl-sm'}`}>
+                                    {msg.role && msg.sender === 'admin' && <span className="text-[8px] sm:text-[9px] text-orange-500 font-bold uppercase tracking-widest mb-1 sm:mb-1.5 ml-1">{msg.role}</span>}
+                                    <div className={`p-3 sm:p-4 rounded-2xl text-xs sm:text-sm shadow-md font-medium leading-relaxed border ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-tr-sm border-orange-400/30' : 'bg-white dark:bg-[#0a0a0a] text-gray-800 dark:text-gray-200 border-gray-200 dark:border-white/10 rounded-tl-sm'}`}>
                                        {msg.text}
                                     </div>
-                                    <span className="text-[9px] text-gray-500 font-bold mt-2 px-1 uppercase tracking-widest">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
+                                    <span className="text-[8px] sm:text-[9px] text-gray-400 dark:text-gray-500 font-bold mt-1.5 sm:mt-2 px-1 uppercase tracking-widest">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
                                  </div>
                               </div>
                            ))}
@@ -1590,11 +1822,11 @@
                      <div ref={chatEndRef} />
                   </div>
                   
-                  <div className="p-4 md:p-6 bg-white/80 dark:bg-black/60 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 z-10 shrink-0">
-                     <form onSubmit={handleSendChatUser} className="flex gap-3">
-                        <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Tuliskan kendala Anda di sini..." className="flex-1 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-orange-500 text-gray-900 dark:text-white font-medium transition shadow-inner placeholder-gray-400 dark:placeholder-gray-500" />
-                        <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 hover:bg-orange-500 text-white px-8 rounded-2xl font-black transition disabled:opacity-50 shadow-[0_0_15px_rgba(249,115,22,0.3)] uppercase tracking-widest flex items-center justify-center gap-2">
-                           {loadingChat ? <IconLoader className="w-5 h-5 animate-spin"/> : <><IconSend className="w-5 h-5"/> <span className="hidden sm:inline text-xs">Kirim</span></>}
+                  <div className="p-3 sm:p-4 md:p-6 bg-white/80 dark:bg-black/60 backdrop-blur-xl border-t border-gray-200 dark:border-white/10 z-10 shrink-0">
+                     <form onSubmit={handleSendChatUser} className="flex gap-2 sm:gap-3">
+                        <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Tuliskan kendala Anda..." className="flex-1 bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl sm:rounded-2xl px-4 sm:px-5 py-3 sm:py-4 focus:outline-none focus:border-orange-500 text-gray-900 dark:text-white font-medium transition shadow-inner text-xs sm:text-sm placeholder-gray-400 dark:placeholder-gray-500" />
+                        <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 hover:bg-orange-500 text-white px-5 sm:px-8 rounded-xl sm:rounded-2xl font-black transition disabled:opacity-50 shadow-[0_0_15px_rgba(249,115,22,0.3)] uppercase tracking-widest flex items-center justify-center gap-2">
+                           {loadingChat ? <IconLoader className="w-4 h-4 sm:w-5 sm:h-5 animate-spin"/> : <><IconSend className="w-4 h-4 sm:w-5 sm:h-5"/> <span className="hidden sm:inline text-[10px] sm:text-xs">Kirim</span></>}
                         </button>
                      </form>
                   </div>
@@ -1823,8 +2055,8 @@
                                              <div className="flex items-center justify-center gap-2">
                                                 {order.status === 'Pending' && (
                                                    <>
-                                                      <button onClick={() => updateOrderStatus(order.id, 'Sukses')} className="p-2 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
-                                                      <button onClick={() => updateOrderStatus(order.id, 'Batal')} className="p-2 bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm" title="Batalkan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
+                                                      <button onClick={() => updateOrderStatus(order, 'Sukses')} className="p-2 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
+                                                      <button onClick={() => updateOrderStatus(order, 'Batal')} className="p-2 bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm" title="Batalkan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
                                                 )}
                                                 <button onClick={() => deleteOrder(order.id)} className="p-2 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 rounded-xl hover:bg-red-500 hover:border-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen"><IconTrash className="w-4 h-4" /></button>
@@ -1985,7 +2217,7 @@
                                        </div>
                                        <div className="grid grid-cols-2 gap-4">
                                           <div>
-                                             <label className="block text-[10px] font-black text-white/80 mb-2 uppercase tracking-widest">Tipe Potongan</label>
+                                              <label className="block text-[10px] font-black text-white/80 mb-2 uppercase tracking-widest">Tipe Potongan</label>
                                              <select value={newPromoType} onChange={(e)=>setNewPromoType(e.target.value)} className="w-full bg-white/10 border border-white/20 rounded-xl py-3.5 px-3 text-white focus:border-white font-bold text-xs transition cursor-pointer appearance-none outline-none backdrop-blur-sm">
                                                 <option value={PROMO_TYPES.PERCENTAGE} className="text-gray-900">Persen (%)</option>
                                                 <option value={PROMO_TYPES.FIXED} className="text-gray-900">Nominal (Rp)</option>
@@ -2068,7 +2300,6 @@
                                        <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Waktu Daftar</th><th className="px-6 py-4">Terakhir Login</th><th className="px-6 py-4 text-right">Aksi</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-gray-200 dark:divide-white/5">
-                                    
                                        {(memberList || []).filter(m => ((m.name || '').toLowerCase().includes(adminMemberSearch.toLowerCase()) || (m.email || '').toLowerCase().includes(adminMemberSearch.toLowerCase()))).map(m => (
                                           <tr key={m.id} className="hover:bg-white dark:hover:bg-white/[0.02] transition">
                                              <td className="px-6 py-4">
@@ -2186,9 +2417,9 @@
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-6 pb-10 w-full">
                               <h2 className="text-2xl font-black mb-4 text-gray-900 dark:text-white">Pengaturan Global Web</h2>
                               
-                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                  {/* SAKLAR TOKO */}
-                                 <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-gray-200 dark:border-white/5 shadow-inner">
+                                 <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-gray-200 dark:border-white/5 shadow-inner flex flex-col justify-between">
                                     <div className="flex items-center justify-between mb-4">
                                        <div className="flex items-center gap-3">
                                           <div className="p-2 bg-white dark:bg-white/5 rounded-xl border border-gray-200 dark:border-transparent"><IconSettings className="w-5 h-5 text-gray-600 dark:text-gray-400"/></div>
@@ -2203,27 +2434,44 @@
                                     </button>
                                  </div>
 
-                                 {/* SOSIAL MEDIA */}
-                                 <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 rounded-[2rem] border border-gray-200 dark:border-white/5 shadow-inner">
-                                    <h3 className="text-sm font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2"><IconInstagram className="w-4 h-4 text-pink-500"/> Tautan Sosial & Bantuan</h3>
-                                    <div className="space-y-3">
-                                       <div className="flex flex-col sm:flex-row gap-3">
-                                          <div className="flex-1 relative">
-                                             <IconInstagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
-                                             <input type="text" value={adminIG || ''} onChange={(e)=>setAdminIG(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL Instagram" />
-                                          </div>
-                                          <div className="flex-1 relative">
-                                             <IconWhatsapp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
-                                             <input type="text" value={adminWA || ''} onChange={(e)=>setAdminWA(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL WhatsApp" />
+                                 {/* HAPUS DATA ZONA MERAH */}
+                                 <div className="bg-red-50 dark:bg-red-900/10 p-6 md:p-8 rounded-[2.5rem] border border-red-200 dark:border-red-500/20 shadow-inner flex flex-col justify-between relative overflow-hidden">
+                                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-200 dark:bg-red-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                                    <div className="flex items-center justify-between mb-4 relative z-10">
+                                       <div className="flex items-center gap-3">
+                                          <div className="p-2 bg-white dark:bg-white/5 rounded-xl border border-red-100 dark:border-transparent"><IconShieldAlert className="w-5 h-5 text-red-500"/></div>
+                                          <div>
+                                             <h3 className="text-sm font-black text-red-600 dark:text-red-400">Danger Zone</h3>
+                                             <p className="text-[10px] text-red-400 dark:text-red-500 mt-0.5 uppercase tracking-widest">Hapus Chat & Riwayat</p>
                                           </div>
                                        </div>
-                                       <div className="flex flex-col sm:flex-row gap-3">
-                                          <div className="flex-1 relative">
-                                             <IconTiktok className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
-                                             <input type="text" value={adminTT || ''} onChange={(e)=>setAdminTT(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL TikTok" />
-                                          </div>
-                                          <button onClick={saveSettingsLinks} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest transition shadow-lg py-2.5 sm:py-0">Simpan Kontak</button>
+                                    </div>
+                                    <button onClick={() => requestConfirm('Aksi ini akan menghapus SELURUH riwayat pesanan pelanggan dan tiket chat selamanya. Lanjutkan?', clearAllData, true)} className="w-full py-4 rounded-2xl font-black text-xs transition uppercase tracking-widest shadow-lg bg-red-600 hover:bg-red-700 text-white relative z-10 flex items-center justify-center gap-2">
+                                       <IconTrash className="w-4 h-4"/> Bersihkan Database
+                                    </button>
+                                 </div>
+                              </div>
+                              
+                              {/* SOSIAL MEDIA */}
+                              <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 rounded-[2rem] border border-gray-200 dark:border-white/5 shadow-inner">
+                                 <h3 className="text-sm font-black text-gray-900 dark:text-white mb-4 flex items-center gap-2"><IconInstagram className="w-4 h-4 text-pink-500"/> Tautan Sosial & Bantuan</h3>
+                                 <div className="space-y-3">
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                       <div className="flex-1 relative">
+                                          <IconInstagram className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
+                                          <input type="text" value={adminIG || ''} onChange={(e)=>setAdminIG(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL Instagram" />
                                        </div>
+                                       <div className="flex-1 relative">
+                                          <IconWhatsapp className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
+                                          <input type="text" value={adminWA || ''} onChange={(e)=>setAdminWA(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL WhatsApp" />
+                                       </div>
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                       <div className="flex-1 relative">
+                                          <IconTiktok className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500"/>
+                                          <input type="text" value={adminTT || ''} onChange={(e)=>setAdminTT(e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-3 text-xs focus:border-blue-500 transition text-gray-900 dark:text-white shadow-sm" placeholder="URL TikTok" />
+                                       </div>
+                                       <button onClick={saveSettingsLinks} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-black text-[10px] uppercase tracking-widest transition shadow-lg py-2.5 sm:py-0">Simpan Kontak</button>
                                     </div>
                                  </div>
                               </div>
@@ -2232,17 +2480,31 @@
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  {/* TEKS BERJALAN */}
                                  <div className="bg-gray-50 dark:bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-gray-200 dark:border-white/5 shadow-inner">
-                                    <h3 className="text-sm font-black text-gray-900 dark:text-white mb-2 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Header Teks Berjalan (Marquee)</h3>
-                                    <p className="text-[10px] text-gray-500 mb-4">Informasi promo yang bergerak di navigasi atas. Kosongkan baris untuk menghapus.</p>
-                                    <div className="grid grid-cols-1 gap-3">
-                                       {[0, 1, 2, 3, 4].map((idx) => (
-                                          <div key={idx} className="flex items-center gap-3">
-                                             <span className="text-[10px] font-black text-gray-500 dark:text-gray-600 bg-white dark:bg-white/5 border border-gray-200 dark:border-transparent px-2.5 py-1.5 rounded-lg shadow-sm">{idx + 1}</span>
-                                             <input type="text" value={runningTexts[idx] || ''} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-xl py-2.5 px-3 text-xs focus:border-orange-500 transition shadow-sm text-gray-900 dark:text-white" placeholder="Informasi singkat promo..." />
+                                    <div className="flex justify-between items-start mb-4">
+                                       <div>
+                                          <h3 className="text-sm font-black text-gray-900 dark:text-white flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Header Teks Berjalan</h3>
+                                          <p className="text-[10px] text-gray-500 mt-1">Kosongkan kotak untuk menghapus teks.</p>
+                                       </div>
+                                       <button onClick={saveRunningTexts} className="bg-orange-600 hover:bg-orange-500 text-white px-4 py-2 rounded-xl font-black text-[10px] uppercase tracking-widest transition shadow-lg shadow-orange-500/20">Simpan</button>
+                                    </div>
+                                    
+                                    <div className="space-y-2">
+                                       {(runningTexts||[]).map((text, idx) => (
+                                          <div key={idx} className="flex items-center gap-2">
+                                             <button onClick={() => handleRemoveRunningText(idx)} className="p-2 text-gray-400 hover:text-red-500 transition"><IconX className="w-3.5 h-3.5"/></button>
+                                             <input type="text" value={text} onChange={(e) => handleRunningTextChange(idx, e.target.value)} className="w-full bg-white dark:bg-black border border-gray-200 dark:border-white/10 rounded-lg py-2 px-3 text-xs focus:border-orange-500 transition shadow-sm text-gray-900 dark:text-white" placeholder="Teks..." />
                                           </div>
                                        ))}
+                                       {(runningTexts||[]).length < 5 && (
+                                          <div className="flex items-center gap-2 mt-2">
+                                             <div className="p-2 text-gray-300 dark:text-gray-700"><IconZap className="w-3.5 h-3.5"/></div>
+                                             <div className="flex gap-2 w-full">
+                                                <input type="text" value={newRunningText} onChange={(e) => setNewRunningText(e.target.value)} className="w-full bg-white dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/20 rounded-lg py-2 px-3 text-xs focus:border-orange-500 transition text-gray-900 dark:text-white" placeholder="Tambah teks baru..." />
+                                                <button onClick={handleAddRunningText} disabled={!newRunningText.trim()} className="bg-gray-200 dark:bg-white/10 text-gray-700 dark:text-white px-3 rounded-lg font-black text-lg disabled:opacity-50">+</button>
+                                             </div>
+                                          </div>
+                                       )}
                                     </div>
-                                    <button onClick={saveRunningTexts} className="mt-5 w-full bg-orange-600 hover:bg-orange-500 text-white px-8 py-3.5 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-lg shadow-orange-500/20">Simpan Teks</button>
                                  </div>
 
                                  {/* SLIDER BANNER */}
