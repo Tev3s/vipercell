@@ -1,9 +1,9 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v7.1.1 Ultimate</title>
+  <title>Vipercell - Premium Top Up v7.1.2 Ultimate</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -17,7 +17,6 @@
             accent: { 400: '#a855f7', 500: '#8b5cf6', 600: '#7c3aed' }
           },
           animation: {
-            'blob': 'blob 7s infinite',
             'float': 'float 4s ease-in-out infinite',
             'marquee': 'marquee 20s linear infinite',
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -27,12 +26,6 @@
             'confetti': 'confetti 5s ease-in-out infinite',
           },
           keyframes: {
-             blob: {
-               '0%': { transform: 'translate(0px, 0px) scale(1)' },
-               '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-               '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-               '100%': { transform: 'translate(0px, 0px) scale(1)' }
-             },
              float: {
                '0%, 100%': { transform: 'translateY(0px)' },
                '50%': { transform: 'translateY(-15px)' },
@@ -64,8 +57,8 @@
   </script>
   
   <style>
-    /* FORCED DARK THEME */
-    body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; }
+    /* FORCED DARK THEME & PERF OPTIMIZATION */
+    body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; }
     
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
@@ -73,24 +66,26 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #f97316; border-radius: 10px; }
     
+    /* Optimized Glass Panel (Removed heavy backdrop-blur for scroll perf) */
     .glass-panel {
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+      background: rgba(10, 10, 10, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
     }
 
     #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; }
     #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
 
     /* =========================================
-       SEASONAL THEMES COLORS (V7.1.1)
+       SEASONAL THEMES COLORS (V7.1.2)
        ========================================= */
     .theme-natal { background-color: #020617; }
     .theme-ramadhan { background-color: #022c22; }
     .theme-paskah { background-color: #1e1b4b; }
     .theme-kemerdekaan { background-color: #450a0a; }
+    
+    /* Performance Classes */
+    .hardware-accel { transform: translateZ(0); will-change: transform; }
   </style>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -101,7 +96,7 @@
 </head>
 <body id="app-body" class="font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative theme-default">
   
-  <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10"></div>
+  <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10 hardware-accel"></div>
 
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
@@ -233,6 +228,7 @@
     const IconInstagram = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>;
     const IconWhatsapp = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>;
     const IconTiktok = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>;
+    const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
     const IconImage = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>;
     const IconShieldAlert = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>;
     const IconSearch = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>;
@@ -247,12 +243,10 @@
     const IconPercent = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>;
     const IconMessageSquare = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>;
     const IconUsers = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>;
-    const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
     const IconRefresh = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>;
     const IconGift = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>;
     const IconKey = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>;
     const IconDownload = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
-    const IconBell = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>;
 
     // --- DEFAULT DATA & CONSTANTS ---
     const PAYMENTS = [
@@ -260,7 +254,7 @@
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi / Kasir', fee: 0 },
     ];
 
-    // --- COMPONENTS V7.1.1 ---
+    // --- COMPONENTS V7.1.2 ---
 
     // V7.1 Smart Toast Notification Provider 🍞
     const ToastContext = React.createContext();
@@ -449,17 +443,25 @@
 
     const MainFooter = ({ socialLinks }) => {
        return (
-         <footer className="mt-auto border-t border-white/5 bg-white/5 backdrop-blur-md pt-12 pb-8 px-6 text-center z-10 relative">
+         <footer className="mt-auto border-t border-white/5 bg-black/60 backdrop-blur-md pt-12 pb-8 px-6 text-center z-10 relative">
             <div className="max-w-4xl mx-auto">
                <div className="flex items-center justify-center gap-2 mb-4">
                   <IconZap className="w-6 h-6 text-orange-500" />
                   <span className="text-xl font-black tracking-wider text-white">VIPER<span className="text-orange-500">CELL</span></span>
                </div>
-               <p className="text-gray-400 text-sm mb-8 max-w-2xl mx-auto font-medium leading-relaxed">
-                  Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
+               <p className="text-gray-400 text-sm mb-6 max-w-2xl mx-auto font-medium leading-relaxed">
+                  Platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
                </p>
+               
+               {/* V7.1.2 Social Media Links */}
+               <div className="flex justify-center gap-4 mb-8">
+                  {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-pink-600 hover:text-white transition shadow-sm group"><IconInstagram className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
+                  {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-green-500 hover:text-white transition shadow-sm group"><IconWhatsapp className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
+                  {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-white hover:text-black transition shadow-sm group"><IconTiktok className="w-5 h-5 text-gray-400 group-hover:text-black"/></a>}
+               </div>
+
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v7.1.1 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v7.1.2 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -511,14 +513,8 @@
            }
        }, [curr, items]);
 
-       if (!items || items.length === 0) return (
-          <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative glass-panel flex items-center justify-center mt-6 bg-transparent border border-white/5 shadow-sm">
-             <div className="text-center">
-                 <IconZap className="w-12 h-12 text-orange-500 mx-auto mb-2 opacity-50"/>
-                 <h1 className="text-2xl md:text-4xl font-black tracking-tight drop-shadow-lg text-gray-700">Top Up <span className="text-orange-400 opacity-50">Super Cepat</span></h1>
-             </div>
-          </div>
-       );
+       // V7.1.2: Jangan tampilkan apa-apa jika belum ada banner sama sekali, hindari hardcoded banner bocor.
+       if (!items || items.length === 0) return null;
 
        return (
           <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative border border-white/10 shadow-2xl bg-black mt-6 group">
@@ -532,10 +528,6 @@
                 </div>
              ))}
              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-20 pointer-events-none"></div>
-             
-             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 max-w-md z-30 pointer-events-none">
-                <h1 className="text-3xl md:text-5xl font-black text-white mb-2 tracking-tight drop-shadow-lg">Top Up<br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Super Cepat</span></h1>
-             </div>
 
              {items.length > 1 && (
                 <div className="absolute bottom-6 right-6 flex gap-2 z-30">
@@ -647,7 +639,7 @@
       const [adminOrderSearch, setAdminOrderSearch] = useState('');
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
       
-      // Scanner States V7.1
+      // Scanner States V7.1.2
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
       const [cameraFacingMode, setCameraFacingMode] = useState('environment'); 
 
@@ -656,7 +648,7 @@
       const [adminReplyText, setAdminReplyText] = useState('');
       const adminChatEndRef = useRef(null);
       
-      // Broadcast States V7.1 (Advanced)
+      // Broadcast States V7.1.2
       const [broadcastModal, setBroadcastModal] = useState({isOpen: false, text: '', target: 'all'});
       const [waModalMember, setWaModalMember] = useState(null);
 
@@ -682,7 +674,7 @@
       const [loadingChat, setLoadingChat] = useState(false);
       const chatEndRef = useRef(null);
 
-      // V7.1 Tracker for Admin Notifications
+      // V7.1.2 Tracker for Admin Notifications
       const prevPendingOrders = useRef(0);
       const prevOpenChats = useRef(0);
 
@@ -723,14 +715,12 @@
           document.body.className = `font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative theme-${globalTheme}`;
       }, [globalTheme]);
 
-      // Request Push Notification Permission Safely (V7.1.1 HOTFIX)
+      // Request Push Notification Permission Safely
       useEffect(() => {
          if (isAdmin && "Notification" in window) {
              try {
                 Notification.requestPermission();
-             } catch(e) {
-                // Ignore safe errors on Tablet browsers
-             }
+             } catch(e) {}
          }
       }, [isAdmin]);
 
@@ -841,7 +831,7 @@
          }
       }, [currentView, activeAdminTab, socialLinks]);
 
-      // V7.1.1 OS Background Notifications HOTFIX 🛡️🔔
+      // Notifications HOTFIX
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = (adminChats || []).filter(c => c.status === 'Open' && c.messages?.length > 0).length || 0;
 
@@ -855,14 +845,8 @@
               if (shouldAlert) {
                   playNotificationBeep();
                   addToast(notifMsg, 'success');
-                  
-                  // BUG FIX: Wrap Native Notification in try-catch to prevent fatal crash on Tablet/Android
                   if ("Notification" in window && Notification.permission === "granted") {
-                      try {
-                          new Notification("Admin Vipercell", { body: notifMsg });
-                      } catch (err) {
-                          console.log("OS Push Notification is restricted on this Tablet browser.");
-                      }
+                      try { new Notification("Admin Vipercell", { body: notifMsg }); } catch (err) {}
                   }
               }
               prevPendingOrders.current = pendingOrdersCount;
@@ -884,25 +868,40 @@
 
       const userHasUnread = userChat?.status === 'Dijawab';
 
-      // V7.1 Scanner Fast Mode (Anti-Lag & Heat) 📸
+      // V7.1.2 Scanner Fast Mode & Desktop Compatibility 📸
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
             html5QrCode = new Html5Qrcode("reader");
-            html5QrCode.start({ facingMode: cameraFacingMode }, { fps: 10, qrbox: 250, disableFlip: false },
+            const config = { fps: 10, qrbox: { width: 250, height: 250 }, disableFlip: false };
+            
+            // Try specific facing mode, fallback if it fails (For desktop/dex)
+            html5QrCode.start({ facingMode: cameraFacingMode }, config,
                (decodedText) => {
-                  const matchedOrder = (adminOrders || []).find(o => o.id === decodedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === decodedText);
+                  // Cek apakah scan Cash atau scan ID Biasa
+                  let parsedText = decodedText;
+                  if(decodedText.startsWith('CASH-VPC-')) parsedText = decodedText.replace('CASH-', '');
+
+                  const matchedOrder = (adminOrders || []).find(o => o.id === parsedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === parsedText);
                   if (matchedOrder) { 
                      playSuccessBeep(); 
                      addToast(`Terdeteksi: ${matchedOrder.id}`, 'success');
                      setIsScannerOpen(false); 
-                     // Directly validasi lunas for fast flow in V7.1
                      updateOrderStatus(matchedOrder.id, 'Sukses');
                   } else { 
                      addToast("Kode QR tidak dikenal di database.", "error"); 
                   }
                }, (err) => {}
-            ).catch(err => { addToast("Kamera tidak dapat diakses.", "error"); setIsScannerOpen(false); });
+            ).catch(err => {
+                // Fallback untuk device tanpa kamera environment (misal desktop)
+                if(cameraFacingMode === 'environment') {
+                    html5QrCode.start({ facingMode: "user" }, config, (text) => { /* logic sama */ }, (e)=>{}).catch(()=> {
+                         addToast("Kamera tidak dapat diakses.", "error"); setIsScannerOpen(false);
+                    });
+                } else {
+                    addToast("Kamera tidak dapat diakses.", "error"); setIsScannerOpen(false);
+                }
+            });
          }
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => console.log(e)); };
       }, [isScannerOpen, adminOrders, cameraFacingMode, addToast]);
@@ -1041,10 +1040,10 @@
       const userTotalTx = userOrders.filter(o => o.status === 'Sukses').length;
       const userVipData = calculateVIPLevel(userTotalTx);
 
-      // V7.1 Checkout Logic With PIN Interceptor
+      // V7.1 Checkout Logic
       const triggerCheckout = () => {
           if (!userId || !selectedNominal || !selectedPayment) return;
-          setShowConfirmCheckout(true); // User review data first
+          setShowConfirmCheckout(true); 
       };
 
       const executeFinalPayment = () => {
@@ -1257,11 +1256,11 @@
         return (
           <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-[#050505] text-white">
             <ThemeOverlay theme={globalTheme} />
-            <div className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-orange-600/20 rounded-full blur-[120px] animate-blob"></div>
-            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-purple-600/20 rounded-full blur-[120px] animate-blob" style={{animationDelay: '2s'}}></div>
+            <div className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-orange-600/20 rounded-full blur-[100px] animate-pulse pointer-events-none"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-purple-600/20 rounded-full blur-[100px] animate-pulse pointer-events-none" style={{animationDelay: '2s'}}></div>
             
             <div className="w-full max-w-md p-6 relative z-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
-               <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-2xl relative bg-transparent border-white/10">
+               <div className="glass-panel p-8 md:p-10 rounded-[2.5rem] shadow-2xl relative bg-[#0a0a0a]/90 border-white/10">
                   <div className="absolute inset-x-0 -top-px h-px w-1/2 mx-auto bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50"></div>
                   <div className="flex flex-col items-center justify-center mb-8 text-center">
                      <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(249,115,22,0.3)] mb-5">
@@ -1271,7 +1270,7 @@
                         VIPER<span className="text-orange-500">CELL</span>
                      </h2>
                      <p className="text-xs text-gray-400 font-medium px-4">
-                        Platform penyedia layanan top up game tercepat, termurah, dan terpercaya 24/7.
+                        Akses layanan top up premium Anda.
                      </p>
                   </div>
 
@@ -1280,24 +1279,24 @@
                         <div className="animate-in fade-in slide-in-from-top-2 space-y-4">
                            <div className="relative group">
                               <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                              <input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nama Lengkap" />
+                              <input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nama Lengkap" />
                            </div>
                            <div className="relative group">
                               <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                              <input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nomor WhatsApp" />
+                              <input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Nomor WhatsApp" />
                            </div>
                         </div>
                      )}
                      
                      <div className="relative group">
                         <IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                        <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Alamat Email" />
+                        <input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Alamat Email" />
                      </div>
                      
                      {authMode !== 'forgot' && (
                         <div className="relative group">
                            <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                           <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Kata Sandi (Min. 6 Karakter)" />
+                           <input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500" placeholder="Kata Sandi (Min. 6 Karakter)" />
                         </div>
                      )}
 
@@ -1327,7 +1326,7 @@
          return (
             <div className="fixed inset-0 z-[999] bg-[#050505] flex flex-col items-center justify-center p-6 animate-in fade-in duration-1000 overflow-hidden text-white">
                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 border border-orange-500/30 rounded-full animate-pulse"></div>
-               <div className="relative z-10 glass-panel flex flex-col items-center text-center max-w-lg w-full p-10 rounded-[3rem] shadow-2xl bg-black/40">
+               <div className="relative z-10 glass-panel flex flex-col items-center text-center max-w-lg w-full p-10 rounded-[3rem] shadow-2xl bg-[#0a0a0a]">
                   <div className="relative mb-8">
                      <IconLock className="w-24 h-24 text-orange-500 drop-shadow-[0_0_30px_rgba(249,115,22,0.8)] relative z-10" />
                      <div className="absolute inset-0 bg-orange-500 blur-3xl opacity-30 animate-pulse"></div>
@@ -1347,9 +1346,9 @@
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
           <PinModal isOpen={pinModalState.isOpen} mode={pinModalState.mode} expectedPin={pinModalState.expectedPin} onSuccess={pinModalState.onSuccess} onCancel={() => setPinModalState({isOpen:false, mode:'setup', onSuccess:null})} />
 
-          {/* V7.1 Checkout Confirmation Modal (Isolasi z-index tinggi) 💳 */}
+          {/* V7.1 Checkout Confirmation Modal */}
           {showConfirmCheckout && selectedNominal && selectedGame && (
-             <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl animate-in zoom-in-95 duration-300">
+             <div className="fixed inset-0 z-[500] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-300">
                 <div className="glass-panel bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 w-full max-w-md shadow-2xl relative overflow-hidden border border-white/10">
                    <h3 className="font-black text-xl mb-1 text-white text-center">Konfirmasi Pesanan</h3>
                    <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data yang dimasukkan sudah benar.</p>
@@ -1430,11 +1429,11 @@
              </div>
           )}
 
-          {/* V7.1 CAMERA SCANNER (Anti-Lag) */}
+          {/* V7.1.2 CAMERA SCANNER (Optimized) */}
           {isScannerOpen && (
              <div className="fixed inset-0 bg-black z-[9999] flex flex-col animate-in fade-in duration-200">
                 <div className="flex justify-between items-center p-5 z-10 bg-gradient-to-b from-black/80 to-transparent absolute top-0 w-full">
-                   <p className="text-white font-black text-lg drop-shadow-md flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Kasir Scanner</p>
+                   <p className="text-white font-black text-lg drop-shadow-md flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Kasir Scanner QR</p>
                    <div className="flex gap-3">
                        <button onClick={toggleCamera} className="text-white bg-gray-800 hover:bg-gray-700 transition rounded-full p-2.5 shadow-xl tooltip" title="Putar Kamera"><IconRefresh className="w-5 h-5"/></button>
                        <button onClick={()=>setIsScannerOpen(false)} className="text-white bg-red-500 hover:bg-red-600 transition rounded-full p-2.5 shadow-xl tooltip" title="Tutup"><IconX className="w-5 h-5"/></button>
@@ -1447,7 +1446,7 @@
 
           {/* FLOATING NAVBAR */}
           <nav className="fixed top-4 left-0 w-full z-40 px-4">
-            <div className="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl bg-black/60 relative border-white/10">
+            <div className="max-w-7xl mx-auto glass-panel rounded-2xl px-5 py-3 flex items-center justify-between shadow-xl bg-[#0a0a0a]/90 relative border-white/10">
               <div className="flex items-center gap-4">
                  <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 bg-white/5 border border-white/10 rounded-xl hover:bg-orange-500/20 hover:text-orange-500 transition shadow-sm relative">
                     <IconMenu className="w-6 h-6" />
@@ -1557,9 +1556,11 @@
           <main className={`flex-1 transition-all w-full flex flex-col ${currentView === 'chat' ? 'h-full' : ''}`}>
             <div className={`max-w-7xl mx-auto w-full px-4 flex-grow mt-6 ${currentView === 'chat' ? 'h-full flex flex-col max-w-5xl' : ''}`}>
             
-            {/* V7.1 BERANDA (Persisten State) */}
+            {/* V7.1.2 BERANDA */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4 pb-20' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
-                  <BannerSlider items={banners} />
+                  
+                  {/* Banner HANYA muncul jika bukan overlay form game */}
+                  {!selectedGame && <BannerSlider items={banners} />}
                   
                   {/* FLASH SALE SECTION */}
                   {flashSalePromos?.length > 0 && (
@@ -1605,20 +1606,21 @@
                   )}
 
                   <div className="relative z-10">
-                     {/* STEP 1: PILIH GAME */}
-                     <div className="glass-panel bg-[#0a0a0a]/50 rounded-[2.5rem] p-6 md:p-10 shadow-2xl mb-8 border border-white/10">
-                        <div className="flex items-center gap-4 mb-8">
+                     {/* STEP 1: PILIH GAME (Katalog Utama) */}
+                     <div className="glass-panel bg-[#0a0a0a]/80 rounded-[2.5rem] p-6 md:p-10 shadow-2xl mb-12 border border-white/10 relative overflow-hidden">
+                        <div className="absolute -left-10 -top-10 w-40 h-40 bg-orange-600/10 rounded-full blur-[60px] pointer-events-none"></div>
+                        <div className="flex items-center gap-4 mb-8 relative z-10">
                            <div className="bg-orange-500/20 p-3 rounded-2xl border border-orange-500/30 shadow-inner"><IconGamepad className="w-6 h-6 text-orange-400"/></div>
                            <div>
                               <h2 className="text-xl md:text-2xl font-black leading-tight text-white">Pilih Game</h2>
-                              <p className="text-xs text-gray-400 font-medium">Temukan game favorit Anda.</p>
+                              <p className="text-xs text-gray-400 font-medium">Temukan dan top up game favorit Anda.</p>
                            </div>
                         </div>
                         
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 relative z-10">
                            {(games||[]).map(game => (
-                              <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId('');}} className="cursor-pointer rounded-3xl overflow-hidden relative bg-black/80 border border-white/5 hover:border-orange-500 hover:shadow-[0_10px_30px_rgba(249,115,22,0.15)] transition-all duration-300 group hover:-translate-y-2">
-                                 <div className="aspect-square bg-black p-2">
+                              <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-3xl overflow-hidden relative bg-black/80 border border-white/5 hover:border-orange-500 hover:shadow-[0_10px_30px_rgba(249,115,22,0.15)] transition-all duration-300 group hover:-translate-y-2">
+                                 <div className="aspect-square bg-black p-2 relative overflow-hidden">
                                     <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-2xl group-hover:scale-110 transition duration-700 ease-out opacity-90 group-hover:opacity-100 shadow-inner"/>
                                  </div>
                                  <div className="p-4 text-center">
@@ -1631,31 +1633,10 @@
                         </div>
                      </div>
 
-                     {/* ABOUT US & GALLERY */}
-                     <div className="mt-16 mb-8 text-center max-w-3xl mx-auto px-4 animate-in fade-in duration-700 relative z-10">
-                        <div className="inline-flex items-center justify-center p-3 bg-orange-500/10 rounded-2xl mb-4 text-orange-400"><IconShield className="w-6 h-6"/></div>
-                        <h2 className="text-2xl md:text-3xl font-black text-white mb-4">Tentang Vipercell</h2>
-                        <p className="text-sm md:text-base text-gray-400 leading-relaxed font-medium">Vipercell didirikan untuk memberikan solusi top up game yang instan, harga kompetitif, dan jaminan keamanan 100% bagi seluruh gamers di Indonesia. Semua transaksi Anda diproses secara otomatis oleh sistem selama 24 jam penuh tanpa hari libur.</p>
-                     </div>
-
-                     {(galleryData||[]).length > 0 && (
-                        <div className="glass-panel bg-[#0a0a0a]/50 rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-white/10 relative z-10">
-                           <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2 pl-2"><IconImage className="w-5 h-5 text-orange-500"/> Galeri Bukti Transaksi</h3>
-                           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
-                              {galleryData.map((img, i) => (
-                                 <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-white/10 relative group bg-black">
-                                    <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-90 group-hover:opacity-100" />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2 backdrop-blur-[2px]"><IconCheckCircle className="w-4 h-4 text-emerald-400 drop-shadow-md"/></div>
-                                 </div>
-                              ))}
-                           </div>
-                        </div>
-                     )}
-
-                     {/* V7.1 OVERLAY FORM TOP UP (Isolasi Z-Index Tertinggi) */}
+                     {/* V7.1.2 OVERLAY FORM TOP UP (Isolasi Z-Index Tertinggi, Background Solid Mencegah Bocor) */}
                      {selectedGame && (
                         <div className="fixed inset-0 z-[100] flex flex-col bg-[#050505] animate-in slide-in-from-bottom-full duration-500">
-                           <div className="flex justify-between items-center p-5 bg-[#0a0a0a] backdrop-blur-2xl border-b border-white/10 shadow-sm sticky top-0 z-50">
+                           <div className="flex justify-between items-center p-5 bg-[#0a0a0a]/95 border-b border-white/10 shadow-sm sticky top-0 z-50">
                               <div className="flex items-center gap-4">
                                  <img src={selectedGame.image} className="w-12 h-12 rounded-xl object-cover shadow-sm border border-white/10"/>
                                  <div>
@@ -1666,11 +1647,11 @@
                               <button onClick={() => setSelectedGame(null)} className="p-3 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-2xl transition border border-transparent hover:border-red-500/30"><IconX className="w-5 h-5"/></button>
                            </div>
 
-                           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar relative z-10 bg-black/50">
+                           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar relative z-10 bg-[#050505]">
                               <div className="max-w-3xl mx-auto space-y-6 pb-32">
                                  
                                  {/* DATA AKUN */}
-                                 <div className="glass-panel bg-black/80 rounded-[2rem] p-6 md:p-8 shadow-lg border border-white/10">
+                                 <div className="bg-[#0a0a0a] rounded-[2rem] p-6 md:p-8 shadow-lg border border-white/10">
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-blue-500/20 p-2.5 rounded-xl border border-blue-500/30"><IconUser className="w-5 h-5 text-blue-400"/></div>
                                        <h2 className="text-lg font-black text-white">1. Data Target</h2>
@@ -1696,7 +1677,7 @@
                                  </div>
 
                                  {/* PILIH NOMINAL */}
-                                 <div className={`glass-panel bg-black/80 border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                                 <div className={`bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-emerald-500/20 p-2.5 rounded-xl border border-emerald-500/30"><IconBox className="w-5 h-5 text-emerald-400"/></div>
                                        <h2 className="text-lg font-black text-white">2. Pilih Item</h2>
@@ -1733,7 +1714,7 @@
                                  </div>
 
                                  {/* PEMBAYARAN */}
-                                 <div className={`glass-panel bg-black/80 border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                                 <div className={`bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-purple-500/20 p-2.5 rounded-xl border border-purple-500/30"><IconWallet className="w-5 h-5 text-purple-400"/></div>
                                        <h2 className="text-lg font-black text-white">3. Pembayaran</h2>
@@ -1827,6 +1808,31 @@
                            </div>
                         </div>
                      )}
+
+                     {/* TENTANG KAMI & GALERI (Dipindah ke bawah katalog) */}
+                     {!selectedGame && (
+                        <div className="mt-20 mb-8 border-t border-white/10 pt-16">
+                           <div className="text-center max-w-3xl mx-auto px-4 animate-in fade-in duration-700 relative z-10 mb-12">
+                              <div className="inline-flex items-center justify-center p-3 bg-orange-500/10 rounded-2xl mb-4 text-orange-400 border border-orange-500/20"><IconShield className="w-6 h-6"/></div>
+                              <h2 className="text-2xl md:text-3xl font-black text-white mb-4">Tentang Vipercell</h2>
+                              <p className="text-sm md:text-base text-gray-400 leading-relaxed font-medium">Vipercell didirikan untuk memberikan solusi top up game yang instan, harga kompetitif, dan jaminan keamanan 100% bagi seluruh gamers di Indonesia. Semua transaksi Anda diproses secara otomatis oleh sistem selama 24 jam penuh tanpa hari libur.</p>
+                           </div>
+
+                           {(galleryData||[]).length > 0 && (
+                              <div className="bg-[#0a0a0a]/80 rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-white/10 relative z-10">
+                                 <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2 pl-2"><IconImage className="w-5 h-5 text-orange-500"/> Galeri Bukti Transaksi</h3>
+                                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
+                                    {galleryData.map((img, i) => (
+                                       <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-white/10 relative group bg-black">
+                                          <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition duration-500 opacity-90 group-hover:opacity-100" />
+                                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-2 backdrop-blur-[2px]"><IconCheckCircle className="w-4 h-4 text-emerald-400 drop-shadow-md"/></div>
+                                       </div>
+                                    ))}
+                                 </div>
+                              </div>
+                           )}
+                        </div>
+                     )}
                   </div>
             </div>
 
@@ -1911,12 +1917,13 @@
                                                  <a href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} target="_blank" download="QRIS_Topup.jpg" className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-black px-4 py-2 rounded-xl transition flex items-center gap-2 border border-white/5 uppercase tracking-widest"><IconDownload className="w-3.5 h-3.5"/> Simpan QR</a>
                                               </>
                                            ) : (
+                                              /* V7.1.2 - Ganti Barcode Cash jadi QR Code sama seperti QRIS tapi beda payload */
                                               <>
-                                                 <p className="text-xs text-gray-300 font-bold mb-3 uppercase tracking-widest flex items-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Kode Barcode</p>
-                                                 <div className="bg-white p-3 rounded-2xl shadow-inner mb-4 w-full">
-                                                    <img src={`https://barcode.orcascan.com/?type=code128&data=VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}`} className="w-full h-24 object-cover" />
+                                                 <p className="text-xs text-gray-300 font-bold mb-3 uppercase tracking-widest flex items-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> QR Kasir (CASH)</p>
+                                                 <div className="bg-white p-3 rounded-2xl shadow-inner mb-4">
+                                                    <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CASH-VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}&margin=10`} className="w-40 h-40 object-contain" />
                                                  </div>
-                                                 <p className="text-[10px] font-mono text-gray-400">Tunjukkan ke Kasir</p>
+                                                 <p className="text-[10px] font-mono text-gray-400 font-bold bg-white/10 px-3 py-1 rounded-md">Tunjukkan QR ke Kasir</p>
                                               </>
                                            )}
                                         </div>
@@ -1993,7 +2000,7 @@
                </div>
             )}
 
-            {/* TAB PROFIL & PIN V7.1.1 */}
+            {/* TAB PROFIL & PIN */}
             {currentView === 'profile' && (
                <div className="animate-in fade-in pb-10 max-w-4xl mx-auto pt-4 w-full relative z-10">
                   <div className="glass-panel bg-[#0a0a0a]/80 rounded-[3rem] p-6 md:p-10 shadow-2xl border border-white/10">
@@ -2060,18 +2067,18 @@
                            </div>
 
                            <div className="bg-black/60 p-8 rounded-[2rem] border border-white/5 shadow-inner">
-                              <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-white"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconLock className="w-5 h-5"/></div> Keamanan & PIN Transaksi</h3>
+                              <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-white"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconLock className="w-5 h-5"/></div> Keamanan & PIN</h3>
                               
                               <div className="mb-6 pb-6 border-b border-white/5 flex items-center justify-between">
-                                  <div>
-                                     <h4 className="text-sm font-black text-white mb-1">PIN Transaksi</h4>
-                                     <p className="text-[10px] text-gray-400 font-medium">Melindungi setiap proses checkout.</p>
-                                  </div>
-                                  {currentUserData?.pin ? (
-                                      <button onClick={handleRemovePin} className="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-4 py-2 rounded-xl text-xs font-black transition border border-red-500/30">Hapus PIN</button>
-                                  ) : (
-                                      <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-black transition shadow-lg shadow-purple-500/30">Setel PIN Baru</button>
-                                  )}
+                                 <div>
+                                    <h4 className="text-sm font-black text-white mb-1">PIN Transaksi</h4>
+                                    <p className="text-[10px] text-gray-400 font-medium">Melindungi setiap proses checkout.</p>
+                                 </div>
+                                 {currentUserData?.pin ? (
+                                     <button onClick={handleRemovePin} className="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white px-4 py-2 rounded-xl text-xs font-black transition border border-red-500/30">Hapus PIN</button>
+                                 ) : (
+                                     <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-xs font-black transition shadow-lg shadow-purple-500/30">Setel PIN Baru</button>
+                                 )}
                               </div>
 
                               {!showPasswordForm ? (
@@ -2187,14 +2194,14 @@
                                  <div className="space-y-3">
                                     {(allGlobalOrders||[]).slice(0,5).map(o => (
                                        <div key={o.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-white/5 p-4 rounded-2xl border border-white/5 shadow-sm gap-3">
-                                          <div className="flex items-center gap-4">
+                                          <div className="flex items-center gap-4 min-w-0">
                                              <div className={`w-2.5 h-2.5 rounded-full shrink-0 ${o.status==='Pending'?'bg-orange-500 animate-pulse':o.status==='Sukses'?'bg-emerald-500':'bg-red-500'}`}></div>
-                                             <div className="min-w-0">
+                                             <div className="min-w-0 flex-1">
                                                 <div className="text-sm font-bold text-white truncate">{(o.userEmail || '').split('@')[0]} <span className="text-xs text-gray-500 font-medium">memesan</span> {o.gameName}</div>
-                                                <div className="text-[10px] font-mono text-gray-400 mt-1">{o.id}</div>
+                                                <div className="text-[10px] font-mono text-gray-400 mt-1 truncate">{o.id}</div>
                                              </div>
                                           </div>
-                                          <div className="text-left sm:text-right pl-6 sm:pl-0 border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0">
+                                          <div className="text-left sm:text-right pl-6 sm:pl-0 border-t sm:border-t-0 border-white/5 pt-2 sm:pt-0 shrink-0">
                                              <div className="text-sm font-black font-mono text-emerald-400">{formatRupiah(o.priceTotal)}</div>
                                              <div className="text-[9px] text-gray-400 uppercase tracking-widest mt-1">{o.createdAt ? new Date(o.createdAt).toLocaleTimeString('id-ID') : '-'}</div>
                                           </div>
@@ -2219,7 +2226,8 @@
                                  <input type="text" placeholder="Cari ID / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full sm:w-96 bg-black/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-500 transition shadow-inner" />
                               </div>
 
-                              <div className="flex-1 overflow-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
+                              {/* V7.1.2: Added max-w-full and w-full directly to fix mobile wrap */}
+                              <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
                                  <table className="w-full text-left text-sm text-gray-300 min-w-[800px]">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
                                        <tr><th className="px-5 py-4">Pelanggan & ID</th><th className="px-5 py-4">Item & Game</th><th className="px-5 py-4">Data Tujuan</th><th className="px-5 py-4">Tagihan</th><th className="px-5 py-4">Status</th><th className="px-5 py-4 text-center">Tindakan</th></tr>
@@ -2228,33 +2236,33 @@
                                     {(adminOrders || []).filter(o => o.status !== 'Dihapus' && ((o.id || '').toLowerCase().includes(adminOrderSearch.toLowerCase()) || (o.userEmail || '').toLowerCase().includes(adminOrderSearch.toLowerCase()))).map(order => (
                                        <tr key={order.id} className="hover:bg-white/[0.02] transition">
                                           <td className="px-5 py-4">
-                                             <div className="font-bold text-white truncate max-w-[120px]">{(order.userEmail || '').split('@')[0]}</div>
-                                             <div className="text-[9px] text-gray-500 font-mono mt-1 truncate max-w-[120px]">{order.id}</div>
+                                             <div className="font-bold text-white truncate max-w-[120px]">{(order?.userEmail || 'Guest').split('@')[0]}</div>
+                                             <div className="text-[9px] text-gray-500 font-mono mt-1 truncate max-w-[120px]">{order?.id}</div>
                                           </td>
                                           <td className="px-5 py-4">
-                                             <div className="text-orange-400 font-bold truncate max-w-[150px]">{order.gameName}</div>
-                                             <div className="text-xs text-gray-400 mt-1 truncate max-w-[150px]">{order.nominalName}</div>
+                                             <div className="text-orange-400 font-bold truncate max-w-[150px]">{order?.gameName || '-'}</div>
+                                             <div className="text-xs text-gray-400 mt-1 truncate max-w-[150px]">{order?.nominalName || '-'}</div>
                                           </td>
                                           <td className="px-5 py-4">
-                                             <div className="font-mono font-bold bg-white/5 rounded-lg inline-block px-3 py-1 border border-white/5 shadow-sm text-white max-w-[150px] overflow-hidden overflow-ellipsis">{order.targetUserId} {order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
+                                             <div className="font-mono font-bold bg-white/5 rounded-lg inline-block px-3 py-1 border border-white/5 shadow-sm text-white max-w-[150px] overflow-hidden overflow-ellipsis">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
                                           </td>
                                           <td className="px-5 py-4">
-                                             <div className="font-black text-white">{formatRupiah(order.priceTotal)}</div>
+                                             <div className="font-black text-white">{formatRupiah(order?.priceTotal)}</div>
                                              <div className="flex flex-wrap gap-1 mt-1.5">
-                                                <span className="text-[8px] bg-white/10 text-gray-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider">{order.paymentMethod}</span>
-                                                {order.promoUsed && <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center border border-emerald-500/20"><IconTag className="w-2.5 h-2.5 mr-0.5"/> {order.promoUsed}</span>}
+                                                <span className="text-[8px] bg-white/10 text-gray-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider">{order?.paymentMethod}</span>
+                                                {order?.promoUsed && <span className="text-[8px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center border border-emerald-500/20"><IconTag className="w-2.5 h-2.5 mr-0.5"/> {order.promoUsed}</span>}
                                              </div>
                                           </td>
-                                          <td className="px-5 py-4"><span className={`px-3 py-1 rounded-md text-[9px] font-black border uppercase tracking-widest ${statusColor(order.status)}`}>{order.status}</span></td>
+                                          <td className="px-5 py-4"><span className={`px-3 py-1 rounded-md text-[9px] font-black border uppercase tracking-widest ${statusColor(order?.status)}`}>{order?.status}</span></td>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center justify-center gap-2">
-                                                {order.status === 'Pending' && (
+                                                {order?.status === 'Pending' && (
                                                    <>
                                                       <button onClick={() => updateOrderStatus(order.id, 'Sukses')} className="p-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
                                                       <button onClick={() => updateOrderStatus(order.id, 'Batal')} className="p-2 bg-orange-500/10 border border-orange-500/30 text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm" title="Batalkan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
                                                 )}
-                                                <button onClick={() => deleteOrder(order.id)} className="p-2 bg-white/5 border border-white/10 text-gray-500 rounded-xl hover:bg-red-500 hover:border-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen"><IconTrash className="w-4 h-4" /></button>
+                                                <button onClick={() => deleteOrder(order?.id)} className="p-2 bg-white/5 border border-white/10 text-gray-500 rounded-xl hover:bg-red-500 hover:border-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen"><IconTrash className="w-4 h-4" /></button>
                                              </div>
                                           </td>
                                        </tr>
@@ -2464,12 +2472,12 @@
                                            )}
 
                                            {promoModalType === 'day' && (
-                                                <div>
-                                                   <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Hari Aktif Promo</label>
-                                                   <select value={promoForm.targetDay} onChange={(e)=>setPromoForm({...promoForm, targetDay: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-3 text-white focus:border-orange-500 text-xs transition appearance-none">
-                                                       <option value="1">Senin</option><option value="2">Selasa</option><option value="3">Rabu</option><option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option><option value="0">Minggu</option>
-                                                   </select>
-                                                </div>
+                                               <div>
+                                                  <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Hari Aktif Promo</label>
+                                                  <select value={promoForm.targetDay} onChange={(e)=>setPromoForm({...promoForm, targetDay: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-3 text-white focus:border-orange-500 text-xs transition appearance-none">
+                                                      <option value="1">Senin</option><option value="2">Selasa</option><option value="3">Rabu</option><option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option><option value="0">Minggu</option>
+                                                  </select>
+                                               </div>
                                            )}
 
                                            {promoModalType === 'code' && (
@@ -2480,8 +2488,7 @@
                                                   </div>
                                                   <div className="grid grid-cols-2 gap-3">
                                                       <div>
-                                                          <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Batas Pemakai</label>
-                                                          <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-white font-mono text-sm focus:border-orange-500 transition" placeholder="100 Orang"/>
+                                                          <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Batas Pemakai</label><input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-white font-mono text-sm focus:border-orange-500 transition" placeholder="100 Orang"/>
                                                       </div>
                                                       <div>
                                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Min. Belanja (Rp)</label>
@@ -2547,7 +2554,7 @@
                                  <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
                                  <input type="text" placeholder="Cari nama atau email member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full sm:w-96 bg-black/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-600 transition shadow-inner" />
                               </div>
-                              <div className="flex-1 overflow-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
+                              <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
                                  <table className="w-full text-left text-sm text-gray-300 whitespace-nowrap min-w-[800px]">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
                                        <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Status VIP</th><th className="px-6 py-4">Terakhir Login</th><th className="px-6 py-4 text-right">Aksi</th></tr>
@@ -2681,7 +2688,7 @@
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  {/* SAKLAR TOKO & THEME */}
                                  <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner">
-                                    {/* SEASONAL THEME SWITCHER V7.1.1 */}
+                                    {/* SEASONAL THEME SWITCHER V7.1.2 */}
                                     <div className="mb-8 border-b border-white/10 pb-6">
                                         <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Tema Seasonal (Event)</h3>
                                         <p className="text-[10px] text-gray-400 mb-4">Ubah suasana website sesuai event secara real-time.</p>
