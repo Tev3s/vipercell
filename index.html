@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v6.0 Ultimate</title>
+  <title>Vipercell - Premium Top Up v7.0 Ultimate</title>
   
   <!-- Tailwind CSS & Custom Config -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -18,11 +18,13 @@
             accent: { 400: '#a855f7', 500: '#8b5cf6', 600: '#7c3aed' }
           },
           animation: {
-             'blob': 'blob 7s infinite',
-             'float': 'float 4s ease-in-out infinite',
-             'marquee': 'marquee 20s linear infinite',
-             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-             'glow': 'glow 2s ease-in-out infinite alternate',
+            'blob': 'blob 7s infinite',
+            'float': 'float 4s ease-in-out infinite',
+            'marquee': 'marquee 20s linear infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+            'snow': 'snow 10s linear infinite',
+            'swing': 'swing 3s ease-in-out infinite alternate',
           },
           keyframes: {
              blob: {
@@ -42,6 +44,14 @@
              glow: {
                 '0%': { boxShadow: '0 0 5px #f97316, 0 0 10px #f97316' },
                 '100%': { boxShadow: '0 0 10px #ea580c, 0 0 20px #ea580c' }
+             },
+             snow: {
+                '0%': { transform: 'translateY(-10vh) rotate(0deg)' },
+                '100%': { transform: 'translateY(110vh) rotate(360deg)' }
+             },
+             swing: {
+                '0%': { transform: 'rotate(-10deg)' },
+                '100%': { transform: 'rotate(10deg)' }
              }
           }
         }
@@ -69,22 +79,76 @@
 
     #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; }
     #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
+
+    /* =========================================
+       SEASONAL THEMES (V7.0)
+       ========================================= */
+    /* THEME: NATAL */
+    .theme-natal { background-color: #020617; }
+    .theme-natal::before {
+       content: "❄️ ❄️ ❄️";
+       position: fixed; top: -50px; left: 10%; font-size: 24px; opacity: 0.3;
+       animation: snow 8s linear infinite; pointer-events: none; z-index: 0;
+    }
+    .theme-natal::after {
+       content: "❄️ ❄️";
+       position: fixed; top: -50px; left: 70%; font-size: 32px; opacity: 0.2;
+       animation: snow 12s linear infinite 2s; pointer-events: none; z-index: 0;
+    }
+
+    /* THEME: RAMADHAN */
+    .theme-ramadhan { background-color: #022c22; }
+    .theme-ramadhan::before {
+       content: "🌙";
+       position: fixed; top: 20px; right: 20px; font-size: 60px; opacity: 0.15;
+       pointer-events: none; z-index: 0;
+    }
+    .theme-ramadhan .lantern {
+       position: fixed; top: -10px; font-size: 40px; opacity: 0.3;
+       transform-origin: top center; animation: swing 3s ease-in-out infinite alternate; pointer-events: none; z-index: 0;
+    }
+
+    /* THEME: PASKAH */
+    .theme-paskah { background-color: #1e1b4b; }
+    .theme-paskah::after {
+       content: "🥚 🌸 🥚";
+       position: fixed; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 40px; opacity: 0.2;
+       pointer-events: none; z-index: 0;
+    }
+
+    /* THEME: KEMERDEKAAN */
+    .theme-kemerdekaan { background-color: #450a0a; }
+    .theme-kemerdekaan::before {
+       content: "🇮🇩";
+       position: fixed; top: 30px; left: 30px; font-size: 50px; opacity: 0.2;
+       animation: float 4s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    .theme-kemerdekaan::after {
+       content: "🎉 🎊";
+       position: fixed; top: -50px; left: 50%; font-size: 24px; opacity: 0.3;
+       animation: snow 10s linear infinite; pointer-events: none; z-index: 0;
+    }
   </style>
 
-  <!-- React & Babel -->
+  <!-- Scripts -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
-<body class="font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative">
-  <div id="root" class="flex-grow flex flex-col min-h-screen"></div>
+<body id="app-body" class="font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative theme-default">
+  
+  <!-- Overlay Elements for Themes -->
+  <div id="theme-overlay" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10"></div>
 
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo } = React;
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -116,6 +180,20 @@
           gainNode.gain.setValueAtTime(1, ctx.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
           osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2);
+       } catch(e) {}
+    };
+
+    const playNotificationBeep = () => {
+       try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc = ctx.createOscillator();
+          const gainNode = ctx.createGain();
+          osc.connect(gainNode); gainNode.connect(ctx.destination);
+          osc.type = 'sine'; osc.frequency.setValueAtTime(500, ctx.currentTime); 
+          osc.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime + 0.2);
+          gainNode.gain.setValueAtTime(0.5, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+          osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.5);
        } catch(e) {}
     };
 
@@ -163,7 +241,6 @@
     
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
 
-    // --- VIP SYSTEM LOGIC ---
     const calculateVIPLevel = (txCount) => {
         if (txCount >= 100) return { level: 'Platinum', badge: '💎', cashback: 0.03, min: 100, color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' };
         if (txCount >= 30) return { level: 'Gold', badge: '🥇', cashback: 0.02, min: 30, color: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/30' };
@@ -203,7 +280,7 @@
     const IconCamera = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>;
     const IconMenu = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>;
     const IconUser = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>;
-    const IconPhone = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>;
+    const IconPhone = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M22 16.92v3a2 2 0 0 1-2-2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>;
     const IconHome = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>;
     const IconTrendingUp = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 6 13.5 15.5 8 10 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>;
     const IconShield = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
@@ -214,11 +291,10 @@
     const IconSend = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>;
     const IconMoreVertical = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>;
     const IconRefresh = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>;
-    const IconClock = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>;
     const IconGift = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>;
-    const IconCalendar = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>;
     const IconKey = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>;
-    const IconStar = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>;
+    const IconDownload = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+    const IconBell = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>;
 
     // --- DEFAULT DATA & CONSTANTS ---
     const PAYMENTS = [
@@ -226,7 +302,7 @@
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi / Kasir', fee: 0 },
     ];
 
-    // --- CUSTOM CONFIRM MODAL ---
+    // --- COMPONENTS ---
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
        return (
@@ -245,7 +321,6 @@
        )
     }
 
-    // --- SECURED DANGER DIALOG (PASSWORD VERIFICATION) ---
     const DangerDialog = ({ isOpen, message, onConfirm, onCancel, authEmail }) => {
         const [pass, setPass] = useState('');
         const [err, setErr] = useState('');
@@ -254,17 +329,12 @@
         if (!isOpen) return null;
 
         const handleSubmit = async (e) => {
-            e.preventDefault();
-            setLoading(true); setErr('');
+            e.preventDefault(); setLoading(true); setErr('');
             try {
-                // Verify password silently
                 const credential = EmailAuthProvider.credential(authEmail, pass);
                 await reauthenticateWithCredential(auth.currentUser, credential);
-                onConfirm(); // Callback on success
-                setPass('');
-            } catch(error) {
-                setErr('Password Admin salah!');
-            }
+                onConfirm(); setPass('');
+            } catch(error) { setErr('Password Admin salah!'); }
             setLoading(false);
         };
 
@@ -275,7 +345,6 @@
                 <div className="w-16 h-16 bg-red-500/20 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/40"><IconShieldAlert className="w-8 h-8" /></div>
                 <h3 className="text-xl font-black mb-2 text-white uppercase tracking-widest">Danger Zone</h3>
                 <p className="text-xs text-gray-400 mb-6 font-medium bg-red-500/10 p-3 rounded-xl">{message}</p>
-                
                 <form onSubmit={handleSubmit}>
                     <div className="relative mb-4">
                         <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -294,7 +363,6 @@
         )
     }
 
-    // --- COMPONENT: FOOTER ---
     const MainFooter = ({ socialLinks }) => {
        return (
          <footer className="mt-20 border-t border-white/5 bg-white/5 backdrop-blur-md pt-12 pb-8 px-6 text-center">
@@ -307,21 +375,58 @@
                   Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
                </p>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v6.0 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v7.0 Ultimate</span>
                </div>
             </div>
          </footer>
        )
     }
 
-    // --- COMPONENT: BANNER SLIDER ---
     const BannerSlider = ({ items }) => {
        const [curr, setCurr] = useState(0);
+       const [isPaused, setIsPaused] = useState(false);
+       const playerRef = useRef(null);
+
        useEffect(() => {
-          if(items?.length <= 1) return;
+          if(items?.length <= 1 || isPaused) return;
           const t = setInterval(() => setCurr(c => (c+1)%items.length), 5000);
           return () => clearInterval(t);
-       }, [items?.length]);
+       }, [items?.length, isPaused]);
+
+       // Smart YouTube Player integration
+       useEffect(() => {
+           if(items && items[curr]?.type === 'youtube') {
+               setIsPaused(true);
+               if(window.YT && window.YT.Player) {
+                   try {
+                       if(playerRef.current) {
+                           playerRef.current.destroy();
+                       }
+                       playerRef.current = new window.YT.Player(`yt-player-${curr}`, {
+                           videoId: getYouTubeId(items[curr].url),
+                           playerVars: { autoplay: 1, controls: 0, mute: 1, rel: 0, showinfo: 0 },
+                           events: {
+                               onStateChange: (e) => {
+                                   if (e.data === window.YT.PlayerState.ENDED) {
+                                       setCurr(c => (c+1)%items.length);
+                                       setIsPaused(false);
+                                   }
+                               }
+                           }
+                       });
+                   } catch(e) { console.error(e); setIsPaused(false); }
+               } else {
+                   // Fallback if YT API fails
+                   setTimeout(()=> { setCurr(c => (c+1)%items.length); setIsPaused(false); }, 10000);
+               }
+           } else {
+               setIsPaused(false);
+               if(playerRef.current && typeof playerRef.current.destroy === 'function') {
+                   playerRef.current.destroy();
+                   playerRef.current = null;
+               }
+           }
+       }, [curr, items]);
 
        if (!items || items.length === 0) return (
           <div className="w-full h-48 md:h-72 rounded-[2.5rem] overflow-hidden mb-10 relative glass-panel flex items-center justify-center mt-6 bg-transparent border border-white/5 shadow-sm">
@@ -337,7 +442,7 @@
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                    {b.type === 'youtube' ? (
-                      <iframe className="w-full h-full object-cover pointer-events-none opacity-80 scale-105" src={`https://www.youtube.com/embed/${getYouTubeId(b.url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(b.url)}`} frameBorder="0" allow="autoplay; encrypted-media"></iframe>
+                      <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div>
                    ) : (
                       <img src={b.url} className="w-full h-full object-cover opacity-90 transition duration-[5000ms] ease-in-out transform scale-100 group-hover:scale-105" />
                    )}
@@ -366,6 +471,7 @@
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
       const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+      const [adminNotif, setAdminNotif] = useState('');
 
       const requestConfirm = (msg, action) => setConfirmModal({ isOpen: true, msg, action });
       const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null }); };
@@ -410,6 +516,7 @@
       const [galleryData, setGalleryData] = useState([]);
       const [runningTexts, setRunningTexts] = useState([]);
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', tg: '' });
+      const [globalTheme, setGlobalTheme] = useState('default');
       
       // Error Boundary for Firebase
       const [dbError, setDbError] = useState('');
@@ -452,8 +559,8 @@
       const [adminTT, setAdminTT] = useState('');
       const [adminTG, setAdminTG] = useState('');
       
-      // Promo Admin States (NEW)
-      const [promoModalType, setPromoModalType] = useState('item'); // 'item', 'flash', 'day', 'code'
+      // Promo Admin States
+      const [promoModalType, setPromoModalType] = useState('item');
       
       const [promoForm, setPromoForm] = useState({
           code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '',
@@ -491,8 +598,7 @@
       const [inputPromo, setInputPromo] = useState('');
       const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
-      const [showModal, setShowModal] = useState(false);
-      const [dynamicQrisUrl, setDynamicQrisUrl] = useState('');
+      const [showConfirmCheckout, setShowConfirmCheckout] = useState(false);
       const [lastOrderId, setLastOrderId] = useState(''); 
       const [activeOrderDetails, setActiveOrderDetails] = useState(null); 
       const [userOrders, setUserOrders] = useState([]);
@@ -505,13 +611,9 @@
       const [loadingChat, setLoadingChat] = useState(false);
       const chatEndRef = useRef(null);
 
-      // Timer Update Trigger
-      const [currentTime, setCurrentTime] = useState(new Date());
-
-      useEffect(() => {
-          const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-          return () => clearInterval(timer);
-      }, []);
+      // V7.0 Tracker for Admin Notifications
+      const prevPendingOrders = useRef(0);
+      const prevOpenChats = useRef(0);
 
       useEffect(() => {
          if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id);
@@ -532,7 +634,7 @@
             if (e.key === 'Escape') {
                if (dangerModal.isOpen) cancelDangerConfirm();
                else if (confirmModal.isOpen) cancelConfirm();
-               else if (showModal) setShowModal(false);
+               else if (showConfirmCheckout) setShowConfirmCheckout(false);
                else if (isScannerOpen) setIsScannerOpen(false);
                else if (scannedOrder) setScannedOrder(null);
                else if (waModalMember) setWaModalMember(null);
@@ -543,7 +645,18 @@
             }
          };
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [dangerModal.isOpen, confirmModal.isOpen, showModal, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen, waModalMember, broadcastModal.isOpen]);
+      }, [dangerModal.isOpen, confirmModal.isOpen, showConfirmCheckout, isScannerOpen, scannedOrder, currentView, selectedGame, isMenuOpen, mobileMenuOpen, waModalMember, broadcastModal.isOpen]);
+
+      // Apply Theme dynamically
+      useEffect(() => {
+          document.body.className = `font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative theme-${globalTheme}`;
+          const overlay = document.getElementById('theme-overlay');
+          if(overlay) {
+              if(globalTheme === 'natal') overlay.innerHTML = '<div class="absolute inset-0 bg-white/5 pointer-events-none mix-blend-overlay"></div>';
+              else if(globalTheme === 'ramadhan') overlay.innerHTML = '<div class="lantern" style="right: 15%;">&#127924;</div><div class="lantern" style="left: 15%; animation-delay: 1.5s;">&#127924;</div>';
+              else overlay.innerHTML = '';
+          }
+      }, [globalTheme]);
 
       // --- REFACTORED DB FETCHING (SAFE ARRAYS & ERROR BOUNDARY) ---
       useEffect(() => {
@@ -553,6 +666,7 @@
                const d = snap.data();
                setIsStoreOpen(d.isOpen ?? true);
                setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', tg: d.tgLink||'' });
+               setGlobalTheme(d.theme || 'default');
                
                let rTexts = d.runningTexts || [];
                if (!Array.isArray(rTexts)) rTexts = [];
@@ -562,7 +676,7 @@
                setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
             } else {
                if(isSuperAdmin) {
-                 setDoc(globalRef, { isOpen: true, runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'], banners: [], gallery: [] }).catch(()=>{});
+                 setDoc(globalRef, { isOpen: true, theme: 'default', runningTexts: ['⚡ Flash Sale Hari Ini!', '🚀 Top Up Cepat & Aman'], banners: [], gallery: [] }).catch(()=>{});
                }
             }
          }, (error) => { 
@@ -665,8 +779,30 @@
          }
       }, [currentView, activeAdminTab, socialLinks]);
 
+      // V7.0 Admin Real-time Notifications Logic 🔔
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
-      
+      const openChatsCount = (adminChats || []).filter(c => c.status === 'Open' && c.messages?.length > 0).length || 0;
+
+      useEffect(() => {
+          if (isAdmin) {
+              let shouldAlert = false;
+              let notifMsg = '';
+              if (pendingOrdersCount > prevPendingOrders.current) {
+                  shouldAlert = true; notifMsg = 'Pesanan Baru Masuk!';
+              }
+              if (openChatsCount > prevOpenChats.current) {
+                  shouldAlert = true; notifMsg = notifMsg ? 'Pesanan & Pesan Baru Masuk!' : 'Pesan Bantuan Baru!';
+              }
+              if (shouldAlert) {
+                  playNotificationBeep();
+                  setAdminNotif(notifMsg);
+                  setTimeout(() => setAdminNotif(''), 5000);
+              }
+              prevPendingOrders.current = pendingOrdersCount;
+              prevOpenChats.current = openChatsCount;
+          }
+      }, [pendingOrdersCount, openChatsCount, isAdmin]);
+
       // ADMIN CHAT FILTERING (SAFE & ONLY OPEN/ACTIVE)
       const activeSupportChats = useMemo(() => {
           if (!isAdmin || !adminChats) return [];
@@ -686,22 +822,20 @@
               });
       }, [adminChats, memberList, isAdmin]);
 
-      const openChatsCount = (activeSupportChats || []).filter(c => c.status === 'Open').length || 0;
       const userHasUnread = userChat?.status === 'Dijawab';
 
-      // QR Scanner Logic - Barcode ONLY (CODE_128)
+      // V7.0 QR Scanner Logic - Fix Support for QR & Barcode 📸
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
-            // Mengkonfigurasi scanner HANYA untuk membaca Barcode 1D (Code 128)
-            html5QrCode = new Html5Qrcode("reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.CODE_128 ] });
+            // Include both standard QR and Barcode formats
+            html5QrCode = new Html5Qrcode("reader", { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE, Html5QrcodeSupportedFormats.CODE_128 ] });
             
-            // Rasio kotak scan (qrbox) diubah jadi persegi panjang agar lebih optimal menangkap Barcode
-            html5QrCode.start({ facingMode: cameraFacingMode }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.9), height: Math.floor(Math.min(w,h)*0.4) }), aspectRatio: window.innerHeight / window.innerWidth },
+            html5QrCode.start({ facingMode: cameraFacingMode }, { fps: 15, qrbox: (w, h) => ({ width: Math.floor(Math.min(w,h)*0.8), height: Math.floor(Math.min(w,h)*0.8) }), aspectRatio: window.innerHeight / window.innerWidth },
                (decodedText) => {
                   const matchedOrder = (adminOrders || []).find(o => o.id === decodedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === decodedText);
                   if (matchedOrder) { playSuccessBeep(); setScannedOrder(matchedOrder); setIsScannerOpen(false); } 
-                  else { setScannerError("Barcode tidak valid atau bukan dari sistem ini."); setTimeout(() => setScannerError(''), 3500); }
+                  else { setScannerError("Kode tidak valid atau bukan dari sistem ini."); setTimeout(() => setScannerError(''), 3500); }
                }, (err) => {}
             ).catch(err => { alert("Kamera tidak dapat diakses."); setIsScannerOpen(false); });
          }
@@ -826,9 +960,7 @@
 
       const calculateFinalPrice = (basePrice, itemId) => {
         let price = basePrice;
-        let appliedTypes = [];
         
-        // 1. Auto Promos (Item / Flash / Day) - Find the best one to avoid making price 0 if combined
         const autoPromos = getActivePromosForItem(itemId);
         let bestAutoDiscount = 0;
         
@@ -839,7 +971,6 @@
         
         price -= bestAutoDiscount;
 
-        // 2. Secret Code
         if (activePromo) {
             let codeDiscount = activePromo.type === 'percentage' ? (price * activePromo.discount / 100) : activePromo.discount;
             price -= codeDiscount;
@@ -851,13 +982,19 @@
       const userTotalTx = userOrders.filter(o => o.status === 'Sukses').length;
       const userVipData = calculateVIPLevel(userTotalTx);
 
-      const handleCheckout = async () => {
-        if (!userId || !selectedNominal || !selectedPayment) return; setIsProcessing(true);
+      // V7.0 Confirmation Flow Check 🛡️
+      const triggerCheckout = () => {
+          if (!userId || !selectedNominal || !selectedPayment) return;
+          setShowConfirmCheckout(true);
+      };
+
+      const processCheckout = async () => {
+        setIsProcessing(true);
+        setShowConfirmCheckout(false);
         
         let baseAmount = selectedNominal.price + selectedPayment.fee; 
         let finalPrice = calculateFinalPrice(baseAmount, selectedNominal.id);
         
-        // Track used promos
         const activeAutoPromos = getActivePromosForItem(selectedNominal.id);
         let usedPromoIds = [];
         let appliedPromoCode = [];
@@ -876,7 +1013,6 @@
            }
         }
 
-        // Also track Flash Sale usage to decrease stock
         const flashPromo = activeAutoPromos.find(p => p.category === 'flash');
         if(flashPromo) {
             const fRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', flashPromo.id);
@@ -887,13 +1023,11 @@
         try {
           const batch = writeBatch(db);
           
-          // Generate Order Doc
           const orderRef = doc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
           batch.set(orderRef, {
             gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString()
           });
 
-          // Update Promo Stocks
           for(const pRef of usedPromoIds) {
               const pDoc = await getDoc(pRef);
               if(pDoc.exists()) {
@@ -904,8 +1038,9 @@
           await batch.commit();
 
           setLastOrderId(orderRef.id);
-          if (selectedPayment.id === 'qris') setDynamicQrisUrl(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, finalPrice))}&margin=10`);
-          setShowModal(true);
+          setExpandedHistoryId(orderRef.id);
+          navigateTo('history');
+          playSuccessBeep();
         } catch (error) { alert("Gagal memproses pesanan."); } finally { setIsProcessing(false); }
       };
 
@@ -919,6 +1054,19 @@
          } catch (err) { alert('Gagal kirim pesan: ' + err.message); setLoadingChat(false); }
       };
 
+      // V7.0 Quick Support Handler 🚀
+      const handleQuickSupport = async (order) => {
+          navigateTo('chat');
+          setLoadingChat(true);
+          try {
+              const msgText = `Halo CS Vipercell, saya butuh bantuan terkait pesanan saya dengan ID Transaksi: *${order.id}* (${order.gameName} - ${order.nominalName}).`;
+              const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email);
+              const newMessages = [...(userChat?.messages || []), { sender: 'user', text: msgText, time: new Date().toISOString(), role: 'Pelanggan' }];
+              await setDoc(chatRef, { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true });
+          } catch(err) { alert('Gagal memuat bantuan otomatis'); }
+          setLoadingChat(false);
+      };
+
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const statusColor = (status) => { if(status === 'Sukses' || status === 'Selesai' || status === 'Dijawab') return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'; if(status === 'Batal' || status === 'Dihapus') return 'text-red-400 bg-red-500/10 border-red-500/30'; return 'text-orange-400 bg-orange-500/10 border-orange-500/30'; };
 
@@ -928,17 +1076,19 @@
          catch (e) { alert("Gagal mengubah status: " + e.message); }
       };
 
+      const updateGlobalTheme = async (newTheme) => {
+          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { theme: newTheme }, { merge: true }); alert('Tema berhasil diaktifkan!'); } 
+          catch (e) { alert("Gagal update tema: " + e.message); }
+      }
+
       const updateOrderStatus = async (orderId, newStatus) => { 
          try { 
              const order = (adminOrders||[]).find(o => o.id === orderId);
              await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
              
-             // VIP CASHBACK LOGIC
              if(newStatus === 'Sukses' && order && order.userEmail) {
-                 // Calculate Cashback based on member's VIP level AT TIME OF PURCHASE
                  const member = (memberList||[]).find(m => m.email === order.userEmail);
                  if(member) {
-                     // We need member's total successful orders (excluding this one because it just succeeded)
                      const mOrders = allGlobalOrders.filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId);
                      const vip = calculateVIPLevel(mOrders.length);
                      if(vip.cashback > 0) {
@@ -958,13 +1108,11 @@
          catch(e) { alert("Gagal menghapus pesanan: " + e.message); }
       });
 
-      // ADVANCED WIPE DATA
       const handleWipeData = async () => {
           requestDangerConfirm('HAPUS SEMUA DATA PESANAN DAN CHAT? Tindakan ini tidak dapat dibatalkan.', async () => {
               setAuthLoading(true);
               try {
                   const batch = writeBatch(db);
-                  // Mark orders as deleted (soft delete for safety or hard delete if preferred. Let's do hard delete to clean up DB as requested)
                   const ordersSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
                   ordersSnap.forEach(doc => { batch.delete(doc.ref); });
                   
@@ -1006,19 +1154,13 @@
          try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); } catch(e) { alert("Gagal menghapus item: " + e.message); }
       });
 
-      // --- NEW PROMO MASTER ---
       const handleSavePromo = async (e) => {
           e.preventDefault();
           try {
               const promoId = promoModalType === 'code' ? promoForm.code.toUpperCase() : `${promoModalType}_${Date.now()}`;
               
               let promoData = {
-                  id: promoId,
-                  category: promoModalType,
-                  type: promoForm.type,
-                  discount: Number(promoForm.discount),
-                  isActive: true,
-                  createdAt: new Date().toISOString()
+                  id: promoId, category: promoModalType, type: promoForm.type, discount: Number(promoForm.discount), isActive: true, createdAt: new Date().toISOString()
               };
 
               if(promoModalType === 'code') {
@@ -1042,7 +1184,6 @@
 
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', promoId), promoData);
               alert('Promo berhasil dibuat!');
-              // Reset Form
               setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], startTime: '', endTime: '', stock: '', targetDay: '5'});
           } catch(e) { alert("Gagal membuat promo: " + e.message); }
       };
@@ -1054,7 +1195,6 @@
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); } catch(e) { alert("Gagal update status promo: " + e.message); }
       };
 
-      // Configuration updates
       const handleAddRunningText = () => { if(newRunningText.trim()) setRunningTexts(r => [...r, newRunningText]); setNewRunningText(''); }
       const handleRunningTextChange = (idx, val) => {
           const newTexts = [...runningTexts];
@@ -1139,7 +1279,7 @@
       // --- RENDERING ---
       if (isAuthChecking) return <div className="min-h-screen flex items-center justify-center bg-[#050505]"><IconLoader className="w-12 h-12 text-orange-500 animate-spin"/></div>;
 
-      // LOGIN UI REDESIGN
+      // LOGIN UI
       if (!authUser) {
         return (
           <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-[#050505] text-white">
@@ -1252,6 +1392,56 @@
              </div>
           )}
 
+          {/* TOAST ADMIN NOTIFIKASI REAL-TIME */}
+          {adminNotif && isAdmin && (
+              <div className="fixed top-4 right-4 z-[9998] bg-orange-500 text-white px-5 py-4 rounded-2xl shadow-2xl text-xs font-black flex items-center gap-3 animate-in slide-in-from-right-8 fade-in duration-300">
+                  <div className="bg-white/20 p-2 rounded-full animate-bounce"><IconBell className="w-5 h-5"/></div>
+                  <span>{adminNotif}</span>
+              </div>
+          )}
+
+          {/* V7.0 Checkout Confirmation Modal 💳 */}
+          {showConfirmCheckout && selectedNominal && selectedGame && (
+             <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in zoom-in-95 duration-300">
+                <div className="glass-panel bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 w-full max-w-md shadow-2xl relative overflow-hidden border border-white/10">
+                   <h3 className="font-black text-xl mb-1 text-white text-center">Konfirmasi Pesanan</h3>
+                   <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data yang dimasukkan sudah benar.</p>
+                   
+                   <div className="space-y-4 mb-6">
+                       <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-4">
+                           <img src={selectedGame.image} className="w-12 h-12 rounded-xl object-cover" />
+                           <div>
+                               <div className="font-black text-sm text-white">{selectedGame.name}</div>
+                               <div className="text-xs text-orange-400 font-bold">{selectedNominal.name}</div>
+                           </div>
+                       </div>
+                       
+                       <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-3">
+                           <div className="flex justify-between">
+                               <span className="text-xs font-bold text-gray-500 uppercase">Target ID</span>
+                               <span className="text-xs font-mono font-black text-white">{userId} {zoneId ? `(${zoneId})` : ''}</span>
+                           </div>
+                           <div className="flex justify-between">
+                               <span className="text-xs font-bold text-gray-500 uppercase">Metode Bayar</span>
+                               <span className="text-xs font-black text-white">{selectedPayment.name}</span>
+                           </div>
+                           <div className="flex justify-between border-t border-white/10 pt-3 mt-1">
+                               <span className="text-sm font-black text-gray-300 uppercase">Total Harga</span>
+                               <span className="text-lg font-black text-emerald-400">{formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id))}</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div className="flex gap-3">
+                      <button onClick={()=>setShowConfirmCheckout(false)} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white">Batal</button>
+                      <button onClick={processCheckout} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/30 transition flex items-center justify-center gap-2">
+                          {isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Ya, Bayar Sekarang'}
+                      </button>
+                   </div>
+                </div>
+             </div>
+          )}
+
           {/* WA QUICK ACTION MODAL (ADMIN) */}
           {waModalMember && (
              <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
@@ -1305,7 +1495,7 @@
                    </div>
                 )}
                 <div id="reader" className="w-full h-full flex-1"></div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl"><IconQrcode className="w-4 h-4"/> Posisikan Barcode di Kotak</div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10 shadow-2xl"><IconQrcode className="w-4 h-4"/> Posisikan QR / Barcode di Kotak</div>
              </div>
           )}
 
@@ -1377,9 +1567,15 @@
                       <span className="text-xs font-mono font-bold text-orange-400 leading-none mt-0.5">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
                    </div>
                 </div>
+                
+                {/* V7.0 Profile Pic Trigger 🙎‍♂️ */}
                 <div className="relative">
-                   <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="p-2 bg-white/5 border border-white/10 rounded-full shadow-sm text-white hover:bg-white/10 transition hidden md:block">
-                      <IconMoreVertical className="w-5 h-5"/>
+                   <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-white/10 shadow-sm text-white hover:border-orange-500 transition overflow-hidden bg-black flex items-center justify-center">
+                      {currentUserData?.avatar ? (
+                          <img src={currentUserData.avatar} className="w-full h-full object-cover" />
+                      ) : (
+                          <span className="font-black text-sm text-gray-400">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span>
+                      )}
                    </button>
                    {profileDropdownOpen && (
                       <div className="absolute right-0 mt-3 w-48 bg-[#0a0a0a] rounded-2xl shadow-2xl border border-white/10 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2">
@@ -1480,7 +1676,7 @@
                   
                   {/* FLASH SALE SECTION */}
                   {flashSalePromos?.length > 0 && (
-                     <div className="mb-10 animate-in zoom-in-95 duration-500">
+                     <div className="mb-10 animate-in zoom-in-95 duration-500 relative z-10">
                         <div className="flex items-center gap-2 mb-4 pl-1">
                            <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
                            <h2 className="text-xl font-black uppercase tracking-widest text-white">Flash Sale Aktif!</h2>
@@ -1523,7 +1719,7 @@
                      </div>
                   )}
 
-                  <div className="relative">
+                  <div className="relative z-10">
                      {/* STEP 1: PILIH GAME */}
                      <div className="glass-panel bg-transparent rounded-[2.5rem] p-6 md:p-10 shadow-2xl mb-8 border border-white/10">
                         <div className="flex items-center gap-4 mb-8">
@@ -1550,8 +1746,8 @@
                         </div>
                      </div>
 
-                     {/* ABOUT US & GALLERY (TENTANG KAMI & GALERI) */}
-                     <div className="mt-16 mb-8 text-center max-w-3xl mx-auto px-4 animate-in fade-in duration-700">
+                     {/* ABOUT US & GALLERY */}
+                     <div className="mt-16 mb-8 text-center max-w-3xl mx-auto px-4 animate-in fade-in duration-700 relative z-10">
                         <div className="inline-flex items-center justify-center p-3 bg-orange-500/10 rounded-2xl mb-4 text-orange-400">
                            <IconShield className="w-6 h-6"/>
                         </div>
@@ -1562,7 +1758,7 @@
                      </div>
 
                      {(galleryData||[]).length > 0 && (
-                        <div className="glass-panel bg-transparent rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-white/10">
+                        <div className="glass-panel bg-transparent rounded-[2.5rem] p-6 md:p-8 shadow-lg border border-white/10 relative z-10">
                            <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest mb-6 flex items-center gap-2 pl-2">
                               <IconImage className="w-5 h-5 text-orange-500"/> Galeri Bukti Transaksi
                            </h3>
@@ -1593,11 +1789,11 @@
                               <button onClick={() => setSelectedGame(null)} className="p-3 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-500 rounded-2xl transition border border-transparent hover:border-red-500/30"><IconX className="w-5 h-5"/></button>
                            </div>
 
-                           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar">
+                           <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar relative z-10">
                               <div className="max-w-3xl mx-auto space-y-6 pb-32">
                                  
                                  {/* DATA AKUN */}
-                                 <div className="glass-panel bg-transparent rounded-[2rem] p-6 md:p-8 shadow-lg border border-white/10">
+                                 <div className="glass-panel bg-[#0a0a0a] rounded-[2rem] p-6 md:p-8 shadow-lg border border-white/10">
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-blue-500/20 p-2.5 rounded-xl border border-blue-500/30"><IconUser className="w-5 h-5 text-blue-400"/></div>
                                        <h2 className="text-lg font-black text-white">1. Data Target</h2>
@@ -1625,15 +1821,18 @@
                                     </div>
                                  </div>
 
-                                 {/* PILIH NOMINAL */}
-                                 <div className={`glass-panel bg-transparent border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                                 {/* PILIH NOMINAL (V7.0 - Sorted by Price Ascending) */}
+                                 <div className={`glass-panel bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${userId.length > 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-emerald-500/20 p-2.5 rounded-xl border border-emerald-500/30"><IconBox className="w-5 h-5 text-emerald-400"/></div>
                                        <h2 className="text-lg font-black text-white">2. Pilih Item</h2>
                                     </div>
                                     
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4">
-                                       {(items||[]).filter(i => i.gameId === selectedGame?.id).map(item => {
+                                       {(items||[])
+                                          .filter(i => i.gameId === selectedGame?.id)
+                                          .sort((a, b) => a.price - b.price) // V7.0 Order by cheapest
+                                          .map(item => {
                                           const itemPromos = getActivePromosForItem(item.id);
                                           const bestAutoPromo = itemPromos.length > 0 ? itemPromos.reduce((prev, current) => {
                                               const prevD = prev.type === 'percentage' ? (item.price * prev.discount / 100) : prev.discount;
@@ -1667,7 +1866,7 @@
                                  </div>
 
                                  {/* PEMBAYARAN & CHECKOUT */}
-                                 <div className={`glass-panel bg-transparent border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                                 <div className={`glass-panel bg-[#0a0a0a] border border-white/10 rounded-[2rem] p-6 md:p-8 shadow-lg transition-all duration-300 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                     <div className="flex items-center gap-3 mb-6">
                                        <div className="bg-purple-500/20 p-2.5 rounded-xl border border-purple-500/30"><IconWallet className="w-5 h-5 text-purple-400"/></div>
                                        <h2 className="text-lg font-black text-white">3. Pembayaran</h2>
@@ -1706,7 +1905,7 @@
 
                                     {/* STRUK PREVIEW */}
                                     {selectedNominal && (
-                                       <div className="bg-[#0a0a0a] p-6 rounded-[2rem] border border-white/5 shadow-inner mb-8 relative overflow-hidden">
+                                       <div className="bg-black/50 p-6 rounded-[2rem] border border-white/5 shadow-inner mb-8 relative overflow-hidden">
                                           <div className="absolute -right-10 -top-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
                                           <div className="flex justify-between items-center mb-3">
                                              <span className="text-xs font-bold text-gray-500">Harga Item Normal</span>
@@ -1749,16 +1948,16 @@
                               </div>
                            </div>
                            
-                           {/* FIXED BOTTOM CHECKOUT BUTTON */}
+                           {/* FIXED BOTTOM CHECKOUT BUTTON (V7.0 Interceptor) */}
                            <div className="fixed bottom-0 left-0 w-full p-4 bg-[#050505]/90 backdrop-blur-xl border-t border-white/10 z-50">
                               <div className="max-w-3xl mx-auto flex items-center gap-4">
                                  <div className="hidden sm:block flex-1 pl-4">
                                     <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total Harga</div>
                                     <div className="font-black text-xl font-mono text-white">{selectedNominal ? formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id)) : 'Rp 0'}</div>
                                  </div>
-                                 <button onClick={handleCheckout} disabled={!isFormValid || isProcessing} className={`flex-1 py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all transform flex justify-center items-center gap-3 relative overflow-hidden group ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:scale-[1.02] text-white shadow-[0_10px_30px_rgba(249,115,22,0.4)]' : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'}`}>
+                                 <button onClick={triggerCheckout} disabled={!isFormValid || isProcessing} className={`flex-1 py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all transform flex justify-center items-center gap-3 relative overflow-hidden group ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-orange-500 hover:scale-[1.02] text-white shadow-[0_10px_30px_rgba(249,115,22,0.4)]' : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'}`}>
                                     {isFormValid && <span className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>}
-                                    {isProcessing ? <IconLoader className="w-6 h-6 animate-spin" /> : <><IconZap className="w-5 h-5" /> Pesan Sekarang</>}
+                                    <IconZap className="w-5 h-5" /> Beli Sekarang
                                  </button>
                               </div>
                            </div>
@@ -1768,16 +1967,16 @@
                </div>
             )}
 
-            {/* TAB RIWAYAT PESANAN (SMART ACCORDION) */}
+            {/* TAB RIWAYAT PESANAN (V7.0 - Perbaikan Tombol & QR) */}
             {currentView === 'history' && (
-               <div className="animate-in fade-in pb-10 max-w-5xl mx-auto pt-4 w-full">
-                  <div className="glass-panel bg-transparent border border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
+               <div className="animate-in fade-in pb-10 max-w-5xl mx-auto pt-4 w-full relative z-10">
+                  <div className="glass-panel bg-[#0a0a0a]/80 border border-white/10 rounded-[3rem] p-6 md:p-10 shadow-2xl">
                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10 border-b border-white/10 pb-8">
                         <div className="flex items-center gap-5">
                            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-[0_10px_30px_rgba(168,85,247,0.3)] text-white"><IconHistory className="w-8 h-8"/></div>
                            <div>
                               <h2 className="text-2xl md:text-3xl font-black leading-tight drop-shadow-sm text-white">Riwayat Transaksi</h2>
-                              <p className="text-xs text-gray-400 font-medium mt-1.5">Pantau status dan buka detail barcode untuk kasir.</p>
+                              <p className="text-xs text-gray-400 font-medium mt-1.5">Pantau status dan instruksi pembayaran Anda.</p>
                            </div>
                         </div>
                         <div className="bg-white/5 px-5 py-3 rounded-2xl text-xs font-bold text-gray-300 border border-white/10 flex items-center gap-3 shadow-inner">
@@ -1789,7 +1988,8 @@
                         {(userOrders||[]).filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => {
                            const isExpanded = expandedHistoryId === order.id;
                            return (
-                           <div key={order.id} className={`bg-[#0a0a0a] border border-white/5 rounded-[2rem] transition-all duration-300 overflow-hidden shadow-lg ${isExpanded ? 'ring-2 ring-orange-500' : 'hover:border-white/20'}`}>
+                           <div key={order.id} className={`bg-black/60 border border-white/5 rounded-[2rem] transition-all duration-300 overflow-hidden shadow-lg ${isExpanded ? 'ring-2 ring-orange-500' : 'hover:border-white/20'}`}>
+                              
                               {/* HEADER ACCORDION */}
                               <div onClick={() => setExpandedHistoryId(isExpanded ? null : order.id)} className="p-5 md:p-6 flex flex-col md:flex-row justify-between md:items-center gap-4 cursor-pointer group">
                                  <div className="flex gap-4 items-center w-full md:w-auto">
@@ -1818,13 +2018,13 @@
                                  </div>
                               </div>
 
-                              {/* EXPANDED CONTENT (BARCODE & CS) */}
+                              {/* EXPANDED CONTENT (BARCODE & CS V7.0) */}
                               {isExpanded && (
-                                 <div className="p-5 md:p-6 border-t border-white/10 bg-black/20 animate-in slide-in-from-top-2 flex flex-col md:flex-row gap-6">
+                                 <div className="p-5 md:p-6 border-t border-white/10 bg-white/5 animate-in slide-in-from-top-2 flex flex-col md:flex-row gap-6">
                                     <div className="flex-1 space-y-4">
                                         <div>
                                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">ID Pesanan</p>
-                                            <p className="font-mono text-xs font-black text-gray-200 bg-white/5 px-3 py-1.5 rounded-lg inline-block border border-white/5">{order.id}</p>
+                                            <p className="font-mono text-xs font-black text-gray-200 bg-black/50 px-3 py-1.5 rounded-lg inline-block border border-white/5">{order.id}</p>
                                         </div>
                                         <div>
                                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Tujuan / Target ID</p>
@@ -1834,20 +2034,35 @@
                                             <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Waktu Transaksi</p>
                                             <p className="text-xs font-bold text-gray-300">{order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : '-'}</p>
                                         </div>
-                                        <button onClick={() => {navigateTo('chat'); setChatInput(`Halo CS, saya mau tanya soal pesanan saya (${order.id}).`);}} className="mt-4 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 py-2.5 px-4 rounded-xl font-bold text-xs transition flex items-center gap-2 border border-orange-500/30 w-fit">
-                                            <IconMessageSquare className="w-4 h-4"/> Chat Bantuan CS
+                                        
+                                        {/* V7.0 Tombok Bantuan Cepat */}
+                                        <button onClick={() => handleQuickSupport(order)} className="mt-4 bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 py-2.5 px-4 rounded-xl font-bold text-xs transition flex items-center gap-2 border border-orange-500/30 w-fit">
+                                            <IconMessageSquare className="w-4 h-4"/> Minta Bantuan CS
                                         </button>
                                     </div>
                                     
+                                    {/* V7.0 Sistem Pembayaran Clear */}
                                     {order.status === 'Pending' && (
-                                        <div className="w-full md:w-64 bg-white/5 p-4 rounded-2xl border border-orange-500/30 flex flex-col items-center justify-center shadow-inner shrink-0 relative overflow-hidden">
+                                        <div className="w-full md:w-72 bg-[#0a0a0a] p-5 rounded-3xl border border-orange-500/40 flex flex-col items-center justify-center shadow-2xl shrink-0 relative overflow-hidden">
                                            <div className="absolute top-0 left-0 w-full h-1 bg-orange-500 animate-pulse"></div>
+                                           
                                            {(order.paymentMethod || '').includes('QRIS') ? (
-                                              <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-32 h-32 object-contain mix-blend-screen bg-white rounded-xl p-2" />
+                                              <>
+                                                 <p className="text-xs text-gray-300 font-bold mb-3 uppercase tracking-widest flex items-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Scan QRIS</p>
+                                                 <div className="bg-white p-3 rounded-2xl shadow-inner mb-4">
+                                                    <img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-40 h-40 object-contain" />
+                                                 </div>
+                                                 <a href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} target="_blank" download="QRIS_Topup.jpg" className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-black px-4 py-2 rounded-xl transition flex items-center gap-2 border border-white/5 uppercase tracking-widest"><IconDownload className="w-3.5 h-3.5"/> Simpan QR</a>
+                                              </>
                                            ) : (
-                                              <img src={`https://barcode.orcascan.com/?type=code128&data=VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}`} className="w-40 h-20 object-cover mix-blend-screen bg-white rounded-xl p-2" />
+                                              <>
+                                                 <p className="text-xs text-gray-300 font-bold mb-3 uppercase tracking-widest flex items-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Kode Barcode</p>
+                                                 <div className="bg-white p-3 rounded-2xl shadow-inner mb-4 w-full">
+                                                    <img src={`https://barcode.orcascan.com/?type=code128&data=VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}`} className="w-full h-24 object-cover" />
+                                                 </div>
+                                                 <p className="text-[10px] font-mono text-gray-400">Tunjukkan ke Kasir</p>
+                                              </>
                                            )}
-                                           <p className="text-[10px] text-orange-400 font-black mt-3 text-center uppercase tracking-widest bg-orange-500/10 px-4 py-1.5 rounded-full border border-orange-500/20">{(order.paymentMethod || '').includes('QRIS') ? 'Scan QRIS Untuk Bayar' : 'Tunjukkan Barcode Ke Kasir'}</p>
                                         </div>
                                     )}
                                  </div>
@@ -1855,8 +2070,8 @@
                            </div>
                            )
                         }) : (
-                           <div className="text-center py-24 text-gray-500 border border-dashed border-white/10 rounded-[3rem] bg-white/5 shadow-inner">
-                              <div className="w-24 h-24 bg-black/50 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-sm"><IconHistory className="w-10 h-10 opacity-30 text-white"/></div>
+                           <div className="text-center py-24 text-gray-500 border border-dashed border-white/10 rounded-[3rem] bg-black/40 shadow-inner">
+                              <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-sm"><IconHistory className="w-10 h-10 opacity-30 text-white"/></div>
                               <p className="font-black text-xl text-white mb-2">Belum Ada Transaksi</p>
                               <p className="text-sm font-medium opacity-80 max-w-sm mx-auto">Riwayat pesanan Anda masih kosong. Lakukan top up pertama Anda sekarang juga.</p>
                               <button onClick={()=>navigateTo('home')} className="mt-8 bg-white text-black hover:bg-gray-200 px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl transition hover:-translate-y-1">Mulai Top Up</button>
@@ -1869,7 +2084,7 @@
 
             {/* TAB CHAT / BANTUAN */}
             {currentView === 'chat' && (
-               <div className="flex flex-col h-[calc(100vh-140px)] glass-panel bg-transparent border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden mt-4 relative max-w-4xl mx-auto w-full">
+               <div className="flex flex-col h-[calc(100vh-140px)] glass-panel bg-[#0a0a0a]/90 border border-white/10 rounded-[2rem] shadow-2xl overflow-hidden mt-4 relative max-w-4xl mx-auto w-full z-10">
                   <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
                   
                   <div className="p-6 border-b border-white/10 flex items-center gap-4 bg-white/5 backdrop-blur-sm z-10 shrink-0">
@@ -1899,7 +2114,7 @@
                               <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
                                  <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
                                     {msg.role && msg.sender === 'admin' && <span className="text-[9px] text-orange-500 font-bold uppercase tracking-widest mb-1.5 ml-1">{msg.role}</span>}
-                                    <div className={`p-4 rounded-2xl text-sm shadow-lg font-medium leading-relaxed border backdrop-blur-md ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-tr-sm border-orange-400/30' : 'bg-[#0a0a0a] text-gray-200 border-white/10 rounded-tl-sm'}`}>
+                                    <div className={`p-4 rounded-2xl text-sm shadow-lg font-medium leading-relaxed border backdrop-blur-md ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-tr-sm border-orange-400/30' : 'bg-black text-gray-200 border-white/10 rounded-tl-sm'}`}>
                                        {msg.text}
                                     </div>
                                     <span className="text-[9px] text-gray-500 font-bold mt-2 px-1 uppercase tracking-widest">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
@@ -1924,8 +2139,8 @@
 
             {/* TAB PROFIL */}
             {currentView === 'profile' && (
-               <div className="animate-in fade-in pb-10 max-w-4xl mx-auto pt-4 w-full">
-                  <div className="glass-panel bg-transparent rounded-[3rem] p-6 md:p-10 shadow-2xl border border-white/10">
+               <div className="animate-in fade-in pb-10 max-w-4xl mx-auto pt-4 w-full relative z-10">
+                  <div className="glass-panel bg-[#0a0a0a]/80 rounded-[3rem] p-6 md:p-10 shadow-2xl border border-white/10">
                      <div className="flex flex-col md:flex-row items-center gap-8 mb-12 border-b border-white/10 pb-10">
                         <div className="relative group">
                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 p-1 shadow-[0_0_30px_rgba(249,115,22,0.3)]">
@@ -1955,9 +2170,8 @@
                      </div>
 
                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                        {/* DATA PERSONAL */}
                         <div className="space-y-6">
-                            <div className="bg-[#0a0a0a] p-8 rounded-[2rem] border border-white/5 shadow-inner">
+                            <div className="bg-black/60 p-8 rounded-[2rem] border border-white/5 shadow-inner">
                                <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-white"><div className="bg-orange-500/20 p-2 rounded-xl text-orange-500"><IconUser className="w-5 h-5"/></div> Data Personal</h3>
                                <form onSubmit={handleUpdateProfile} className="space-y-5">
                                   <div className="relative group">
@@ -1974,10 +2188,8 @@
                             </div>
                         </div>
 
-                        {/* STATUS VIP & KEAMANAN */}
                         <div className="space-y-6">
-                            {/* VIP TIER INFO */}
-                            <div className={`p-8 rounded-[2rem] border shadow-inner ${userVipData.color.replace('text-', 'border-').replace('bg-', 'bg-gradient-to-br from-[#0a0a0a] to-')}`}>
+                            <div className={`p-8 rounded-[2rem] border shadow-inner ${userVipData.color.replace('text-', 'border-').replace('bg-', 'bg-gradient-to-br from-black/60 to-')}`}>
                                 <h3 className="text-lg font-black mb-2 flex items-center gap-2 text-white"><span className="text-2xl">{userVipData.badge}</span> Status VIP: {userVipData.level}</h3>
                                 <p className="text-xs font-medium text-gray-400 mb-4">Transaksi Sukses: <span className="font-black text-white">{userTotalTx}x</span></p>
                                 
@@ -1994,7 +2206,7 @@
                                 <p className="text-[10px] text-gray-500">Saldo cashback otomatis masuk setelah pesanan berstatus Sukses.</p>
                             </div>
 
-                            <div className="bg-[#0a0a0a] p-8 rounded-[2rem] border border-white/5 shadow-inner">
+                            <div className="bg-black/60 p-8 rounded-[2rem] border border-white/5 shadow-inner">
                                <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-white"><div className="bg-red-500/20 p-2 rounded-xl text-red-500"><IconLock className="w-5 h-5"/></div> Keamanan</h3>
                                {!showPasswordForm ? (
                                   <div className="flex flex-col justify-center">
@@ -2031,10 +2243,10 @@
 
             {/* DASHBOARD ADMIN */}
             {currentView === 'admin' && isAdmin && (
-               <div className="animate-in fade-in pb-10 pt-4 max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 h-auto min-h-[calc(100vh-120px)] w-full">
+               <div className="animate-in fade-in pb-10 pt-4 max-w-7xl mx-auto flex flex-col lg:flex-row gap-6 h-auto min-h-[calc(100vh-120px)] w-full relative z-10">
                   
                   {/* ADMIN SIDEBAR */}
-                  <div className="w-full lg:w-72 glass-panel bg-transparent border border-white/10 rounded-[2.5rem] p-5 shadow-2xl flex flex-col shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-140px)]">
+                  <div className="w-full lg:w-72 glass-panel bg-[#0a0a0a]/80 border border-white/10 rounded-[2.5rem] p-5 shadow-2xl flex flex-col shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-140px)]">
                      <div className="flex items-center gap-3 mb-6 px-2 pt-2">
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
@@ -2058,13 +2270,13 @@
                               {activeAdminTab === tab.id && <span className="absolute left-0 bottom-0 right-0 h-1 bg-white lg:hidden"></span>}
                               <tab.icon className={`w-5 h-5 ${activeAdminTab === tab.id ? 'text-white' : 'group-hover:text-red-400 transition-colors'}`} />
                               <span className="text-sm tracking-wide">{tab.label}</span>
-                              {tab.notif > 0 && <span className={`ml-2 lg:ml-auto px-2 py-0.5 rounded-full text-[10px] font-black ${activeAdminTab === tab.id ? 'bg-white text-red-600' : 'bg-red-500 text-white'}`}>{tab.notif}</span>}
+                              {tab.notif > 0 && <span className={`ml-2 lg:ml-auto px-2 py-0.5 rounded-full text-[10px] font-black ${activeAdminTab === tab.id ? 'bg-white text-red-600' : 'bg-red-500 text-white animate-pulse'}`}>{tab.notif}</span>}
                            </button>
                         ))}
                      </div>
                      
                      <div className="mt-auto hidden lg:block pt-8 px-2 pb-2">
-                        <div className="bg-[#0a0a0a] rounded-2xl p-4 border border-white/5 flex items-center gap-3 shadow-inner">
+                        <div className="bg-black/60 rounded-2xl p-4 border border-white/5 flex items-center gap-3 shadow-inner">
                            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_5px_rgba(16,185,129,1)]"></div>
                            <div>
                               <div className="text-xs font-black text-white">Sistem Aktif</div>
@@ -2075,7 +2287,7 @@
                   </div>
 
                   {/* ADMIN CONTENT AREA */}
-                  <div className="flex-1 glass-panel bg-transparent border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col relative w-full h-[60vh] lg:h-[calc(100vh-140px)]">
+                  <div className="flex-1 glass-panel bg-[#0a0a0a]/80 border border-white/10 rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col relative w-full h-[60vh] lg:h-[calc(100vh-140px)]">
                      <div className="absolute -top-40 -right-40 w-96 h-96 bg-red-600/10 rounded-full blur-[100px] pointer-events-none"></div>
                      
                      <div className="flex-1 overflow-y-auto p-4 md:p-8 custom-scrollbar relative z-10 w-full">
@@ -2105,7 +2317,7 @@
                                  </div>
                               </div>
 
-                              <div className="mt-8 bg-[#0a0a0a] rounded-[2rem] p-4 md:p-6 border border-white/5 shadow-inner">
+                              <div className="mt-8 bg-black/60 rounded-[2rem] p-4 md:p-6 border border-white/5 shadow-inner">
                                  <h3 className="text-sm font-black uppercase tracking-widest text-gray-500 mb-4">Aktivitas Terkini</h3>
                                  <div className="space-y-3">
                                     {(allGlobalOrders||[]).slice(0,5).map(o => (
@@ -2139,10 +2351,10 @@
 
                               <div className="relative mb-6">
                                  <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                                 <input type="text" placeholder="Cari ID / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-500 transition shadow-inner" />
+                                 <input type="text" placeholder="Cari ID / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full sm:w-96 bg-black/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-500 transition shadow-inner" />
                               </div>
 
-                              <div className="flex-1 overflow-auto custom-scrollbar bg-[#0a0a0a] rounded-[2rem] border border-white/5 shadow-inner">
+                              <div className="flex-1 overflow-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
                                  <table className="w-full text-left text-sm text-gray-300 min-w-[800px]">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
                                        <tr><th className="px-5 py-4">Pelanggan & ID</th><th className="px-5 py-4">Item & Game</th><th className="px-5 py-4">Data Tujuan</th><th className="px-5 py-4">Tagihan</th><th className="px-5 py-4">Status</th><th className="px-5 py-4 text-center">Tindakan</th></tr>
@@ -2197,7 +2409,7 @@
                               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                                  {/* FORM TAMBAH GAME */}
                                  <div className="lg:col-span-4 flex flex-col gap-6">
-                                    <form onSubmit={handleSaveGame} className="bg-[#0a0a0a] p-6 rounded-[2rem] border border-white/5 shadow-inner space-y-4">
+                                    <form onSubmit={handleSaveGame} className="bg-black/60 p-6 rounded-[2rem] border border-white/5 shadow-inner space-y-4">
                                        <h3 className="font-black text-sm flex items-center gap-2 mb-2 text-white"><IconGamepad className="w-4 h-4 text-red-500"/> {editingGameId ? 'Edit Game' : 'Tambah Game'}</h3>
                                        <div>
                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">ID Unik Database</label>
@@ -2239,7 +2451,7 @@
                                     </form>
 
                                     {/* LIST GAMES */}
-                                    <div className="bg-[#0a0a0a] border border-white/5 rounded-[2rem] p-4 flex-1 shadow-inner h-[400px] overflow-y-auto custom-scrollbar">
+                                    <div className="bg-black/60 border border-white/5 rounded-[2rem] p-4 flex-1 shadow-inner h-[400px] overflow-y-auto custom-scrollbar">
                                        <h3 className="text-xs font-black text-gray-500 mb-4 px-2">Daftar Game ({(games||[]).length})</h3>
                                        <div className="space-y-2">
                                           {(games||[]).map(g => (
@@ -2264,7 +2476,7 @@
 
                                  {/* FORM & LIST ITEM */}
                                  <div className="lg:col-span-8 flex flex-col gap-6">
-                                    <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex-1 flex flex-col">
+                                    <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex-1 flex flex-col">
                                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                           <div>
                                              <h3 className="font-black text-lg flex items-center gap-2 text-white"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h3>
@@ -2287,7 +2499,10 @@
                                        </form>
 
                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 overflow-y-auto custom-scrollbar flex-1 pb-4">
-                                          {(items||[]).filter(i => i.gameId === adminSelectedGame).map(item => (
+                                          {(items||[])
+                                             .filter(i => i.gameId === adminSelectedGame)
+                                             .sort((a,b) => a.price - b.price) // V7.0 Admin Sort Price Asc
+                                             .map(item => (
                                              <div key={item.id} className="flex items-center justify-between bg-white/5 border border-white/5 p-4 rounded-2xl hover:border-emerald-500/50 transition group shadow-sm relative overflow-hidden">
                                                 <div>
                                                    <div className="font-bold text-sm text-white">{item.name}</div>
@@ -2312,7 +2527,7 @@
                            </div>
                         )}
 
-                        {/* --- TAB: PUSAT PROMO (NEW 5 IN 1) --- */}
+                        {/* --- TAB: PUSAT PROMO --- */}
                         {activeAdminTab === 'promo' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4">
@@ -2324,11 +2539,9 @@
 
                                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
                                    
-                                   {/* Form Buat Promo */}
-                                   <div className="lg:col-span-5 bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-white/5 shadow-inner">
+                                   <div className="lg:col-span-5 bg-black/60 rounded-[2.5rem] p-6 md:p-8 border border-white/5 shadow-inner">
                                        <h3 className="font-black text-lg mb-4 text-white">Buat Promo Baru</h3>
                                        
-                                       {/* TABS KATEGORI PROMO */}
                                        <div className="flex gap-2 overflow-x-auto custom-scrollbar pb-3 mb-4">
                                            {[
                                                {id:'item', label:'Promo Item', icon:'🎯'},
@@ -2343,7 +2556,6 @@
                                        </div>
 
                                        <form onSubmit={handleSavePromo} className="space-y-4">
-                                           {/* TIPE POTONGAN & NILAI (Umum untuk semua) */}
                                            <div className="grid grid-cols-2 gap-3">
                                                <div>
                                                    <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Tipe Diskon</label>
@@ -2432,7 +2644,7 @@
                                    </div>
 
                                    {/* List Promo Aktif */}
-                                   <div className="lg:col-span-7 bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-white/5 shadow-inner flex flex-col h-full">
+                                   <div className="lg:col-span-7 bg-black/60 rounded-[2.5rem] p-6 md:p-8 border border-white/5 shadow-inner flex flex-col h-full">
                                        <h3 className="text-sm font-black text-gray-500 uppercase tracking-widest mb-6">Database Promo Aktif</h3>
                                        <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
                                           {(promos||[]).map(p => (
@@ -2458,7 +2670,7 @@
                                                 </div>
                                                 <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
                                                    <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`flex-1 sm:flex-none p-3 rounded-xl transition flex items-center justify-center border ${p.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-white/10 text-gray-400 border-transparent hover:bg-gray-500 hover:text-white'}`} title="Ubah Status">
-                                                      {p.isActive ? <IconCheckCircle className="w-4 h-4"/> : <IconZapOff className="w-4 h-4"/>}
+                                                      {p.isActive ? <IconCheckCircle className="w-4 h-4"/> : <IconX className="w-4 h-4"/>}
                                                    </button>
                                                    <button onClick={() => handleDeletePromo(p.id)} className="flex-1 sm:flex-none p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition flex items-center justify-center"><IconTrash className="w-4 h-4"/></button>
                                                 </div>
@@ -2482,9 +2694,9 @@
                               <h2 className="text-2xl font-black mb-6 text-white">Data Pelanggan Terdaftar</h2>
                               <div className="relative mb-6">
                                  <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                                 <input type="text" placeholder="Cari nama atau email member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full sm:w-96 bg-[#0a0a0a] border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-600 transition shadow-inner" />
+                                 <input type="text" placeholder="Cari nama atau email member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full sm:w-96 bg-black/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 text-white font-medium placeholder-gray-600 transition shadow-inner" />
                               </div>
-                              <div className="flex-1 overflow-auto custom-scrollbar bg-[#0a0a0a] rounded-[2rem] border border-white/5 shadow-inner">
+                              <div className="flex-1 overflow-auto custom-scrollbar bg-black/60 rounded-[2rem] border border-white/5 shadow-inner">
                                  <table className="w-full text-left text-sm text-gray-300 whitespace-nowrap min-w-[800px]">
                                     <thead className="text-[10px] text-gray-500 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
                                        <tr><th className="px-6 py-4">Profil Akun</th><th className="px-6 py-4">Kontak</th><th className="px-6 py-4">Status VIP</th><th className="px-6 py-4">Terakhir Login</th><th className="px-6 py-4 text-right">Aksi</th></tr>
@@ -2525,6 +2737,7 @@
                                              </td>
                                           </tr>
                                        )})}
+                                       {(!memberList || memberList.length === 0) && (<tr><td colSpan="5" className="text-center py-16 text-gray-500 font-bold">Tidak ada data member.</td></tr>)}
                                     </tbody>
                                  </table>
                               </div>
@@ -2535,7 +2748,7 @@
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-4 md:gap-6 h-full w-full">
                               {/* Tiket List */}
-                              <div className={`w-full md:w-80 bg-[#0a0a0a] rounded-[2rem] border border-white/5 flex-col shadow-inner shrink-0 ${activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
+                              <div className={`w-full md:w-80 bg-black/60 rounded-[2rem] border border-white/5 flex-col shadow-inner shrink-0 ${activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
                                  <div className="p-5 border-b border-white/10 flex justify-between items-center">
                                     <h2 className="font-black text-lg flex items-center gap-2 text-white"><IconMessageSquare className="w-5 h-5 text-orange-500"/> Tiket Masuk</h2>
                                     <button onClick={()=>setBroadcastModal({isOpen:true, text:''})} className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 p-2 rounded-xl transition tooltip border border-blue-500/30" title="Broadcast Pengumuman"><IconSend className="w-4 h-4"/></button>
@@ -2559,7 +2772,7 @@
                               </div>
 
                               {/* Ruang Obrolan */}
-                              <div className={`flex-1 bg-[#0a0a0a] rounded-[2rem] border border-white/5 flex-col relative overflow-hidden shadow-inner w-full min-w-0 ${!activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
+                              <div className={`flex-1 bg-black/60 rounded-[2rem] border border-white/5 flex-col relative overflow-hidden shadow-inner w-full min-w-0 ${!activeChatEmail ? 'hidden md:flex' : 'flex'}`}>
                                  {activeChatEmail ? (
                                     <>
                                        <div className="p-4 md:p-5 border-b border-white/10 flex items-center gap-3 md:gap-4 bg-white/5 backdrop-blur-sm z-10 shadow-sm shrink-0">
@@ -2609,14 +2822,34 @@
                            </div>
                         )}
 
-                        {/* --- TAB: PENGATURAN GLOBAL --- */}
+                        {/* --- TAB: PENGATURAN GLOBAL & THEMES --- */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-6 pb-10 w-full">
                               <h2 className="text-2xl font-black mb-4 text-white">Pengaturan Global Web</h2>
                               
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                 {/* SAKLAR TOKO & WIPE DATA */}
-                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner">
+                                 {/* SAKLAR TOKO & THEME */}
+                                 <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner">
+                                    {/* SEASONAL THEME SWITCHER V7.0 */}
+                                    <div className="mb-8 border-b border-white/10 pb-6">
+                                        <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Tema Seasonal (Event)</h3>
+                                        <p className="text-[10px] text-gray-400 mb-4">Ubah suasana website sesuai event secara real-time.</p>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                            {[
+                                                {id:'default', name:'Default', emoji:'🌙'},
+                                                {id:'natal', name:'Natal', emoji:'🎄'},
+                                                {id:'ramadhan', name:'Ramadhan', emoji:'🕌'},
+                                                {id:'paskah', name:'Paskah', emoji:'🥚'},
+                                                {id:'kemerdekaan', name:'Kemerdekaan', emoji:'🇮🇩'}
+                                            ].map(t => (
+                                                <button key={t.id} onClick={() => updateGlobalTheme(t.id)} className={`px-3 py-2 rounded-xl text-xs font-bold transition flex flex-col items-center justify-center gap-1 border ${globalTheme === t.id ? 'bg-orange-500 text-white border-orange-400 shadow-lg' : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10'}`}>
+                                                    <span className="text-lg">{t.emoji}</span>
+                                                    <span>{t.name}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+
                                     <div className="flex items-center justify-between mb-4">
                                        <div className="flex items-center gap-3">
                                           <div className="p-2 bg-white/5 rounded-xl border border-transparent"><IconSettings className="w-5 h-5 text-gray-400"/></div>
@@ -2640,7 +2873,7 @@
                                  </div>
 
                                  {/* SOSIAL MEDIA */}
-                                 <div className="bg-[#0a0a0a] p-6 rounded-[2rem] border border-white/5 shadow-inner">
+                                 <div className="bg-black/60 p-6 rounded-[2rem] border border-white/5 shadow-inner">
                                     <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2"><IconInstagram className="w-4 h-4 text-pink-500"/> Tautan Sosial & Bantuan</h3>
                                     <div className="space-y-3">
                                        <div className="flex flex-col sm:flex-row gap-3">
@@ -2667,7 +2900,7 @@
                               {/* TEKS BERJALAN & BANNERS */}
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  {/* TEKS BERJALAN */}
-                                 <div className="bg-[#0a0a0a] p-6 rounded-[2.5rem] border border-white/5 shadow-inner">
+                                 <div className="bg-black/60 p-6 rounded-[2.5rem] border border-white/5 shadow-inner">
                                     <h3 className="text-sm font-black text-white mb-2 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Header Teks Berjalan (Marquee)</h3>
                                     <p className="text-[10px] text-gray-500 mb-4">Informasi promo yang bergerak di navigasi atas. Kosongkan baris untuk menghapus.</p>
                                     <div className="grid grid-cols-1 gap-3">
@@ -2682,7 +2915,7 @@
                                  </div>
 
                                  {/* SLIDER BANNER */}
-                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
+                                 <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
                                     <h3 className="text-lg font-black text-white mb-6">Slider Banner (Home)</h3>
                                     <div className="flex gap-2 mb-4">
                                        <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} className="flex-1 bg-black border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-blue-500 transition shadow-sm text-white" placeholder="Tempel URL Banner/Youtube" />
@@ -2708,7 +2941,7 @@
                               {/* GALERI & AKSES ADMIN */}
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  {/* GALERI */}
-                                 <div className="bg-[#0a0a0a] p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
+                                 <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner flex flex-col">
                                     <div className="flex justify-between items-center mb-4">
                                        <h3 className="text-sm font-black text-white">Galeri Toko <span className="text-[9px] bg-white/10 px-2 py-0.5 rounded-md font-mono align-middle ml-1">{galleryData?.length || 0}/16</span></h3>
                                        <div className="relative group w-8 h-8">
