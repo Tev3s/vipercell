@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v7.1 Ultimate</title>
+  <title>Vipercell - Premium Top Up v7.1.1 Ultimate</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -85,7 +85,7 @@
     #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
 
     /* =========================================
-       SEASONAL THEMES COLORS (V7.1)
+       SEASONAL THEMES COLORS (V7.1.1)
        ========================================= */
     .theme-natal { background-color: #020617; }
     .theme-ramadhan { background-color: #022c22; }
@@ -260,7 +260,7 @@
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi / Kasir', fee: 0 },
     ];
 
-    // --- COMPONENTS V7.1 ---
+    // --- COMPONENTS V7.1.1 ---
 
     // V7.1 Smart Toast Notification Provider 🍞
     const ToastContext = React.createContext();
@@ -459,7 +459,7 @@
                   Vipercell adalah platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.
                </p>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v7.1 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v7.1.1 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -556,7 +556,6 @@
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
       const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-      const [adminNotif, setAdminNotif] = useState('');
 
       const requestConfirm = (msg, action) => setConfirmModal({ isOpen: true, msg, action });
       const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null }); };
@@ -724,10 +723,14 @@
           document.body.className = `font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative theme-${globalTheme}`;
       }, [globalTheme]);
 
-      // Request Push Notification Permission (V7.1)
+      // Request Push Notification Permission Safely (V7.1.1 HOTFIX)
       useEffect(() => {
          if (isAdmin && "Notification" in window) {
-             Notification.requestPermission();
+             try {
+                Notification.requestPermission();
+             } catch(e) {
+                // Ignore safe errors on Tablet browsers
+             }
          }
       }, [isAdmin]);
 
@@ -838,7 +841,7 @@
          }
       }, [currentView, activeAdminTab, socialLinks]);
 
-      // V7.1 OS Background Notifications 🔔
+      // V7.1.1 OS Background Notifications HOTFIX 🛡️🔔
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = (adminChats || []).filter(c => c.status === 'Open' && c.messages?.length > 0).length || 0;
 
@@ -852,8 +855,14 @@
               if (shouldAlert) {
                   playNotificationBeep();
                   addToast(notifMsg, 'success');
+                  
+                  // BUG FIX: Wrap Native Notification in try-catch to prevent fatal crash on Tablet/Android
                   if ("Notification" in window && Notification.permission === "granted") {
-                      new Notification("Admin Vipercell", { body: notifMsg });
+                      try {
+                          new Notification("Admin Vipercell", { body: notifMsg });
+                      } catch (err) {
+                          console.log("OS Push Notification is restricted on this Tablet browser.");
+                      }
                   }
               }
               prevPendingOrders.current = pendingOrdersCount;
@@ -1984,7 +1993,7 @@
                </div>
             )}
 
-            {/* TAB PROFIL & PIN V7.1 */}
+            {/* TAB PROFIL & PIN V7.1.1 */}
             {currentView === 'profile' && (
                <div className="animate-in fade-in pb-10 max-w-4xl mx-auto pt-4 w-full relative z-10">
                   <div className="glass-panel bg-[#0a0a0a]/80 rounded-[3rem] p-6 md:p-10 shadow-2xl border border-white/10">
@@ -2053,7 +2062,6 @@
                            <div className="bg-black/60 p-8 rounded-[2rem] border border-white/5 shadow-inner">
                               <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-white"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-500"><IconLock className="w-5 h-5"/></div> Keamanan & PIN Transaksi</h3>
                               
-                              {/* V7.1 PIN Management */}
                               <div className="mb-6 pb-6 border-b border-white/5 flex items-center justify-between">
                                   <div>
                                      <h4 className="text-sm font-black text-white mb-1">PIN Transaksi</h4>
@@ -2473,10 +2481,10 @@
                                                   <div className="grid grid-cols-2 gap-3">
                                                       <div>
                                                           <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Batas Pemakai</label>
-                                                          <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-white font-mono text-sm focus:border-orange-500 transition" placeholder="100 Orang" />
+                                                          <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-white font-mono text-sm focus:border-orange-500 transition" placeholder="100 Orang"/>
                                                       </div>
                                                       <div>
-                                                          <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">MinBelanja (Rp)</label>
+                                                          <label className="block text-[9px] font-black text-gray-500 mb-1.5 uppercase tracking-widest">Min. Belanja (Rp)</label>
                                                           <input type="number" value={promoForm.minPurchase} onChange={(e)=>setPromoForm({...promoForm, minPurchase: e.target.value})} className="w-full bg-black border border-white/10 rounded-xl py-3 px-4 text-white font-mono text-sm focus:border-orange-500 transition" placeholder="Opsi (0)" />
                                                       </div>
                                                   </div>
@@ -2673,7 +2681,7 @@
                               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                  {/* SAKLAR TOKO & THEME */}
                                  <div className="bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner">
-                                    {/* SEASONAL THEME SWITCHER V7.1 */}
+                                    {/* SEASONAL THEME SWITCHER V7.1.1 */}
                                     <div className="mb-8 border-b border-white/10 pb-6">
                                         <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2"><IconTag className="w-4 h-4 text-orange-500"/> Tema Seasonal (Event)</h3>
                                         <p className="text-[10px] text-gray-400 mb-4">Ubah suasana website sesuai event secara real-time.</p>
