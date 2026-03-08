@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v9.3</title>
+  <title>Vipercell - Premium Top Up v9.3.1</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +34,7 @@
   
   <style>
     /* =========================================
-       UI CLEAN & MODERN V9.3 (ANTI-CRASH)
+       UI CLEAN & MODERN V9.3.1 (ANTI-CRASH)
        ========================================= */
     body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
@@ -69,7 +69,6 @@
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
-    // Firebase V11 Imports (Standard & Safe)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -94,7 +93,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V9.3
+    // FUNGSI HELPER & UTILITIES V9.3.1
     // ==========================================
     const playSuccessBeep = () => { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gainNode = ctx.createGain(); osc.connect(gainNode); gainNode.connect(ctx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1); gainNode.gain.setValueAtTime(1, ctx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } catch(e) {} };
     
@@ -137,7 +136,7 @@
     }
 
     // ==========================================
-    // KOMPONEN ICON SVG OPTIMAL V9.3
+    // KOMPONEN ICON SVG OPTIMAL V9.3.1
     // ==========================================
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}>{d}</svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>}/>;
@@ -191,8 +190,9 @@
     const IconVolume2 = ({className:c}) => <Ic c={c} d={<><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></>}/>;
     const IconVolumeX = ({className:c}) => <Ic c={c} d={<><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></>}/>;
     const IconBlock = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></>}/>;
+    const IconExpand = ({className:c}) => <Ic c={c} d={<><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>}/>;
+    const IconMinimize = ({className:c}) => <Ic c={c} d={<><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></>}/>;
 
-    // Data UI Metode Pembayaran Desain Baru (V9.3)
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
       { id: 'cash', name: 'Uang Tunai (Cash)', type: 'Bayar di Lokasi / Kasir', fee: 0, color: 'from-emerald-500 to-green-600', badge: 'CASH' },
@@ -439,15 +439,33 @@
                     <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">ID Tujuan</span><span className="font-mono font-black text-white text-right">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                     {data.nickname && <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Nickname</span><span className="font-bold text-white text-right">{data.nickname}</span></div>}
                     <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Metode</span><span className="font-black text-white text-right">{data.paymentName}</span></div>
-                    <div className="flex justify-between border-t border-white/10 pt-3 mt-1"><span className="font-black text-gray-300">Total Bayar</span><span className="text-lg font-black text-orange-500">{formatRupiah(data.finalPrice)}</span></div>
+                    {data.usedCashback > 0 && <div className="flex justify-between text-orange-400"><span className="text-xs font-bold">Potongan Cashback</span><span className="font-black font-mono">- {formatRupiah(data.usedCashback)}</span></div>}
+                    <div className="flex justify-between border-t border-white/10 pt-3 mt-1"><span className="font-black text-gray-300">Total Bayar</span><span className="text-lg font-black text-emerald-500">{formatRupiah(data.finalPrice)}</span></div>
                 </div>
                 <div className="flex gap-3">
                    <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm">Batal</button>
-                   <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 transition text-sm">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Lanjut Bayar'}</button>
+                   <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white flex justify-center items-center gap-2 shadow-lg shadow-emerald-500/30 transition text-sm">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Lanjutkan'}</button>
                 </div>
              </div>
           </div>
        )
+    }
+
+    const OrderSuccessModal = ({ isOpen, onToHistory, onBack }) => {
+        if(!isOpen) return null;
+        return (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
+                <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.2)] relative overflow-hidden">
+                    <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/50"><IconCheckCircle className="w-10 h-10"/></div>
+                    <h3 className="text-xl font-black text-white mb-2">Pesanan Berhasil Dibuat</h3>
+                    <p className="text-xs text-gray-400 mb-8 leading-relaxed">Mohon tunggu proses pesanan Anda. Anda dapat melihat instruksi pembayaran di riwayat.</p>
+                    <div className="flex flex-col sm:flex-row gap-3">
+                        <button onClick={onBack} className="w-full py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white text-sm transition order-2 sm:order-1">Kembali</button>
+                        <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30 order-1 sm:order-2">Ke Riwayat Pesanan</button>
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     const MainFooter = ({ socialLinks }) => {
@@ -470,7 +488,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.3 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.3.1 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -491,7 +509,6 @@
           return () => clearInterval(t);
        }, [(items||[]).length, isPaused]);
 
-       // Fix: Menjaga status mute video tanpa restart
        useEffect(() => {
            if(videoRef.current) { videoRef.current.muted = isMuted; }
        }, [isMuted, curr]);
@@ -573,7 +590,6 @@
     function AppCore() {
       const { addToast } = useToast();
 
-      // State Modals
       const [adminAuthModal, setAdminAuthModal] = useState({ isOpen: false, action: null, title: '', message: '', btnText: '' });
       const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
@@ -587,7 +603,6 @@
       const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); };
       const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
 
-      // State Auth & User
       const [authUser, setAuthUser] = useState(null);
       const [isAuthChecking, setIsAuthChecking] = useState(true);
       const [authMode, setAuthMode] = useState('login');
@@ -606,7 +621,6 @@
       const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', onSuccess: null });
       const [changePinModalOpen, setChangePinModalOpen] = useState(false);
 
-      // State Database & Toko
       const [isStoreOpen, setIsStoreOpen] = useState(true);
       const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); 
       const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]);
@@ -623,7 +637,6 @@
       const [currentView, setCurrentView] = useState('home'); 
       const [viewHistory, setViewHistory] = useState(['home']);
 
-      // State Admin Panel
       const [activeAdminTab, setActiveAdminTab] = useState('dashboard');
       const [adminSelectedGame, setAdminSelectedGame] = useState('');
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState('');
@@ -641,7 +654,7 @@
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
       
-      const [supportTab, setSupportTab] = useState('member'); // member, login, broadcast
+      const [supportTab, setSupportTab] = useState('login'); 
       const [activeChatEmail, setActiveChatEmail] = useState(null);
       const [adminReplyText, setAdminReplyText] = useState('');
       const adminChatEndRef = useRef(null);
@@ -655,25 +668,25 @@
       const [broadcastTarget, setBroadcastTarget] = useState('all');
       const [broadcastEmails, setBroadcastEmails] = useState('');
 
-      // State Transaksi Top Up
       const [selectedGame, setSelectedGame] = useState(null);
       const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
       const [inputPromo, setInputPromo] = useState(''); const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
       const [checkoutSummary, setCheckoutSummary] = useState({ isOpen: false, data: null });
+      const [orderSuccessModal, setOrderSuccessModal] = useState(false);
       const [lastOrderId, setLastOrderId] = useState(''); 
       const [userOrders, setUserOrders] = useState([]); const [adminOrders, setAdminOrders] = useState([]);
       const [expandedHistoryId, setExpandedHistoryId] = useState(null); 
       const [userChat, setUserChat] = useState(null);
       const [chatInput, setChatInput] = useState('');
       const [loadingChat, setLoadingChat] = useState(false);
+      const [isChatFullScreen, setIsChatFullScreen] = useState(false);
       const chatEndRef = useRef(null);
 
-      // Navigasi Utama
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
-         setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false);
+         setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false); setIsChatFullScreen(false);
          if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); }
          window.scrollTo({top:0, behavior:'smooth'});
       };
@@ -682,15 +695,14 @@
           if (selectedGame) { setSelectedGame(null); return; }
           if (viewHistory.length > 1) { const newHist = [...viewHistory]; newHist.pop(); setViewHistory(newHist); setCurrentView(newHist[newHist.length - 1]); } 
           else { setCurrentView('home'); }
+          window.scrollTo({top:0, behavior:'smooth'});
       }
 
-      // Efek Sinkronisasi UI & Scroll
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, publicChats, activeChatEmail, adminReplyText]); 
       useEffect(() => { if (globalConfig?.favicon) { let link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); } link.href = globalConfig.favicon; } }, [globalConfig?.favicon]);
 
-      // Handle Tombol ESC Keyboard
       useEffect(() => {
          const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
@@ -698,6 +710,7 @@
                else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null });
                else if (changePinModalOpen) setChangePinModalOpen(false);
                else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null });
+               else if (orderSuccessModal) setOrderSuccessModal(false);
                else if (isScannerOpen) setIsScannerOpen(false);
                else if (loginHelpModal) setLoginHelpModal(false);
                else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null});
@@ -705,9 +718,8 @@
             }
          };
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [adminAuthModal, checkoutSummary, isScannerOpen, pinModalState, changePinModalOpen, loginHelpModal, adminTrxModal, selectedGame, viewHistory]);
+      }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, loginHelpModal, adminTrxModal, selectedGame, viewHistory]);
 
-      // Listeners Global Firebase (Safe Anti-Crash)
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
@@ -725,7 +737,6 @@
          } catch(e) {}
       }, [isSuperAdmin]);
 
-      // Listener Status Autentikasi
       useEffect(() => {
         const timer = setTimeout(() => setIsAuthChecking(false), 8000); 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -744,7 +755,6 @@
         return () => { unsubscribe(); clearTimeout(timer); };
       }, [addToast]);
 
-      // Listener Data Pengguna Saat Ini
       useEffect(() => {
          if(!authUser) return;
          try {
@@ -759,7 +769,6 @@
          } catch(e){}
       }, [authUser, addToast]);
 
-      // Listener Data Interaktif Admin & User
       useEffect(() => {
          if (!authUser) return;
          let unsubs = [];
@@ -785,11 +794,9 @@
       useEffect(() => { if (currentView === 'profile' && currentUserData) { setProfileName(currentUserData.name || ''); setProfilePhone(currentUserData.phone || ''); setProfileAvatar(currentUserData.avatar || ''); } }, [currentView, currentUserData]);
       useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '' }); } }, [currentView, activeAdminTab, socialLinks]);
 
-      // Logic Hitungan Notifikasi Badges
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0) + ((publicChats||[]).length);
 
-      // Logic Scanner Kamera
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
@@ -812,22 +819,19 @@
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders, addToast]);
 
-      // Logic Public Help Chat Sync
       useEffect(() => {
          if(loginHelpModal && email) {
             try {
                 const unsub = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', email), docSnap => {
                     if(docSnap.exists()) setLoginHelpChatData(docSnap.data());
                     else setLoginHelpChatData(null);
+                    setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
                 });
                 return unsub;
             } catch(e){}
          }
       }, [loginHelpModal, email]);
 
-      // ==========================================
-      // FUNGSI AUTHENTIKASI & FORM
-      // ==========================================
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true);
         try {
@@ -846,7 +850,7 @@
           else if (authMode === 'forgot') {
             if (resetCooldown > 0) return; 
             await sendPasswordResetEmail(auth, email); 
-            addToast('Link reset sandi telah dikirim. Tunggu 2 menit sebelum meminta kode baru (Cek Folder SPAM).', 'success'); 
+            addToast('Link reset sandi telah dikirim. Silakan tunggu 2 menit sebelum meminta kode baru (Cek Folder SPAM).', 'success'); 
             setResetCooldown(120);
             const intv = setInterval(() => { setResetCooldown(c => { if(c <= 1) { clearInterval(intv); return 0; } return c-1; }); }, 1000);
           }
@@ -881,23 +885,18 @@
               const docSnap = await getDoc(docRef);
               if(docSnap.exists()) { await updateDoc(docRef, { messages: arrayUnion(newMsg), updatedAt: new Date().toISOString() }); } 
               else { await setDoc(docRef, { email: email, messages: [newMsg], updatedAt: new Date().toISOString() }); }
-              addToast('Pesan terkirim ke Admin.', 'success'); setLoginHelpMsg(''); 
-          } catch(e) { addToast('Gagal mengirim.', 'error'); } 
+              addToast('Pesan berhasil dikirim. Mohon tunggu balasan dari admin', 'success'); setLoginHelpMsg(''); 
+              setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
+          } catch(e) { addToast('Gagal mengirim pesan.', 'error'); } 
           setAuthLoading(false);
       }
 
-      // ==========================================
-      // FUNGSI MEMBER & PROFIL
-      // ==========================================
       const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } };
 
-      const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
+      const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
       
-      // ==========================================
-      // FUNGSI TRANSAKSI & LOGIKA HARGA
-      // ==========================================
       const getActivePromosForItem = (itemId) => { 
           if(!promos) return []; const now = new Date(); 
           return promos.filter(p => { 
@@ -933,8 +932,11 @@
       const triggerCheckout = () => { 
           if (!userId || !selectedNominal || !selectedPayment) return; 
           if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) { addToast('ID Game hanya boleh berisi angka.', 'error'); return; }
-          const fPrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id);
-          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice }});
+          const maxCashback = currentUserData?.saldoCashback || 0;
+          const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id);
+          const usedCashback = Math.min(basePrice, maxCashback);
+          const fPrice = basePrice - usedCashback;
+          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
       };
       
       const executeFinalPayment = () => { 
@@ -945,7 +947,11 @@
 
       const processCheckout = async () => {
         setIsProcessing(true);
-        let baseAmount = selectedNominal.price + selectedPayment.fee; let finalPrice = calculateFinalPrice(baseAmount, selectedNominal.id);
+        let maxCashback = currentUserData?.saldoCashback || 0;
+        let basePrice = calculateFinalPrice(selectedNominal.price + selectedPayment.fee, selectedNominal.id); 
+        let usedCashback = Math.min(basePrice, maxCashback);
+        let finalPrice = basePrice - usedCashback;
+
         const activeAutoPromos = getActivePromosForItem(selectedNominal.id); let usedPromoIds = []; let appliedPromoCode = [];
         
         if (activePromo) {
@@ -960,23 +966,23 @@
         try {
           const batch = writeBatch(db); const orderRef = doc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
           batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname, nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
+          
+          if(usedCashback > 0) { batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - usedCashback }); }
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
+          
           await batch.commit();
-          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); navigateTo('history'); playSuccessBeep(); addToast('Pesanan dibuat!', 'success');
+          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); playSuccessBeep(); setOrderSuccessModal(true);
         } catch (error) { addToast("Gagal memproses pesanan.", "error"); } finally { setIsProcessing(false); }
       };
 
       const handleSendChatUser = async (e, customStr = null) => {
          if(e) e.preventDefault(); const str = customStr || chatInput; if (!(str||'').trim()) return; setLoadingChat(true);
-         try { const newMessages = [...(userChat?.messages || []), { sender: 'user', text: str, time: new Date().toISOString(), role: 'Pelanggan' }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setChatInput(''); } 
+         try { const newMessages = [...(userChat?.messages || []), { sender: 'user', text: str, time: new Date().toISOString(), role: 'Pelanggan' }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setChatInput(''); setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); } 
          catch (err) { addToast('Gagal mengirim pesan', 'error'); } setLoadingChat(false);
       };
       
       const handleOrderHelp = (order) => { handleSendChatUser(null, `Mohon bantuan untuk Pesanan ID: ${order.id}\nGame: ${order.gameName}\nProduk: ${order.nominalName}\nStatus Saat Ini: ${order.status}`); navigateTo('chat'); }
 
-      // ==========================================
-      // FUNGSI ADMIN LENGKAP
-      // ==========================================
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
       const handleWipeData = async () => openAdminAuthModal('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
@@ -992,16 +998,17 @@
           try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
       };
       
-      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File siap ditambahkan', 'success'); } catch(err) { addToast('Gagal upload', 'error'); } setAuthLoading(false); } };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
       
-      const saveSettings = async () => openAdminAuthModal('Simpan Pengaturan', 'Konfirmasi perubahan pada pengaturan utama website.', 'Simpan', async () => { 
-          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts }, { merge: true }); addToast('Pengaturan disimpan!', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast(e.message, 'error'); } 
-      });
+      const saveSettings = async () => { 
+          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts }, { merge: true }); addToast('Pengaturan disimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } 
+      };
       
       const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diupdate', 'success'); } catch(e) { addToast('Gagal', 'error'); } } };
+      const handleDeleteFavicon = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); const compressed = await compressImage(file, 400); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } } };
       const handleRemoveGallery = async (index) => requestConfirm('Hapus foto ini?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } });
-      const toggleStore = async () => openAdminAuthModal('Status Operasional', `Ubah status toko menjadi ${isStoreOpen ? 'TUTUP' : 'BUKA'}?`, 'Ubah Status', async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); setAdminAuthModal({isOpen:false}); } catch (e) { addToast(e.message, 'error'); } });
+      const toggleStore = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } };
 
       const updateOrderStatus = async (orderId, newStatus) => { 
          try { 
@@ -1011,7 +1018,7 @@
          } catch (e) { addToast("Gagal update status", 'error'); } 
       };
 
-      const deleteOrder = async (orderId) => requestDangerConfirm('Hapus pesanan ini permanen?', async () => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); } catch(e) { addToast("Gagal hapus", 'error'); } });
+      const deleteOrder = async (orderId) => openAdminAuthModal('Hapus Pesanan', 'Konfirmasi password untuk menghapus pesanan ini secara permanen.', 'Hapus', async () => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast("Gagal hapus", 'error'); } });
       
       const handleAdminSendChat = async (e, customText = null, isPublic = false) => {
          if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return;
@@ -1023,22 +1030,20 @@
              } else {
                  const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); 
              }
-             setAdminReplyText(''); 
+             setAdminReplyText(''); setTimeout(()=> { adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
          } catch(err) { addToast('Gagal membalas', 'error'); }
       };
 
       const handleValidateTrxFromChat = async () => {
          if(!adminTrxModal.order) return;
-         openAdminAuthModal('Validasi Pesanan', `Konfirmasi penyelesaian pesanan ${adminTrxModal.order.id}`, 'Validasi Sukses', async () => {
-             await updateOrderStatus(adminTrxModal.order.id, 'Sukses');
-             handleAdminSendChat(null, `[Sistem] Pesanan Anda (ID: ${adminTrxModal.order.id}) telah divalidasi dan berstatus SUKSES. Proses pengiriman item membutuhkan waktu 1-3 Menit.`, false);
-             setAdminTrxModal({isOpen: false, order: null}); setAdminAuthModal({isOpen: false});
-         });
+         await updateOrderStatus(adminTrxModal.order.id, 'Sukses');
+         handleAdminSendChat(null, `[Sistem] Pesanan Anda (ID: ${adminTrxModal.order.id}) telah divalidasi dan berstatus SUKSES. Proses pengiriman item membutuhkan waktu 1-3 Menit.`, false);
+         setAdminTrxModal({isOpen: false, order: null});
       };
 
-      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Chat bantuan diselesaikan', 'success'); setActiveChatEmail(null); } catch(e) { addToast('Gagal', 'error'); } };
+      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Chat bantuan ditandai selesai', 'success'); setActiveChatEmail(null); } catch(e) { addToast('Gagal', 'error'); } };
       const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
-      const handleDeleteMember = async (memberId) => requestDangerConfirm('Hapus akun member permanen?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); } catch(e) { addToast('Gagal hapus', 'error'); } });
+      const handleDeleteMember = async (memberId) => openAdminAuthModal('Hapus Member', 'Konfirmasi password untuk menghapus akun member ini.', 'Hapus Permanen', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
 
       const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
       const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} };
@@ -1046,30 +1051,28 @@
       const handleBroadcast = async (e) => {
          e.preventDefault();
          if(!(broadcastMsg||'').trim()) return;
-         openAdminAuthModal('Kirim Broadcast', `Pesan dikirim ke ${broadcastTarget==='all'?'Semua Member':broadcastTarget==='specific'?'Member Terpilih':'beberapa user'}.`, 'Kirim', async () => {
-            setAuthLoading(true);
-            try {
-                let targets = [];
-                if(broadcastTarget === 'all') targets = memberList.map(m=>m.email);
-                else targets = (broadcastEmails||'').split(',').map(e=>e.trim()).filter(e=>e);
-                for (const email of targets) {
-                     const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email);
-                     const newMsg = { sender: 'admin', text: broadcastMsg, time: new Date().toISOString(), role: 'Sistem Informasi' };
-                     await setDoc(chatRef, { messages: arrayUnion(newMsg), status: 'Dijawab', updatedAt: new Date().toISOString() }, {merge: true});
-                }
-                addToast(`Broadcast terkirim ke ${targets.length} user`, 'success'); setBroadcastMsg(''); setBroadcastEmails('');
-            } catch(err) { addToast('Gagal kirim', 'error'); }
-            setAuthLoading(false); setAdminAuthModal({isOpen:false});
-         });
+         setAuthLoading(true);
+         try {
+             let targets = [];
+             if(broadcastTarget === 'all') targets = memberList.map(m=>m.email);
+             else targets = (broadcastEmails||'').split(',').map(e=>e.trim()).filter(e=>e);
+             for (const email of targets) {
+                  const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email);
+                  const newMsg = { sender: 'admin', text: broadcastMsg, time: new Date().toISOString(), role: 'Sistem Informasi' };
+                  await setDoc(chatRef, { messages: arrayUnion(newMsg), status: 'Dijawab', updatedAt: new Date().toISOString() }, {merge: true});
+             }
+             addToast(`Broadcast sukses dikirim ke ${targets.length} user`, 'success'); setBroadcastMsg(''); setBroadcastEmails('');
+         } catch(err) { addToast('Gagal kirim broadcast', 'error'); }
+         setAuthLoading(false);
       };
 
       const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { const cleanId = (newGameId||'').toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
       const handleEditGameClick = (game) => { setEditingGameId(game.id); setNewGameId(game.id); setNewGameName(game.name); setNewGameDev(game.developer); setNewGameInput(game.inputType); setNewGameImg(game.image); setAdminSelectedGame(game.id); };
-      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus Game dari katalog?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeleteGame = async (gameId) => openAdminAuthModal('Hapus Game', 'Hapus game ini dari katalog?', 'Hapus Game', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
 
       const handleSaveItem = async (e) => { e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return; try { if (editingItemId) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true }); } else { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }); } setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); addToast('Produk Item tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
       const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
-      const handleDeleteItem = async (itemId) => requestDangerConfirm('Hapus produk item ini?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeleteItem = async (itemId) => openAdminAuthModal('Hapus Produk', 'Hapus produk ini?', 'Hapus', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
 
       const handleSavePromo = async (e) => {
           e.preventDefault();
@@ -1086,7 +1089,7 @@
           } catch(e) { addToast(e.message, 'error'); }
       };
 
-      const handleDeletePromo = (id) => requestDangerConfirm(`Hapus promo ini secara permanen?`, async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeletePromo = (id) => openAdminAuthModal('Hapus Promo', 'Hapus permanen promo ini?', 'Hapus', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
       const togglePromoStatus = async (id, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
 
       const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
@@ -1156,7 +1159,7 @@
                </div>
             </div>
 
-            {/* Bantuan Login Modal (Fitur Chat) */}
+            {/* Bantuan Login Modal (Fitur Chat Publik Tertutup) */}
             {loginHelpModal && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="clean-card p-6 md:p-8 max-w-md w-full border border-white/10 relative flex flex-col h-[85vh] max-h-[650px] shadow-2xl">
@@ -1177,10 +1180,11 @@
                                     </div>
                                 </div>
                             )) : <div className="text-center flex flex-col items-center justify-center h-full text-xs text-gray-600 font-bold"><IconMessageSquare className="w-8 h-8 mb-2 opacity-30"/>Masukkan email untuk memuat chat.</div>}
+                            <div ref={chatEndRef} />
                         </div>
 
                         <form onSubmit={handleSendPublicHelp} className="flex gap-2 shrink-0">
-                            <input type="text" required value={loginHelpMsg} onChange={(e)=>setLoginHelpMsg(e.target.value)} placeholder="Ketik keluhan Anda..." disabled={!email} className="flex-1 bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 text-white disabled:opacity-50 transition" />
+                            <input type="text" required value={loginHelpMsg} onChange={(e)=>setLoginHelpMsg(e.target.value)} placeholder="Ketik pesan Anda..." disabled={!email} className="flex-1 bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 text-white disabled:opacity-50 transition" />
                             <button type="submit" disabled={authLoading || !email || !(loginHelpMsg||'').trim()} className="bg-orange-600 hover:bg-orange-500 text-white px-5 rounded-xl font-black flex items-center justify-center shadow-lg shadow-orange-500/20 disabled:opacity-50 transition"><IconSend className="w-4 h-4"/></button>
                         </form>
                     </div>
@@ -1218,6 +1222,7 @@
           <ChangePinModal isOpen={changePinModalOpen} authEmail={authUser?.email} oldPinHash={currentUserData?.pin} onSuccess={handleSetPin} onCancel={()=>setChangePinModalOpen(false)} />
           <PinModal isOpen={pinModalState.isOpen} mode={pinModalState.mode} expectedPin={pinModalState.expectedPin} onSuccess={pinModalState.onSuccess} onCancel={() => setPinModalState({isOpen:false, mode:'setup', onSuccess:null})} />
           <OrderSummaryModal isOpen={checkoutSummary.isOpen} data={checkoutSummary.data} onConfirm={executeFinalPayment} onCancel={()=>setCheckoutSummary({isOpen:false, data:null})} isProcessing={isProcessing} />
+          <OrderSuccessModal isOpen={orderSuccessModal} onBack={() => {setOrderSuccessModal(false); setSelectedGame(null); window.scrollTo({top:0, behavior:'smooth'});}} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} />
 
           {/* ADMIN TRX MODAL DETAIL (dari Chat Bantuan) */}
           {adminTrxModal.isOpen && adminTrxModal.order && (
@@ -1252,16 +1257,21 @@
              </div>
           )}
 
-          {/* CHAT BANTUAN OVERLAY (FULLSCREEN MOBILE/DESKTOP) */}
+          {/* CHAT BANTUAN OVERLAY (EXPANDABLE) */}
           {currentView === 'chat' && (
-             <div className="fixed inset-0 z-[100] bg-[#050505] flex flex-col animate-in slide-in-from-bottom-full duration-500 h-[100dvh]">
-                <div className="p-4 md:p-5 border-b border-white/10 flex items-center gap-3 md:gap-4 bg-[#0a0a0a]/95 backdrop-blur-sm shadow-sm shrink-0 relative z-20">
-                   <button onClick={handleBack} className="p-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl transition border border-white/10 flex items-center justify-center shrink-0 shadow-sm"><IconChevronLeft className="w-6 h-6"/></button>
-                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.4)] shrink-0"><IconMessageSquare className="w-6 h-6 text-white"/></div>
-                   <div className="min-w-0">
-                      <h2 className="text-lg md:text-xl font-black leading-tight text-white truncate">Pusat Bantuan CS</h2>
-                      <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_5px_rgba(16,185,129,0.8)]"></span> Tim Sedang Online</p>
+             <div className={`animate-in fade-in slide-in-from-bottom-8 duration-500 transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] bg-[#050505] flex flex-col' : 'clean-card border border-white/10 rounded-[3rem] shadow-2xl flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20'}`}>
+                <div className="p-4 md:p-5 border-b border-white/10 flex items-center justify-between bg-[#0a0a0a] shrink-0 z-20 shadow-sm relative">
+                   <div className="flex items-center gap-3 md:gap-4">
+                       {!isChatFullScreen && <button onClick={handleBack} className="p-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl transition border border-white/10 flex items-center justify-center shrink-0 shadow-sm"><IconChevronLeft className="w-5 h-5"/></button>}
+                       <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(249,115,22,0.4)] shrink-0"><IconMessageSquare className="w-6 h-6 text-white"/></div>
+                       <div className="min-w-0">
+                          <h2 className="text-lg font-black leading-tight text-white truncate">Pusat Bantuan CS</h2>
+                          <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mt-0.5"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_5px_rgba(16,185,129,0.8)]"></span> Tim Sedang Online</p>
+                       </div>
                    </div>
+                   <button onClick={()=>setIsChatFullScreen(!isChatFullScreen)} className="p-2.5 bg-white/5 text-gray-400 hover:text-white rounded-xl transition border border-white/5" title={isChatFullScreen ? 'Keluar Layar Penuh' : 'Layar Penuh'}>
+                       {isChatFullScreen ? <IconMinimize className="w-5 h-5"/> : <IconExpand className="w-5 h-5"/>}
+                   </button>
                 </div>
                 
                 <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar relative z-10 bg-[#050505]">
@@ -1334,11 +1344,12 @@
                  </div>
 
                  <div className="flex items-center gap-3 relative">
-                    <div className="hidden sm:block text-right mr-2">
-                       <div className="text-[10px] font-black uppercase tracking-widest text-gray-500">{userVipData.level} Member</div>
-                       <div className="text-xs font-mono font-bold text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</div>
+                    <div className="text-right mr-2 flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20 shadow-inner">
+                       <span className="hidden sm:inline text-[10px] font-black uppercase tracking-widest text-orange-500">Cashback</span>
+                       <IconWallet className="w-4 h-4 text-orange-400 sm:hidden"/>
+                       <span className="text-xs font-mono font-bold text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
                     </div>
-                    <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-white/10 shadow-sm text-white hover:border-orange-500 transition overflow-hidden bg-black flex items-center justify-center">
+                    <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-white/10 shadow-sm text-white hover:border-orange-500 transition overflow-hidden bg-black flex items-center justify-center shrink-0">
                        {currentUserData?.avatar ? ( <img src={currentUserData.avatar} className="w-full h-full object-cover" /> ) : ( <span className="font-black text-sm text-gray-400">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span> )}
                     </button>
                     {profileDropdownOpen && (
@@ -1356,7 +1367,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (Lebih Halus dan Tidak Putus) */}
+          {/* RUNNING TEXT GLOBAL (Lebih Halus) */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-600 to-red-600 border-b border-orange-400/30 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1402,7 +1413,7 @@
           )}
 
           <main className={`flex-1 transition-all w-full flex flex-col relative z-10 ${currentView === 'chat' ? 'hidden' : ''}`}>
-            <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-4 md:mt-8 pb-20">
+            <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-4 md:mt-8 pb-10">
             
             {/* ========================================================================= */}
             {/* VIEW: BERANDA (KATALOG & FORM TRANSAKSI)                                  */}
@@ -1449,7 +1460,7 @@
                    </div>
                 )}
 
-                {/* UI Katalog Game (Clean & Minimalist v9.3) */}
+                {/* UI Katalog Game (Clean & Minimalist v9.3.1) */}
                 <div className="relative z-20 mb-12">
                    {!selectedGame && (
                        <div className="flex items-center gap-3 mb-6 pl-2">
@@ -1494,7 +1505,7 @@
                          </div>
                       </div>
 
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-40">
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-48">
                          
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
@@ -1616,8 +1627,8 @@
                          </div>
                       </div>
 
-                      {/* FIXED BOTTOM CHECKOUT BAR */}
-                      <div className={`fixed bottom-0 left-0 w-full z-[1000] transition-all duration-500 transform ${selectedNominal ? 'translate-y-0' : 'translate-y-full'}`}>
+                      {/* FIXED BOTTOM CHECKOUT BAR (Z-INDEX 1000) */}
+                      <div className={`fixed bottom-0 left-0 w-full z-[1000] transition-all duration-500 transform ${selectedPayment && isFormValid ? 'translate-y-0' : 'translate-y-full'}`}>
                          <div className="bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-orange-500/30 p-4 md:p-5 shadow-[0_-10px_40px_rgba(249,115,22,0.15)] pb-safe">
                             <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
                                <div className="hidden sm:block flex-1">
@@ -1632,7 +1643,7 @@
                                <div className="flex-1 sm:text-right px-2">
                                   <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-0.5">Total Pembayaran</div>
                                   <div className="text-2xl md:text-3xl font-black text-orange-500 font-mono drop-shadow-md">
-                                     {selectedNominal ? formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id)) : 'Rp 0'}
+                                     {selectedNominal ? formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id) - Math.min(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id), (currentUserData?.saldoCashback || 0))) : 'Rp 0'}
                                   </div>
                                </div>
                                <button onClick={triggerCheckout} disabled={!isFormValid || isProcessing} className={`flex-[1.5] sm:flex-1 py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all flex justify-center items-center gap-3 relative overflow-hidden group shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white hover:scale-[1.02] shadow-orange-500/30' : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'}`}>
@@ -1906,7 +1917,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V9.1.2)                                        */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V9.3.1)                                        */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -1917,7 +1928,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-white truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.3</span>
+                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.3.1</span>
                         </div>
                      </div>
 
@@ -2086,8 +2097,7 @@
 
                               <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-black/50 rounded-[2rem] border border-white/5 shadow-inner">
                                  <table className="w-full text-left text-sm text-gray-300 min-w-[800px]">
-                                    <thead className="text-[10px] text-gray-400 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
-                                       <tr><th className="px-5 py-4 font-black">Informasi Pengguna</th><th className="px-5 py-4 font-black">Kontak Akun</th><th className="px-5 py-4 font-black">Status Akun</th><th className="px-5 py-4 font-black">Bergabung Pada</th><th className="px-5 py-4 text-center font-black">Aksi Cepat</th></tr>
+                                    <thead className="text-[10px] text-gray-400 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10"><tr><th className="px-5 py-4 font-black">Informasi Pengguna</th><th className="px-5 py-4 font-black">Kontak Akun</th><th className="px-5 py-4 font-black">Status Akun</th><th className="px-5 py-4 font-black">Bergabung Pada</th><th className="px-5 py-4 text-center font-black">Aksi Cepat</th></tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
                                     {memberList.filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
@@ -2132,7 +2142,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - DISEMPURNAKAN V9.3 */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - DISEMPURNAKAN V9.3.1 */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-white/10 rounded-[2.5rem] overflow-hidden bg-black shadow-inner">
                               
@@ -2310,7 +2320,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.3 LENGKAP */}
+                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.3.1 */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2341,7 +2351,7 @@
                                     </div>
                                     
                                     <div>
-                                       <label className="text-xs font-black text-white mb-2 block flex items-center gap-2"><IconImage className="w-4 h-4 text-orange-500"/> Icon Website (Favicon)</label>
+                                       <label className="text-xs font-black text-white mb-2 flex justify-between items-center"><span className="flex items-center gap-2"><IconImage className="w-4 h-4 text-orange-500"/> Icon Website (Favicon)</span> {globalConfig?.favicon && <button onClick={handleDeleteFavicon} className="text-[9px] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white px-2 py-1 rounded transition">Hapus Icon</button>}</label>
                                        <p className="text-[10px] text-gray-500 mb-3">Logo kecil yang muncul di tab browser pengguna.</p>
                                        <div className="relative group">
                                           <input type="file" accept=".ico, .png, .svg, image/*" onChange={handleFaviconUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
@@ -2495,7 +2505,7 @@
                            </div>
                         )}
 
-                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.3) */}
+                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.3.1) */}
                         {activeAdminTab === 'katalog' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-6 h-full">
                               
@@ -2612,7 +2622,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.3) */}
+                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.3.1) */}
                         {activeAdminTab === 'promo' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
