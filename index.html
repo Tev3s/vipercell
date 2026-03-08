@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v9.1.2</title>
+  <title>Vipercell - Premium Top Up v9.3</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +34,7 @@
   
   <style>
     /* =========================================
-       UI CLEAN & MODERN V9.1.2 (ANTI-CRASH)
+       UI CLEAN & MODERN V9.3 (ANTI-CRASH)
        ========================================= */
     body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
@@ -62,13 +62,14 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
-<body id="app-body" class="selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative">
+<body id="app-body" class="selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative pb-10">
   
   <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10 hardware-accel"></div>
 
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
+    // Firebase V11 Imports (Standard & Safe)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -93,7 +94,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V9.1.2
+    // FUNGSI HELPER & UTILITIES V9.3
     // ==========================================
     const playSuccessBeep = () => { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gainNode = ctx.createGain(); osc.connect(gainNode); gainNode.connect(ctx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1); gainNode.gain.setValueAtTime(1, ctx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } catch(e) {} };
     
@@ -136,7 +137,7 @@
     }
 
     // ==========================================
-    // KOMPONEN ICON SVG OPTIMAL
+    // KOMPONEN ICON SVG OPTIMAL V9.3
     // ==========================================
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}>{d}</svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>}/>;
@@ -191,13 +192,14 @@
     const IconVolumeX = ({className:c}) => <Ic c={c} d={<><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></>}/>;
     const IconBlock = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></>}/>;
 
+    // Data UI Metode Pembayaran Desain Baru (V9.3)
     const PAYMENTS = [
-      { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0 },
-      { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi / Kasir', fee: 0 },
+      { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
+      { id: 'cash', name: 'Uang Tunai (Cash)', type: 'Bayar di Lokasi / Kasir', fee: 0, color: 'from-emerald-500 to-green-600', badge: 'CASH' },
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) PROVIDER - UI CUSTOM
+    // NOTIFICATION (TOAST) PROVIDER - UI MOBILE FIXED
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -212,11 +214,11 @@
         return (
             <ToastContext.Provider value={{ addToast }}>
                 {children}
-                <div className="fixed top-4 right-4 z-[10000] flex flex-col gap-2 pointer-events-none max-w-[90vw] sm:max-w-sm">
+                <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:top-auto z-[10000] flex flex-col gap-2 pointer-events-none sm:w-96">
                     {toasts.map(t => (
-                        <div key={t.id} className={`p-4 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-right-8 pointer-events-auto backdrop-blur-md border ${t.type === 'error' ? 'bg-red-500/20 border-red-500/50 text-red-100' : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-100'}`}>
+                        <div key={t.id} className={`p-4 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-8 pointer-events-auto backdrop-blur-md border ${t.type === 'error' ? 'bg-red-500/20 border-red-500/50 text-red-100' : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-100'}`}>
                             {t.type === 'error' ? <IconX className="w-5 h-5 text-red-500 shrink-0"/> : <IconCheckCircle className="w-5 h-5 text-emerald-500 shrink-0"/>}
-                            <span className="text-xs sm:text-sm font-bold leading-tight">{t.msg}</span>
+                            <span className="text-xs sm:text-sm font-bold leading-tight drop-shadow-md">{t.msg}</span>
                         </div>
                     ))}
                 </div>
@@ -468,7 +470,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.1.2 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.3 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -489,6 +491,7 @@
           return () => clearInterval(t);
        }, [(items||[]).length, isPaused]);
 
+       // Fix: Menjaga status mute video tanpa restart
        useEffect(() => {
            if(videoRef.current) { videoRef.current.muted = isMuted; }
        }, [isMuted, curr]);
@@ -534,7 +537,7 @@
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 cursor-pointer ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} onClick={()=>setExpanded(!expanded)}>
                    {b.type === 'youtube' ? ( <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div> ) : 
-                    (b.type === 'video' || ((b.url||'').match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline loop autoPlay={i===curr} muted={isMuted} /> ) : 
+                    (b.type === 'video' || ((b.url||'').match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline loop autoPlay={i===curr} /> ) : 
                     ( <img src={b.url} className="w-full h-full object-cover opacity-80 transition duration-[6000ms] ease-in-out transform scale-100 group-hover:scale-105" /> )}
                    
                    {(b.title || b.desc) && (
@@ -570,6 +573,7 @@
     function AppCore() {
       const { addToast } = useToast();
 
+      // State Modals
       const [adminAuthModal, setAdminAuthModal] = useState({ isOpen: false, action: null, title: '', message: '', btnText: '' });
       const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
@@ -583,6 +587,7 @@
       const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); };
       const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
 
+      // State Auth & User
       const [authUser, setAuthUser] = useState(null);
       const [isAuthChecking, setIsAuthChecking] = useState(true);
       const [authMode, setAuthMode] = useState('login');
@@ -601,6 +606,7 @@
       const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', onSuccess: null });
       const [changePinModalOpen, setChangePinModalOpen] = useState(false);
 
+      // State Database & Toko
       const [isStoreOpen, setIsStoreOpen] = useState(true);
       const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); 
       const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]);
@@ -617,6 +623,7 @@
       const [currentView, setCurrentView] = useState('home'); 
       const [viewHistory, setViewHistory] = useState(['home']);
 
+      // State Admin Panel
       const [activeAdminTab, setActiveAdminTab] = useState('dashboard');
       const [adminSelectedGame, setAdminSelectedGame] = useState('');
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState('');
@@ -634,7 +641,7 @@
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
       
-      const [supportTab, setSupportTab] = useState('member');
+      const [supportTab, setSupportTab] = useState('member'); // member, login, broadcast
       const [activeChatEmail, setActiveChatEmail] = useState(null);
       const [adminReplyText, setAdminReplyText] = useState('');
       const adminChatEndRef = useRef(null);
@@ -648,6 +655,7 @@
       const [broadcastTarget, setBroadcastTarget] = useState('all');
       const [broadcastEmails, setBroadcastEmails] = useState('');
 
+      // State Transaksi Top Up
       const [selectedGame, setSelectedGame] = useState(null);
       const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
@@ -662,10 +670,12 @@
       const [loadingChat, setLoadingChat] = useState(false);
       const chatEndRef = useRef(null);
 
+      // Navigasi Utama
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
          setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false);
          if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); }
+         window.scrollTo({top:0, behavior:'smooth'});
       };
       
       const handleBack = () => {
@@ -674,11 +684,13 @@
           else { setCurrentView('home'); }
       }
 
-      useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id); }, [games, adminSelectedGame]);
+      // Efek Sinkronisasi UI & Scroll
+      useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, publicChats, activeChatEmail, adminReplyText]); 
       useEffect(() => { if (globalConfig?.favicon) { let link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); } link.href = globalConfig.favicon; } }, [globalConfig?.favicon]);
 
+      // Handle Tombol ESC Keyboard
       useEffect(() => {
          const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
@@ -695,6 +707,7 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [adminAuthModal, checkoutSummary, isScannerOpen, pinModalState, changePinModalOpen, loginHelpModal, adminTrxModal, selectedGame, viewHistory]);
 
+      // Listeners Global Firebase (Safe Anti-Crash)
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
@@ -712,6 +725,7 @@
          } catch(e) {}
       }, [isSuperAdmin]);
 
+      // Listener Status Autentikasi
       useEffect(() => {
         const timer = setTimeout(() => setIsAuthChecking(false), 8000); 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -730,6 +744,7 @@
         return () => { unsubscribe(); clearTimeout(timer); };
       }, [addToast]);
 
+      // Listener Data Pengguna Saat Ini
       useEffect(() => {
          if(!authUser) return;
          try {
@@ -744,6 +759,7 @@
          } catch(e){}
       }, [authUser, addToast]);
 
+      // Listener Data Interaktif Admin & User
       useEffect(() => {
          if (!authUser) return;
          let unsubs = [];
@@ -769,9 +785,11 @@
       useEffect(() => { if (currentView === 'profile' && currentUserData) { setProfileName(currentUserData.name || ''); setProfilePhone(currentUserData.phone || ''); setProfileAvatar(currentUserData.avatar || ''); } }, [currentView, currentUserData]);
       useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '' }); } }, [currentView, activeAdminTab, socialLinks]);
 
+      // Logic Hitungan Notifikasi Badges
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0) + ((publicChats||[]).length);
 
+      // Logic Scanner Kamera
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
@@ -794,6 +812,7 @@
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders, addToast]);
 
+      // Logic Public Help Chat Sync
       useEffect(() => {
          if(loginHelpModal && email) {
             try {
@@ -806,6 +825,9 @@
          }
       }, [loginHelpModal, email]);
 
+      // ==========================================
+      // FUNGSI AUTHENTIKASI & FORM
+      // ==========================================
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true);
         try {
@@ -824,7 +846,7 @@
           else if (authMode === 'forgot') {
             if (resetCooldown > 0) return; 
             await sendPasswordResetEmail(auth, email); 
-            addToast('Link reset sandi telah dikirim. Silakan tunggu 2 menit sebelum meminta kode baru (Cek Folder SPAM).', 'success'); 
+            addToast('Link reset sandi telah dikirim. Tunggu 2 menit sebelum meminta kode baru (Cek Folder SPAM).', 'success'); 
             setResetCooldown(120);
             const intv = setInterval(() => { setResetCooldown(c => { if(c <= 1) { clearInterval(intv); return 0; } return c-1; }); }, 1000);
           }
@@ -864,12 +886,18 @@
           setAuthLoading(false);
       }
 
+      // ==========================================
+      // FUNGSI MEMBER & PROFIL
+      // ==========================================
       const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } };
 
       const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
       
+      // ==========================================
+      // FUNGSI TRANSAKSI & LOGIKA HARGA
+      // ==========================================
       const getActivePromosForItem = (itemId) => { 
           if(!promos) return []; const now = new Date(); 
           return promos.filter(p => { 
@@ -934,7 +962,7 @@
           batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname, nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
           await batch.commit();
-          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); navigateTo('history'); playSuccessBeep(); addToast('Pesanan berhasil dibuat!', 'success');
+          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); navigateTo('history'); playSuccessBeep(); addToast('Pesanan dibuat!', 'success');
         } catch (error) { addToast("Gagal memproses pesanan.", "error"); } finally { setIsProcessing(false); }
       };
 
@@ -946,6 +974,9 @@
       
       const handleOrderHelp = (order) => { handleSendChatUser(null, `Mohon bantuan untuk Pesanan ID: ${order.id}\nGame: ${order.gameName}\nProduk: ${order.nominalName}\nStatus Saat Ini: ${order.status}`); navigateTo('chat'); }
 
+      // ==========================================
+      // FUNGSI ADMIN LENGKAP
+      // ==========================================
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
       const handleWipeData = async () => openAdminAuthModal('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
@@ -961,7 +992,7 @@
           try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
       };
       
-      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File siap ditambahkan', 'success'); } catch(err) { addToast('Gagal upload', 'error'); } setAuthLoading(false); } };
       
       const saveSettings = async () => openAdminAuthModal('Simpan Pengaturan', 'Konfirmasi perubahan pada pengaturan utama website.', 'Simpan', async () => { 
           try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts }, { merge: true }); addToast('Pengaturan disimpan!', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast(e.message, 'error'); } 
@@ -977,10 +1008,10 @@
              const order = (adminOrders||[]).find(o => o.id === orderId); await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
              if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const mOrders = allGlobalOrders.filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId); const vip = calculateVIPLevel(mOrders.length); if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); } } }
              addToast(`Status diubah ke ${newStatus}`, 'success');
-         } catch (e) { addToast("Gagal update: " + e.message, 'error'); } 
+         } catch (e) { addToast("Gagal update status", 'error'); } 
       };
 
-      const deleteOrder = async (orderId) => requestDangerConfirm('Hapus pesanan ini secara permanen?', async () => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); } catch(e) { addToast("Gagal: " + e.message, 'error'); } });
+      const deleteOrder = async (orderId) => requestDangerConfirm('Hapus pesanan ini permanen?', async () => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); } catch(e) { addToast("Gagal hapus", 'error'); } });
       
       const handleAdminSendChat = async (e, customText = null, isPublic = false) => {
          if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return;
@@ -1005,9 +1036,9 @@
          });
       };
 
-      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Chat bantuan ditandai selesai', 'success'); setActiveChatEmail(null); } catch(e) { addToast('Gagal', 'error'); } };
+      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Chat bantuan diselesaikan', 'success'); setActiveChatEmail(null); } catch(e) { addToast('Gagal', 'error'); } };
       const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
-      const handleDeleteMember = async (memberId) => requestDangerConfirm('Hapus akun member ini permanen?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); } catch(e) { addToast(e.message, 'error'); } });
+      const handleDeleteMember = async (memberId) => requestDangerConfirm('Hapus akun member permanen?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); } catch(e) { addToast('Gagal hapus', 'error'); } });
 
       const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
       const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} };
@@ -1015,7 +1046,7 @@
       const handleBroadcast = async (e) => {
          e.preventDefault();
          if(!(broadcastMsg||'').trim()) return;
-         openAdminAuthModal('Kirim Broadcast', `Pesan akan dikirim ke ${broadcastTarget==='all'?'Semua Member':broadcastTarget==='specific'?'Member Terpilih':'beberapa user'}.`, 'Kirim Broadcast', async () => {
+         openAdminAuthModal('Kirim Broadcast', `Pesan dikirim ke ${broadcastTarget==='all'?'Semua Member':broadcastTarget==='specific'?'Member Terpilih':'beberapa user'}.`, 'Kirim', async () => {
             setAuthLoading(true);
             try {
                 let targets = [];
@@ -1026,15 +1057,15 @@
                      const newMsg = { sender: 'admin', text: broadcastMsg, time: new Date().toISOString(), role: 'Sistem Informasi' };
                      await setDoc(chatRef, { messages: arrayUnion(newMsg), status: 'Dijawab', updatedAt: new Date().toISOString() }, {merge: true});
                 }
-                addToast(`Broadcast sukses dikirim ke ${targets.length} user`, 'success'); setBroadcastMsg(''); setBroadcastEmails('');
-            } catch(err) { addToast('Gagal kirim broadcast', 'error'); }
+                addToast(`Broadcast terkirim ke ${targets.length} user`, 'success'); setBroadcastMsg(''); setBroadcastEmails('');
+            } catch(err) { addToast('Gagal kirim', 'error'); }
             setAuthLoading(false); setAdminAuthModal({isOpen:false});
          });
       };
 
       const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { const cleanId = (newGameId||'').toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
       const handleEditGameClick = (game) => { setEditingGameId(game.id); setNewGameId(game.id); setNewGameName(game.name); setNewGameDev(game.developer); setNewGameInput(game.inputType); setNewGameImg(game.image); setAdminSelectedGame(game.id); };
-      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus Game ini dari katalog?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus Game dari katalog?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
 
       const handleSaveItem = async (e) => { e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return; try { if (editingItemId) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true }); } else { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }); } setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); addToast('Produk Item tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
       const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
@@ -1418,7 +1449,7 @@
                    </div>
                 )}
 
-                {/* UI Katalog Game (Clean & Minimalist v9.1.2) */}
+                {/* UI Katalog Game (Clean & Minimalist v9.3) */}
                 <div className="relative z-20 mb-12">
                    {!selectedGame && (
                        <div className="flex items-center gap-3 mb-6 pl-2">
@@ -1463,7 +1494,7 @@
                          </div>
                       </div>
 
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-32">
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-40">
                          
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
@@ -1554,14 +1585,17 @@
                                <div className="space-y-3 mb-6 relative z-10">
                                   {PAYMENTS.map(pay => (
                                      <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 transition-all duration-200 flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-orange-500 bg-orange-500/10 shadow-[0_0_15px_rgba(249,115,22,0.1)]' : 'border-white/10 bg-black hover:border-white/20'}`}>
-                                        <div className={`p-2.5 rounded-xl border ${selectedPayment?.id === pay.id ? 'bg-orange-500 border-orange-400 text-white' : 'bg-white/5 border-white/10 text-gray-400'}`}>
-                                            <IconQrcode className="w-5 h-5"/>
+                                        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pay.color} flex items-center justify-center text-white shadow-lg shrink-0`}>
+                                            {pay.id === 'qris' ? <IconQrcode className="w-8 h-8"/> : <IconWallet className="w-8 h-8"/>}
                                         </div>
                                         <div className="flex-1">
-                                            <div className="text-sm font-black text-white">{pay.name}</div>
-                                            <div className="text-[10px] text-gray-400 font-bold mt-0.5">{pay.type}</div>
+                                            <div className="flex items-center gap-2">
+                                               <div className="text-sm font-black text-white">{pay.name}</div>
+                                               <span className="text-[8px] bg-white/20 text-white px-2 py-0.5 rounded font-black">{pay.badge}</span>
+                                            </div>
+                                            <div className="text-[10px] text-gray-400 font-bold mt-1 leading-tight">{pay.type}</div>
                                         </div>
-                                        {selectedPayment?.id === pay.id && <IconCheckCircle className="w-5 h-5 text-orange-500"/>}
+                                        {selectedPayment?.id === pay.id && <IconCheckCircle className="w-6 h-6 text-orange-500 shrink-0"/>}
                                      </div>
                                   ))}
                                </div>
@@ -1583,7 +1617,7 @@
                       </div>
 
                       {/* FIXED BOTTOM CHECKOUT BAR */}
-                      <div className={`fixed bottom-0 left-0 w-full z-40 transition-all duration-500 transform ${selectedNominal ? 'translate-y-0' : 'translate-y-full'}`}>
+                      <div className={`fixed bottom-0 left-0 w-full z-[1000] transition-all duration-500 transform ${selectedNominal ? 'translate-y-0' : 'translate-y-full'}`}>
                          <div className="bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-orange-500/30 p-4 md:p-5 shadow-[0_-10px_40px_rgba(249,115,22,0.15)] pb-safe">
                             <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
                                <div className="hidden sm:block flex-1">
@@ -1883,7 +1917,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-white truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.1.2</span>
+                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.3</span>
                         </div>
                      </div>
 
@@ -2061,7 +2095,7 @@
                                           <td className="px-5 py-4">
                                              <div className="flex items-center gap-3">
                                                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-black text-xs text-white overflow-hidden border border-white/20">
-                                                     {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : m.name?.charAt(0).toUpperCase()}
+                                                     {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : (m.name||'U').charAt(0).toUpperCase()}
                                                  </div>
                                                  <div>
                                                      <div className="font-bold text-white truncate max-w-[150px]">{m.name}</div>
@@ -2098,7 +2132,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - DISEMPURNAKAN V9.1.2 */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - DISEMPURNAKAN V9.3 */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-white/10 rounded-[2.5rem] overflow-hidden bg-black shadow-inner">
                               
@@ -2112,7 +2146,8 @@
                                      <button onClick={()=>setSupportTab('broadcast')} className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='broadcast' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30' : 'text-gray-500 hover:text-white'}`}>Siaran</button>
                                  </div>
 
-                                 {/* Panel: Bantuan Login (Public Help) */}{supportTab === 'login' && (
+                                 {/* Panel: Bantuan Login (Public Help) */}
+                                 {supportTab === 'login' && (
                                      <div className="overflow-y-auto flex-1 custom-scrollbar">
                                         <div className="p-3 bg-red-600/10 font-bold text-xs text-red-400 flex items-center justify-between sticky top-0 backdrop-blur-md z-10 border-b border-red-500/20">
                                             <span><IconShieldAlert className="w-4 h-4 inline mr-1"/> Tiket Login/Lupa Sandi</span>
@@ -2192,22 +2227,22 @@
                                     <>
                                        {/* Header Chat Detail */}
                                        <div className="p-4 bg-white/[0.03] font-black text-sm border-b border-white/10 flex justify-between items-center shadow-sm z-10">
-                                          <div className="flex items-center gap-3">
-                                              <div className="w-8 h-8 bg-blue-500/20 text-blue-500 rounded-full flex items-center justify-center border border-blue-500/30"><IconUser className="w-4 h-4"/></div>
+                                          <div className="flex items-center gap-3 min-w-0 pr-2">
+                                              <div className="w-8 h-8 bg-blue-500/20 text-blue-500 rounded-full flex items-center justify-center border border-blue-500/30 shrink-0"><IconUser className="w-4 h-4"/></div>
                                               <div className="min-w-0">
                                                   <span className="text-white block truncate">{activeChatEmail}</span>
                                                   <span className="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{supportTab === 'login' ? 'User Tamu (Darurat)' : 'Member VIP'}</span>
                                               </div>
                                           </div>
                                           <div className="flex items-center gap-2 shrink-0">
-                                              {supportTab === 'login' && <button onClick={()=>markPublicHelpDone(activeChatEmail)} className="text-[9px] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/30 px-3 py-1.5 rounded font-black transition">TANDAI SELESAI</button>}
+                                              {supportTab === 'login' && <button onClick={()=>markPublicHelpDone(activeChatEmail)} className="text-[9px] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/30 px-3 py-1.5 rounded font-black transition shadow-sm hidden sm:block">TANDAI SELESAI</button>}
                                               <button onClick={()=>setActiveChatEmail(null)} className="lg:hidden p-2 text-gray-400 bg-white/5 rounded-xl"><IconX className="w-4 h-4"/></button>
                                           </div>
                                        </div>
 
                                        {/* Area Pesan Chat */}
                                        <div className="flex-1 p-5 overflow-y-auto space-y-4 custom-scrollbar">
-                                          <div className="text-center text-[9px] uppercase tracking-widest text-gray-600 font-black bg-white/5 py-1.5 px-4 rounded-full w-fit mx-auto border border-white/10 mb-4">Riwayat Obrolan Tersimpan</div>
+                                          <div className="text-center text-[9px] uppercase tracking-widest text-gray-600 font-black bg-white/5 py-1.5 px-4 rounded-full w-fit mx-auto border border-white/10 mb-4">Riwayat Obrolan</div>
                                           
                                           {supportTab === 'member' && (adminChats.find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
                                              const trxMatch = m.text.match(/(?:ID|TRX|Pesanan ID):\s*([a-zA-Z0-9_-]+)/i);
@@ -2252,6 +2287,7 @@
 
                                        {/* Input Chat Balasan */}
                                        <div className="p-4 border-t border-white/10 bg-[#0a0a0a] z-10 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+                                          {supportTab === 'login' && <div className="sm:hidden mb-3"><button onClick={()=>markPublicHelpDone(activeChatEmail)} className="w-full text-[10px] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white border border-red-500/30 px-3 py-2.5 rounded-lg font-black transition shadow-sm">TANDAI SELESAI (HAPUS TIKET)</button></div>}
                                           {chatTemplates.length > 0 && (
                                              <select onChange={(e)=>{ if(e.target.value) handleAdminSendChat(null, e.target.value, supportTab==='login'); e.target.value=""; }} className="w-full mb-3 bg-black border border-white/10 rounded-xl p-3 text-xs text-gray-300 font-bold focus:border-blue-500 transition shadow-inner">
                                                 <option value="">⚡ Pilih Template Balasan Cepat (Langsung Kirim)</option>
@@ -2259,7 +2295,7 @@
                                              </select>
                                           )}
                                           <form onSubmit={(e)=>handleAdminSendChat(e, null, supportTab==='login')} className="flex gap-2">
-                                             <input type="text" value={adminReplyText} onChange={(e)=>setAdminReplyText(e.target.value)} placeholder="Ketik balasan untuk pesan ini..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500 transition shadow-inner" />
+                                             <input type="text" value={adminReplyText} onChange={(e)=>setAdminReplyText(e.target.value)} placeholder="Ketik balasan untuk email ini..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-sm text-white focus:outline-none focus:border-blue-500 transition shadow-inner" />
                                              <button type="submit" disabled={!(adminReplyText||'').trim()} className="bg-blue-600 hover:bg-blue-500 text-white px-6 rounded-xl font-black transition disabled:opacity-50 shadow-lg shadow-blue-500/20"><IconSend className="w-5 h-5"/></button>
                                           </form>
                                        </div>
@@ -2267,14 +2303,14 @@
                                  ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-gray-600 text-sm">
                                         <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5"><IconMessageSquare className="w-10 h-10 opacity-30 text-white"/></div>
-                                        <p className="font-bold text-center px-6">Pilih tiket chat di daftar sebelah kiri untuk membalas pesan.</p>
+                                        <p className="font-bold text-center px-6">Pilih tiket chat di daftar sebelah kiri untuk merespons.</p>
                                     </div>
                                  )}
                               </div>
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.1.2 */}
+                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.3 LENGKAP */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2459,7 +2495,7 @@
                            </div>
                         )}
 
-                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.1.2) */}
+                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.3) */}
                         {activeAdminTab === 'katalog' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-6 h-full">
                               
@@ -2514,7 +2550,7 @@
                                                 <img src={g.image} className="w-10 h-10 rounded-xl object-cover border border-white/10"/>
                                                 <div>
                                                     <div className={`text-xs font-black truncate max-w-[120px] ${adminSelectedGame===g.id ? 'text-orange-400' : 'text-white'}`}>{g.name}</div>
-                                                    <div className="text-[9px] text-gray-500 font-mono mt-0.5">{g.id}</div>
+                                                    <div className="text-[9px] text-gray-500 font-mono mt-0.5">ID: {g.id}</div>
                                                 </div>
                                             </div>
                                             <div className="flex gap-1">
@@ -2576,7 +2612,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.1.2) */}
+                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.3) */}
                         {activeAdminTab === 'promo' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
@@ -2756,12 +2792,14 @@
       );
     }
     
-    // Aplikasi Root Entry
-    const App = () => (
-        <ToastProvider>
-            <AppCore />
-        </ToastProvider>
-    );
+    // Aplikasi Root Entry - Bebas Crash
+    const App = () => {
+        return (
+           <ToastProvider>
+               <AppCore />
+           </ToastProvider>
+        );
+    };
 
     const root = ReactDOM.createRoot(document.getElementById("root"));
     root.render(<App />);
