@@ -3,56 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v9.0</title>
-  
+  <title>Vipercell - Premium Top Up v9.1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            navy: { 800: '#1e293b', 900: '#0f172a', 950: '#020617', 960: '#050505' },
-            orange: { 400: '#fb923c', 500: '#f97316', 600: '#ea580c' },
-            accent: { 400: '#a855f7', 500: '#8b5cf6', 600: '#7c3aed' }
-          },
-          animation: {
-            'float': 'float 4s ease-in-out infinite',
-            'marquee': 'marquee 20s linear infinite',
-            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-            'glow': 'glow 2s ease-in-out infinite alternate',
-          },
-          keyframes: {
-             float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } },
-             marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } },
-             glow: { '0%': { boxShadow: '0 0 5px #f97316, 0 0 10px #f97316' }, '100%': { boxShadow: '0 0 10px #ea580c, 0 0 20px #ea580c' } }
-          }
-        }
-      }
-    }
+      theme: { extend: { colors: { navy: { 800: '#1e293b', 900: '#0f172a', 950: '#020617', 960: '#050505' }, orange: { 400: '#fb923c', 500: '#f97316', 600: '#ea580c' }, accent: { 400: '#a855f7', 500: '#8b5cf6', 600: '#7c3aed' } }, animation: { 'float': 'float 4s ease-in-out infinite', 'marquee': 'marquee 20s linear infinite', 'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite', 'glow': 'glow 2s ease-in-out infinite alternate', }, keyframes: { float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } }, marquee: { '0%': { transform: 'translateX(0%)' }, '100%': { transform: 'translateX(-50%)' } }, glow: { '0%': { boxShadow: '0 0 5px #f97316, 0 0 10px #f97316' }, '100%': { boxShadow: '0 0 10px #ea580c, 0 0 20px #ea580c' } } } } }
   </script>
-  
   <style>
-    /* =========================================
-       UI CLEAN & MODERN V9.0 (NAVY, ORANGE, WHITE, RED)
-       ========================================= */
     body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; }
-    
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
-    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #f97316; border-radius: 10px; }
-    
-    .glass-panel { background: rgba(10, 10, 10, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .scrollbar-hide::-webkit-scrollbar { display: none; } .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; } .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); border-radius: 10px; } .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #f97316; border-radius: 10px; }
+    .glass-panel { background: rgba(10, 10, 10, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .clean-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 1.5rem; transition: all 0.3s ease; }
-
-    #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; }
-    #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
-    
+    #reader { width: 100%; height: 60vh; max-height: 400px; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316 !important; background: #000; } #reader video { object-fit: cover !important; width: 100% !important; height: 100% !important; }
     .hardware-accel { transform: translateZ(0); will-change: transform; }
   </style>
-
   <script src="https://www.youtube.com/iframe_api"></script>
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -60,82 +26,26 @@
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 </head>
 <body id="app-body" class="font-sans selection:bg-orange-500 selection:text-white min-h-screen flex flex-col overflow-x-hidden relative">
-  
   <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10 hardware-accel"></div>
-
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
-
-    // Firebase V11 Imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
     import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-    // Konfigurasi Database
-    const firebaseConfig = {
-      apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc",
-      authDomain: "vipercell-8502b.firebaseapp.com",
-      projectId: "vipercell-8502b",
-      storageBucket: "vipercell-8502b.firebasestorage.app",
-      messagingSenderId: "509296616890",
-      appId: "1:509296616890:web:57e7521494db9c52942983"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
-    
+    const firebaseConfig = { apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc", authDomain: "vipercell-8502b.firebaseapp.com", projectId: "vipercell-8502b", storageBucket: "vipercell-8502b.firebasestorage.app", messagingSenderId: "509296616890", appId: "1:509296616890:web:57e7521494db9c52942983" };
+    const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const googleProvider = new GoogleAuthProvider();
     const safeAppId = typeof __app_id !== 'undefined' ? __app_id : 'vipercell-app';
     const ADMIN_EMAIL = "millerstoreid@gmail.com";
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
-    // ==========================================
-    // FUNGSI HELPER & UTILITIES
-    // ==========================================
     const playSuccessBeep = () => { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gainNode = ctx.createGain(); osc.connect(gainNode); gainNode.connect(ctx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1); gainNode.gain.setValueAtTime(1, ctx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } catch(e) {} };
-    
-    const generateDynamicQRIS = (baseQRIS, amount) => {
-      let qris = baseQRIS.slice(0, -8);
-      if (amount) { let amtStr = amount.toString(); let amtLen = amtStr.length.toString().padStart(2, '0'); qris += `54${amtLen}${amtStr}`; }
-      qris += "6304";
-      let crc = 0xFFFF;
-      for (let i = 0; i < qris.length; i++) {
-        crc ^= qris.charCodeAt(i) << 8;
-        for (let j = 0; j < 8; j++) { if ((crc & 0x8000) !== 0) crc = ((crc << 1) ^ 0x1021) & 0xFFFF; else crc = (crc << 1) & 0xFFFF; }
-      }
-      return qris + crc.toString(16).toUpperCase().padStart(4, '0');
-    };
-
+    const generateDynamicQRIS = (baseQRIS, amount) => { let qris = baseQRIS.slice(0, -8); if (amount) { let amtStr = amount.toString(); let amtLen = amtStr.length.toString().padStart(2, '0'); qris += `54${amtLen}${amtStr}`; } qris += "6304"; let crc = 0xFFFF; for (let i = 0; i < qris.length; i++) { crc ^= qris.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) { if ((crc & 0x8000) !== 0) crc = ((crc << 1) ^ 0x1021) & 0xFFFF; else crc = (crc << 1) & 0xFFFF; } } return qris + crc.toString(16).toUpperCase().padStart(4, '0'); };
     const getYouTubeId = (url) => { if(!url) return null; const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/); return match ? match[1] : null; };
-
-    const compressImage = async (file, maxWidth = 600) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader(); reader.readAsDataURL(file);
-        reader.onload = (e) => {
-          const img = new Image(); img.src = e.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas'); let w = img.width, h = img.height;
-            if (w > h) { if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; } } else { if (h > maxWidth) { w *= maxWidth / h; h = maxWidth; } }
-            canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/jpeg', 0.8));
-          };
-        }; reader.onerror = reject;
-      });
-    };
-    
+    const compressImage = async (file, maxWidth = 600) => { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = (e) => { const img = new Image(); img.src = e.target.result; img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if (w > h) { if (w > maxWidth) { h *= maxWidth / w; w = maxWidth; } } else { if (h > maxWidth) { w *= maxWidth / h; h = maxWidth; } } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.8)); }; }; reader.onerror = reject; }); };
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
+    const calculateVIPLevel = (txCount) => { if (txCount >= 100) return { level: 'Platinum', badge: '💎', cashback: 0.03, color: 'text-cyan-400 border-cyan-500 bg-cyan-500/10' }; if (txCount >= 30) return { level: 'Gold', badge: '🥇', cashback: 0.02, color: 'text-yellow-400 border-yellow-500 bg-yellow-500/10' }; if (txCount >= 10) return { level: 'Silver', badge: '🥈', cashback: 0.01, color: 'text-gray-300 border-gray-400 bg-gray-500/20' }; return { level: 'Bronze', badge: '🥉', cashback: 0, color: 'text-orange-400 border-orange-500 bg-orange-500/10' }; }
 
-    const calculateVIPLevel = (txCount) => {
-        if (txCount >= 100) return { level: 'Platinum', badge: '💎', cashback: 0.03, color: 'text-cyan-400 border-cyan-500 bg-cyan-500/10' };
-        if (txCount >= 30) return { level: 'Gold', badge: '🥇', cashback: 0.02, color: 'text-yellow-400 border-yellow-500 bg-yellow-500/10' };
-        if (txCount >= 10) return { level: 'Silver', badge: '🥈', cashback: 0.01, color: 'text-gray-300 border-gray-400 bg-gray-500/20' };
-        return { level: 'Bronze', badge: '🥉', cashback: 0, color: 'text-orange-400 border-orange-500 bg-orange-500/10' };
-    }
-
-    // ==========================================
-    // KOMPONEN ICON LENGKAP (SVG Component)
-    // ==========================================
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}>{d}</svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>}/>;
     const IconChevronLeft = ({className:c}) => <Ic c={c} d={<polyline points="15 18 9 12 15 6"/>}/>;
@@ -189,17 +99,11 @@
     const IconVolumeX = ({className:c}) => <Ic c={c} d={<><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></>}/>;
     const IconBlock = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></>}/>;
 
-    // ==========================================
-    // DATA DEFAULT
-    // ==========================================
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0 },
       { id: 'cash', name: 'Cash (Terdekat)', type: 'Bayar di Lokasi / Kasir', fee: 0 },
     ];
 
-    // ==========================================
-    // CONTEXT & PROVIDER
-    // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
     
@@ -208,7 +112,7 @@
         const addToast = useCallback((msg, type = 'success') => {
             const id = Date.now() + Math.random();
             setToasts(prev => [...prev, { id, msg, type }]);
-            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 3000);
+            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 3500);
         }, []);
         return (
             <ToastContext.Provider value={{ addToast }}>
@@ -225,14 +129,11 @@
         );
     };
 
-    // ==========================================
-    // KOMPONEN UI UTAMA
-    // ==========================================
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
        return (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-             <div className="clean-card p-8 max-w-sm w-full text-center relative overflow-hidden">
+             <div className="clean-card p-8 max-w-sm w-full text-center relative overflow-hidden border border-white/10 shadow-2xl">
                 <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20"><IconTrash className="w-8 h-8" /></div>
                 <h3 className="text-xl font-black mb-2 text-white">Konfirmasi Aksi</h3>
                 <p className="text-sm text-gray-400 mb-8 font-medium">{message}</p>
@@ -255,7 +156,7 @@
         };
         return (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-             <div className="clean-card p-8 max-w-sm w-full border-t-4 border-red-600 text-center">
+             <div className="clean-card p-8 max-w-sm w-full border-t-4 border-red-600 text-center shadow-2xl">
                 <div className="w-16 h-16 bg-red-500/20 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/40"><IconShieldAlert className="w-8 h-8" /></div>
                 <h3 className="text-xl font-black mb-2 text-white uppercase tracking-widest">Zona Berbahaya</h3>
                 <p className="text-xs text-red-400 mb-6 font-medium bg-red-500/10 p-3 rounded-xl">{message}</p>
@@ -273,6 +174,109 @@
              </div>
           </div>
         )
+    }
+
+    const AdminAuthModal = ({ isOpen, title, message, actionText, onConfirm, onCancel, authEmail }) => {
+        const [pass, setPass] = useState(''); const [err, setErr] = useState(''); const [loading, setLoading] = useState(false);
+        if (!isOpen) return null;
+        const handleSubmit = async (e) => {
+            e.preventDefault(); setLoading(true); setErr('');
+            try { const credential = EmailAuthProvider.credential(authEmail, pass); await reauthenticateWithCredential(auth.currentUser, credential); onConfirm(); setPass(''); } 
+            catch(error) { setErr('Sandi admin salah!'); } setLoading(false);
+        };
+        return (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+             <div className="clean-card p-6 md:p-8 max-w-sm w-full border-t-4 border-red-600 text-center shadow-2xl">
+                <div className="w-16 h-16 bg-red-500/20 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/40"><IconShieldAlert className="w-8 h-8" /></div>
+                <h3 className="text-xl font-black mb-2 text-white uppercase tracking-widest">{title || 'Konfirmasi Keamanan'}</h3>
+                <p className="text-xs text-red-400 mb-6 font-medium bg-red-500/10 p-3 rounded-xl">{message}</p>
+                <form onSubmit={handleSubmit}>
+                    <div className="relative mb-4">
+                        <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input type="password" required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Password Admin" className="w-full bg-black/50 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm focus:border-red-500 transition text-white" />
+                    </div>
+                    {err && <div className="text-xs font-bold text-red-500 mb-4 animate-pulse">{err}</div>}
+                    <div className="flex gap-3">
+                        <button type="button" onClick={()=>{setPass(''); setErr(''); onCancel();}} className="flex-1 py-3 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white">Batal</button>
+                        <button type="submit" disabled={!pass || loading} className="flex-1 py-3 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition flex justify-center items-center gap-2">{loading ? <IconLoader className="w-4 h-4"/> : actionText}</button>
+                    </div>
+                </form>
+             </div>
+          </div>
+        )
+    }
+
+    const ChangePinModal = ({ isOpen, authEmail, oldPinHash, onSuccess, onCancel }) => {
+        const [step, setStep] = useState(oldPinHash ? 1 : 2);
+        const [pinInput, setPinInput] = useState(''); const [newPinCache, setNewPinCache] = useState('');
+        const [passInput, setPassInput] = useState('');
+        const [error, setError] = useState(''); const { addToast } = useToast();
+
+        useEffect(() => { setPinInput(''); setPassInput(''); setStep(oldPinHash ? 1 : 2); setError(''); }, [isOpen, oldPinHash]);
+        if (!isOpen) return null;
+
+        const handleKey = (num) => {
+            if (pinInput.length < 6) {
+                const updated = pinInput + num; setPinInput(updated);
+                if (updated.length === 6) {
+                    if (step === 1) {
+                        if (window.btoa(updated) === oldPinHash) { setStep(2); setPinInput(''); } 
+                        else { setError('PIN Lama Salah!'); addToast('PIN lama tidak cocok', 'error'); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
+                    } else if (step === 2) {
+                        setNewPinCache(updated); setStep(3); setPinInput('');
+                    } else if (step === 3) {
+                        if (updated === newPinCache) { onSuccess(updated); } 
+                        else { setError('Konfirmasi Gagal!'); addToast('Konfirmasi PIN tidak cocok', 'error'); setStep(2); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
+                    }
+                }
+            }
+        };
+
+        const handleForgotSubmit = async (e) => {
+            e.preventDefault(); setError('');
+            try { const credential = EmailAuthProvider.credential(authEmail, passInput); await reauthenticateWithCredential(auth.currentUser, credential); setStep(2); setPinInput(''); setPassInput(''); addToast('Autentikasi berhasil. Silakan buat PIN baru.', 'success'); } 
+            catch(err) { setError('Password Salah!'); }
+        };
+
+        const titles = { 1: 'Masukkan PIN Lama', 2: 'Buat PIN Baru', 3: 'Konfirmasi PIN Baru', 4: 'Lupa PIN (Verifikasi)' };
+        const subs = { 1: 'Verifikasi identitas Anda.', 2: 'Masukkan 6 digit angka rahasia.', 3: 'Ulangi 6 digit angka yang baru.', 4: 'Masukkan password akun Anda.' };
+
+        return (
+            <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative">
+                    <button onClick={onCancel} className="absolute top-6 right-6 text-gray-500 hover:text-white"><IconX className="w-6 h-6"/></button>
+                    <div className="text-center mb-8 mt-2">
+                        <div className="w-16 h-16 bg-orange-500/20 text-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/30"><IconLock className="w-8 h-8"/></div>
+                        <h3 className="text-xl font-black text-white">{titles[step]}</h3>
+                        <p className="text-xs text-gray-400 mt-2">{subs[step]}</p>
+                    </div>
+
+                    {step === 4 ? (
+                        <form onSubmit={handleForgotSubmit}>
+                            <input type="password" required value={passInput} onChange={(e)=>setPassInput(e.target.value)} placeholder="Password Akun" className="w-full bg-black/50 border border-white/10 rounded-xl py-4 px-4 text-sm text-white mb-4" />
+                            {error && <p className="text-red-500 text-xs font-black text-center mb-4">{error}</p>}
+                            <div className="flex gap-2">
+                               <button type="button" onClick={()=>setStep(1)} className="flex-1 py-3 rounded-xl font-bold bg-white/5 text-white hover:bg-white/10">Batal</button>
+                               <button type="submit" className="flex-[2] py-3 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white">Verifikasi</button>
+                            </div>
+                        </form>
+                    ) : (
+                        <>
+                            <div className="flex justify-center gap-3 mb-8">
+                                {[0,1,2,3,4,5].map(i => (<div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${i < pinInput.length ? 'bg-orange-500 border-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' : 'border-white/20'}`}></div>))}
+                            </div>
+                            {error && <p className="text-red-500 text-xs font-black text-center animate-pulse mb-4 -mt-4">{error}</p>}
+                            <div className="grid grid-cols-3 gap-3">
+                                {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">{num}</button>))}
+                                {step === 1 ? <button onClick={()=>setStep(4)} className="text-[10px] font-bold text-orange-500 underline">Lupa PIN?</button> : <div></div>}
+                                <button onClick={()=>handleKey(0)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">0</button>
+                                <button onClick={()=>setPinInput(p=>p.slice(0,-1))} className="bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl py-4 flex items-center justify-center text-red-500 transition active:scale-95"><IconChevronLeft className="w-8 h-8"/></button>
+                            </div>
+                        </>
+                    )}
+                </div>
+            </div>
+        );
     }
 
     const PinModal = ({ isOpen, mode, expectedPin, onSuccess, onCancel }) => {
@@ -318,6 +322,32 @@
         );
     }
 
+    const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
+       if(!isOpen || !data) return null;
+       return (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
+             <div className="clean-card p-6 md:p-8 w-full max-w-md shadow-2xl border border-white/10 relative overflow-hidden">
+                <h3 className="font-black text-xl mb-1 text-white text-center">Konfirmasi Pesanan</h3>
+                <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data yang dimasukkan sudah benar sebelum bayar.</p>
+                <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-4 my-6">
+                    <img src={data.gameImage} className="w-12 h-12 rounded-xl object-cover border border-white/10" />
+                    <div><div className="font-black text-sm text-white">{data.gameName}</div><div className="text-xs text-orange-400 font-bold">{data.itemName}</div></div>
+                </div>
+                <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-3 mb-6 shadow-inner text-sm">
+                    <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">ID Tujuan</span><span className="font-mono font-black text-white text-right">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
+                    {data.nickname && <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Nickname</span><span className="font-bold text-white text-right">{data.nickname}</span></div>}
+                    <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Metode</span><span className="font-black text-white text-right">{data.paymentName}</span></div>
+                    <div className="flex justify-between border-t border-white/10 pt-3 mt-1"><span className="font-black text-gray-300">Total Bayar</span><span className="text-lg font-black text-orange-500">{formatRupiah(data.finalPrice)}</span></div>
+                </div>
+                <div className="flex gap-3">
+                   <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white">Batal</button>
+                   <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 transition">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Lanjut Bayar'}</button>
+                </div>
+             </div>
+          </div>
+       )
+    }
+
     const MainFooter = ({ socialLinks }) => {
        return (
          <footer className="mt-auto border-t border-white/5 bg-[#050505] pt-12 pb-8 px-6 text-center z-10 relative">
@@ -338,7 +368,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.0 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.1 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -349,19 +379,23 @@
        const [curr, setCurr] = useState(0);
        const [isPaused, setIsPaused] = useState(false);
        const [isMuted, setIsMuted] = useState(true);
+       const [expanded, setExpanded] = useState(false);
        const playerRef = useRef(null);
        const videoRef = useRef(null);
 
        useEffect(() => {
           if(items?.length <= 1 || isPaused) return;
-          const t = setInterval(() => { setCurr(c => (c+1)%items.length); }, 6000);
+          const t = setInterval(() => { setCurr(c => (c+1)%items.length); setExpanded(false); }, 6000);
           return () => clearInterval(t);
        }, [items?.length, isPaused]);
 
        useEffect(() => {
+           if(videoRef.current) { videoRef.current.muted = isMuted; }
+       }, [isMuted, curr]);
+
+       useEffect(() => {
            if (!items || items.length === 0) return;
            const currentItem = items[curr];
-           
            if(currentItem?.type === 'youtube') {
                setIsPaused(true);
                if(window.YT && window.YT.Player) {
@@ -370,21 +404,14 @@
                        playerRef.current = new window.YT.Player(`yt-player-${curr}`, {
                            videoId: getYouTubeId(currentItem.url),
                            playerVars: { autoplay: 1, controls: 0, mute: isMuted ? 1 : 0, rel: 0, showinfo: 0, loop: 1, playlist: getYouTubeId(currentItem.url) },
-                           events: { 
-                               onReady: (e) => { if(!isMuted) e.target.unMute(); },
-                               onStateChange: (e) => { if (e.data === window.YT.PlayerState.ENDED) { setCurr(c => (c+1)%items.length); setIsPaused(false); } } 
-                           }
+                           events: { onReady: (e) => { if(!isMuted) e.target.unMute(); }, onStateChange: (e) => { if (e.data === window.YT.PlayerState.ENDED) { setCurr(c => (c+1)%items.length); setIsPaused(false); } } }
                        });
                    } catch(e) { setIsPaused(false); }
                } else { setTimeout(()=> { setCurr(c => (c+1)%items.length); setIsPaused(false); }, 10000); }
            } else if (currentItem?.type === 'video' || (currentItem?.url && currentItem.url.match(/\.(mp4|webm)$/i))) {
                setIsPaused(true);
                if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; }
-               if(videoRef.current) {
-                   videoRef.current.muted = isMuted;
-                   videoRef.current.play().catch(e => console.log("Auto-play prevented", e));
-                   videoRef.current.onended = () => { setCurr(c => (c+1)%items.length); setIsPaused(false); };
-               }
+               if(videoRef.current) { videoRef.current.muted = isMuted; videoRef.current.play().catch(e => {}); videoRef.current.onended = () => { setCurr(c => (c+1)%items.length); setIsPaused(false); }; }
            } else {
                setIsPaused(false);
                if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; }
@@ -393,43 +420,34 @@
 
        if (!items || items.length === 0) return null;
 
-       const toggleMute = (e) => {
-           e.stopPropagation();
-           const newMuted = !isMuted;
-           setIsMuted(newMuted);
-           if (items[curr]?.type === 'youtube' && playerRef.current) {
-               if (newMuted) playerRef.current.mute(); else playerRef.current.unMute();
-           } else if (videoRef.current) {
-               videoRef.current.muted = newMuted;
-           }
-       };
-
        return (
           <div className="w-full h-56 md:h-80 rounded-[2.5rem] overflow-hidden mb-10 relative border border-white/10 shadow-2xl bg-black mt-6 group z-10">
              {items.map((b, i) => (
-                <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
-                   {b.type === 'youtube' ? (
-                      <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div>
-                   ) : (b.type === 'video' || (b.url && b.url.match(/\.(mp4|webm)$/i))) ? (
-                      <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline muted={isMuted} loop autoPlay={i===curr} />
-                   ) : (
-                      <img src={b.url} className="w-full h-full object-cover opacity-80 transition duration-[6000ms] ease-in-out transform scale-100 group-hover:scale-105" />
+                <div key={i} className={`absolute inset-0 transition-opacity duration-1000 cursor-pointer ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} onClick={()=>setExpanded(!expanded)}>
+                   {b.type === 'youtube' ? ( <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div> ) : 
+                    (b.type === 'video' || (b.url && b.url.match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline loop autoPlay={i===curr} muted={isMuted} /> ) : 
+                    ( <img src={b.url} className="w-full h-full object-cover opacity-80 transition duration-[6000ms] ease-in-out transform scale-100 group-hover:scale-105" /> )}
+                   
+                   {(b.title || b.desc) && (
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 md:p-8 z-20 pointer-events-none">
+                         {b.title && <h3 className={`text-xl md:text-3xl font-black text-white drop-shadow-lg transition-all duration-500 ${expanded ? '-translate-y-2' : 'translate-y-4'}`}>{b.title}</h3>}
+                         {b.desc && <div className={`overflow-hidden transition-all duration-500 ${expanded ? 'max-h-40 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}><p className="text-xs md:text-sm text-gray-300 drop-shadow-md">{b.desc}</p></div>}
+                         {!expanded && <div className="text-[9px] text-white/50 animate-pulse mt-4 flex items-center gap-1"><IconChevronUp className="w-3 h-3"/> Klik untuk info</div>}
+                      </div>
                    )}
                 </div>
              ))}
 
-             <div className="absolute top-4 right-4 z-30 flex gap-2">
-                 {(items[curr]?.type === 'youtube' || items[curr]?.type === 'video' || (items[curr]?.url && items[curr].url.match(/\.(mp4|webm)$/i))) && (
-                     <button onClick={toggleMute} className="p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition border border-white/10">
-                         {isMuted ? <IconVolumeX className="w-4 h-4"/> : <IconVolume2 className="w-4 h-4"/>}
-                     </button>
-                 )}
-             </div>
+             {(items[curr]?.type === 'youtube' || items[curr]?.type === 'video' || (items[curr]?.url && items[curr].url.match(/\.(mp4|webm)$/i))) && (
+                <button onClick={(e)=>{e.stopPropagation(); setIsMuted(!isMuted);}} className="absolute top-4 right-4 z-30 p-2 bg-black/50 hover:bg-black/80 rounded-full text-white backdrop-blur-md transition border border-white/10">
+                    {isMuted ? <IconVolumeX className="w-4 h-4"/> : <IconVolume2 className="w-4 h-4"/>}
+                </button>
+             )}
 
              {items.length > 1 && (
                 <div className="absolute bottom-6 right-6 flex gap-2 z-30">
                    {items.map((_, i) => (
-                      <div key={i} onClick={(e)=>{e.stopPropagation(); setCurr(i); }} className={`h-2 rounded-full transition-all cursor-pointer ${i === curr ? 'w-8 bg-orange-500 shadow-[0_0_10px_orange]' : 'w-2 bg-white/50 hover:bg-white'}`}></div>
+                      <div key={i} onClick={(e)=>{e.stopPropagation(); setCurr(i); setExpanded(false);}} className={`h-2 rounded-full transition-all cursor-pointer ${i === curr ? 'w-8 bg-orange-500 shadow-[0_0_10px_orange]' : 'w-2 bg-white/50 hover:bg-white'}`}></div>
                    ))}
                 </div>
              )}
@@ -443,7 +461,7 @@
     function AppCore() {
       const { addToast } = useToast();
 
-      // Modal States
+      const [adminAuthModal, setAdminAuthModal] = useState({ isOpen: false, action: null, title: '', message: '', btnText: '' });
       const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -452,12 +470,10 @@
       const requestConfirm = (msg, action) => setConfirmModal({ isOpen: true, msg, action });
       const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null }); };
       const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null });
-
       const requestDangerConfirm = (msg, action) => setDangerModal({ isOpen: true, msg, action });
       const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); };
       const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
 
-      // Auth & User States
       const [authUser, setAuthUser] = useState(null);
       const [isAuthChecking, setIsAuthChecking] = useState(true);
       const [authMode, setAuthMode] = useState('login');
@@ -473,23 +489,17 @@
       const [uploadingAvatar, setUploadingAvatar] = useState(false);
       const [profileName, setProfileName] = useState(''); const [profilePhone, setProfilePhone] = useState(''); const [profileAvatar, setProfileAvatar] = useState('');
       const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', onSuccess: null });
+      const [changePinModalOpen, setChangePinModalOpen] = useState(false);
 
-      // Database & Store States
       const [isStoreOpen, setIsStoreOpen] = useState(true);
-      const [games, setGames] = useState([]);
-      const [items, setItems] = useState([]); 
-      const [promos, setPromos] = useState([]); 
-      const [banners, setBanners] = useState([]); 
-      const [galleryData, setGalleryData] = useState([]);
-      const [runningTexts, setRunningTexts] = useState([]);
+      const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); 
+      const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]);
       const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' });
       const [globalConfig, setGlobalConfig] = useState({});
       
       const [adminList, setAdminList] = useState([]);
-      const [allGlobalOrders, setAllGlobalOrders] = useState([]); 
-      const [memberList, setMemberList] = useState([]); 
-      const [adminChats, setAdminChats] = useState([]); 
-      const [publicChats, setPublicChats] = useState([]);
+      const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); 
+      const [adminChats, setAdminChats] = useState([]); const [publicChats, setPublicChats] = useState([]);
       
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL;
       const isAdmin = isSuperAdmin || (adminList || []).includes(authUser?.email);
@@ -497,43 +507,18 @@
       const [currentView, setCurrentView] = useState('home'); 
       const [viewHistory, setViewHistory] = useState(['home']);
 
-      // Navigation Function
-      const navigateTo = (view) => {
-         setViewHistory(prev => {
-             const newHist = [...prev, view];
-             if(prev[prev.length-1] === view) return prev;
-             return newHist;
-         });
-         setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false);
-         if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); }
-      };
-      
-      const handleBack = () => {
-          if (selectedGame) { setSelectedGame(null); return; }
-          if (viewHistory.length > 1) {
-              const newHist = [...viewHistory];
-              newHist.pop();
-              const prevView = newHist[newHist.length - 1];
-              setViewHistory(newHist);
-              setCurrentView(prevView);
-          } else {
-              setCurrentView('home');
-          }
-      }
-
-      // Admin Form States
       const [activeAdminTab, setActiveAdminTab] = useState('dashboard');
       const [adminSelectedGame, setAdminSelectedGame] = useState('');
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState('');
       const [editingGameId, setEditingGameId] = useState(null); const [newGameId, setNewGameId] = useState(''); const [newGameName, setNewGameName] = useState(''); const [newGameDev, setNewGameDev] = useState(''); const [newGameImg, setNewGameImg] = useState(''); const [newGameInput, setNewGameInput] = useState('id_zone');
       const [uploadingGameImg, setUploadingGameImg] = useState(false);
       
-      const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image');
+      const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState('');
       const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' });
       
       const [promoModalType, setPromoModalType] = useState('item');
-      const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], startTime: '', endTime: '', stock: '', targetDay: '5' });
-      const [promoTargetItem, setPromoTargetItem] = useState('');
+      const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' });
+      const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
       
       const [adminOrderSearch, setAdminOrderSearch] = useState('');
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
@@ -543,14 +528,14 @@
       const [adminReplyText, setAdminReplyText] = useState('');
       const adminChatEndRef = useRef(null);
       const [chatTemplates, setChatTemplates] = useState([]);
+      const [adminTrxModal, setAdminTrxModal] = useState({ isOpen: false, order: null });
 
-      // Top Up Transaction States
       const [selectedGame, setSelectedGame] = useState(null);
-      const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState('');
+      const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
       const [inputPromo, setInputPromo] = useState(''); const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
-      const [showConfirmCheckout, setShowConfirmCheckout] = useState(false);
+      const [checkoutSummary, setCheckoutSummary] = useState({ isOpen: false, data: null });
       const [lastOrderId, setLastOrderId] = useState(''); 
       const [userOrders, setUserOrders] = useState([]); const [adminOrders, setAdminOrders] = useState([]);
       const [expandedHistoryId, setExpandedHistoryId] = useState(null); 
@@ -559,39 +544,45 @@
       const [loadingChat, setLoadingChat] = useState(false);
       const chatEndRef = useRef(null);
 
-      // Effects
+      const navigateTo = (view) => {
+         setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
+         setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false);
+         if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); }
+      };
+      
+      const handleBack = () => {
+          if (selectedGame) { setSelectedGame(null); return; }
+          if (viewHistory.length > 1) { const newHist = [...viewHistory]; newHist.pop(); setViewHistory(newHist); setCurrentView(newHist[newHist.length - 1]); } 
+          else { setCurrentView('home'); }
+      }
+
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame(games[0].id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
       useEffect(() => { if (globalConfig?.favicon) { let link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); } link.href = globalConfig.favicon; } }, [globalConfig?.favicon]);
 
-      // Keyboard Esc Handler
       useEffect(() => {
          const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
-               if (dangerModal.isOpen) cancelDangerConfirm();
-               else if (confirmModal.isOpen) cancelConfirm();
+               if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''});
                else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null });
-               else if (showConfirmCheckout) setShowConfirmCheckout(false);
+               else if (changePinModalOpen) setChangePinModalOpen(false);
+               else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null });
                else if (isScannerOpen) setIsScannerOpen(false);
                else if (loginHelpModal) setLoginHelpModal(false);
+               else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null});
                else handleBack();
             }
          };
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [dangerModal.isOpen, confirmModal.isOpen, showConfirmCheckout, isScannerOpen, pinModalState.isOpen, loginHelpModal, selectedGame, viewHistory]);
+      }, [adminAuthModal, checkoutSummary, isScannerOpen, pinModalState, changePinModalOpen, loginHelpModal, adminTrxModal, selectedGame, viewHistory]);
 
-      // Global System Listener
       useEffect(() => {
          const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
             if (snap.exists()) {
-               const d = snap.data(); 
-               setGlobalConfig(d); 
-               setIsStoreOpen(d.isOpen ?? true); 
+               const d = snap.data(); setGlobalConfig(d); setIsStoreOpen(d.isOpen ?? true); 
                setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' });
-               setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); 
-               setBanners(Array.isArray(d.banners) ? d.banners : []); 
-               setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
+               setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
             } else { if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, runningTexts: ['⚡ Top Up Aman Vipercell'], banners: [], gallery: [] }).catch(()=>{}); }
          });
 
@@ -601,18 +592,11 @@
          return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
       }, [isSuperAdmin]);
 
-      // Auth Listener
       useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
           if (user) {
              const userDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', user.uid));
-             if (userDoc.exists() && userDoc.data().isBlocked) { 
-                 await signOut(auth); 
-                 addToast('Akun Anda telah diblokir oleh Admin.', 'error'); 
-                 setAuthUser(null); 
-                 setIsAuthChecking(false); 
-                 return; 
-             }
+             if (userDoc.exists() && userDoc.data().isBlocked) { await signOut(auth); addToast('Akun Anda diblokir Admin.', 'error'); setAuthUser(null); setIsAuthChecking(false); return; }
              setAuthUser(user);
              getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins')).then(d => { if(d.exists()) setAdminList(d.data().emails || []); }).catch(()=>{});
           } else { setAuthUser(null); }
@@ -621,32 +605,25 @@
         return () => unsubscribe();
       }, [addToast]);
 
-      // Current User Document Listener
       useEffect(() => {
          if(!authUser) return;
          const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid);
          const unsubUser = onSnapshot(userRef, (docSnap) => { 
              if(docSnap.exists()) { 
-                 if(docSnap.data().isBlocked) { signOut(auth); addToast('Akun Anda telah diblokir oleh Admin.', 'error'); return; }
+                 if(docSnap.data().isBlocked) { signOut(auth); addToast('Akun diblokir.', 'error'); return; }
                  setCurrentUserData({ id: docSnap.id, ...docSnap.data() }); 
-             } else { 
-                 setDoc(userRef, { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), saldoCashback: 0, isBlocked: false }).catch(()=>{}); 
-             } 
+             } else { setDoc(userRef, { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), saldoCashback: 0, isBlocked: false }).catch(()=>{}); } 
          });
          return () => unsubUser();
       }, [authUser, addToast]);
 
-      // Sync All Data
       useEffect(() => {
          if (!authUser) return;
          let unsubs = [];
-         
          unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
             const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
             fetchedAll.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-            setAllGlobalOrders(fetchedAll); 
-            setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email)); 
-            if (isAdmin) setAdminOrders(fetchedAll); 
+            setAllGlobalOrders(fetchedAll); setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email)); if (isAdmin) setAdminOrders(fetchedAll); 
          }));
 
          if (isAdmin) {
@@ -657,19 +634,15 @@
          }
          
          unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => { if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] }); }));
-         
          return () => unsubs.forEach(fn => fn());
       }, [authUser, isAdmin]);
 
-      // Data Sync for Profile and Settings Forms
       useEffect(() => { if (currentView === 'profile' && currentUserData) { setProfileName(currentUserData.name || ''); setProfilePhone(currentUserData.phone || ''); setProfileAvatar(currentUserData.avatar || ''); } }, [currentView, currentUserData]);
       useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '' }); } }, [currentView, activeAdminTab, socialLinks]);
 
-      // Notification Calculations
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0) + ((publicChats||[]).length);
 
-      // Scanner Implementation
       useEffect(() => {
          let html5QrCode;
          if (isScannerOpen) {
@@ -682,30 +655,25 @@
                       if(decodedText.startsWith('CASH-VPC-')) parsedText = decodedText.replace('CASH-', '');
                       const matchedOrder = (adminOrders || []).find(o => o.id === parsedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === parsedText);
                       if (matchedOrder) { playSuccessBeep(); addToast(`Terdeteksi: ${matchedOrder.id}`, 'success'); setIsScannerOpen(false); updateOrderStatus(matchedOrder.id, 'Sukses'); } 
-                      else { addToast("Kode QR tidak dikenal di database.", "error"); }
+                      else { addToast("Kode QR tidak dikenal.", "error"); }
                    }, (err) => {}
                 ).catch(err => {
                     html5QrCode.start({ facingMode: "user" }, config, (text) => {}, (e)=>{}).catch(()=> { addToast("Kamera tidak dapat diakses.", "error"); setIsScannerOpen(false); });
                 });
-            } else {
-                addToast("Scanner QR tidak siap, periksa koneksi internet.", "error");
-                setIsScannerOpen(false);
-            }
+            } else { addToast("Scanner belum siap.", "error"); setIsScannerOpen(false); }
          }
-         return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => console.log(e)); };
+         return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders, addToast]);
 
-      // ==========================================
-      // FUNGSI AUTHENTICATION
-      // ==========================================
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true);
         try {
           if (authMode === 'register') {
-             if(!regName) throw new Error('Nama pengguna wajib diisi!');
+             if(!regName) throw new Error('Nama wajib diisi!');
+             if(regPhone && !/^\d{10,12}$/.test(regPhone)) { addToast('Nomor HP tidak valid (10-12 angka).', 'error'); setAuthLoading(false); return; }
              const cred = await createUserWithEmailAndPassword(auth, email, password); const now = new Date().toISOString();
              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false });
-             await sendEmailVerification(cred.user); await signOut(auth); addToast('Registrasi berhasil! Cek Inbox/SPAM email Anda untuk verifikasi.', 'success'); setAuthMode('login');
+             await sendEmailVerification(cred.user); await signOut(auth); addToast('Registrasi berhasil! Cek Inbox/SPAM email.', 'success'); setAuthMode('login');
           }
           else if (authMode === 'login') {
              const cred = await signInWithEmailAndPassword(auth, email, password);
@@ -715,15 +683,15 @@
           else if (authMode === 'forgot') {
             if (resetCooldown > 0) return; 
             await sendPasswordResetEmail(auth, email); 
-            addToast('Link reset sandi telah dikirim ke email Anda. Jika tidak ditemukan, silakan cek folder SPAM.', 'success'); 
+            addToast('Silakan tunggu 2 menit sebelum meminta kode baru (Cek SPAM).', 'success'); 
             setResetCooldown(120);
             const intv = setInterval(() => { setResetCooldown(c => { if(c <= 1) { clearInterval(intv); return 0; } return c-1; }); }, 1000);
           }
         } catch (error) {
           let msg = error.message;
-          if (error.message === 'email-not-verified') msg = 'Email belum diverifikasi! Cek Inbox/SPAM Anda.';
+          if (error.message === 'email-not-verified') msg = 'Email belum diverifikasi! Cek SPAM.';
           else if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') msg = 'Kombinasi email dan sandi salah!';
-          else if (error.code === 'auth/user-not-found') { msg = 'Akun belum terdaftar! Silakan daftar.'; setAuthMode('register'); }
+          else if (error.code === 'auth/user-not-found') { msg = 'Akun belum terdaftar!'; setAuthMode('register'); }
           else if (error.code === 'auth/email-already-in-use') msg = 'Email ini sudah digunakan!';
           addToast(msg, 'error');
         } finally { setAuthLoading(false); }
@@ -735,50 +703,32 @@
             const res = await signInWithPopup(auth, googleProvider);
             const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid);
             const docSnap = await getDoc(userRef);
-            
-            if (docSnap.exists() && docSnap.data().isBlocked) { 
-                await signOut(auth); 
-                throw new Error('blocked'); 
-            }
-            
-            if (!docSnap.exists()) {
-               await setDoc(userRef, { email: res.user.email, name: res.user.displayName || res.user.email.split('@')[0], avatar: res.user.photoURL || '', lastLogin: new Date().toISOString(), createdAt: new Date().toISOString(), saldoCashback: 0, isBlocked: false });
-            } else { 
-                await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); 
-            }
-         } catch (e) { 
-             if(e.message === 'blocked') addToast('Akun ini telah diblokir oleh Admin.', 'error'); 
-             else addToast('Google Login dibatalkan atau gagal.', 'error'); 
-         }
+            if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('blocked'); }
+            if (!docSnap.exists()) { await setDoc(userRef, { email: res.user.email, name: res.user.displayName || res.user.email.split('@')[0], avatar: res.user.photoURL || '', lastLogin: new Date().toISOString(), createdAt: new Date().toISOString(), saldoCashback: 0, isBlocked: false }); } 
+            else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); }
+         } catch (e) { if(e.message === 'blocked') addToast('Akun ini diblokir', 'error'); else addToast('Google Login dibatalkan', 'error'); }
          setAuthLoading(false);
       };
 
       const handleSendPublicHelp = async (e) => {
           e.preventDefault(); if(!email || !loginHelpMsg) return; setAuthLoading(true);
-          try { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'public_help'), { email: email, message: loginHelpMsg, time: new Date().toISOString() }); addToast('Tiket Bantuan terkirim. Admin akan membalas ke email/WA Anda.', 'success'); setLoginHelpModal(false); setLoginHelpMsg(''); setEmail(''); } 
-          catch(e) { addToast('Gagal mengirim tiket bantuan.', 'error'); } setAuthLoading(false);
+          try { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'public_help'), { email: email, message: loginHelpMsg, time: new Date().toISOString() }); addToast('Pesan terkirim. Admin akan membalas ke email Anda.', 'success'); setLoginHelpModal(false); setLoginHelpMsg(''); setEmail(''); } 
+          catch(e) { addToast('Gagal mengirim.', 'error'); } setAuthLoading(false);
       }
 
-      // ==========================================
-      // FUNGSI MEMBER & PROFIL
-      // ==========================================
-      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal menyimpan profil.', 'error'); } }
+      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } };
 
-      const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
-      const handleRemovePin = async () => { requestDangerConfirm('Hapus PIN Transaksi Anda?', async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: null }, { merge: true }); addToast('PIN berhasil dihapus.', 'success'); } catch(e) { addToast('Gagal menghapus PIN', 'error'); } }); };
-
-      // ==========================================
-      // FUNGSI TRANSAKSI & LOGIKA HARGA
-      // ==========================================
+      const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
+      
       const getActivePromosForItem = (itemId) => { 
-          if(!promos) return []; 
-          const now = new Date(); 
+          if(!promos) return []; const now = new Date(); 
           return promos.filter(p => { 
               if(!p.isActive) return false; 
               if(p.category === 'flash') { if(now > new Date(p.endTime) || (p.usedBy||[]).length >= p.stock) return false; if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } 
-              if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } 
+              if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; }
+              if(p.category === 'game') { if(p.targetGame && p.targetGame !== selectedGame?.id) return false; return true; } 
               if(p.category === 'day') return now.getDay() === parseInt(p.targetDay); 
               return false; 
           }); 
@@ -786,20 +736,16 @@
 
       const handleApplyPromoCode = () => {
          const promo = (promos || []).find(p => p.category === 'code' && p.isActive && (p.code || '').toUpperCase() === inputPromo.toUpperCase());
-         if (!promo) return addToast('Kode Promo tidak valid atau tidak ditemukan.', 'error');
-         if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('Anda sudah menggunakan kode ini.', 'error');
-         if (promo.usedBy && promo.usedBy.length >= promo.maxUses) return addToast('Kuota penggunaan kode ini telah habis.', 'error');
-         if (promo.minPurchase && selectedNominal && selectedNominal.price < promo.minPurchase) return addToast(`Minimum pembelian untuk promo ini adalah ${formatRupiah(promo.minPurchase)}.`, 'error');
-         setActivePromo(promo); addToast('Kupon berhasil diterapkan!', 'success');
+         if (!promo) return addToast('Kode Promo tidak valid.', 'error');
+         if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('Sudah digunakan.', 'error');
+         if (promo.usedBy && promo.usedBy.length >= promo.maxUses) return addToast('Kuota habis.', 'error');
+         if (promo.minPurchase && selectedNominal && selectedNominal.price < promo.minPurchase) return addToast(`Minimum pembelian Rp ${promo.minPurchase}.`, 'error');
+         setActivePromo(promo); addToast('Kupon diterapkan!', 'success');
       };
 
       const calculateFinalPrice = (basePrice, itemId) => { 
-          let price = basePrice; 
-          let bestAutoDiscount = 0; 
-          getActivePromosForItem(itemId).forEach(p => { 
-              let discountAmt = p.type === 'percentage' ? (basePrice * p.discount / 100) : p.discount; 
-              if(discountAmt > bestAutoDiscount) bestAutoDiscount = discountAmt; 
-          }); 
+          let price = basePrice; let bestAutoDiscount = 0; 
+          getActivePromosForItem(itemId).forEach(p => { let discountAmt = p.type === 'percentage' ? (basePrice * p.discount / 100) : p.discount; if(discountAmt > bestAutoDiscount) bestAutoDiscount = discountAmt; }); 
           price -= bestAutoDiscount; 
           if (activePromo) price -= activePromo.type === 'percentage' ? (price * activePromo.discount / 100) : activePromo.discount; 
           return Math.max(0, price); 
@@ -808,132 +754,79 @@
       const userTotalTx = userOrders.filter(o => o.status === 'Sukses').length;
       const userVipData = calculateVIPLevel(userTotalTx);
 
-      const triggerCheckout = () => { if (!userId || !selectedNominal || !selectedPayment) return; setShowConfirmCheckout(true); };
+      const triggerCheckout = () => { 
+          if (!userId || !selectedNominal || !selectedPayment) return; 
+          if (selectedGame?.inputType !== 'riot_id' && !/^\d+$/.test(userId)) { addToast('ID Game hanya boleh berisi angka.', 'error'); return; }
+          const fPrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id);
+          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice }});
+      };
       
       const executeFinalPayment = () => { 
-          if (currentUserData?.pin) { 
-              setShowConfirmCheckout(false); 
-              setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: () => { setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); processCheckout(); }}); 
-          } else { 
-              processCheckout(); 
-          } 
+          setCheckoutSummary({isOpen: false, data: null});
+          if (currentUserData?.pin) { setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: () => { setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); processCheckout(); }}); } 
+          else { processCheckout(); } 
       };
 
       const processCheckout = async () => {
-        setIsProcessing(true); setShowConfirmCheckout(false);
+        setIsProcessing(true);
         let baseAmount = selectedNominal.price + selectedPayment.fee; let finalPrice = calculateFinalPrice(baseAmount, selectedNominal.id);
         const activeAutoPromos = getActivePromosForItem(selectedNominal.id); let usedPromoIds = []; let appliedPromoCode = [];
         
         if (activePromo) {
            const pDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id));
-           if(pDoc.exists()) { 
-               let livePromo = pDoc.data(); 
-               if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { 
-                   usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); 
-               } else { 
-                   addToast("Kuota kode promo sudah habis.", "error"); setActivePromo(null); setIsProcessing(false); return; 
-               } 
-           }
+           if(pDoc.exists()) { let livePromo = pDoc.data(); if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); } else { addToast("Kuota habis.", "error"); setActivePromo(null); setIsProcessing(false); return; } }
         }
         const flashPromo = activeAutoPromos.find(p => p.category === 'flash');
         if(flashPromo) { usedPromoIds.push(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', flashPromo.id)); appliedPromoCode.push('FLASH_SALE'); }
 
         try {
-          const batch = writeBatch(db); 
-          const orderRef = doc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
-          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
-          
-          for(const pRef of usedPromoIds) { 
-              const pDoc = await getDoc(pRef); 
-              if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); 
-          }
+          const batch = writeBatch(db); const orderRef = doc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'));
+          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname, nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
+          for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
           await batch.commit();
-          
-          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); navigateTo('history'); 
-          playSuccessBeep(); addToast('Pesanan berhasil dibuat!', 'success');
+          setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); navigateTo('history'); playSuccessBeep(); addToast('Pesanan dibuat!', 'success');
         } catch (error) { addToast("Gagal memproses pesanan.", "error"); } finally { setIsProcessing(false); }
       };
 
-      const handleSendChatUser = async (e) => {
-         e.preventDefault(); if (!chatInput.trim()) return; setLoadingChat(true);
-         try { 
-             const newMessages = [...(userChat?.messages || []), { sender: 'user', text: chatInput, time: new Date().toISOString(), role: 'Pelanggan' }]; 
-             await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); 
-             setChatInput(''); 
-         } catch (err) { addToast('Gagal mengirim pesan', 'error'); } 
-         setLoadingChat(false);
+      const handleSendChatUser = async (e, customStr = null) => {
+         if(e) e.preventDefault(); const str = customStr || chatInput; if (!str.trim()) return; setLoadingChat(true);
+         try { const newMessages = [...(userChat?.messages || []), { sender: 'user', text: str, time: new Date().toISOString(), role: 'Pelanggan' }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setChatInput(''); } 
+         catch (err) { addToast('Gagal mengirim pesan', 'error'); } setLoadingChat(false);
       };
+      
+      const handleOrderHelp = (order) => { handleSendChatUser(null, `Mohon bantuan untuk Pesanan ID: ${order.id}\nGame: ${order.gameName}\nProduk: ${order.nominalName}\nStatus Saat Ini: ${order.status}`); navigateTo('chat'); }
 
-      // ==========================================
-      // FUNGSI ADMIN LENGKAP
-      // ==========================================
-      const handleWipeData = async () => requestDangerConfirm('Masukkan sandi admin untuk melanjutkan penghapusan data (Semua pesanan & pesan akan dihapus)', async () => { 
+      const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
+
+      const handleWipeData = async () => openAdminAuthModal('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
           setAuthLoading(true); 
-          try { 
-              const batch = writeBatch(db); 
-              const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); p1.forEach(d => batch.delete(d.ref)); 
-              const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); p2.forEach(d => batch.delete(d.ref)); 
-              const p3 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'public_help')); p3.forEach(d => batch.delete(d.ref)); 
-              await batch.commit(); 
-              addToast('Semua Data berhasil dihapus dari sistem', 'success'); 
-          } catch(e) { addToast("Gagal menghapus data: " + e.message, 'error'); } 
-          setAuthLoading(false); 
+          try { const batch = writeBatch(db); const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); p1.forEach(d => batch.delete(d.ref)); const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); p2.forEach(d => batch.delete(d.ref)); const p3 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'public_help')); p3.forEach(d => batch.delete(d.ref)); await batch.commit(); addToast('Data berhasil dihapus', 'success'); } 
+          catch(e) { addToast("Gagal menghapus data", 'error'); } setAuthLoading(false); setAdminAuthModal({isOpen: false});
       });
 
       const handleAddBanner = async () => { 
-          if(!adminBannerUrl) return; 
-          let fixedUrl = adminBannerUrl;
+          if(!adminBannerUrl) return; let fixedUrl = adminBannerUrl;
           if(adminBannerType === 'youtube' && !fixedUrl.includes('youtube') && !fixedUrl.includes('youtu.be')) fixedUrl = `https://www.youtube.com/watch?v=${fixedUrl}`;
-          const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl }]; 
-          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); addToast('Banner berhasil ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
+          const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl, title: adminBannerTitle, desc: adminBannerDesc }]; 
+          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
       };
       
-      const saveSettings = async () => { 
-          try { 
-              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { 
-                  igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts 
-              }, { merge: true }); 
-              addToast('Pengaturan sistem berhasil disimpan!', 'success'); 
-          } catch(e) { addToast(e.message, 'error'); } 
-      };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
       
-      const handleFaviconUpload = async (e) => { 
-          const file = e.target.files[0]; 
-          if (file) { 
-              try { 
-                  const base64 = await compressImage(file, 64); 
-                  await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); 
-                  addToast('Icon Website (Favicon) berhasil diupdate', 'success'); 
-              } catch(e) { addToast('Gagal memproses icon', 'error'); } 
-          } 
-      };
+      const saveSettings = async () => openAdminAuthModal('Simpan Pengaturan', 'Konfirmasi perubahan pada pengaturan utama website.', 'Simpan', async () => { 
+          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts }, { merge: true }); addToast('Pengaturan disimpan!', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast(e.message, 'error'); } 
+      });
       
-      const handleGalleryUpload = async (e) => {
-          const file = e.target.files[0]; 
-          if (file) { 
-              if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto galeri!', 'error'); 
-              const compressed = await compressImage(file, 400); 
-              try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto galeri ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
-          }
-      };
-
-      const handleRemoveGallery = async (index) => requestConfirm('Hapus foto galeri ini?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } });
-
-      const toggleStore = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } };
+      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diupdate', 'success'); } catch(e) { addToast('Gagal', 'error'); } } };
+      const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); const compressed = await compressImage(file, 400); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } } };
+      const handleRemoveGallery = async (index) => requestConfirm('Hapus foto ini?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } });
+      const toggleStore = async () => openAdminAuthModal('Status Operasional', `Ubah status toko menjadi ${isStoreOpen ? 'TUTUP' : 'BUKA'}?`, 'Ubah Status', async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); setAdminAuthModal({isOpen:false}); } catch (e) { addToast(e.message, 'error'); } });
 
       const updateOrderStatus = async (orderId, newStatus) => { 
          try { 
-             const order = (adminOrders||[]).find(o => o.id === orderId);
-             await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
-             if(newStatus === 'Sukses' && order && order.userEmail) {
-                 const member = (memberList||[]).find(m => m.email === order.userEmail);
-                 if(member) {
-                     const mOrders = allGlobalOrders.filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId);
-                     const vip = calculateVIPLevel(mOrders.length);
-                     if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); }
-                 }
-             }
-             addToast(`Status pesanan diubah ke ${newStatus}`, 'success');
+             const order = (adminOrders||[]).find(o => o.id === orderId); await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
+             if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const mOrders = allGlobalOrders.filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId); const vip = calculateVIPLevel(mOrders.length); if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); } } }
+             addToast(`Status diubah ke ${newStatus}`, 'success');
          } catch (e) { addToast("Gagal update: " + e.message, 'error'); } 
       };
 
@@ -941,21 +834,24 @@
       
       const handleAdminSendChat = async (e, customText = null) => {
          if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!textToSend.trim() || !activeChatEmail) return;
-         try { 
-             const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); 
-             const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); 
-             const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; 
-             await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); 
-             setAdminReplyText(''); 
-         } catch(err) { addToast(err.message, 'error'); }
+         try { const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); setAdminReplyText(''); } 
+         catch(err) { addToast(err.message, 'error'); }
       };
 
-      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Tiket bantuan diselesaikan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
-      
-      const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun berhasil diblokir', 'success'); } catch(e) { addToast('Gagal mengubah status blokir', 'error'); } };
+      const handleValidateTrxFromChat = async () => {
+         if(!adminTrxModal.order) return;
+         openAdminAuthModal('Validasi Pesanan', `Konfirmasi penyelesaian pesanan ${adminTrxModal.order.id}`, 'Validasi Sukses', async () => {
+             await updateOrderStatus(adminTrxModal.order.id, 'Sukses');
+             handleAdminSendChat(null, `[Sistem] Pesanan Anda (ID: ${adminTrxModal.order.id}) telah divalidasi dan berstatus SUKSES. Proses pengiriman item membutuhkan waktu 1-3 Menit.`);
+             setAdminTrxModal({isOpen: false, order: null}); setAdminAuthModal({isOpen: false});
+         });
+      };
+
+      const markPublicHelpDone = async (id) => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', id)); addToast('Chat bantuan dihapus (Selesai)', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
+      const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
       const handleDeleteMember = async (memberId) => requestDangerConfirm('Hapus akun member ini permanen?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); } catch(e) { addToast(e.message, 'error'); } });
 
-      const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template chat disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
+      const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
       const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} };
 
       const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { const cleanId = newGameId.toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast(e.message, 'error'); } };
@@ -973,10 +869,11 @@
               let promoData = { id: promoId, category: promoModalType, type: promoForm.type, discount: Number(promoForm.discount), isActive: true, createdAt: new Date().toISOString() };
               if(promoModalType === 'code') { promoData.code = promoForm.code.toUpperCase(); promoData.maxUses = Number(promoForm.maxUses); promoData.minPurchase = Number(promoForm.minPurchase || 0); promoData.usedBy = []; } 
               else if(promoModalType === 'item') { if(!promoTargetItem) throw new Error('Pilih item target!'); promoData.targetItems = [promoTargetItem]; } 
+              else if(promoModalType === 'game') { if(!promoTargetGame) throw new Error('Pilih Game target!'); promoData.targetGame = promoTargetGame; }
               else if(promoModalType === 'flash') { if(!promoForm.startTime || !promoForm.endTime || !promoForm.stock) throw new Error('Lengkapi data Flash Sale!'); promoData.targetItems = promoTargetItem ? [promoTargetItem] : []; promoData.startTime = promoForm.startTime; promoData.endTime = promoForm.endTime; promoData.stock = Number(promoForm.stock); promoData.usedBy = []; } 
               else if(promoModalType === 'day') { promoData.targetDay = parseInt(promoForm.targetDay); }
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', promoId), promoData);
-              addToast('Promo berhasil diterbitkan!', 'success'); setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], startTime: '', endTime: '', stock: '', targetDay: '5'});
+              addToast('Promo berhasil diterbitkan!', 'success'); setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5'});
           } catch(e) { addToast(e.message, 'error'); }
       };
 
@@ -1017,14 +914,14 @@
                      {authMode === 'register' && (
                         <div className="animate-in fade-in slide-in-from-top-2 space-y-4">
                            <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" /><input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500 text-sm" placeholder="Nama Lengkap" /></div>
-                           <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" /><input type="tel" value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500 text-sm" placeholder="Nomor WhatsApp (Opsional)" /></div>
+                           <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500 text-sm" placeholder="No HP/WA (10-12 Angka)" /></div>
                         </div>
                      )}
                      <div className="relative group"><IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" /><input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500 text-sm" placeholder="Alamat Email" /></div>
                      {authMode !== 'forgot' && (<div className="relative group"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" /><input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-medium transition shadow-inner placeholder-gray-500 text-sm" placeholder="Kata Sandi (Min. 6 Karakter)" /></div>)}
                      
                      <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0)} className={`w-full py-4 rounded-2xl font-black transition-all transform flex justify-center items-center gap-2 text-sm uppercase tracking-widest relative overflow-hidden mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-white/5 text-gray-500 cursor-not-allowed' : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/20 hover:scale-[1.02]'}`}>
-                        {authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Tautan Reset')}
+                        {authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Link Reset Sandi')}
                      </button>
                   </form>
 
@@ -1092,35 +989,30 @@
         <div className="flex-grow flex flex-col relative z-10 min-h-screen">
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
+          <AdminAuthModal isOpen={adminAuthModal.isOpen} title={adminAuthModal.title} message={adminAuthModal.message} actionText={adminAuthModal.btnText} onConfirm={adminAuthModal.action} onCancel={()=>setAdminAuthModal({isOpen:false})} authEmail={authUser?.email} />
+          <ChangePinModal isOpen={changePinModalOpen} authEmail={authUser?.email} oldPinHash={currentUserData?.pin} onSuccess={handleSetPin} onCancel={()=>setChangePinModalOpen(false)} />
           <PinModal isOpen={pinModalState.isOpen} mode={pinModalState.mode} expectedPin={pinModalState.expectedPin} onSuccess={pinModalState.onSuccess} onCancel={() => setPinModalState({isOpen:false, mode:'setup', onSuccess:null})} />
+          <OrderSummaryModal isOpen={checkoutSummary.isOpen} data={checkoutSummary.data} onConfirm={executeFinalPayment} onCancel={()=>setCheckoutSummary({isOpen:false, data:null})} isProcessing={isProcessing} />
 
-          {/* MODAL CHECKOUT CONFIRMATION */}
-          {showConfirmCheckout && selectedNominal && selectedGame && (
-             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
-                <div className="clean-card p-6 md:p-8 w-full max-w-md shadow-2xl border border-white/10 relative overflow-hidden">
-                   <h3 className="font-black text-xl mb-1 text-white text-center">Konfirmasi Beli</h3>
-                   <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data yang dimasukkan sudah benar.</p>
-                   
-                   <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-4 my-6">
-                       <img src={selectedGame.image} className="w-12 h-12 rounded-xl object-cover" />
-                       <div>
-                           <div className="font-black text-sm text-white">{selectedGame.name}</div>
-                           <div className="text-xs text-orange-400 font-bold">{selectedNominal.name}</div>
-                       </div>
-                   </div>
-                   
-                   <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-3 mb-6 shadow-inner">
-                       <div className="flex justify-between"><span className="text-xs font-bold text-gray-500 uppercase">ID Tujuan</span><span className="text-xs font-mono font-black text-white">{userId} {zoneId ? `(${zoneId})` : ''}</span></div>
-                       <div className="flex justify-between"><span className="text-xs font-bold text-gray-500 uppercase">Metode</span><span className="text-xs font-black text-white">{selectedPayment.name}</span></div>
-                       <div className="flex justify-between border-t border-white/10 pt-3 mt-1"><span className="text-sm font-black text-gray-300 uppercase">Total Bayar</span><span className="text-lg font-black text-orange-500">{formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id))}</span></div>
-                   </div>
-                   
-                   <div className="flex gap-3">
-                      <button onClick={()=>setShowConfirmCheckout(false)} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white">Batal</button>
-                      <button onClick={executeFinalPayment} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white flex justify-center items-center gap-2 shadow-lg shadow-orange-500/30 transition">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Bayar Sekarang'}</button>
-                   </div>
-                </div>
-             </div>
+          {/* ADMIN TRX MODAL DETAIL (dari Chat) */}
+          {adminTrxModal.isOpen && adminTrxModal.order && (
+              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+                  <div className="clean-card p-6 md:p-8 max-w-sm w-full border border-white/10 shadow-2xl relative">
+                     <button onClick={()=>setAdminTrxModal({isOpen:false, order:null})} className="absolute top-4 right-4 text-gray-500 hover:text-white"><IconX className="w-5 h-5"/></button>
+                     <h3 className="text-xl font-black mb-4 text-white">Validasi Pesanan</h3>
+                     <div className="bg-black/50 p-4 rounded-xl border border-white/5 space-y-2 mb-6">
+                        <div className="flex justify-between"><span className="text-xs text-gray-400">ID TRX</span><span className="text-xs font-mono font-bold text-white">{adminTrxModal.order.id}</span></div>
+                        <div className="flex justify-between"><span className="text-xs text-gray-400">Game</span><span className="text-xs font-bold text-orange-400">{adminTrxModal.order.gameName}</span></div>
+                        <div className="flex justify-between"><span className="text-xs text-gray-400">Target</span><span className="text-xs font-bold text-white">{adminTrxModal.order.targetUserId} {adminTrxModal.order.targetZoneId}</span></div>
+                        <div className="flex justify-between"><span className="text-xs text-gray-400">Harga</span><span className="text-xs font-bold text-emerald-400">{formatRupiah(adminTrxModal.order.priceTotal)}</span></div>
+                        <div className="flex justify-between pt-2 border-t border-white/5"><span className="text-xs text-gray-400">Status</span><span className={`text-xs font-black ${adminTrxModal.order.status==='Sukses'?'text-emerald-500':'text-orange-500'}`}>{adminTrxModal.order.status}</span></div>
+                     </div>
+                     <div className="flex gap-2">
+                         <button onClick={()=>setAdminTrxModal({isOpen:false, order:null})} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3 rounded-xl text-xs transition">Batal</button>
+                         <button onClick={handleValidateTrxFromChat} disabled={adminTrxModal.order.status==='Sukses'} className="flex-[2] bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest shadow-lg transition">Validasi (3 Menit)</button>
+                     </div>
+                  </div>
+              </div>
           )}
 
           {/* SCANNER KASIR QR (ADMIN ONLY) */}
@@ -1164,7 +1056,7 @@
                             <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
                                <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
                                   {msg.role && msg.sender === 'admin' && <span className={`text-[9px] font-bold uppercase tracking-widest mb-1.5 ml-1 ${msg.role.includes('Sistem') ? 'text-blue-400' : 'text-emerald-500'}`}>{msg.role}</span>}
-                                  <div className={`p-3 md:p-4 text-sm shadow-lg font-medium leading-relaxed border backdrop-blur-md ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm border-orange-400/30' : 'bg-[#111] text-gray-200 border-white/10 rounded-2xl rounded-tl-sm'}`}>
+                                  <div className={`p-3 md:p-4 text-sm shadow-lg font-medium leading-relaxed border backdrop-blur-md whitespace-pre-wrap ${msg.sender === 'user' ? 'bg-gradient-to-bl from-orange-500 to-orange-600 text-white rounded-2xl rounded-tr-sm border-orange-400/30' : 'bg-[#111] text-gray-200 border-white/10 rounded-2xl rounded-tl-sm'}`}>
                                      {msg.text}
                                   </div>
                                   <span className="text-[9px] text-gray-500 font-bold mt-2 px-1 uppercase tracking-widest">{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
@@ -1333,7 +1225,7 @@
                    </div>
                 )}
 
-                {/* UI Katalog Game (Clean & Minimalist v9.0) */}
+                {/* UI Katalog Game (Clean & Minimalist v9.1) */}
                 <div className="relative z-20 mb-12">
                    {!selectedGame && (
                        <div className="flex items-center gap-3 mb-6 pl-2">
@@ -1346,8 +1238,11 @@
                    )}
                    
                    <div className={selectedGame ? "hidden" : "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-5 relative z-30"}>
-                      {(games||[]).map(game => (
-                         <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white/[0.02] border border-white/10 hover:border-orange-500/50 hover:bg-white/[0.05] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col h-full z-30 shadow-sm">
+                      {(games||[]).map(game => {
+                         const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
+                         return (
+                         <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white/[0.02] border border-white/10 hover:border-orange-500/50 hover:bg-white/[0.05] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col h-full z-30 shadow-sm">
+                            {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse">PROMO</div>}
                             <div className="aspect-square bg-black p-1.5 md:p-2 relative overflow-hidden">
                                <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl group-hover:scale-105 transition duration-500 ease-out opacity-90 group-hover:opacity-100 shadow-inner"/>
                             </div>
@@ -1356,7 +1251,7 @@
                                <p className="text-[8px] md:text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate group-hover:text-orange-400 transition-colors">{game.developer}</p>
                             </div>
                          </div>
-                      ))}
+                      )})}
                       {(!games || games.length === 0) && <div className="col-span-full py-12 text-center text-gray-500 text-sm font-bold bg-white/5 rounded-[2rem] border border-dashed border-white/10">Katalog game masih kosong.</div>}
                    </div>
                 </div>
@@ -1385,10 +1280,14 @@
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-white mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-black w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
                                
-                               <div className="flex flex-col sm:flex-row gap-4 relative z-10">
+                               <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
                                   <div className="flex-1 relative group">
                                      <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                                     <input type="text" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID'} className="w-full bg-black border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-mono font-bold transition shadow-inner placeholder-gray-600"/>
+                                     <input type="text" value={userId} onChange={(e) => {
+                                         const val = e.target.value;
+                                         if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('ID game hanya boleh berisi angka', 'error'); return; }
+                                         setUserId(val);
+                                     }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full bg-black border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-mono font-bold transition shadow-inner placeholder-gray-600"/>
                                   </div>
                                   
                                   {selectedGame?.inputType === 'id_zone' && (
@@ -1405,6 +1304,12 @@
                                      </div>
                                   )}
                                </div>
+
+                               <div className="relative group z-10">
+                                   <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
+                                   <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Nickname Game (Opsional)" className="w-full bg-black border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-bold transition shadow-inner placeholder-gray-600"/>
+                               </div>
+
                                <p className="text-[10px] text-gray-500 mt-3 font-medium">Kesalahan penulisan ID bukan tanggung jawab sistem. Pastikan ID sudah benar.</p>
                             </div>
 
@@ -1504,7 +1409,7 @@
                                   </div>
                                </div>
                                <button onClick={triggerCheckout} disabled={!isFormValid || isProcessing} className={`flex-[1.5] sm:flex-1 py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all flex justify-center items-center gap-3 relative overflow-hidden group shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white hover:scale-[1.02] shadow-orange-500/30' : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'}`}>
-                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className="w-5 h-5" /> Bayar Sekarang</>}
+                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className="w-5 h-5" /> Pesan Sekarang</>}
                                </button>
                             </div>
                          </div>
@@ -1606,6 +1511,9 @@
                                             <p className="text-[9px] font-black text-gray-500 uppercase tracking-widest mb-1">Waktu Transaksi Dibuat</p>
                                             <p className="text-xs font-bold text-gray-300">{order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : '-'}</p>
                                         </div>
+                                        <button onClick={(e) => { e.stopPropagation(); handleOrderHelp(order); }} className="mt-4 bg-orange-500/10 hover:bg-orange-500/20 text-orange-500 border border-orange-500/30 font-bold py-2.5 px-5 rounded-xl text-xs flex items-center gap-2 transition">
+                                            <IconHelp className="w-4 h-4"/> Bantuan Transaksi Ini
+                                        </button>
                                      </div>
                                      
                                      {order.status === 'Pending' && (
@@ -1731,7 +1639,7 @@
                                      <p className="text-[10px] text-gray-400 font-medium">Lindungi proses checkout pembayaran.</p>
                                   </div>
                                   {currentUserData?.pin ? (
-                                      <button onClick={handleRemovePin} className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white px-5 py-2.5 rounded-xl text-xs font-black transition border border-red-500/30">Hapus PIN</button>
+                                      <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 hover:bg-orange-500 text-orange-400 hover:text-white px-5 py-2.5 rounded-xl text-xs font-black transition border border-orange-500/30">Ganti PIN</button>
                                   ) : (
                                       <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2.5 rounded-xl text-xs font-black transition shadow-lg shadow-purple-500/30">Buat PIN</button>
                                   )}
@@ -1771,7 +1679,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V9.0)                                          */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V9.1)                                          */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -1782,7 +1690,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-white truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.0</span>
+                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.1</span>
                         </div>
                      </div>
 
@@ -1795,15 +1703,17 @@
                            { id: 'members', label: 'Data Member', icon: IconUsers },
                            { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount },
                            { id: 'settings', label: 'Peraturan Web', icon: IconSettings }
-                        ].map(tab => (
+                        ].map(tab => {
+                           const TabIcon = tab.icon;
+                           return (
                            <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-auto lg:w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-bold transition-all whitespace-nowrap shrink-0 group relative overflow-hidden border ${activeAdminTab === tab.id ? 'bg-red-600 text-white border-red-500 shadow-lg shadow-red-500/20' : 'bg-transparent text-gray-400 border-transparent hover:bg-white/5 hover:text-white'}`}>
                               {activeAdminTab === tab.id && <span className="absolute left-0 top-0 bottom-0 w-1 bg-white hidden lg:block"></span>}
                               {activeAdminTab === tab.id && <span className="absolute left-0 bottom-0 right-0 h-1 bg-white lg:hidden"></span>}
-                              <tab.icon className={`w-5 h-5 ${activeAdminTab === tab.id ? 'text-white' : 'group-hover:text-red-400 transition-colors'}`} />
+                              <TabIcon className={`w-5 h-5 ${activeAdminTab === tab.id ? 'text-white' : 'group-hover:text-red-400 transition-colors'}`} />
                               <span className="text-sm tracking-wide">{tab.label}</span>
                               {tab.notif > 0 && <span className={`ml-2 lg:ml-auto px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm ${activeAdminTab === tab.id ? 'bg-white text-red-600' : 'bg-red-500 text-white animate-pulse'}`}>{tab.notif}</span>}
                            </button>
-                        ))}
+                        )})}
                      </div>
                      
                      <div className="mt-auto hidden lg:block pt-8 px-2 pb-2 border-t border-white/5">
@@ -1902,7 +1812,7 @@
                                              <div className="text-xs text-gray-400 mt-1 truncate max-w-[180px]">{order?.nominalName || '-'}</div>
                                           </td>
                                           <td className="px-5 py-4">
-                                             <div className="font-mono font-bold bg-white/5 rounded-lg inline-block px-3 py-1.5 border border-white/10 shadow-sm text-white max-w-[180px] overflow-hidden overflow-ellipsis text-xs">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
+                                             <div className="font-mono font-bold bg-white/5 rounded-lg inline-block px-3 py-1.5 border border-white/10 shadow-sm text-white max-w-[180px] overflow-hidden overflow-ellipsis text-xs">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''} {order?.targetNickname ? `| ${order.targetNickname}` : ''}</div>
                                           </td>
                                           <td className="px-5 py-4">
                                              <div className="font-black text-white text-sm">{formatRupiah(order?.priceTotal)}</div>
@@ -2014,7 +1924,7 @@
                                           <div className="text-[10px] text-gray-300 leading-relaxed mb-3">{c.message}</div>
                                           <div className="flex justify-between items-center">
                                              <span className="text-[8px] text-gray-500 font-bold">{new Date(c.time).toLocaleString('id-ID')}</span>
-                                             <button onClick={()=>markPublicHelpDone(c.id)} className="text-[9px] bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition">Tandai Selesai</button>
+                                             <button onClick={()=>markPublicHelpDone(c.id)} className="text-[9px] bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg font-bold shadow-sm transition">Masalah Selesai</button>
                                           </div>
                                        </div>
                                     ))}
@@ -2041,7 +1951,7 @@
                               </div>
 
                               {/* Right Chat Area */}
-                              <div className="w-full lg:w-2/3 flex flex-col h-1/2lg:h-full bg-black relative">
+                              <div className="w-full lg:w-2/3 flex flex-col h-1/2 lg:h-full bg-black relative">
                                  {activeChatEmail ? (
                                     <>
                                        {/* Header Chat Detail */}
@@ -2059,19 +1969,33 @@
                                        {/* Area Pesan Chat */}
                                        <div className="flex-1 p-5 overflow-y-auto space-y-4 custom-scrollbar">
                                           <div className="text-center text-[9px] uppercase tracking-widest text-gray-600 font-black bg-white/5 py-1.5 px-4 rounded-full w-fit mx-auto border border-white/10 mb-4">Riwayat Obrolan Tersimpan</div>
-                                          {(adminChats.find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => (
+                                          {(adminChats.find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
+                                             
+                                             const trxMatch = m.text.match(/(?:ID|TRX):\s*([a-zA-Z0-9_-]+)/i);
+                                             const orderIdFromText = trxMatch ? trxMatch[1] : null;
+                                             let matchedOrder = null;
+                                             if (orderIdFromText) { matchedOrder = allGlobalOrders.find(o => o.id === orderIdFromText); }
+
+                                             return (
                                              <div key={i} className={`flex w-full ${m.sender==='admin'?'justify-end':'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
                                                 <div className={`flex flex-col ${m.sender==='admin'?'items-end':'items-start'} max-w-[80%]`}>
                                                    {m.role && m.sender === 'user' && <span className="text-[9px] font-bold uppercase tracking-widest mb-1.5 ml-1 text-orange-500">{m.role}</span>}
                                                    {m.role && m.sender === 'admin' && <span className="text-[9px] font-bold uppercase tracking-widest mb-1.5 mr-1 text-blue-400">{m.role}</span>}
                                                    
-                                                   <div className={`p-3 md:p-4 text-sm font-medium leading-relaxed shadow-md border ${m.sender==='admin'?'bg-white/10 text-white rounded-2xl rounded-tr-sm border-white/20':'bg-orange-600 text-white rounded-2xl rounded-tl-sm border-orange-500'}`}>
+                                                   <div className={`p-3 md:p-4 text-sm font-medium leading-relaxed shadow-md border whitespace-pre-wrap ${m.sender==='admin'?'bg-white/10 text-white rounded-2xl rounded-tr-sm border-white/20':'bg-orange-600 text-white rounded-2xl rounded-tl-sm border-orange-500'}`}>
                                                       {m.text}
                                                    </div>
+
+                                                   {m.sender === 'user' && matchedOrder && (
+                                                      <button onClick={() => setAdminTrxModal({isOpen:true, order: matchedOrder})} className="mt-2 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition flex items-center gap-1">
+                                                         <IconSearch className="w-3 h-3"/> Cek Detail Pesanan Ini
+                                                      </button>
+                                                   )}
+
                                                    <span className="text-[8px] text-gray-500 font-bold mt-1.5 px-1 uppercase tracking-widest">{m.time ? new Date(m.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</span>
                                                 </div>
                                              </div>
-                                          ))}
+                                          )})}
                                           <div ref={adminChatEndRef} className="h-2"/>
                                        </div>
 
@@ -2099,7 +2023,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.0 LENGKAP */}
+                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.1 LENGKAP */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2173,24 +2097,48 @@
                               {/* Panel Banner Slider */}
                               <div className="bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-white/10 shadow-inner">
                                   <h3 className="font-black text-white text-lg flex items-center gap-2 mb-2"><IconImage className="w-5 h-5 text-purple-500"/> Kelola Banner Slider Depan</h3>
-                                  <p className="text-[10px] text-gray-400 mb-6">Unggah gambar, video MP4, atau link YouTube untuk slider raksasa di beranda.</p>
+                                  <p className="text-[10px] text-gray-400 mb-6">Unggah gambar (JPG/PNG), video (MP4/WEBP), atau link YouTube untuk slider raksasa di beranda. Anda dapat menambahkan Judul dan Deskripsi promosi.</p>
                                   
-                                  <div className="flex flex-col sm:flex-row gap-3 mb-6 bg-white/5 p-4 rounded-2xl border border-white/10">
-                                     <select value={adminBannerType} onChange={(e)=>setAdminBannerType(e.target.value)} className="w-full sm:w-auto bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-purple-500 shrink-0 appearance-none">
-                                        <option value="image">🖼️ Format Gambar (URL/CDN)</option>
-                                        <option value="video">🎬 Format Video (URL MP4)</option>
-                                        <option value="youtube">▶️ Format YouTube (ID/Link)</option>
-                                     </select>
-                                     <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} placeholder="Masukkan Link (https://...)" className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-purple-500 transition shadow-inner" />
-                                     <button onClick={handleAddBanner} className="bg-purple-600 hover:bg-purple-500 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shrink-0 transition">Tambahkan</button>
+                                  <div className="flex flex-col gap-4 mb-6 bg-white/5 p-5 rounded-[2rem] border border-white/10">
+                                     <div className="flex flex-col sm:flex-row gap-3">
+                                        <select value={adminBannerType} onChange={(e)=>setAdminBannerType(e.target.value)} className="w-full sm:w-auto bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-bold focus:border-purple-500 shrink-0 appearance-none">
+                                           <option value="image">🖼️ Format Gambar</option>
+                                           <option value="video">🎬 Format Video</option>
+                                           <option value="youtube">▶️ Format YouTube</option>
+                                        </select>
+                                        
+                                        {adminBannerType === 'youtube' ? (
+                                           <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} placeholder="Masukkan Link YouTube (https://...)" className="flex-1 bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-purple-500 transition shadow-inner" />
+                                        ) : (
+                                           <div className="flex-1 relative group bg-black border border-white/10 rounded-xl overflow-hidden flex items-center shadow-inner">
+                                              <input type="file" accept={adminBannerType==='video' ? "video/mp4,video/webm" : "image/png,image/jpeg,image/webp"} onChange={handleBannerUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" disabled={authLoading} />
+                                              <div className="w-full px-4 py-3 text-sm text-gray-400 flex items-center gap-2">
+                                                 {authLoading ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> {adminBannerUrl ? 'File Siap. Upload Ulang?' : 'Upload File dari HP/PC'}</>}
+                                              </div>
+                                           </div>
+                                        )}
+                                     </div>
+                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        <input type="text" value={adminBannerTitle} onChange={(e)=>setAdminBannerTitle(e.target.value)} placeholder="Judul Promo (Opsional)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-purple-500 transition shadow-inner" />
+                                        <input type="text" value={adminBannerDesc} onChange={(e)=>setAdminBannerDesc(e.target.value)} placeholder="Deskripsi Singkat (Opsional)" className="w-full bg-black border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:border-purple-500 transition shadow-inner" />
+                                     </div>
+                                     <button onClick={handleAddBanner} disabled={authLoading || !adminBannerUrl} className="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-50 disabled:hover:bg-purple-600 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg transition mt-2">Tambahkan Banner ke Depan</button>
                                   </div>
                                   
-                                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                      {banners.map((b,i) => (
-                                        <div key={i} className="relative aspect-video bg-black rounded-2xl overflow-hidden border-2 border-white/10 group shadow-md">
-                                           <button onClick={async ()=>{ const nb=[...banners]; nb.splice(i,1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), {banners:nb}, {merge:true}); addToast('Banner dihapus', 'success'); }} className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-lg p-1.5 z-10 shadow-lg transition opacity-0 group-hover:opacity-100"><IconTrash className="w-3.5 h-3.5"/></button>
-                                           <div className="absolute top-2 left-2 bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded z-10 uppercase backdrop-blur-sm border border-white/10">{b.type}</div>
-                                           {b.type==='image' ? <img src={b.url} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition duration-500"/> : <div className="w-full h-full flex flex-col justify-center items-center text-[9px] text-gray-400 break-all p-4 text-center bg-white/5">{b.type}<br/>{b.url.substring(0,20)}...</div>}
+                                        <div key={i} className="relative bg-black rounded-2xl overflow-hidden border border-white/10 group shadow-md flex flex-col">
+                                           <div className="aspect-video relative overflow-hidden">
+                                              <button onClick={async ()=>{ const nb=[...banners]; nb.splice(i,1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), {banners:nb}, {merge:true}); addToast('Banner dihapus', 'success'); }} className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-lg p-1.5 z-10 shadow-lg transition opacity-0 group-hover:opacity-100"><IconTrash className="w-3.5 h-3.5"/></button>
+                                              <div className="absolute top-2 left-2 bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded z-10 uppercase backdrop-blur-sm border border-white/10">{b.type}</div>
+                                              {b.type==='image' ? <img src={b.url} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500"/> : <div className="w-full h-full flex flex-col justify-center items-center text-[9px] text-gray-400 break-all p-4 text-center bg-white/5">{b.type}<br/>{b.url.substring(0,20)}...</div>}
+                                           </div>
+                                           {(b.title || b.desc) && (
+                                              <div className="p-3 border-t border-white/10 bg-black/80 flex-1">
+                                                 {b.title && <div className="text-xs font-bold text-white line-clamp-1">{b.title}</div>}
+                                                 {b.desc && <div className="text-[9px] text-gray-400 line-clamp-2 mt-1 leading-relaxed">{b.desc}</div>}
+                                              </div>
+                                           )}
                                         </div>
                                      ))}
                                      {banners.length === 0 && <div className="col-span-full py-10 text-center text-gray-600 font-bold border border-dashed border-white/10 rounded-2xl bg-white/5 text-sm">Belum ada banner terpasang.</div>}
@@ -2260,7 +2208,7 @@
                            </div>
                         )}
 
-                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.0) */}
+                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.1) */}
                         {activeAdminTab === 'katalog' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-6 h-full">
                               
@@ -2377,13 +2325,13 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.0) */}
+                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.1) */}
                         {activeAdminTab === 'promo' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
                                    <div>
                                        <h2 className="text-2xl font-black text-white flex items-center gap-2"><IconPercent className="w-6 h-6 text-orange-500"/> Pusat Promosi & Event</h2>
-                                       <p className="text-xs text-gray-400 font-medium mt-1">Kelola Diskon Otomatis, Flash Sale Terbatas, Kupon Rahasia, dan Event Harian.</p>
+                                       <p className="text-xs text-gray-400 font-medium mt-1">Kelola Diskon Otomatis, Promo Per Game, Flash Sale, Kupon, dan Event Harian.</p>
                                    </div>
                                </div>
 
@@ -2394,11 +2342,12 @@
                                       <form onSubmit={handleSavePromo} className="w-full bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-white/5 shadow-inner h-fit">
                                          <h3 className="text-lg font-black text-white mb-6">Formulir Terbitkan Promo</h3>
                                          
-                                         <div className="grid grid-cols-2 gap-2 mb-6">
-                                             <button type="button" onClick={()=>setPromoModalType('item')} className={`p-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition ${promoModalType==='item' ? 'bg-orange-500/20 border-orange-500/50 text-orange-400' : 'bg-black border-white/10 text-gray-500'}`}>🎯 Diskon Item</button>
-                                             <button type="button" onClick={()=>setPromoModalType('flash')} className={`p-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition ${promoModalType==='flash' ? 'bg-red-500/20 border-red-500/50 text-red-400' : 'bg-black border-white/10 text-gray-500'}`}>⚡ Flash Sale</button>
-                                             <button type="button" onClick={()=>setPromoModalType('code')} className={`p-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition ${promoModalType==='code' ? 'bg-purple-500/20 border-purple-500/50 text-purple-400' : 'bg-black border-white/10 text-gray-500'}`}>🔑 Kode Kupon</button>
-                                             <button type="button" onClick={()=>setPromoModalType('day')} className={`p-3 rounded-xl text-[10px] font-black uppercase tracking-widest border transition ${promoModalType==='day' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-black border-white/10 text-gray-500'}`}>📅 Hari Spesial</button>
+                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                                             <button type="button" onClick={()=>setPromoModalType('item')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='item' ? 'bg-orange-500/20 border-orange-500/50 text-orange-400' : 'bg-black border-white/10 text-gray-500'}`}>🎯 Diskon Item</button>
+                                             <button type="button" onClick={()=>setPromoModalType('game')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='game' ? 'bg-blue-500/20 border-blue-500/50 text-blue-400' : 'bg-black border-white/10 text-gray-500'}`}>🎮 Promo Game</button>
+                                             <button type="button" onClick={()=>setPromoModalType('flash')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='flash' ? 'bg-red-500/20 border-red-500/50 text-red-400' : 'bg-black border-white/10 text-gray-500'}`}>⚡ Flash Sale</button>
+                                             <button type="button" onClick={()=>setPromoModalType('code')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='code' ? 'bg-purple-500/20 border-purple-500/50 text-purple-400' : 'bg-black border-white/10 text-gray-500'}`}>🔑 Kode Kupon</button>
+                                             <button type="button" onClick={()=>setPromoModalType('day')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='day' ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400' : 'bg-black border-white/10 text-gray-500'}`}>📅 Hari Spesial</button>
                                          </div>
                                          
                                          <div className="space-y-4">
@@ -2423,6 +2372,16 @@
                                                      <select value={promoTargetItem} onChange={(e)=>setPromoTargetItem(e.target.value)} required className="w-full bg-white/5 p-3.5 rounded-xl text-white text-sm border border-white/10 focus:border-orange-500 appearance-none">
                                                          <option value="">-- Pilih Item dari Katalog --</option>
                                                          {items.map(i=><option key={i.id} value={i.id}>{(games.find(g=>g.id===i.gameId)?.name || 'Game')} - {i.name} ({formatRupiah(i.price)})</option>)}
+                                                     </select>
+                                                 </div>
+                                             )}
+
+                                             {promoModalType==='game' && (
+                                                 <div className="space-y-1">
+                                                     <label className="text-[9px] font-black text-blue-500 uppercase tracking-widest ml-1">Terapkan Diskon ke Semua Item Game Ini</label>
+                                                     <select value={promoTargetGame} onChange={(e)=>setPromoTargetGame(e.target.value)} required className="w-full bg-white/5 p-3.5 rounded-xl text-white text-sm border border-blue-500/30 focus:border-blue-500 appearance-none">
+                                                         <option value="">-- Pilih Game --</option>
+                                                         {games.map(g=><option key={g.id} value={g.id}>{g.name}</option>)}
                                                      </select>
                                                  </div>
                                              )}
@@ -2486,13 +2445,14 @@
                                       
                                       <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
                                          {(promos||[]).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p => (
-                                            <div key={p.id} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all shadow-sm relative overflow-hidden group ${p.category === 'flash' ? 'border-red-500/30 bg-gradient-to-r from-black to-red-950/30' : p.category === 'code' ? 'border-purple-500/30 bg-gradient-to-r from-black to-purple-950/30' : 'border-white/10 bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
+                                            <div key={p.id} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all shadow-sm relative overflow-hidden group ${p.category === 'flash' ? 'border-red-500/30 bg-gradient-to-r from-black to-red-950/30' : p.category === 'code' ? 'border-purple-500/30 bg-gradient-to-r from-black to-purple-950/30' : p.category === 'game' ? 'border-blue-500/30 bg-gradient-to-r from-black to-blue-950/30' : 'border-white/10 bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
                                                
                                                <div className="flex-1 min-w-0 z-10 relative">
                                                   <div className="flex items-center gap-2 mb-2">
                                                      {p.category === 'flash' && <span className="bg-red-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">⚡ Flash Sale</span>}
                                                      {p.category === 'code' && <span className="bg-purple-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🔑 Kode Kupon</span>}
-                                                     {p.category === 'item' && <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎯 Diskon Spesifik</span>}
+                                                     {p.category === 'item' && <span className="bg-orange-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎯 Diskon Spesifik</span>}
+                                                     {p.category === 'game' && <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎮 Promo Game</span>}
                                                      {p.category === 'day' && <span className="bg-emerald-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">📅 Event Harian</span>}
                                                      <div className="text-base font-black font-mono tracking-widest text-white truncate max-w-[150px]">{p.code || p.id.split('_')[0]}</div>
                                                   </div>
@@ -2503,12 +2463,13 @@
                                                   
                                                   <div className="flex flex-wrap gap-2 mt-3">
                                                      {p.minPurchase > 0 && <span className="text-[9px] bg-black/50 border border-white/10 px-2 py-1 rounded text-gray-400 font-mono">Min: {formatRupiah(p.minPurchase)}</span>}
-                                                     {p.targetItems?.length > 0 && <span className="text-[9px] bg-black/50 border border-blue-500/30 px-2 py-1 rounded text-blue-400 font-bold truncate max-w-[150px]">Khusus: {items.find(i=>i.id===p.targetItems[0])?.name || 'Item Terpilih'}</span>}
+                                                     {p.targetItems?.length > 0 && <span className="text-[9px] bg-black/50 border border-orange-500/30 px-2 py-1 rounded text-orange-400 font-bold truncate max-w-[150px]">Khusus: {items.find(i=>i.id===p.targetItems[0])?.name || 'Item Terpilih'}</span>}
+                                                     {p.targetGame && <span className="text-[9px] bg-black/50 border border-blue-500/30 px-2 py-1 rounded text-blue-400 font-bold truncate max-w-[150px]">Semua Item: {games.find(g=>g.id===p.targetGame)?.name || 'Game Terpilih'}</span>}
                                                      {(p.maxUses || p.stock) && <span className={`text-[9px] bg-black/50 border px-2 py-1 rounded font-mono font-bold ${((p.usedBy||[]).length >= (p.maxUses || p.stock)) ? 'border-red-500/30 text-red-500' : 'border-white/10 text-gray-400'}`}>Terpakai: {(p.usedBy||[]).length||0} / {p.maxUses || p.stock}</span>}
                                                   </div>
                                                </div>
                                                
-                                               <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0 shrink-0 z-10 relative">
+                                               <div className="flex gap-2 w-full sm:w-auto mt-3 sm:mt-0 shrink-0 z-10 relative">
                                                   <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`w-12 h-10 rounded-xl transition-all flex items-center justify-center border shadow-inner ${p.isActive ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-gray-800/50 text-gray-500 border-gray-700 hover:bg-gray-600 hover:text-white'}`} title={p.isActive ? 'Nonaktifkan Promo' : 'Aktifkan Kembali'}>
                                                      {p.isActive ? <IconCheckCircle className="w-5 h-5"/> : <IconBlock className="w-5 h-5"/>}
                                                   </button>
