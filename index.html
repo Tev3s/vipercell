@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v10.0</title>
+  <title>Vipercell - Premium Top Up v10.1</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +34,7 @@
   
   <style>
     /* =========================================
-       UI CLEAN & MODERN V10.0 (MATURE DESIGN)
+       UI CLEAN & MODERN V10.1 (MATURE DESIGN)
        ========================================= */
     body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
@@ -96,7 +96,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V10.0
+    // FUNGSI HELPER & UTILITIES V10.1
     // ==========================================
     const playSuccessBeep = () => { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gainNode = ctx.createGain(); osc.connect(gainNode); gainNode.connect(ctx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1); gainNode.gain.setValueAtTime(1, ctx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } catch(e) {} };
     
@@ -195,6 +195,8 @@
     const IconBlock = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></>}/>;
     const IconExpand = ({className:c}) => <Ic c={c} d={<><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>}/>;
     const IconMinimize = ({className:c}) => <Ic c={c} d={<><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></>}/>;
+    const IconEye = ({className:c}) => <Ic c={c} d={<><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></>}/>;
+    const IconEyeOff = ({className:c}) => <Ic c={c} d={<><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></>}/>;
 
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
@@ -202,7 +204,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) CENTERED MODAL V10.0
+    // NOTIFICATION (TOAST) MODERN V10.1 (DYNAMIC ISLAND STYLE)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -212,22 +214,31 @@
         const addToast = useCallback((msg, type = 'success') => {
             const id = Date.now() + Math.random();
             setToasts(prev => [...prev, { id, msg, type }]);
-            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 3500);
+            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 4000);
         }, []);
         
+        const removeToast = (id) => {
+            setToasts(prev => prev.filter(t => t.id !== id));
+        }
+
         return (
             <ToastContext.Provider value={{ addToast }}>
                 {children}
-                <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center p-4 pointer-events-none">
-                    {toasts.map(t => (
-                        <div key={t.id} className="pointer-events-auto flex flex-col items-center text-center max-w-sm w-full p-6 md:p-8 rounded-[2rem] shadow-2xl backdrop-blur-xl border border-white/10 bg-[#0a0a0a]/95 animate-in zoom-in-95 fade-in duration-300 mb-4">
-                            <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg ${t.type === 'error' ? 'bg-red-500/20 text-red-500 border border-red-500/30' : t.type === 'process' ? 'bg-blue-500/20 text-blue-500 border border-blue-500/30' : t.type === 'warning' ? 'bg-orange-500/20 text-orange-500 border border-orange-500/30' : 'bg-emerald-500/20 text-emerald-500 border border-emerald-500/30'}`}>
-                                {t.type === 'error' ? <IconX className="w-8 h-8"/> : t.type === 'process' ? <IconLoader className="w-8 h-8 animate-spin"/> : t.type === 'warning' ? <IconShieldAlert className="w-8 h-8"/> : <IconCheckCircle className="w-8 h-8"/>}
-                            </div>
-                            <h4 className="text-lg font-black text-white mb-2 uppercase tracking-widest">{t.type === 'error' ? 'Gagal' : t.type === 'process' ? 'Memproses' : t.type === 'warning' ? 'Perhatian' : 'Berhasil'}</h4>
-                            <span className="text-sm font-medium text-gray-300 leading-relaxed">{t.msg}</span>
+                <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[11000] flex flex-col gap-2 items-center pointer-events-none w-[90%] sm:w-auto">
+                    {toasts.map(t => {
+                        let colors = ''; let icon = '';
+                        if(t.type==='success') { colors='bg-emerald-500/90 border-emerald-400 text-white'; icon='🟢'; }
+                        else if(t.type==='error') { colors='bg-red-500/90 border-red-400 text-white'; icon='🔴'; }
+                        else if(t.type==='warning') { colors='bg-orange-500/90 border-orange-400 text-white'; icon='🟠'; }
+                        else if(t.type==='info' || t.type==='process') { colors='bg-blue-500/90 border-blue-400 text-white'; icon='🔵'; }
+                        
+                        return (
+                        <div key={t.id} className={`pointer-events-auto flex items-center gap-3 px-5 py-3 rounded-full shadow-2xl backdrop-blur-xl border ${colors} animate-in slide-in-from-top-8 zoom-in-95 fade-in duration-300 transform transition-all`}>
+                            <span className={`text-sm shrink-0 drop-shadow-md ${t.type==='process' ? 'animate-spin' : ''}`}>{t.type==='process' ? '⏳' : icon}</span>
+                            <span className="text-xs sm:text-sm font-bold leading-tight drop-shadow-md truncate max-w-[250px] sm:max-w-[400px]">{t.msg}</span>
+                            <button onClick={()=>removeToast(t.id)} className="ml-2 opacity-70 hover:opacity-100 transition shrink-0"><IconX className="w-4 h-4"/></button>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </ToastContext.Provider>
         );
@@ -255,6 +266,7 @@
 
     const DangerDialog = ({ isOpen, message, onConfirm, onCancel, authEmail }) => {
         const [pass, setPass] = useState(''); const [err, setErr] = useState(''); const [loading, setLoading] = useState(false);
+        const [showPass, setShowPass] = useState(false);
         if (!isOpen) return null;
         const handleSubmit = async (e) => {
             e.preventDefault(); setLoading(true); setErr('');
@@ -263,20 +275,24 @@
             finally { setLoading(false); }
         };
         return (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-             <div className="clean-card p-6 md:p-8 max-w-sm w-full border-t-4 border-red-600 text-center shadow-2xl">
-                <div className="w-16 h-16 bg-red-500/20 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/40"><IconShieldAlert className="w-8 h-8" /></div>
-                <h3 className="text-xl font-black mb-2 text-white uppercase tracking-widest">Zona Berbahaya</h3>
-                <p className="text-xs text-red-400 mb-6 font-medium bg-red-500/10 p-3 rounded-xl">{message}</p>
-                <form onSubmit={handleSubmit}>
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+             <div className="bg-gradient-to-br from-navy-900 to-navy-950 p-6 md:p-8 max-w-sm w-full border border-white/10 rounded-[2rem] text-center shadow-2xl relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
+                <div className="w-16 h-16 bg-white/5 text-orange-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10 relative z-10"><IconShieldAlert className="w-8 h-8" /></div>
+                <h3 className="text-xl font-black mb-2 text-white relative z-10 uppercase tracking-widest">Zona Berbahaya</h3>
+                <p className="text-xs text-orange-400 mb-6 font-medium relative z-10 bg-orange-500/10 p-3 rounded-xl border border-orange-500/20">{message}</p>
+                <form onSubmit={handleSubmit} className="relative z-10">
                     <div className="relative mb-4">
                         <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input type="password" required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Sandi Admin" className="w-full bg-black/50 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm focus:border-red-500 transition text-white" />
+                        <input type={showPass ? "text" : "password"} required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Sandi Admin" className="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-sm focus:border-orange-500 transition text-white shadow-inner" />
+                        <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition">
+                            {showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}
+                        </button>
                     </div>
-                    {err && <div className="text-xs font-bold text-red-500 mb-4 animate-pulse">{err}</div>}
+                    {err && <div className="text-xs font-bold text-red-400 mb-4 animate-pulse bg-red-500/10 py-2 rounded-lg border border-red-500/20">{err}</div>}
                     <div className="flex gap-3">
-                        <button type="button" onClick={()=>{setPass(''); setErr(''); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm">Batal</button>
-                        <button type="submit" disabled={!pass || loading} className="flex-1 py-3.5 rounded-xl font-black bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : 'Otorisasi'}</button>
+                        <button type="button" onClick={()=>{setPass(''); setErr(''); setShowPass(false); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm border border-white/5">Batal</button>
+                        <button type="submit" disabled={!pass || loading} className="flex-[1.5] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : 'Otorisasi'}</button>
                     </div>
                 </form>
              </div>
@@ -286,6 +302,7 @@
 
     const AdminAuthModal = ({ isOpen, title, message, actionText, onConfirm, onCancel, authEmail }) => {
         const [pass, setPass] = useState(''); const [err, setErr] = useState(''); const [loading, setLoading] = useState(false);
+        const [showPass, setShowPass] = useState(false);
         if (!isOpen) return null;
         const handleSubmit = async (e) => {
             e.preventDefault(); setLoading(true); setErr('');
@@ -294,20 +311,24 @@
             finally { setLoading(false); }
         };
         return (
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-             <div className="clean-card p-6 md:p-8 max-w-sm w-full border-t-4 border-emerald-600 text-center shadow-2xl">
-                <div className="w-16 h-16 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/40"><IconShieldAlert className="w-8 h-8" /></div>
-                <h3 className="text-lg md:text-xl font-black mb-2 text-white uppercase tracking-widest">{title || 'Konfirmasi Keamanan'}</h3>
-                <p className="text-xs text-gray-400 mb-6 font-medium">{message}</p>
-                <form onSubmit={handleSubmit}>
+          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+             <div className="bg-gradient-to-br from-navy-900 to-navy-950 p-6 md:p-8 max-w-sm w-full border border-white/10 rounded-[2rem] text-center shadow-2xl relative overflow-hidden">
+                <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
+                <div className="w-16 h-16 bg-white/5 text-orange-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10 relative z-10"><IconLock className="w-8 h-8" /></div>
+                <h3 className="text-xl font-black mb-2 text-white relative z-10">{title || 'Konfirmasi Keamanan'}</h3>
+                <p className="text-xs text-gray-400 mb-6 font-medium relative z-10 px-2">{message}</p>
+                <form onSubmit={handleSubmit} className="relative z-10">
                     <div className="relative mb-4">
                         <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input type="password" required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Password Admin" className="w-full bg-black/50 border border-white/10 rounded-xl py-3.5 pl-11 pr-4 text-sm focus:border-emerald-500 transition text-white" />
+                        <input type={showPass ? "text" : "password"} required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Kata Sandi" className="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-sm focus:border-orange-500 transition text-white shadow-inner" />
+                        <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition">
+                            {showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}
+                        </button>
                     </div>
-                    {err && <div className="text-xs font-bold text-red-500 mb-4 animate-pulse">{err}</div>}
+                    {err && <div className="text-xs font-bold text-red-400 mb-4 animate-pulse bg-red-500/10 py-2 rounded-lg border border-red-500/20">{err}</div>}
                     <div className="flex gap-3">
-                        <button type="button" onClick={()=>{setPass(''); setErr(''); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm">Batal</button>
-                        <button type="submit" disabled={!pass || loading} className="flex-1 py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : actionText}</button>
+                        <button type="button" onClick={()=>{setPass(''); setErr(''); setShowPass(false); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm border border-white/5">Batal</button>
+                        <button type="submit" disabled={!pass || loading} className="flex-[1.5] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : actionText}</button>
                     </div>
                 </form>
              </div>
@@ -320,26 +341,46 @@
         const [pinInput, setPinInput] = useState(''); const [newPinCache, setNewPinCache] = useState('');
         const [passInput, setPassInput] = useState('');
         const [error, setError] = useState(''); const { addToast } = useToast();
+        const [showPass, setShowPass] = useState(false);
 
-        useEffect(() => { setPinInput(''); setPassInput(''); setStep(oldPinHash ? 1 : 2); setError(''); }, [isOpen, oldPinHash]);
-        if (!isOpen) return null;
+        useEffect(() => { setPinInput(''); setPassInput(''); setStep(oldPinHash ? 1 : 2); setError(''); setShowPass(false); }, [isOpen, oldPinHash]);
+        
+        const handleKey = useCallback((num) => {
+            setPinInput(prev => {
+                if (prev.length >= 6) return prev;
+                return prev + num;
+            });
+        }, []);
 
-        const handleKey = (num) => {
-            if (pinInput.length < 6) {
-                const updated = pinInput + num; setPinInput(updated);
-                if (updated.length === 6) {
-                    if (step === 1) {
-                        if (window.btoa(updated) === oldPinHash) { setStep(2); setPinInput(''); } 
-                        else { setError('PIN Lama Salah!'); addToast('PIN lama tidak cocok', 'error'); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
-                    } else if (step === 2) {
-                        setNewPinCache(updated); setStep(3); setPinInput('');
-                    } else if (step === 3) {
-                        if (updated === newPinCache) { onSuccess(updated); } 
-                        else { setError('Konfirmasi Gagal!'); addToast('Konfirmasi PIN tidak cocok', 'error'); setStep(2); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
-                    }
+        const handleDelete = useCallback(() => {
+            setPinInput(prev => prev.slice(0, -1));
+        }, []);
+
+        useEffect(() => {
+            const handler = (e) => {
+                if (!isOpen || step === 4) return;
+                if (/^[0-9]$/.test(e.key)) { handleKey(e.key); } 
+                else if (e.key === 'Backspace') { handleDelete(); }
+            };
+            window.addEventListener('keydown', handler);
+            return () => window.removeEventListener('keydown', handler);
+        }, [isOpen, step, handleKey, handleDelete]);
+
+        useEffect(() => {
+            if (pinInput.length === 6) {
+                if (step === 1) {
+                    if (window.btoa(pinInput) === oldPinHash) { setStep(2); setPinInput(''); } 
+                    else { setError('PIN Lama Salah!'); addToast('PIN lama tidak cocok', 'error'); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
+                } else if (step === 2) {
+                    setNewPinCache(pinInput); setStep(3); setPinInput('');
+                } else if (step === 3) {
+                    if (pinInput === newPinCache) { onSuccess(pinInput); } 
+                    else { setError('Konfirmasi Gagal!'); addToast('Konfirmasi PIN tidak cocok', 'error'); setStep(2); setTimeout(() => { setPinInput(''); setError(''); }, 1000); }
                 }
             }
-        };
+        }, [pinInput, step, oldPinHash, newPinCache, onSuccess, addToast]);
+
+        if (!isOpen) return null;
 
         const handleForgotSubmit = async (e) => {
             e.preventDefault(); setError('');
@@ -352,36 +393,43 @@
 
         return (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-white/10 shadow-2xl relative">
-                    <button onClick={onCancel} className="absolute top-6 right-6 text-gray-500 hover:text-white"><IconX className="w-6 h-6"/></button>
-                    <div className="text-center mb-8 mt-2">
-                        <div className="w-16 h-16 bg-orange-500/20 text-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/30"><IconLock className="w-8 h-8"/></div>
+                <div className={`w-full sm:max-w-sm rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative overflow-hidden border border-white/10 ${step === 4 ? 'bg-gradient-to-br from-navy-900 to-navy-950' : 'bg-[#0a0a0a]'}`}>
+                    {step === 4 && <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>}
+                    <button onClick={onCancel} className="absolute top-6 right-6 text-gray-500 hover:text-white z-20"><IconX className="w-6 h-6"/></button>
+                    <div className="text-center mb-8 mt-2 relative z-10">
+                        <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border ${step===4 ? 'bg-white/5 text-orange-400 border-white/10' : 'bg-orange-500/20 text-orange-400 border-orange-500/30'}`}><IconLock className="w-8 h-8"/></div>
                         <h3 className="text-xl font-black text-white">{titles[step]}</h3>
-                        <p className="text-xs text-gray-400 mt-2">{subs[step]}</p>
+                        <p className="text-xs text-gray-400 mt-2 px-4">{subs[step]}</p>
                     </div>
 
                     {step === 4 ? (
-                        <form onSubmit={handleForgotSubmit}>
-                            <input type="password" required value={passInput} onChange={(e)=>setPassInput(e.target.value)} placeholder="Password Akun" className="w-full bg-black/50 border border-white/10 rounded-xl py-4 px-4 text-sm text-white mb-4 focus:border-orange-500" />
-                            {error && <p className="text-red-500 text-xs font-black text-center mb-4">{error}</p>}
+                        <form onSubmit={handleForgotSubmit} className="relative z-10">
+                            <div className="relative mb-4">
+                                <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <input type={showPass ? "text" : "password"} required value={passInput} onChange={(e)=>setPassInput(e.target.value)} placeholder="Password Akun" className="w-full bg-black/40 border border-white/10 rounded-xl py-4 pl-11 pr-12 text-sm text-white focus:border-orange-500 transition shadow-inner" />
+                                <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition">
+                                    {showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}
+                                </button>
+                            </div>
+                            {error && <p className="text-red-400 text-xs font-black text-center mb-4 bg-red-500/10 py-2 rounded-lg border border-red-500/20">{error}</p>}
                             <div className="flex gap-2">
-                               <button type="button" onClick={()=>setStep(1)} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 text-white hover:bg-white/10 text-sm">Batal</button>
-                               <button type="submit" className="flex-[2] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white text-sm shadow-lg shadow-orange-500/30">Verifikasi</button>
+                               <button type="button" onClick={()=>{setStep(1); setError(''); setShowPass(false);}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 text-white hover:bg-white/10 text-sm border border-white/5">Batal</button>
+                               <button type="submit" className="flex-[2] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white text-sm shadow-lg shadow-orange-500/30 transition">Verifikasi</button>
                             </div>
                         </form>
                     ) : (
-                        <>
+                        <div className="relative z-10">
                             <div className="flex justify-center gap-3 mb-8">
                                 {[0,1,2,3,4,5].map(i => (<div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${i < pinInput.length ? 'bg-orange-500 border-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' : 'border-white/20'}`}></div>))}
                             </div>
                             {error && <p className="text-red-500 text-xs font-black text-center animate-pulse mb-4 -mt-4">{error}</p>}
                             <div className="grid grid-cols-3 gap-3">
-                                {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">{num}</button>))}
-                                {step === 1 ? <button onClick={()=>setStep(4)} className="text-[10px] font-bold text-orange-500 hover:text-orange-400 underline">Lupa PIN?</button> : <div></div>}
-                                <button onClick={()=>handleKey(0)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">0</button>
-                                <button onClick={()=>setPinInput(p=>p.slice(0,-1))} className="bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl py-4 flex items-center justify-center text-red-500 transition active:scale-95"><IconChevronLeft className="w-8 h-8"/></button>
+                                {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num.toString())} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">{num}</button>))}
+                                {step === 1 ? <button onClick={()=>{setStep(4); setError('');}} className="text-[10px] font-bold text-orange-500 hover:text-orange-400 underline">Lupa PIN?</button> : <div></div>}
+                                <button onClick={()=>handleKey('0')} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">0</button>
+                                <button onClick={handleDelete} className="bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl py-4 flex items-center justify-center text-red-500 transition active:scale-95"><IconChevronLeft className="w-8 h-8"/></button>
                             </div>
-                        </>
+                        </div>
                     )}
                 </div>
             </div>
@@ -391,21 +439,39 @@
     const PinModal = ({ isOpen, mode, expectedPin, onSuccess, onCancel }) => {
         const [pin, setPin] = useState(''); const [error, setError] = useState(''); const { addToast } = useToast();
         useEffect(() => { setPin(''); setError(''); }, [isOpen]);
-        if (!isOpen) return null;
+        
+        const handleKey = useCallback((num) => {
+            setPin(prev => {
+                if (prev.length >= 6) return prev;
+                return prev + num;
+            });
+        }, []);
 
-        const handleKey = (num) => {
-            if (pin.length < 6) {
-                const newPin = pin + num; setPin(newPin);
-                if (newPin.length === 6) {
-                    if (mode === 'setup') { onSuccess(newPin); } 
-                    else if (mode === 'verify') {
-                        if (window.btoa(newPin) === expectedPin) { onSuccess(); } 
-                        else { setError('PIN Tidak Valid!'); addToast('PIN yang dimasukkan salah.', 'error'); setTimeout(() => { setPin(''); setError(''); }, 1000); }
-                    }
+        const handleDelete = useCallback(() => {
+            setPin(prev => prev.slice(0, -1));
+        }, []);
+
+        useEffect(() => {
+            const handler = (e) => {
+                if (!isOpen) return;
+                if (/^[0-9]$/.test(e.key)) { handleKey(e.key); } 
+                else if (e.key === 'Backspace') { handleDelete(); }
+            };
+            window.addEventListener('keydown', handler);
+            return () => window.removeEventListener('keydown', handler);
+        }, [isOpen, handleKey, handleDelete]);
+
+        useEffect(() => {
+            if (pin.length === 6) {
+                if (mode === 'setup') { onSuccess(pin); } 
+                else if (mode === 'verify') {
+                    if (window.btoa(pin) === expectedPin) { onSuccess(); } 
+                    else { setError('PIN Tidak Valid!'); addToast('PIN yang dimasukkan salah.', 'error'); setTimeout(() => { setPin(''); setError(''); }, 1000); }
                 }
             }
-        };
-        const handleDelete = () => setPin(prev => prev.slice(0, -1));
+        }, [pin, mode, expectedPin, onSuccess, addToast]);
+
+        if (!isOpen) return null;
 
         return (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
@@ -421,9 +487,9 @@
                     </div>
                     {error && <p className="text-red-500 text-xs font-black text-center animate-pulse mb-4 -mt-4">{error}</p>}
                     <div className="grid grid-cols-3 gap-3">
-                        {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">{num}</button>))}
+                        {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num.toString())} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">{num}</button>))}
                         <div className="col-span-1"></div>
-                        <button onClick={()=>handleKey(0)} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">0</button>
+                        <button onClick={()=>handleKey('0')} className="bg-white/5 hover:bg-white/10 border border-white/5 rounded-2xl py-4 text-2xl font-black text-white transition active:scale-95">0</button>
                         <button onClick={handleDelete} className="bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl py-4 flex items-center justify-center text-red-500 transition active:scale-95"><IconChevronLeft className="w-8 h-8"/></button>
                     </div>
                 </div>
@@ -431,7 +497,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V10.0
+    // PREMIUM ORDER SUMMARY MODAL V10.1
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -462,7 +528,7 @@
                         </div>
                     </div>
                     <div className="flex gap-3 pt-2">
-                        <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-xs uppercase tracking-widest">Batal</button>
+                        <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-xs uppercase tracking-widest border border-white/5">Batal</button>
                         <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white flex justify-center items-center gap-2 shadow-[0_10px_20px_rgba(16,185,129,0.3)] transition text-xs uppercase tracking-widest">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Konfirmasi & Bayar'}</button>
                     </div>
                 </div>
@@ -480,10 +546,39 @@
                     <h3 className="text-xl font-black text-white mb-2">Pesanan Berhasil Dibuat</h3>
                     <p className="text-xs text-gray-400 mb-8 leading-relaxed">Mohon tunggu proses dari sistem. Anda dapat melihat instruksi pembayaran di riwayat pesanan.</p>
                     <div className="flex flex-col sm:flex-row gap-3">
-                        <button onClick={onBack} className="w-full py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white text-sm transition order-2 sm:order-1">Kembali</button>
+                        <button onClick={onBack} className="w-full py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white text-sm transition order-2 sm:order-1 border border-white/5">Kembali</button>
                         <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30 order-1 sm:order-2">Lihat Riwayat Pesanan</button>
                     </div>
                 </div>
+            </div>
+        )
+    }
+
+    // ADMIN SCANNER RESULT MODAL V10.1
+    const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
+        if (!isOpen || !order) return null;
+        
+        const pastOrders = allGlobalOrders.filter(o => o.userEmail === order.userEmail && o.status === 'Sukses').length;
+        const vip = calculateVIPLevel(pastOrders);
+        const cashbackEarned = order.priceTotal * vip.cashback;
+
+        return (
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                 <div className="clean-card p-6 md:p-8 w-full max-w-md shadow-2xl border border-white/10 relative">
+                     <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-white"><IconX className="w-5 h-5"/></button>
+                     <h3 className="text-xl font-black mb-4 text-white flex items-center gap-2"><IconQrcode className="w-6 h-6 text-orange-500"/> Hasil Scan QRIS</h3>
+                     <div className="bg-black/50 p-4 rounded-xl border border-white/5 space-y-3 mb-6 text-sm shadow-inner">
+                        <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">ID Pesanan</span><span className="font-mono font-bold text-white bg-white/5 px-2 py-1 rounded">{order.id}</span></div>
+                        <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Game & Item</span><span className="font-bold text-white text-right">{order.gameName}<br/><span className="text-orange-400 text-[10px] uppercase tracking-widest">{order.nominalName}</span></span></div>
+                        <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Target ID</span><span className="font-mono font-bold text-white text-right">{order.targetUserId} {order.targetZoneId ? `(${order.targetZoneId})` : ''} {order.targetNickname ? <><br/><span className="text-[10px] text-gray-400">{order.targetNickname}</span></> : ''}</span></div>
+                        <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Total Harga</span><span className="font-bold text-emerald-400 text-lg">{formatRupiah(order.priceTotal)}</span></div>
+                        {cashbackEarned > 0 && <div className="flex justify-between items-center pt-2 border-t border-white/5"><span className="text-gray-400 text-xs">Cashback Diterima User</span><span className="font-bold text-orange-400 font-mono text-xs bg-orange-500/10 px-2 py-1 rounded">+{formatRupiah(cashbackEarned)} ({vip.level})</span></div>}
+                     </div>
+                     <div className="flex flex-col gap-2">
+                         <button onClick={() => onValidate(order.id, 'Sukses')} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition">Validasi Sukses (Lunas)</button>
+                         <button onClick={() => onCancelOrder(order.id, 'Batal')} className="w-full bg-red-600/10 text-red-500 hover:bg-red-600 hover:text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-widest border border-red-500/20 transition">Batalkan Pesanan</button>
+                     </div>
+                 </div>
             </div>
         )
     }
@@ -508,7 +603,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v10.0 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v10.1 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -670,6 +765,7 @@
       const [adminOrderSearch, setAdminOrderSearch] = useState('');
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
+      const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); // NEW V10.1
       
       const [supportTab, setSupportTab] = useState('member'); 
       const [activeChatEmail, setActiveChatEmail] = useState(null);
@@ -703,12 +799,21 @@
       const chatEndRef = useRef(null);
 
       // Kunci scroll saat popup terbuka
-      const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || adminTrxModal.isOpen;
+      const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen;
       useEffect(() => {
           if (isAnyModalOpen) document.body.classList.add('modal-open');
           else document.body.classList.remove('modal-open');
           return () => { document.body.classList.remove('modal-open'); }
       }, [isAnyModalOpen]);
+
+      // Dynamic Greeting (V10.1)
+      const greeting = useMemo(() => {
+          const hour = new Date().getHours();
+          if (hour < 11) return 'Pagi 🌅';
+          if (hour < 15) return 'Siang ☀️';
+          if (hour < 18) return 'Sore 🌇';
+          return 'Malam 🌙';
+      }, []);
 
       // Smart Notification Clear
       useEffect(() => {
@@ -725,6 +830,7 @@
               }
           }
       }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
+
 
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
@@ -754,12 +860,12 @@
                else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null });
                else if (orderSuccessModal) setOrderSuccessModal(false);
                else if (isScannerOpen) setIsScannerOpen(false);
-               else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null});
+               else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null});
                else handleBack();
             }
          };
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
-      }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, adminTrxModal, selectedGame, viewHistory]);
+      }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, selectedGame, viewHistory]);
 
       useEffect(() => {
          try {
@@ -848,8 +954,11 @@
                       let parsedText = decodedText;
                       if((decodedText||'').startsWith('CASH-VPC-')) parsedText = decodedText.replace('CASH-', '');
                       const matchedOrder = (adminOrders || []).find(o => o.id === parsedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === parsedText);
-                      if (matchedOrder) { playSuccessBeep(); addToast(`Terdeteksi: ${matchedOrder.id}`, 'success'); setIsScannerOpen(false); updateOrderStatus(matchedOrder.id, 'Sukses'); } 
-                      else { addToast("Kode QR tidak dikenal.", "error"); }
+                      if (matchedOrder) { 
+                          playSuccessBeep(); 
+                          setIsScannerOpen(false); 
+                          setScannerResultModal({ isOpen: true, order: matchedOrder }); 
+                      } else { addToast("Kode QR tidak dikenal.", "error"); }
                    }, (err) => {}
                 ).catch(err => {
                     html5QrCode.start({ facingMode: "user" }, config, (text) => {}, (e)=>{}).catch(()=> { addToast("Kamera tidak dapat diakses.", "error"); setIsScannerOpen(false); });
@@ -945,7 +1054,7 @@
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // Smart Validation Checkout - V10.0 Update (Button placed under Payment Method, Persistent)
+      // Smart Validation Checkout - V10.1 Update
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1049,13 +1158,6 @@
              const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); 
              setAdminReplyText(''); setTimeout(()=> { adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
          } catch(err) { addToast('Gagal membalas', 'error'); }
-      };
-
-      const handleValidateTrxFromChat = async () => {
-         if(!adminTrxModal.order) return;
-         await updateOrderStatus(adminTrxModal.order.id, 'Sukses');
-         handleAdminSendChat(null, `[Sistem] Pesanan Anda (ID: ${adminTrxModal.order.id}) telah divalidasi dan berstatus SUKSES. Proses pengiriman item membutuhkan waktu 1-3 Menit.`, false);
-         setAdminTrxModal({isOpen: false, order: null});
       };
 
       const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
@@ -1205,27 +1307,7 @@
           <PinModal isOpen={pinModalState.isOpen} mode={pinModalState.mode} expectedPin={pinModalState.expectedPin} onSuccess={pinModalState.onSuccess} onCancel={() => setPinModalState({isOpen:false, mode:'setup', onSuccess:null})} />
           <OrderSummaryModal isOpen={checkoutSummary.isOpen} data={checkoutSummary.data} onConfirm={executeFinalPayment} onCancel={()=>setCheckoutSummary({isOpen:false, data:null})} isProcessing={isProcessing} />
           <OrderSuccessModal isOpen={orderSuccessModal} onBack={() => {setOrderSuccessModal(false); setSelectedGame(null); window.scrollTo({top:0, behavior:'smooth'});}} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} />
-
-          {/* ADMIN TRX MODAL DETAIL (dari Chat Bantuan) */}
-          {adminTrxModal.isOpen && adminTrxModal.order && (
-              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-                  <div className="clean-card p-6 md:p-8 max-w-sm w-full border border-white/10 shadow-2xl relative">
-                     <button onClick={()=>setAdminTrxModal({isOpen:false, order:null})} className="absolute top-4 right-4 text-gray-500 hover:text-white"><IconX className="w-5 h-5"/></button>
-                     <h3 className="text-xl font-black mb-4 text-white">Validasi Pesanan User</h3>
-                     <div className="bg-black/50 p-4 rounded-xl border border-white/5 space-y-2 mb-6">
-                        <div className="flex justify-between"><span className="text-xs text-gray-400">ID TRX</span><span className="text-xs font-mono font-bold text-white">{adminTrxModal.order.id}</span></div>
-                        <div className="flex justify-between"><span className="text-xs text-gray-400">Game</span><span className="text-xs font-bold text-orange-400">{adminTrxModal.order.gameName}</span></div>
-                        <div className="flex justify-between"><span className="text-xs text-gray-400">Target</span><span className="text-xs font-bold text-white">{adminTrxModal.order.targetUserId} {adminTrxModal.order.targetZoneId}</span></div>
-                        <div className="flex justify-between"><span className="text-xs text-gray-400">Harga</span><span className="text-xs font-bold text-emerald-400">{formatRupiah(adminTrxModal.order.priceTotal)}</span></div>
-                        <div className="flex justify-between pt-2 border-t border-white/5"><span className="text-xs text-gray-400">Status Saat Ini</span><span className={`text-xs font-black ${adminTrxModal.order.status==='Sukses'?'text-emerald-500':'text-orange-500'}`}>{adminTrxModal.order.status}</span></div>
-                     </div>
-                     <div className="flex gap-2">
-                         <button onClick={()=>setAdminTrxModal({isOpen:false, order:null})} className="flex-1 bg-white/5 hover:bg-white/10 text-white font-bold py-3 rounded-xl text-xs transition">Batal</button>
-                         <button onClick={handleValidateTrxFromChat} disabled={adminTrxModal.order.status==='Sukses'} className="flex-[2] bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest shadow-lg transition">Validasi (Sukses)</button>
-                     </div>
-                  </div>
-              </div>
-          )}
+          <ScannerResultModal isOpen={scannerResultModal.isOpen} order={scannerResultModal.order} allGlobalOrders={allGlobalOrders} onClose={() => setScannerResultModal({isOpen: false, order: null})} onValidate={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} onCancelOrder={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} />
 
           {/* SCANNER KASIR QR (ADMIN ONLY) */}
           {isScannerOpen && (
@@ -1402,6 +1484,14 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
+                {/* Greeting Dinamis V10.1 */}
+                <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">Selamat {greeting},</h1>
+                        <h2 className="text-xl md:text-2xl font-black text-orange-500 mt-1">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
+                    </div>
+                </div>
+
                 {/* Komponen Banner Slider */}
                 {!selectedGame && <BannerSlider items={banners} />}
                 
@@ -1442,7 +1532,7 @@
                    </div>
                 )}
 
-                {/* UI Katalog Game (Clean & Minimalist v10.0) */}
+                {/* UI Katalog Game (Clean & Minimalist v10.1) */}
                 <div className="relative z-20 mb-12">
                    {!selectedGame && (
                        <div className="flex items-center gap-3 mb-6 pl-2">
@@ -1531,7 +1621,7 @@
                             </div>
 
                             {/* Card 2: Pilih Produk */}
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500">
+                            <div className={`clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500 ${userId.length >= 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconBox className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-white mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-black w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk</h3>
                                
@@ -1571,7 +1661,7 @@
                          <div className="lg:col-span-5 space-y-6">
                             
                             {/* Card 3: Pembayaran */}
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500">
+                            <div className={`clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconWallet className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-white mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-black w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
                                
@@ -1621,7 +1711,7 @@
                                </div>
                             </div>
 
-                            {/* Card 4: Ringkasan & Checkout Button (V10.0 - Absolute Placed) */}
+                            {/* Card 4: Ringkasan & Checkout Button (V10.1 - Absolute Placed) */}
                             <div className="clean-card p-6 md:p-8 shadow-[0_10px_40px_rgba(249,115,22,0.15)] border-t-4 border-emerald-500 relative overflow-hidden mt-6">
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconCheckCircle className="w-24 h-24 text-emerald-500"/></div>
                                <div className="flex items-center justify-between mb-4 relative z-10 border-b border-white/10 pb-4">
@@ -1903,7 +1993,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V10.0)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V10.1)                                         */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -1914,7 +2004,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-white truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v10.0</span>
+                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v10.1</span>
                         </div>
                      </div>
 
@@ -1960,7 +2050,7 @@
                         {/* TAB: STATISTIK DASHBOARD */}
                         {activeAdminTab === 'dashboard' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500">
-                              <h2 className="text-2xl font-black mb-6 text-white px-2 flex items-center gap-2"><IconTrendingUp className="w-6 h-6 text-red-500"/> Ringkasan Sistem Server</h2>
+                              <h2 className="text-2xl font-black mb-6 text-white px-2 flex items-center gap-2">IconTrendingUp className="w-6 h-6 text-red-500"/> Ringkasan Sistem Server</h2>
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                                  <div className="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-blue-500/30">
                                     <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
@@ -2118,7 +2208,7 @@
                                           <td className="px-5 py-4">
                                              <div className="flex items-center justify-center gap-2">
                                                 {m.phone && (
-                                                    <button onClick={()=>window.open(`https://wa.me/${m.phone.replace(/^0/,'62')}?text=Halo%20${m.name},%20kami%20dari%20Vipercell.%20Kami%20ingin%20menginformasikan%20sesuatu%20tentang%20akun%20Anda.`,'_blank')} className="p-2 bg-green-500/10 border border-green-500/30 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition tooltip shadow-sm" title="Chat WhatsApp">
+                                                    <button onClick={()=>window.open(`https://wa.me/${m.phone.replace(/^0/,'62')}?text=Halo%20${m.name},%20kami%20dari%20Vipercell.%20Kami%20ingin%20menginformasikan%20sesuatu%20tentang%20akun%20Anda.`, '_blank')} className="p-2 bg-green-500/10 border border-green-500/30 text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition tooltip shadow-sm" title="Chat WhatsApp">
                                                         <IconWhatsapp className="w-4 h-4"/>
                                                     </button>
                                                 )}
