@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v9.3.1</title>
+  <title>Vipercell - Premium Top Up v9.3.9</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -34,7 +34,7 @@
   
   <style>
     /* =========================================
-       UI CLEAN & MODERN V9.3.1 (ANTI-CRASH)
+       UI CLEAN & MODERN V9.3.9 (ANTI-CRASH)
        ========================================= */
     body { background-color: #050505; color: #f3f4f6; transition: background-color 0.5s ease; overscroll-behavior-y: none; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     
@@ -54,6 +54,9 @@
     .hardware-accel { transform: translateZ(0); will-change: transform; }
     .marquee-container { display: flex; white-space: nowrap; overflow: hidden; position: relative; width: 100%; }
     .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 25s linear infinite; will-change: transform; padding-left: 100%; }
+
+    /* Pengunci scroll saat popup aktif */
+    body.modal-open { overflow: hidden; touch-action: none; }
   </style>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -93,7 +96,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V9.3.1
+    // FUNGSI HELPER & UTILITIES V9.3.9
     // ==========================================
     const playSuccessBeep = () => { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const osc = ctx.createOscillator(); const gainNode = ctx.createGain(); osc.connect(gainNode); gainNode.connect(ctx.destination); osc.type = 'square'; osc.frequency.setValueAtTime(800, ctx.currentTime); osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1); gainNode.gain.setValueAtTime(1, ctx.currentTime); gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2); osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.2); } catch(e) {} };
     
@@ -136,7 +139,7 @@
     }
 
     // ==========================================
-    // KOMPONEN ICON SVG OPTIMAL V9.3.1
+    // KOMPONEN ICON SVG OPTIMAL
     // ==========================================
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}>{d}</svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d={<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>}/>;
@@ -199,7 +202,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) PROVIDER - UI MOBILE FIXED
+    // NOTIFICATION (TOAST) MODERN V9.3.9 (DYNAMIC ISLAND STYLE)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -209,25 +212,38 @@
         const addToast = useCallback((msg, type = 'success') => {
             const id = Date.now() + Math.random();
             setToasts(prev => [...prev, { id, msg, type }]);
-            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 3500);
+            setTimeout(() => { setToasts(prev => prev.filter(t => t.id !== id)); }, 4000);
         }, []);
+        
+        const removeToast = (id) => {
+            setToasts(prev => prev.filter(t => t.id !== id));
+        }
+
         return (
             <ToastContext.Provider value={{ addToast }}>
                 {children}
-                <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:top-auto z-[10000] flex flex-col gap-2 pointer-events-none sm:w-96">
-                    {toasts.map(t => (
-                        <div key={t.id} className={`p-4 rounded-xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-8 pointer-events-auto backdrop-blur-md border ${t.type === 'error' ? 'bg-red-500/20 border-red-500/50 text-red-100' : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-100'}`}>
-                            {t.type === 'error' ? <IconX className="w-5 h-5 text-red-500 shrink-0"/> : <IconCheckCircle className="w-5 h-5 text-emerald-500 shrink-0"/>}
-                            <span className="text-xs sm:text-sm font-bold leading-tight drop-shadow-md">{t.msg}</span>
+                <div className="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 z-[10000] flex flex-col gap-2 items-center pointer-events-none w-[90%] sm:w-auto">
+                    {toasts.map(t => {
+                        let colors = ''; let icon = '';
+                        if(t.type==='success') { colors='bg-emerald-500/90 border-emerald-400 text-white'; icon='🟢'; }
+                        else if(t.type==='error') { colors='bg-red-500/90 border-red-400 text-white'; icon='🔴'; }
+                        else if(t.type==='warning') { colors='bg-orange-500/90 border-orange-400 text-white'; icon='🟠'; }
+                        else if(t.type==='info' || t.type==='process') { colors='bg-blue-500/90 border-blue-400 text-white'; icon='🔵'; }
+                        
+                        return (
+                        <div key={t.id} className={`pointer-events-auto flex items-center gap-3 px-5 py-3 rounded-full shadow-2xl backdrop-blur-xl border ${colors} animate-in slide-in-from-top-8 zoom-in-95 fade-in duration-300 transform transition-all`}>
+                            <span className={`text-sm shrink-0 drop-shadow-md ${t.type==='process' ? 'animate-spin' : ''}`}>{t.type==='process' ? '⏳' : icon}</span>
+                            <span className="text-xs sm:text-sm font-bold leading-tight drop-shadow-md truncate max-w-[250px] sm:max-w-[400px]">{t.msg}</span>
+                            <button onClick={()=>removeToast(t.id)} className="ml-2 opacity-70 hover:opacity-100 transition shrink-0"><IconX className="w-4 h-4"/></button>
                         </div>
-                    ))}
+                    )})}
                 </div>
             </ToastContext.Provider>
         );
     };
 
     // ==========================================
-    // UI MODALS & DIALOGS
+    // UI MODALS & DIALOGS (FIXED CENTER)
     // ==========================================
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
@@ -344,8 +360,8 @@
         const subs = { 1: 'Verifikasi identitas Anda.', 2: 'Masukkan 6 digit angka rahasia.', 3: 'Ulangi 6 digit angka yang baru.', 4: 'Masukkan password akun Anda.' };
 
         return (
-            <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-t-[2.5rem] sm:rounded-[2.5rem] p-6 md:p-8 border border-white/10 shadow-2xl relative">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-[2.5rem] p-6 md:p-8 border border-white/10 shadow-2xl relative">
                     <button onClick={onCancel} className="absolute top-6 right-6 text-gray-500 hover:text-white"><IconX className="w-6 h-6"/></button>
                     <div className="text-center mb-8 mt-2">
                         <div className="w-16 h-16 bg-orange-500/20 text-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/30"><IconLock className="w-8 h-8"/></div>
@@ -401,13 +417,13 @@
         const handleDelete = () => setPin(prev => prev.slice(0, -1));
 
         return (
-            <div className="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-t-[2.5rem] sm:rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative">
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+                <div className="w-full sm:max-w-sm bg-[#0a0a0a] rounded-[2.5rem] p-8 border border-white/10 shadow-2xl relative">
                     <button onClick={onCancel} className="absolute top-6 right-6 text-gray-500 hover:text-white"><IconX className="w-6 h-6"/></button>
                     <div className="text-center mb-8 mt-2">
                         <div className="w-16 h-16 bg-orange-500/20 text-orange-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-orange-500/30"><IconLock className="w-8 h-8"/></div>
-                        <h3 className="text-xl font-black text-white">{mode === 'setup' ? 'Buat PIN Transaksi' : 'Masukkan PIN Transaksi'}</h3>
-                        <p className="text-xs text-gray-400 mt-2">{mode === 'setup' ? 'Amankan transaksi Anda dengan 6 digit.' : 'Otorisasi pembayaran ini dengan PIN Anda.'}</p>
+                        <h3 className="text-xl font-black text-white">{mode === 'setup' ? 'Buat PIN Transaksi' : 'Verifikasi PIN'}</h3>
+                        <p className="text-xs text-gray-400 mt-2">{mode === 'setup' ? 'Amankan transaksi Anda dengan 6 digit.' : 'Masukkan PIN Anda untuk melanjutkan pesanan.'}</p>
                     </div>
                     <div className="flex justify-center gap-3 mb-8">
                         {[0,1,2,3,4,5].map(i => (<div key={i} className={`w-4 h-4 rounded-full border-2 transition-all ${i < pin.length ? 'bg-orange-500 border-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' : 'border-white/20'}`}></div>))}
@@ -430,7 +446,7 @@
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
              <div className="clean-card p-6 md:p-8 w-full max-w-md shadow-2xl border border-white/10 relative overflow-hidden">
                 <h3 className="font-black text-xl mb-1 text-white text-center">Konfirmasi Pesanan</h3>
-                <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data yang dimasukkan sudah benar sebelum bayar.</p>
+                <p className="text-xs text-gray-500 font-medium mb-6 text-center">Pastikan data pesanan Anda sudah benar.</p>
                 <div className="bg-white/5 p-4 rounded-2xl border border-white/10 flex items-center gap-4 my-6">
                     <img src={data.gameImage} className="w-12 h-12 rounded-xl object-cover border border-white/10" />
                     <div><div className="font-black text-sm text-white">{data.gameName}</div><div className="text-xs text-orange-400 font-bold">{data.itemName}</div></div>
@@ -438,7 +454,7 @@
                 <div className="bg-black/50 p-4 rounded-2xl border border-white/5 space-y-3 mb-6 shadow-inner text-sm">
                     <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">ID Tujuan</span><span className="font-mono font-black text-white text-right">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                     {data.nickname && <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Nickname</span><span className="font-bold text-white text-right">{data.nickname}</span></div>}
-                    <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Metode</span><span className="font-black text-white text-right">{data.paymentName}</span></div>
+                    <div className="flex justify-between"><span className="text-xs font-bold text-gray-500">Metode Pembayaran</span><span className="font-black text-white text-right">{data.paymentName}</span></div>
                     {data.usedCashback > 0 && <div className="flex justify-between text-orange-400"><span className="text-xs font-bold">Potongan Cashback</span><span className="font-black font-mono">- {formatRupiah(data.usedCashback)}</span></div>}
                     <div className="flex justify-between border-t border-white/10 pt-3 mt-1"><span className="font-black text-gray-300">Total Bayar</span><span className="text-lg font-black text-emerald-500">{formatRupiah(data.finalPrice)}</span></div>
                 </div>
@@ -458,10 +474,10 @@
                 <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.2)] relative overflow-hidden">
                     <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/50"><IconCheckCircle className="w-10 h-10"/></div>
                     <h3 className="text-xl font-black text-white mb-2">Pesanan Berhasil Dibuat</h3>
-                    <p className="text-xs text-gray-400 mb-8 leading-relaxed">Mohon tunggu proses pesanan Anda. Anda dapat melihat instruksi pembayaran di riwayat.</p>
+                    <p className="text-xs text-gray-400 mb-8 leading-relaxed">Mohon tunggu proses dari sistem. Anda dapat melihat instruksi pembayaran di riwayat pesanan.</p>
                     <div className="flex flex-col sm:flex-row gap-3">
                         <button onClick={onBack} className="w-full py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white text-sm transition order-2 sm:order-1">Kembali</button>
-                        <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30 order-1 sm:order-2">Ke Riwayat Pesanan</button>
+                        <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30 order-1 sm:order-2">Lihat Riwayat Pesanan</button>
                     </div>
                 </div>
             </div>
@@ -488,7 +504,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-gray-500 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.3.1 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-white/10 rounded-md font-mono text-[9px] text-orange-400 border border-white/5">v9.3.9 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -553,9 +569,9 @@
           <div className="w-full h-56 md:h-80 rounded-[2.5rem] overflow-hidden mb-10 relative border border-white/10 shadow-2xl bg-black mt-6 group z-10">
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 cursor-pointer ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`} onClick={()=>setExpanded(!expanded)}>
-                   {b.type === 'youtube' ? ( <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div> ) : 
-                    (b.type === 'video' || ((b.url||'').match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline loop autoPlay={i===curr} /> ) : 
-                    ( <img src={b.url} className="w-full h-full object-cover opacity-80 transition duration-[6000ms] ease-in-out transform scale-100 group-hover:scale-105" /> )}
+                    {b.type === 'youtube' ? ( <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-80 scale-105"></div> ) : 
+                     (b.type === 'video' || ((b.url||'').match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-80" playsInline loop autoPlay={i===curr} /> ) : 
+                     ( <img src={b.url} className="w-full h-full object-cover opacity-80 transition duration-[6000ms] ease-in-out transform scale-100 group-hover:scale-105" /> )}
                    
                    {(b.title || b.desc) && (
                       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex flex-col justify-end p-6 md:p-8 z-20 pointer-events-none">
@@ -673,6 +689,7 @@
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
       const [inputPromo, setInputPromo] = useState(''); const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
+      const [useCashback, setUseCashback] = useState(false);
       const [checkoutSummary, setCheckoutSummary] = useState({ isOpen: false, data: null });
       const [orderSuccessModal, setOrderSuccessModal] = useState(false);
       const [lastOrderId, setLastOrderId] = useState(''); 
@@ -684,10 +701,35 @@
       const [isChatFullScreen, setIsChatFullScreen] = useState(false);
       const chatEndRef = useRef(null);
 
+      // Kunci scroll saat popup terbuka
+      const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || loginHelpModal || adminTrxModal.isOpen;
+      useEffect(() => {
+          if (isAnyModalOpen) document.body.classList.add('modal-open');
+          else document.body.classList.remove('modal-open');
+          return () => { document.body.classList.remove('modal-open'); }
+      }, [isAnyModalOpen]);
+
+      // Smart Notification Clear
+      useEffect(() => {
+          if (currentView === 'chat' && userChat?.status === 'Dijawab') {
+              setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{});
+          }
+      }, [currentView, userChat, authUser]);
+
+      useEffect(() => {
+          if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) {
+              const chat = adminChats.find(c => c.id === activeChatEmail);
+              if (chat && chat.status === 'Open') {
+                  setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{});
+              }
+          }
+      }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
+
+
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
          setCurrentView(view); setMobileMenuOpen(false); setProfileDropdownOpen(false); setIsChatFullScreen(false);
-         if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); }
+         if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); }
          window.scrollTo({top:0, behavior:'smooth'});
       };
       
@@ -879,6 +921,7 @@
 
       const handleSendPublicHelp = async (e) => {
           e.preventDefault(); if(!email || !(loginHelpMsg||'').trim()) return; setAuthLoading(true);
+          addToast('Sedang mengirim pesan...', 'process');
           try { 
               const docRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'public_help', email);
               const newMsg = { sender: 'user', text: loginHelpMsg, time: new Date().toISOString() };
@@ -887,7 +930,7 @@
               else { await setDoc(docRef, { email: email, messages: [newMsg], updatedAt: new Date().toISOString() }); }
               addToast('Pesan berhasil dikirim. Mohon tunggu balasan dari admin', 'success'); setLoginHelpMsg(''); 
               setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100);
-          } catch(e) { addToast('Gagal mengirim pesan.', 'error'); } 
+          } catch(e) { addToast('Pesan gagal dikirim. Silakan coba lagi.', 'error'); } 
           setAuthLoading(false);
       }
 
@@ -910,12 +953,13 @@
       };
 
       const handleApplyPromoCode = () => {
+         if(!selectedNominal) return addToast('❌ Pilih produk top up terlebih dahulu sebelum pasang promo.', 'error');
          const promo = (promos || []).find(p => p.category === 'code' && p.isActive && (p.code || '').toUpperCase() === inputPromo.toUpperCase());
-         if (!promo) return addToast('Kode Promo tidak valid.', 'error');
-         if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('Sudah digunakan.', 'error');
-         if (promo.usedBy && (promo.usedBy.length || 0) >= promo.maxUses) return addToast('Kuota habis.', 'error');
-         if (promo.minPurchase && selectedNominal && selectedNominal.price < promo.minPurchase) return addToast(`Minimum pembelian Rp ${promo.minPurchase}.`, 'error');
-         setActivePromo(promo); addToast('Kupon diterapkan!', 'success');
+         if (!promo) return addToast('❌ Kode Promo tidak valid atau sudah kadaluarsa.', 'error');
+         if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('❌ Anda sudah menggunakan kode promo ini.', 'error');
+         if (promo.usedBy && (promo.usedBy.length || 0) >= promo.maxUses) return addToast('❌ Kuota kode promo sudah habis.', 'error');
+         if (promo.minPurchase && selectedNominal.price < promo.minPurchase) return addToast(`❌ Minimum pembelian untuk promo ini Rp ${formatRupiah(promo.minPurchase)}.`, 'error');
+         setActivePromo(promo); addToast('Kupon berhasil diterapkan!', 'success');
       };
 
       const calculateFinalPrice = (basePrice, itemId) => { 
@@ -929,12 +973,20 @@
       const userTotalTx = userOrders.filter(o => o.status === 'Sukses').length;
       const userVipData = calculateVIPLevel(userTotalTx);
 
+      const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
+
+      // Smart Validation Checkout - V9.3.9 Update (Button placed under Payment Method)
       const triggerCheckout = () => { 
-          if (!userId || !selectedNominal || !selectedPayment) return; 
-          if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) { addToast('ID Game hanya boleh berisi angka.', 'error'); return; }
+          if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'error'); return; }
+          if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'error'); return; }
+          if (selectedGame?.inputType === 'riot_id' && !zoneId) { addToast('❌ Data Akun: Tagline (#) Riot belum diisi!', 'error'); return; }
+          if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) { addToast('❌ Data Akun: ID Game hanya boleh berisi angka.', 'error'); return; }
+          if (!selectedNominal) { addToast('❌ Produk: Pilih produk top up terlebih dahulu.', 'error'); return; }
+          if (!selectedPayment) { addToast('❌ Pembayaran: Pilih metode pembayaran.', 'error'); return; }
+          
           const maxCashback = currentUserData?.saldoCashback || 0;
           const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id);
-          const usedCashback = Math.min(basePrice, maxCashback);
+          const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
           const fPrice = basePrice - usedCashback;
           setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
       };
@@ -947,9 +999,10 @@
 
       const processCheckout = async () => {
         setIsProcessing(true);
+        addToast('Sedang memproses pesanan...', 'process');
         let maxCashback = currentUserData?.saldoCashback || 0;
         let basePrice = calculateFinalPrice(selectedNominal.price + selectedPayment.fee, selectedNominal.id); 
-        let usedCashback = Math.min(basePrice, maxCashback);
+        let usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
         let finalPrice = basePrice - usedCashback;
 
         const activeAutoPromos = getActivePromosForItem(selectedNominal.id); let usedPromoIds = []; let appliedPromoCode = [];
@@ -972,7 +1025,7 @@
           
           await batch.commit();
           setLastOrderId(orderRef.id); setExpandedHistoryId(orderRef.id); playSuccessBeep(); setOrderSuccessModal(true);
-        } catch (error) { addToast("Gagal memproses pesanan.", "error"); } finally { setIsProcessing(false); }
+        } catch (error) { addToast("Gagal memproses pesanan sistem.", "error"); } finally { setIsProcessing(false); }
       };
 
       const handleSendChatUser = async (e, customStr = null) => {
@@ -1004,7 +1057,7 @@
           try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts }, { merge: true }); addToast('Pengaturan disimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } 
       };
       
-      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diupdate', 'success'); } catch(e) { addToast('Gagal', 'error'); } } };
+      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diperbarui', 'success'); } catch(e) { addToast('Gagal upload', 'error'); } } };
       const handleDeleteFavicon = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); const compressed = await compressImage(file, 400); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } } };
       const handleRemoveGallery = async (index) => requestConfirm('Hapus foto ini?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } });
@@ -1092,8 +1145,12 @@
       const handleDeletePromo = (id) => openAdminAuthModal('Hapus Promo', 'Hapus permanen promo ini?', 'Hapus', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); setAdminAuthModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
       const togglePromoStatus = async (id, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
 
-      const isFormValid = userId.length > 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
+      
+      // Calculate dynamic price for bottom bar
+      const currentBasePrice = selectedNominal ? calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id) : 0;
+      const currentUsedCashback = useCashback ? Math.min(currentBasePrice, (currentUserData?.saldoCashback || 0)) : 0;
+      const displayTotal = currentBasePrice - currentUsedCashback;
 
       // ==========================================
       // RENDER: LAYAR AUTENTIKASI / LOGIN
@@ -1159,16 +1216,19 @@
                </div>
             </div>
 
-            {/* Bantuan Login Modal (Fitur Chat Publik Tertutup) */}
+            {/* Bantuan Login Modal */}
             {loginHelpModal && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
                     <div className="clean-card p-6 md:p-8 max-w-md w-full border border-white/10 relative flex flex-col h-[85vh] max-h-[650px] shadow-2xl">
                         <button type="button" onClick={()=>setLoginHelpModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white z-10"><IconX className="w-5 h-5"/></button>
-                        <h3 className="text-xl font-black mb-2 text-white flex items-center gap-2"><IconHelp className="w-6 h-6 text-orange-500"/> Bantuan Darurat</h3>
-                        <p className="text-xs text-gray-400 mb-4">Masukkan email Anda untuk memulai atau melanjutkan chat bantuan login.</p>
+                        <h3 className="text-xl font-black mb-2 text-white flex items-center gap-2"><IconHelp className="w-6 h-6 text-orange-500"/> Bantuan Login</h3>
+                        <p className="text-xs text-gray-400 mb-4">Kirimkan masalah login Anda (Lupa password, tidak bisa login, dll) langsung ke Admin.</p>
                         
                         <div className="flex gap-2 mb-4 shrink-0">
-                            <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Email Akun Anda" className="flex-1 bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 text-white transition" />
+                            <div className="relative w-full group">
+                               <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500"/>
+                               <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder="Username / Email Anda" className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm focus:border-orange-500 text-white transition" />
+                            </div>
                         </div>
 
                         <div className="flex-1 bg-black/50 rounded-2xl border border-white/5 p-4 overflow-y-auto mb-4 custom-scrollbar space-y-4 shadow-inner">
@@ -1183,9 +1243,9 @@
                             <div ref={chatEndRef} />
                         </div>
 
-                        <form onSubmit={handleSendPublicHelp} className="flex gap-2 shrink-0">
-                            <input type="text" required value={loginHelpMsg} onChange={(e)=>setLoginHelpMsg(e.target.value)} placeholder="Ketik pesan Anda..." disabled={!email} className="flex-1 bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 text-white disabled:opacity-50 transition" />
-                            <button type="submit" disabled={authLoading || !email || !(loginHelpMsg||'').trim()} className="bg-orange-600 hover:bg-orange-500 text-white px-5 rounded-xl font-black flex items-center justify-center shadow-lg shadow-orange-500/20 disabled:opacity-50 transition"><IconSend className="w-4 h-4"/></button>
+                        <form onSubmit={handleSendPublicHelp} className="flex flex-col gap-2 shrink-0">
+                            <textarea required value={loginHelpMsg} onChange={(e)=>setLoginHelpMsg(e.target.value)} placeholder="Jelaskan masalah Anda..." disabled={!email} className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-sm focus:border-orange-500 text-white disabled:opacity-50 transition resize-none h-20"></textarea>
+                            <button type="submit" disabled={authLoading || !email || !(loginHelpMsg||'').trim()} className="bg-orange-600 hover:bg-orange-500 text-white py-3 rounded-xl font-black flex items-center justify-center gap-2 shadow-lg shadow-orange-500/20 disabled:opacity-50 transition"><IconSend className="w-4 h-4"/> Kirim Bantuan</button>
                         </form>
                     </div>
                 </div>
@@ -1367,7 +1427,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (Lebih Halus) */}
+          {/* RUNNING TEXT GLOBAL */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-600 to-red-600 border-b border-orange-400/30 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1460,7 +1520,7 @@
                    </div>
                 )}
 
-                {/* UI Katalog Game (Clean & Minimalist v9.3.1) */}
+                {/* UI Katalog Game (Clean & Minimalist v9.3.9) */}
                 <div className="relative z-20 mb-12">
                    {!selectedGame && (
                        <div className="flex items-center gap-3 mb-6 pl-2">
@@ -1476,7 +1536,7 @@
                       {(games||[]).map(game => {
                          const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
                          return (
-                         <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white/[0.02] border border-white/10 hover:border-orange-500/50 hover:bg-white/[0.05] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col h-full z-30 shadow-sm">
+                         <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white/[0.02] border border-white/10 hover:border-orange-500/50 hover:bg-white/[0.05] transition-all duration-300 group hover:-translate-y-1.5 flex flex-col h-full z-30 shadow-sm">
                             {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse">PROMO</div>}
                             <div className="aspect-square bg-black p-1.5 md:p-2 relative overflow-hidden">
                                <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl group-hover:scale-105 transition duration-500 ease-out opacity-90 group-hover:opacity-100 shadow-inner"/>
@@ -1493,7 +1553,7 @@
 
                 {/* UI Form Pembelian (Muncul saat game dipilih) */}
                 {selectedGame && (
-                   <div className="animate-in slide-in-from-bottom-8 duration-500">
+                   <div className="animate-in slide-in-from-bottom-8 duration-500 relative">
                       
                       {/* Header Game Terpilih */}
                       <div className="flex items-center gap-4 mb-6 bg-white/5 p-4 md:p-5 rounded-3xl border border-white/10 shadow-sm">
@@ -1505,7 +1565,7 @@
                          </div>
                       </div>
 
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pb-48">
+                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                          
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
@@ -1520,7 +1580,7 @@
                                      <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 group-focus-within:text-orange-500 transition-colors" />
                                      <input type="text" value={userId} onChange={(e) => {
                                          const val = e.target.value;
-                                         if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('ID game hanya boleh berisi angka.', 'error'); return; }
+                                         if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('❌ ID game hanya boleh berisi angka.', 'error'); return; }
                                          setUserId(val);
                                      }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full bg-black border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 text-white font-mono font-bold transition shadow-inner placeholder-gray-600"/>
                                   </div>
@@ -1549,7 +1609,7 @@
                             </div>
 
                             {/* Card 2: Pilih Produk */}
-                            <div className={`clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500 ${userId.length > 2 ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500">
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconBox className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-white mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-black w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk</h3>
                                
@@ -1589,7 +1649,7 @@
                          <div className="lg:col-span-5 space-y-6">
                             
                             {/* Card 3: Pembayaran */}
-                            <div className={`clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500 ${selectedNominal ? 'opacity-100' : 'opacity-40 grayscale pointer-events-none'}`}>
+                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden transition-all duration-500">
                                <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconWallet className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-white mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-black w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
                                
@@ -1611,9 +1671,23 @@
                                   ))}
                                </div>
                                
+                               {/* Toggle Potong Saldo Cashback (Hanya tampil jika ada saldo) */}
+                               {currentUserData?.saldoCashback > 0 && (
+                                   <div className="relative z-10 py-4 mb-2 border-t border-b border-white/5 flex items-center justify-between">
+                                      <div>
+                                          <label className="text-xs font-black text-emerald-400 flex items-center gap-1.5"><IconWallet className="w-4 h-4"/> Pakai Saldo Cashback</label>
+                                          <p className="text-[10px] text-gray-400 mt-0.5">Saldo: {formatRupiah(currentUserData.saldoCashback)}</p>
+                                      </div>
+                                      <label className="relative inline-flex items-center cursor-pointer">
+                                         <input type="checkbox" className="sr-only peer" checked={useCashback} onChange={(e) => setUseCashback(e.target.checked)} />
+                                         <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+                                      </label>
+                                   </div>
+                               )}
+
                                {/* Input Promo Kode */}
-                               <div className="relative z-10 pt-4 border-t border-white/10">
-                                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi</label>
+                               <div className="relative z-10 pt-4">
+                                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
                                   <div className="flex gap-2 bg-black p-1.5 rounded-2xl border border-white/10 shadow-inner">
                                      <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-white focus:outline-none uppercase disabled:opacity-50" />
                                      {activePromo ? (
@@ -1624,32 +1698,22 @@
                                   </div>
                                </div>
                             </div>
-                         </div>
-                      </div>
 
-                      {/* FIXED BOTTOM CHECKOUT BAR (Z-INDEX 1000) */}
-                      <div className={`fixed bottom-0 left-0 w-full z-[1000] transition-all duration-500 transform ${selectedPayment && isFormValid ? 'translate-y-0' : 'translate-y-full'}`}>
-                         <div className="bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-orange-500/30 p-4 md:p-5 shadow-[0_-10px_40px_rgba(249,115,22,0.15)] pb-safe">
-                            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-                               <div className="hidden sm:block flex-1">
-                                  <div className="flex items-center gap-4">
-                                     <img src={selectedGame.image} className="w-10 h-10 rounded-lg object-cover border border-white/10"/>
-                                     <div>
-                                        <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{selectedGame.name}</div>
-                                        <div className="font-bold text-white text-sm truncate">{selectedNominal?.name}</div>
-                                     </div>
-                                  </div>
+                            {/* Card 4: Ringkasan & Checkout Button (V9.3.9 - Absolute Placed) */}
+                            <div className="clean-card p-6 md:p-8 shadow-[0_10px_40px_rgba(249,115,22,0.15)] border-t-4 border-emerald-500 relative overflow-hidden mt-6">
+                               <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none"><IconCheckCircle className="w-24 h-24 text-emerald-500"/></div>
+                               <div className="flex items-center justify-between mb-4 relative z-10 border-b border-white/10 pb-4">
+                                   <span className="text-xs font-black text-gray-400 uppercase tracking-widest">Total Bayar:</span>
+                                   <span className="text-2xl md:text-3xl font-black text-orange-500 font-mono drop-shadow-md">
+                                       {selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}
+                                   </span>
                                </div>
-                               <div className="flex-1 sm:text-right px-2">
-                                  <div className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-0.5">Total Pembayaran</div>
-                                  <div className="text-2xl md:text-3xl font-black text-orange-500 font-mono drop-shadow-md">
-                                     {selectedNominal ? formatRupiah(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id) - Math.min(calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id), (currentUserData?.saldoCashback || 0))) : 'Rp 0'}
-                                  </div>
-                               </div>
-                               <button onClick={triggerCheckout} disabled={!isFormValid || isProcessing} className={`flex-[1.5] sm:flex-1 py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all flex justify-center items-center gap-3 relative overflow-hidden group shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white hover:scale-[1.02] shadow-orange-500/30' : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/5'}`}>
-                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className="w-5 h-5" /> Pesan Sekarang</>}
+                               <button onClick={triggerCheckout} disabled={isProcessing} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest transition-all flex justify-center items-center gap-3 relative z-10 shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white hover:scale-[1.02] shadow-orange-500/30 cursor-pointer' : 'bg-white/10 text-gray-400 border border-white/10 cursor-pointer'}`}>
+                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
                                </button>
+                               {!isFormValid && <p className="text-[10px] text-gray-500 text-center mt-3 animate-pulse">Sistem akan mengecek kelengkapan data otomatis.</p>}
                             </div>
+
                          </div>
                       </div>
                    </div>
@@ -1712,7 +1776,7 @@
                                      <div className="relative shrink-0">
                                         <img src={gameIcon} className="w-14 h-14 rounded-2xl object-cover shadow-sm border border-white/10 group-hover:scale-105 transition duration-500"/>
                                         <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-lg flex items-center justify-center shadow-lg border border-white/10 backdrop-blur-md ${order.status === 'Sukses' ? 'bg-emerald-500/90' : order.status === 'Batal' ? 'bg-red-500/90' : 'bg-orange-500/90'}`}>
-                                           {order.status === 'Sukses' ? <IconCheckCircle className="w-3 h-3 text-white"/> : order.status === 'Batal' ? <IconX className="w-3 h-3 text-white"/> : <IconLoader className="w-3 h-3 text-white animate-spin"/>}
+                                            {order.status === 'Sukses' ? <IconCheckCircle className="w-3 h-3 text-white"/> : order.status === 'Batal' ? <IconX className="w-3 h-3 text-white"/> : <IconLoader className="w-3 h-3 text-white animate-spin"/>}
                                         </div>
                                      </div>
                                      <div className="flex-1 min-w-0">
@@ -1810,7 +1874,7 @@
                                <div className="w-full h-full bg-[#0a0a0a] rounded-full flex items-center justify-center overflow-hidden relative">
                                   {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-gray-500">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}
                                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm cursor-pointer"><IconCamera className="w-8 h-8 text-white"/></div>
-                                  <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                                  <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                </div>
                             </div>
                             {uploadingAvatar && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] px-4 py-1.5 rounded-full font-black shadow-lg flex items-center gap-2 uppercase tracking-widest"><IconLoader className="w-3 h-3 animate-spin"/> Proses</div>}
@@ -1917,7 +1981,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V9.3.1)                                        */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V9.3.9)                                        */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -1928,7 +1992,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-white truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.3.1</span>
+                           <span className="text-[8px] bg-white/10 text-gray-400 px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-white/5">Vipercell v9.3.9</span>
                         </div>
                      </div>
 
@@ -2060,8 +2124,8 @@
                                              </div>
                                           </td>
                                           <td className="px-5 py-4">
-                                              <span className={`px-3 py-1.5 rounded-lg text-[9px] font-black border uppercase tracking-widest shadow-sm ${order?.status === 'Sukses' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : order?.status === 'Batal' ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-orange-500/10 text-orange-400 border-orange-500/30'}`}>{order?.status}</span>
-                                              <div className="text-[8px] text-gray-500 mt-2 font-bold">{new Date(order?.createdAt).toLocaleDateString('id-ID')}</div>
+                                             <span className={`px-3 py-1.5 rounded-lg text-[9px] font-black border uppercase tracking-widest shadow-sm ${order?.status === 'Sukses' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : order?.status === 'Batal' ? 'bg-red-500/10 text-red-400 border-red-500/30' : 'bg-orange-500/10 text-orange-400 border-orange-500/30'}`}>{order?.status}</span>
+                                             <div className="text-[8px] text-gray-500 mt-2 font-bold">{new Date(order?.createdAt).toLocaleDateString('id-ID')}</div>
                                           </td>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center justify-center gap-2">
@@ -2096,24 +2160,35 @@
                               </div>
 
                               <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-black/50 rounded-[2rem] border border-white/5 shadow-inner">
-                                 <table className="w-full text-left text-sm text-gray-300 min-w-[800px]">
-                                    <thead className="text-[10px] text-gray-400 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10"><tr><th className="px-5 py-4 font-black">Informasi Pengguna</th><th className="px-5 py-4 font-black">Kontak Akun</th><th className="px-5 py-4 font-black">Status Akun</th><th className="px-5 py-4 font-black">Bergabung Pada</th><th className="px-5 py-4 text-center font-black">Aksi Cepat</th></tr>
+                                 <table className="w-full text-left text-sm text-gray-300 min-w-[900px]">
+                                    <thead className="text-[10px] text-gray-400 uppercase tracking-widest bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-white/10">
+                                       <tr>
+                                          <th className="px-5 py-4 font-black">Informasi Pengguna</th>
+                                          <th className="px-5 py-4 font-black">Kontak Akun</th>
+                                          <th className="px-5 py-4 font-black text-orange-500">Saldo Cashback</th>
+                                          <th className="px-5 py-4 font-black">Status Akun</th>
+                                          <th className="px-5 py-4 font-black">Bergabung Pada</th>
+                                          <th className="px-5 py-4 text-center font-black">Aksi Cepat</th>
+                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-white/5">
                                     {memberList.filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
                                        <tr key={m.id} className={`transition ${m.isBlocked ? 'opacity-50 bg-red-500/5' : 'hover:bg-white/[0.03]'}`}>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center gap-3">
-                                                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-black text-xs text-white overflow-hidden border border-white/20">
+                                                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center font-black text-xs text-white overflow-hidden border border-white/20 shrink-0">
                                                      {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : (m.name||'U').charAt(0).toUpperCase()}
                                                  </div>
-                                                 <div>
+                                                 <div className="min-w-0">
                                                      <div className="font-bold text-white truncate max-w-[150px]">{m.name}</div>
                                                      <div className="text-[9px] text-gray-400 font-mono mt-0.5 truncate max-w-[150px]">{m.email}</div>
                                                  </div>
                                              </div>
                                           </td>
                                           <td className="px-5 py-4 font-mono text-gray-400 text-xs bg-black/50 px-2 py-1 rounded inline-block mt-3 border border-white/5">{m.phone || 'Belum diisi'}</td>
+                                          <td className="px-5 py-4">
+                                              <div className="font-mono text-sm font-black text-emerald-400">{formatRupiah(m.saldoCashback || 0)}</div>
+                                          </td>
                                           <td className="px-5 py-4">
                                               {m.isBlocked ? <span className="px-3 py-1.5 rounded-lg text-[9px] font-black bg-red-500/20 text-red-400 border border-red-500/30 uppercase tracking-widest">Diblokir</span> : <span className="px-3 py-1.5 rounded-lg text-[9px] font-black bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 uppercase tracking-widest">Aktif</span>}
                                           </td>
@@ -2135,19 +2210,19 @@
                                           </td>
                                        </tr>
                                     ))}
-                                    {(!memberList || memberList.length === 0) && (<tr><td colSpan="5" className="text-center py-20 text-gray-500 font-bold border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">Belum ada member terdaftar.</td></tr>)}
+                                    {(!memberList || memberList.length === 0) && (<tr><td colSpan="6" className="text-center py-20 text-gray-500 font-bold border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">Belum ada member terdaftar.</td></tr>)}
                                     </tbody>
                                  </table>
                               </div>
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - DISEMPURNAKAN V9.3.1 */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-white/10 rounded-[2.5rem] overflow-hidden bg-black shadow-inner">
                               
                               {/* Left Sidebar (Kategori Bantuan & Chat) */}
-                              <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col h-1/2 lg:h-full bg-white/[0.02]">
+                              <div className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-white/10 flex flex-col h-[40vh] lg:h-full bg-white/[0.02]">
                                  
                                  {/* Navigasi Kategori (Bantuan Login | Member | Broadcast) */}
                                  <div className="flex bg-black p-2 border-b border-white/10 shrink-0">
@@ -2183,8 +2258,8 @@
                                         {adminChats.filter(c=>c.messages?.length>0).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => (
                                            <div key={c.id} onClick={()=>setActiveChatEmail(c.id)} className={`p-4 border-b border-white/5 cursor-pointer transition flex items-center justify-between ${activeChatEmail===c.id?'bg-blue-600/20 border-l-4 border-l-blue-500':'hover:bg-white/5 border-l-4 border-l-transparent'}`}>
                                               <div className="min-w-0 flex-1 pr-2">
-                                                  <div className="text-xs font-black text-white truncate">{c.id}</div>
-                                                  <div className="text-[10px] text-gray-400 truncate mt-1">{c.messages[c.messages.length-1].text}</div>
+                                                 <div className="text-xs font-black text-white truncate">{c.id}</div>
+                                                 <div className="text-[10px] text-gray-400 truncate mt-1">{c.messages[c.messages.length-1].text}</div>
                                               </div>
                                               {c.status==='Open' && <span className="w-2.5 h-2.5 bg-red-500 rounded-full shrink-0 shadow-[0_0_5px_red] animate-pulse"></span>}
                                            </div>
@@ -2232,7 +2307,7 @@
                               </div>
 
                               {/* Right Chat Area */}
-                              <div className="w-full lg:w-2/3 flex flex-col h-1/2 lg:h-full bg-black relative">
+                              <div className="w-full lg:w-2/3 flex flex-col h-[50vh] lg:h-full bg-black relative">
                                  {activeChatEmail ? (
                                     <>
                                        {/* Header Chat Detail */}
@@ -2320,7 +2395,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V9.3.1 */}
+                        {/* TAB: PERATURAN WEB (PENGATURAN) */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2352,9 +2427,9 @@
                                     
                                     <div>
                                        <label className="text-xs font-black text-white mb-2 flex justify-between items-center"><span className="flex items-center gap-2"><IconImage className="w-4 h-4 text-orange-500"/> Icon Website (Favicon)</span> {globalConfig?.favicon && <button onClick={handleDeleteFavicon} className="text-[9px] bg-red-600/20 text-red-500 hover:bg-red-600 hover:text-white px-2 py-1 rounded transition">Hapus Icon</button>}</label>
-                                       <p className="text-[10px] text-gray-500 mb-3">Logo kecil yang muncul di tab browser pengguna.</p>
+                                       <p className="text-[10px] text-gray-500 mb-3">Logo kecil yang muncul di tab browser pengguna. Gunakan file dengan format .ico atau .png</p>
                                        <div className="relative group">
-                                          <input type="file" accept=".ico, .png, .svg, image/*" onChange={handleFaviconUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                          <input type="file" accept=".ico, .png, .jpg, .svg, image/*" onChange={handleFaviconUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                           <div className="bg-white/5 border border-dashed border-white/20 group-hover:border-orange-500 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-gray-400 text-xs transition relative z-0 shadow-sm text-center">
                                              <IconUpload className="w-5 h-5"/> Klik untuk memilih file Favicon baru
                                           </div>
@@ -2505,7 +2580,7 @@
                            </div>
                         )}
 
-                        {/* TAB: KATALOG GAME & HARGA (DISEMPURNAKAN V9.3.1) */}
+                        {/* TAB: KATALOG GAME & HARGA */}
                         {activeAdminTab === 'katalog' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-6 h-full">
                               
@@ -2622,7 +2697,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT PROMOSI (DISEMPURNAKAN V9.3.1) */}
+                        {/* TAB: PUSAT PROMOSI */}
                         {activeAdminTab === 'promo' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
                                <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
