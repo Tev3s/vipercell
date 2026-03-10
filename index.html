@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v10.7</title>
+  <title>Vipercell - Premium Top Up v10.8</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -123,7 +123,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V10.7
+    // FUNGSI HELPER & UTILITIES V10.8
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -229,6 +229,7 @@
     const IconCopy = ({className:c}) => <Ic c={c} d={<><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></>}/>;
     const IconSun = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></>}/>;
     const IconMoon = ({className:c}) => <Ic c={c} d={<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>}/>;
+    const IconPrinter = ({className:c}) => <Ic c={c} d={<><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></>}/>;
 
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
@@ -236,7 +237,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V10.7 (FIXED TOP ISLAND)
+    // NOTIFICATION (TOAST) V10.8 (FIXED TOP ISLAND)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -278,7 +279,7 @@
     };
 
     // ==========================================
-    // UI MODALS & DIALOGS (NAVY SECURITY STYLE V10.7)
+    // UI MODALS & DIALOGS (NAVY SECURITY STYLE V10.8)
     // ==========================================
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
@@ -326,42 +327,6 @@
                     <div className="flex gap-3">
                         <button type="button" onClick={()=>{setPass(''); setErr(''); setShowPass(false); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm border border-white/5">Batal</button>
                         <button type="submit" disabled={!pass || loading} className="flex-[1.5] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : 'Otorisasi'}</button>
-                    </div>
-                </form>
-             </div>
-          </div>
-        )
-    }
-
-    const AdminAuthModal = ({ isOpen, title, message, actionText, onConfirm, onCancel, authEmail }) => {
-        const [pass, setPass] = useState(''); const [err, setErr] = useState(''); const [loading, setLoading] = useState(false);
-        const [showPass, setShowPass] = useState(false);
-        if (!isOpen) return null;
-        const handleSubmit = async (e) => {
-            e.preventDefault(); setLoading(true); setErr('');
-            try { const credential = EmailAuthProvider.credential(authEmail, pass); await reauthenticateWithCredential(auth.currentUser, credential); onConfirm(); setPass(''); } 
-            catch(error) { setErr('Sandi admin salah!'); } 
-            finally { setLoading(false); }
-        };
-        return (
-          <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-             <div className="bg-gradient-to-br from-navy-900 to-navy-950 p-6 md:p-8 max-w-sm w-full border border-white/10 rounded-[2rem] text-center shadow-2xl relative overflow-hidden">
-                <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/10 rounded-full blur-3xl"></div>
-                <div className="w-16 h-16 bg-white/5 text-orange-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-white/10 relative z-10"><IconLock className="w-8 h-8" /></div>
-                <h3 className="text-xl font-black mb-2 text-white relative z-10">{title || 'Konfirmasi Keamanan'}</h3>
-                <p className="text-xs text-gray-400 mb-6 font-medium relative z-10 px-2">{message}</p>
-                <form onSubmit={handleSubmit} className="relative z-10">
-                    <div className="relative mb-4">
-                        <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input type={showPass ? "text" : "password"} required value={pass} onChange={(e)=>setPass(e.target.value)} placeholder="Masukkan Kata Sandi" className="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 pl-11 pr-12 text-sm focus:border-orange-500 transition text-white shadow-inner" />
-                        <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition">
-                            {showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}
-                        </button>
-                    </div>
-                    {err && <div className="text-xs font-bold text-red-400 mb-4 animate-pulse bg-red-500/10 py-2 rounded-lg border border-red-500/20">{err}</div>}
-                    <div className="flex gap-3">
-                        <button type="button" onClick={()=>{setPass(''); setErr(''); setShowPass(false); onCancel();}} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm border border-white/5">Batal</button>
-                        <button type="submit" disabled={!pass || loading} className="flex-[1.5] py-3.5 rounded-xl font-black bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-500/30 transition flex justify-center items-center gap-2 text-sm">{loading ? <IconLoader className="w-4 h-4"/> : actionText}</button>
                     </div>
                 </form>
              </div>
@@ -530,7 +495,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V10.7 (NICKNAME INCLUDED)
+    // PREMIUM ORDER SUMMARY MODAL V10.8 (NICKNAME HIDDEN)
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -551,11 +516,13 @@
                     <div className="space-y-3 text-sm">
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Tujuan Pengisian</span><span className="font-mono font-black text-white bg-black/50 px-2 py-1 rounded border border-white/5">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                         
-                        {/* Nickname View Fixed */}
-                        <div className="flex justify-between items-center bg-orange-500/10 p-2 rounded-lg border border-orange-500/20">
-                           <span className="text-orange-400 text-xs font-bold">Nickname Terdeteksi</span>
-                           <span className="font-black text-white">{data.nickname || <span className="text-gray-500 text-[10px] italic">Tidak Dicek / Kosong</span>}</span>
-                        </div>
+                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
+                        {false && data.nickname && (
+                            <div className="flex justify-between items-center bg-orange-500/10 p-2 rounded-lg border border-orange-500/20">
+                               <span className="text-orange-400 text-xs font-bold">Nickname Terdeteksi</span>
+                               <span className="font-black text-white">{data.nickname}</span>
+                            </div>
+                        )}
 
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Metode Pembayaran</span><span className="font-black text-orange-400">{data.paymentName}</span></div>
                         {data.usedCashback > 0 && <div className="flex justify-between items-center text-emerald-400"><span className="text-xs">Saldo Cashback Terpakai</span><span className="font-mono font-black">- {formatRupiah(data.usedCashback)}</span></div>}
@@ -593,7 +560,7 @@
         )
     }
 
-    // ADMIN SCANNER RESULT MODAL V10.7
+    // ADMIN SCANNER RESULT MODAL V10.8 (NICKNAME HIDDEN)
     const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
         const { addToast } = useToast();
         if (!isOpen || !order) return null;
@@ -613,10 +580,14 @@
                         <div className="flex justify-between items-center">
                             <span className="text-gray-400 text-xs">Target ID</span>
                             <span className="font-mono font-bold text-white text-right flex items-center gap-2">
-                                <span>{order.targetUserId} {order.targetZoneId ? `(${order.targetZoneId})` : ''} {order.targetNickname ? <><br/><span className="text-[10px] text-gray-400">{order.targetNickname}</span></> : ''}</span>
+                                <span>{order.targetUserId} {order.targetZoneId ? `(${order.targetZoneId})` : ''}</span>
                                 <button onClick={()=> { navigator.clipboard.writeText(order.targetUserId); addToast('ID disalin', 'success'); }} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-md transition"><IconCopy className="w-3.5 h-3.5"/></button>
                             </span>
                         </div>
+                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
+                        {false && order.targetNickname && (
+                           <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Nickname</span><span className="font-bold text-white">{order.targetNickname}</span></div>
+                        )}
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Total Harga</span><span className="font-bold text-emerald-400 text-lg">{formatRupiah(order.priceTotal)}</span></div>
                         {cashbackEarned > 0 && <div className="flex justify-between items-center pt-2 border-t border-white/5"><span className="text-gray-400 text-xs">Cashback Diterima User</span><span className="font-bold text-orange-400 font-mono text-xs bg-orange-500/10 px-2 py-1 rounded">+{formatRupiah(cashbackEarned)} ({vip.level})</span></div>}
                      </div>
@@ -649,7 +620,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v10.7 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v10.8 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -808,7 +779,7 @@
       const [adminList, setAdminList] = useState([]);
       const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); 
       
-      // ADMIN CHAT STATES V10.7 (STABILITY)
+      // ADMIN CHAT STATES V10.8 (STABILITY)
       const [adminChats, setAdminChats] = useState([]); 
       const [loadingAdminChats, setLoadingAdminChats] = useState(true);
       const [adminChatsError, setAdminChatsError] = useState(false);
@@ -827,7 +798,7 @@
       
       const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState(''); const [adminBannerLink, setAdminBannerLink] = useState('');
       const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' });
-      const [adminApiKey, setAdminApiKey] = useState(''); // NEW V10.7
+      const [adminApiKey, setAdminApiKey] = useState(''); 
       
       const [promoModalType, setPromoModalType] = useState('item');
       const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' });
@@ -856,8 +827,8 @@
       
       const [selectedGame, setSelectedGame] = useState(null);
       const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
-      const [isCheckingID, setIsCheckingID] = useState(false); // NEW V10.7
-      const [idCheckSuccess, setIdCheckSuccess] = useState(false); // NEW V10.7
+      const [isCheckingID, setIsCheckingID] = useState(false); // V10.8 Hidden from UI but state kept
+      const [idCheckSuccess, setIdCheckSuccess] = useState(false); // V10.8 Hidden from UI but state kept
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
       const [inputPromo, setInputPromo] = useState(''); const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
@@ -873,6 +844,9 @@
       const [isChatFullScreen, setIsChatFullScreen] = useState(false);
       const chatBgColor = isDarkMode ? '#0a0a0a' : '#e5ddd5';
       const chatEndRef = useRef(null);
+
+      // --- V10.8 AUTO PRINT STANDBY MODE ---
+      const [isStandbyMode, setIsStandbyMode] = useState(false);
 
       // Kunci scroll saat popup terbuka
       const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen;
@@ -907,9 +881,12 @@
           }
       }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
-      // Push Notifications System
+      // Push Notifications System & STANDBY AUTO PRINT (V10.8)
       const prevOrdersRef = useRef([]);
+      const prevAdminOrdersRef = useRef([]);
+
       useEffect(() => {
+         // User Notification
          if(userOrders?.length > 0 && prevOrdersRef.current?.length > 0) {
              userOrders.forEach(o => {
                  const prevO = prevOrdersRef.current.find(p => p.id === o.id);
@@ -922,6 +899,25 @@
          }
          prevOrdersRef.current = userOrders || [];
       }, [userOrders, globalConfig?.favicon]);
+
+      // ADMIN STANDBY MODE LISTENER (V10.8)
+      useEffect(() => {
+         if (isAdmin && isStandbyMode && adminOrders?.length > 0) {
+             if (prevAdminOrdersRef.current?.length > 0) {
+                 // Check for new 'Pending' orders
+                 adminOrders.forEach(order => {
+                     const isNew = !prevAdminOrdersRef.current.find(p => p.id === order.id);
+                     if (isNew && order.status === 'Pending') {
+                         playSuccessBeep();
+                         addToast(`Pesanan Baru Masuk: ${order.id}`, 'info');
+                         handlePrintReceipt(order);
+                     }
+                 });
+             }
+         }
+         prevAdminOrdersRef.current = adminOrders || [];
+      }, [adminOrders, isAdmin, isStandbyMode]);
+
 
       const prevChatRef = useRef([]);
       useEffect(() => {
@@ -975,7 +971,7 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory]);
 
-      // REALTIME LISTENER (ANTI-BLANK V10.7)
+      // REALTIME LISTENER (ANTI-BLANK V10.8)
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
@@ -1053,7 +1049,7 @@
                 unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => { 
                     try { const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()})); setMemberList(m); } catch(err){} 
                 }));
-                // FIX ADMIN SUPPORT BLANK ISSUE (V10.7)
+                // FIX ADMIN SUPPORT BLANK ISSUE
                 setLoadingAdminChats(true);
                 unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), 
                    (snap) => { 
@@ -1117,63 +1113,63 @@
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders, addToast]);
 
-      // --- APIGAMES CEK ID LOGIC (V10.7) ---
+      // --- APIGAMES CEK ID LOGIC (V10.8 - DISABLED TEMPORARILY) ---
       const handleCheckID = async () => {
-          if (!userId) return addToast('Masukkan ID Game terlebih dahulu', 'warning');
-          if (selectedGame?.inputType === 'id_zone' && !zoneId) return addToast('Masukkan Zone ID', 'warning');
-          if (selectedGame?.inputType === 'riot_id' && !zoneId) return addToast('Masukkan Tagline Riot', 'warning');
-
-          setIsCheckingID(true);
-          setNickname('');
-
-          try {
-              if (!globalConfig?.apiGamesKey) {
-                  // Fallback Mode / Simulation if API key not present
-                  setTimeout(() => {
-                      const fallbackNick = 'Player_' + userId.substring(0,4) + (zoneId ? '_S'+zoneId : '');
-                      setNickname(fallbackNick);
-                      setIdCheckSuccess(true);
-                      addToast(`Nickname ditemukan: ${fallbackNick}`, 'success');
-                      setIsCheckingID(false);
-                  }, 1200);
-                  return;
-              }
-
-              const gameCode = selectedGame.id; // Harus sesuai mapping APIGames
-              const apiUrl = `https://v1.apigames.id/merchant/v2/cek-username/${gameCode}?user_id=${userId}${zoneId ? '&zone_id='+zoneId : ''}`;
-
-              const response = await fetch(apiUrl, {
-                  method: 'GET',
-                  headers: {
-                      'Authorization': `Bearer ${globalConfig.apiGamesKey}`,
-                      'Content-Type': 'application/json'
-                  }
-              });
-
-              const data = await response.json();
-
-              if (data.status === 1 || data.status === true || data.data?.username) {
-                  const fetchedNickname = data.data?.username || data.username || data.name || data.nickname;
-                  if(fetchedNickname) {
-                      setNickname(fetchedNickname);
-                      setIdCheckSuccess(true);
-                      addToast(`Nickname divalidasi: ${fetchedNickname}`, 'success');
-                  } else {
-                      throw new Error('Format balasan API tidak dikenali');
-                  }
-              } else {
-                  throw new Error(data.error_msg || 'ID tidak ditemukan di server game');
-              }
-
-          } catch (error) {
-              // Cerdas Fallback jika CORS atau API Error agar user tetap bisa transaksi
-              addToast(`Sistem Gagal Verifikasi: ${error.message}. Masukkan manual.`, 'error');
-              setIdCheckSuccess(false);
-          } finally {
-              setIsCheckingID(false);
-          }
+          // Fitur Cek ID dinonaktifkan di V10.8 untuk meningkatkan stabilitas.
+          // Struktur tetap dipertahankan agar bisa dipakai kembali di masa depan.
+          addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info');
       }
       // -------------------------------------
+
+      // --- PRINT STRUK THERMAL 58MM (V10.8) ---
+      const handlePrintReceipt = (order) => {
+         if(!order) return;
+         const printWindow = window.open('', '_blank', 'width=400,height=600');
+         if(printWindow) {
+             printWindow.document.write(`
+                 <html>
+                 <head>
+                     <title>Struk - ${order.id}</title>
+                     <style>
+                         @page { margin: 0; size: 58mm auto; }
+                         body { font-family: 'Courier New', Courier, monospace; width: 58mm; padding: 10px; margin: 0 auto; color: #000; font-size: 12px; }
+                         .text-center { text-align: center; }
+                         .font-bold { font-weight: bold; }
+                         .divider { border-bottom: 1px dashed #000; margin: 8px 0; }
+                         .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+                     </style>
+                 </head>
+                 <body>
+                     <div class="text-center font-bold" style="font-size: 16px;">STORE GAMING</div>
+                     <div class="text-center" style="font-size: 10px; margin-top: 2px;">Bukti Top Up</div>
+                     <div class="divider"></div>
+                     <div class="row"><span>TRX</span><span>${order.id}</span></div>
+                     <div class="row"><span>STATUS</span><span>${order.status.toUpperCase()}</span></div>
+                     <div class="row"><span>TGL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
+                     <div class="divider"></div>
+                     <div style="margin-bottom: 4px;">GAME   : ${order.gameName}</div>
+                     <div style="margin-bottom: 4px;">ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
+                     <div style="margin-bottom: 4px;">ITEM   : ${order.nominalName}</div>
+                     <div style="margin-bottom: 4px;">METODE : ${order.paymentMethod}</div>
+                     <div class="divider"></div>
+                     <div class="row font-bold" style="font-size: 14px;"><span>TOTAL</span><span>${formatRupiah(order.priceTotal)}</span></div>
+                     <div class="divider"></div>
+                     <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
+                     <div class="text-center" style="font-size: 8px; margin-top: 2px;">Vipercell v10.8</div>
+                 </body>
+                 </html>
+             `);
+             printWindow.document.close();
+             printWindow.focus();
+             setTimeout(() => { 
+                 printWindow.print(); 
+                 printWindow.close(); 
+             }, 500);
+         } else {
+             addToast('Gagal membuka popup struk. Izinkan popup browser.', 'error');
+         }
+      };
+      // -----------------------------------------
 
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true);
@@ -1261,7 +1257,7 @@
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // Smart Validation Checkout - V10.7 Update
+      // Smart Validation Checkout - V10.8 Update (Tanpa verifikasi Nickname)
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1274,7 +1270,9 @@
           const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id);
           const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
           const fPrice = basePrice - usedCashback;
-          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
+          
+          // Nickname tidak lagi diwajibkan (null)
+          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
       };
       
       const executeFinalPayment = () => { 
@@ -1306,7 +1304,9 @@
           const batch = writeBatch(db); 
           const newOrderId = generateOrderID();
           const orderRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', newOrderId);
-          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname, nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
+          
+          // Nickname field disembunyikan/dikosongkan di V10.8
+          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
           
           if(usedCashback > 0) { batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - usedCashback }); }
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
@@ -1326,7 +1326,6 @@
 
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
-      // --- PERBAIKAN WIPE DATA (V10.7) ---
       const handleWipeData = async () => DangerDialog('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
           setAuthLoading(true); 
           try { 
@@ -1342,7 +1341,6 @@
           finally { setAuthLoading(false); setDangerModal({isOpen: false}); }
       });
 
-      // --- NEW ADMIN CHAT FUNCTIONS V10.7 ---
       const handleCloseTicket = async (email) => {
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); }
          catch(e) { addToast('Gagal menutup tiket.', 'error'); }
@@ -1362,7 +1360,6 @@
               return [...prev, email];
           });
       };
-      // ---------------------------------------
 
       const handleAddBanner = async () => { 
           if(!adminBannerUrl) return; let fixedUrl = adminBannerUrl;
@@ -1374,13 +1371,12 @@
       
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
       
-      // ADMIN SETTINGS SAVE V10.7 (Termasuk API Key)
       const saveSettings = async () => { 
           try { 
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { 
                   igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', 
                   runningTexts,
-                  apiGamesKey: adminApiKey // Saving Secure Key
+                  apiGamesKey: adminApiKey 
               }, { merge: true }); 
               addToast('Pengaturan disimpan!', 'success'); 
           } catch(e) { addToast(e.message, 'error'); } 
@@ -1729,7 +1725,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (NAVY THEME V10.7) */}
+          {/* RUNNING TEXT GLOBAL (NAVY THEME V10.8) */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1782,7 +1778,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V10.7 */}
+                {/* Greeting Dinamis V10.8 */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -1880,7 +1876,7 @@
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
                             
-                            {/* Card 1: Data Akun V10.7 (APIGAMES INTEGRATION) */}
+                            {/* Card 1: Data Akun V10.8 (CEK ID DINONAKTIFKAN SEMENTARA) */}
                             <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
@@ -1891,25 +1887,27 @@
                                      <input type="text" value={userId} onChange={(e) => {
                                          const val = e.target.value;
                                          if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('Data Akun: ID game hanya boleh berisi angka.', 'warning'); return; }
-                                         setUserId(val); setIdCheckSuccess(false); setNickname('');
+                                         setUserId(val);
                                      }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 font-mono font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600"/>
                                   </div>
                                   
                                   {selectedGame?.inputType === 'id_zone' && (
                                      <div className="w-full sm:w-1/3 relative group">
                                         <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                                        <input type="text" value={zoneId} onChange={(e) => {setZoneId(e.target.value); setIdCheckSuccess(false); setNickname('');}} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 font-mono font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600"/>
+                                        <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 font-mono font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600"/>
                                      </div>
                                   )}
                                   
                                   {selectedGame?.inputType === 'riot_id' && (
                                      <div className="w-full sm:w-1/3 relative group">
                                         <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                                        <input type="text" value={zoneId} onChange={(e) => {setZoneId(e.target.value); setIdCheckSuccess(false); setNickname('');}} placeholder="Tag (#)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 font-mono font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600"/>
+                                        <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 font-mono font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600"/>
                                      </div>
                                   )}
                                </div>
 
+                               {/* V10.8: Tombol & Nickname API Dinonaktifkan Sementara (Kode Disembunyikan, tidak dihapus) */}
+                               {false && (
                                <div className="flex flex-col sm:flex-row gap-3 relative z-10">
                                    <div className="relative group flex-1">
                                        <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -1919,8 +1917,9 @@
                                        {isCheckingID ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconSearch className="w-4 h-4"/> Cek ID</>}
                                    </button>
                                </div>
+                               )}
 
-                               <p className="text-[10px] text-sub-theme mt-3 font-medium">Sistem terintegrasi dengan API Server. Pastikan ID dan Server/Tag sudah benar.</p>
+                               <p className="text-[10px] text-sub-theme mt-3 font-medium">Pastikan ID dan Server/Tag sudah benar. Kesalahan penulisan ID bukan tanggung jawab sistem.</p>
                             </div>
 
                             {/* Card 2: Pilih Produk */}
@@ -2014,7 +2013,7 @@
                                </div>
                             </div>
 
-                            {/* Card 4: Ringkasan & Checkout Button (V10.7 - Absolute Placed under Payment) */}
+                            {/* Card 4: Ringkasan & Checkout Button (V10.8) */}
                             <div className="clean-card p-6 md:p-8 shadow-[0_10px_40px_rgba(249,115,22,0.15)] border-t-4 border-emerald-500 relative overflow-hidden mt-6">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconCheckCircle className="w-24 h-24 text-emerald-500"/></div>
                                <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
@@ -2124,8 +2123,8 @@
                                             <p className="text-[9px] font-black text-sub-theme uppercase tracking-widest mb-1">Target Pengisian</p>
                                             <p className="font-mono text-sm font-bold text-main bg-white dark:bg-white/5 px-3 py-1.5 rounded-lg inline-block border border-theme">{(order.targetUserId || '')} {(order.targetZoneId || '') && `(${(order.targetZoneId || '')})`}</p>
                                         </div>
-                                        {/* V10.7 Show Nickname */}
-                                        {order.targetNickname && (
+                                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
+                                        {false && order.targetNickname && (
                                             <div>
                                                 <p className="text-[9px] font-black text-orange-500 uppercase tracking-widest mb-1">Nickname Game</p>
                                                 <p className="font-bold text-sm text-main">{order.targetNickname}</p>
@@ -2303,7 +2302,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V10.7)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V10.8)                                         */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2314,7 +2313,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v10.7</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v10.8</span>
                         </div>
                      </div>
 
@@ -2406,12 +2405,21 @@
                            </div>
                         )}
 
-                        {/* TAB: DAFTAR PESANAN */}
+                        {/* TAB: DAFTAR PESANAN V10.8 (PRINT STRUK & STANDBY MODE) */}
                         {activeAdminTab === 'orders' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                  <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconList className="w-6 h-6 text-red-500"/> Manajemen Pesanan</h2>
-                                 <button onClick={() => setIsScannerOpen(true)} className="bg-black text-white dark:bg-white dark:text-black hover:opacity-80 px-5 py-3 rounded-xl font-black text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition shadow-lg w-full sm:w-auto"><IconCamera className="w-4 h-4"/> Buka Kamera Kasir</button>
+                                 <div className="flex items-center gap-3 w-full sm:w-auto">
+                                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-theme tooltip" title="Buka jendela print otomatis saat ada pesanan baru">
+                                       <span className="text-[10px] font-bold text-main uppercase tracking-widest">Auto Print</span>
+                                       <label className="relative inline-flex items-center cursor-pointer">
+                                          <input type="checkbox" className="sr-only peer" checked={isStandbyMode} onChange={(e) => setIsStandbyMode(e.target.checked)} />
+                                          <div className="w-9 h-5 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
+                                       </label>
+                                    </div>
+                                    <button onClick={() => setIsScannerOpen(true)} className="flex-1 bg-black text-white dark:bg-white dark:text-black hover:opacity-80 px-4 py-2.5 rounded-xl font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2 transition shadow-lg"><IconCamera className="w-4 h-4"/> Scan Kasir</button>
+                                 </div>
                               </div>
 
                               <div className="relative mb-6">
@@ -2441,8 +2449,7 @@
                                                      <span className="truncate">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</span>
                                                      <button onClick={()=>{navigator.clipboard.writeText(order?.targetUserId); addToast('ID Game disalin', 'success');}} className="p-1 text-gray-400 hover:text-main transition shrink-0 tooltip" title="Salin ID Game"><IconCopy className="w-3.5 h-3.5"/></button>
                                                  </div>
-                                                 {/* Nickname Di Tabel Order V10.7 */}
-                                                 {order?.targetNickname && <div className="text-[9px] text-orange-500 truncate font-black border-t border-theme pt-1 w-full">{order.targetNickname}</div>}
+                                                 {/* V10.8 Nickname Dihilangkan Sementara dari Admin Table */}
                                              </div>
                                           </td>
                                           <td className="px-5 py-4">
@@ -2458,6 +2465,7 @@
                                           </td>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center justify-center gap-2">
+                                                <button onClick={() => handlePrintReceipt(order)} className="p-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition tooltip shadow-sm" title="Cetak Struk Thermal"><IconPrinter className="w-4 h-4" /></button>
                                                 {order?.status === 'Pending' && (
                                                    <>
                                                       <button onClick={() => updateOrderStatus(order.id, 'Sukses')} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas / Sukses"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
@@ -2546,7 +2554,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V10.7 UPDATE */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V10.8 UPDATE */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
                               
@@ -2573,7 +2581,7 @@
                                             </div>
                                         </div>
 
-                                        {/* Loading & Error States untuk Chat Admin V10.7 */}
+                                        {/* Loading & Error States untuk Chat Admin V10.8 */}
                                         {loadingAdminChats && (
                                             <div className="absolute inset-0 top-[90px] bg-white/80 dark:bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
                                                 <IconLoader className="w-8 h-8 text-blue-500 animate-spin mb-3"/>
@@ -2734,7 +2742,7 @@
                                           <div ref={adminChatEndRef} className="h-2"/>
                                        </div>
 
-                                       {/* Input Chat Balasan dengan Tombol Cepat V10.7 */}
+                                       {/* Input Chat Balasan dengan Tombol Cepat V10.8 */}
                                        <div className="p-3 md:p-4 border-t border-theme bg-card z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0 pb-safe">
                                           {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
@@ -2760,7 +2768,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V10.7 */}
+                        {/* TAB: PERATURAN WEB (PENGATURAN) V10.8 */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2804,14 +2812,14 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel API Games Key V10.7 */}
+                                 {/* Panel API Games Key V10.8 (Hidden Feature, settings remains) */}
                                  <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
                                      <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconKey className="w-5 h-5 text-orange-500"/> Pengaturan API Integrasi</h3>
-                                     <p className="text-[10px] text-sub-theme mb-6">Kunci rahasia untuk integrasi cek nickname game otomatis via APIGames.id.</p>
+                                     <p className="text-[10px] text-sub-theme mb-6">Kunci rahasia untuk integrasi cek nickname game otomatis via APIGames.id. <span className="text-orange-500 font-bold">(Sedang Dinonaktifkan Sementara V10.8)</span></p>
                                      
                                      <div className="relative group mb-4">
                                         <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" />
-                                        <input type="text" value={adminApiKey} onChange={(e)=>setAdminApiKey(e.target.value)} placeholder="Masukkan API Key Baru..." className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:border-orange-500 font-mono shadow-sm" />
+                                        <input type="text" value={adminApiKey} onChange={(e)=>setAdminApiKey(e.target.value)} placeholder="Masukkan API Key Baru..." className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:border-orange-500 font-mono shadow-sm opacity-50" />
                                      </div>
                                      <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan API Key</button>
                                  </div>
@@ -2957,6 +2965,289 @@
                                     <button onClick={handleWipeData} className="w-full bg-red-600 hover:bg-red-500 text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest shadow-[0_10px_20px_rgba(220,38,38,0.3)] transition transform hover:-translate-y-1">Eksekusi Hapus Data</button>
                                  </div>
                               </div>
+                           </div>
+                        )}
+
+                        {/* TAB: KATALOG GAME & HARGA */}
+                        {activeAdminTab === 'katalog' && (
+                           <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col md:flex-row gap-6 h-full">
+                              
+                              {/* Kolom Kiri: Kelola Game */}
+                              <div className="w-full md:w-1/3 flex flex-col gap-4 border-r border-theme pr-0 md:pr-4">
+                                 <h2 className="text-lg font-black text-main flex items-center gap-2 mb-2"><IconGamepad className="w-5 h-5 text-orange-500"/> Manajemen Game</h2>
+                                 <form onSubmit={handleSaveGame} className="bg-gray-50 dark:bg-black/50 p-5 rounded-3xl border border-theme shadow-inner text-sm space-y-3 shrink-0">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h3 className="font-bold text-main text-xs uppercase tracking-widest">{editingGameId ? 'Edit Data Game' : 'Tambah Game Baru'}</h3>
+                                        {editingGameId && <button type="button" onClick={()=>{setEditingGameId(null); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone');}} className="text-[9px] bg-gray-200 dark:bg-white/10 px-2 py-1 rounded text-main font-bold">Batal Edit</button>}
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">ID Database Unik</label>
+                                        <input type="text" required value={newGameId} onChange={(e)=>setNewGameId(e.target.value.toLowerCase().replace(/\s+/g, ''))} disabled={editingGameId!==null} placeholder="contoh: mlbb" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition disabled:opacity-50"/>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Nama Game</label>
+                                        <input type="text" required value={newGameName} onChange={(e)=>setNewGameName(e.target.value)} placeholder="Mobile Legends" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition"/>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Tipe ID Member</label>
+                                        <select value={newGameInput} onChange={(e)=>setNewGameInput(e.target.value)} className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition appearance-none">
+                                            <option value="id_zone">Butuh User ID & Zone ID</option>
+                                            <option value="id_only">Hanya User ID (UID)</option>
+                                            <option value="riot_id">Riot ID & Tagline (#)</option>
+                                        </select>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Cover / Gambar Game</label>
+                                        <div className="relative group">
+                                            <input type="file" accept="image/*" onChange={async (e) => {
+                                               if(e.target.files[0]) {
+                                                  setUploadingGameImg(true); 
+                                                  try { const res = await compressImage(e.target.files[0], 300); setNewGameImg(res); } 
+                                                  catch(err) { addToast('Gagal memproses gambar', 'error'); }
+                                                  setUploadingGameImg(false);
+                                               }
+                                            }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                                            <div className="w-full input-theme p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 text-xs text-center flex items-center justify-center gap-2 group-hover:border-orange-500 transition">
+                                                {uploadingGameImg ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> {newGameImg ? 'Ganti Gambar (Klik)' : 'Pilih Gambar (Upload)'}</>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" className="w-full bg-orange-600 hover:bg-orange-500 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition">Simpan Konfigurasi Game</button>
+                                 </form>
+                                 
+                                 <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-black/40 rounded-3xl p-3 border border-theme custom-scrollbar space-y-2">
+                                    <h3 className="text-[10px] font-black text-sub-theme px-2 py-1 uppercase tracking-widest">Daftar Game Tersimpan</h3>
+                                    {(games||[]).map(g => ( 
+                                        <div key={g.id} onClick={()=>setAdminSelectedGame(g.id)} className={`p-3 rounded-2xl flex justify-between items-center cursor-pointer transition border ${adminSelectedGame===g.id ? 'bg-orange-50 dark:bg-orange-500/10 border-orange-500/50' : 'bg-white dark:bg-white/5 border-transparent hover:border-theme'}`}>
+                                            <div className="flex items-center gap-3">
+                                                <img src={g.image} className="w-10 h-10 rounded-xl object-cover border border-theme"/>
+                                                <div>
+                                                    <div className={`text-xs font-black truncate max-w-[120px] ${adminSelectedGame===g.id ? 'text-orange-600 dark:text-orange-400' : 'text-main'}`}>{g.name}</div>
+                                                    <div className="text-[9px] text-sub-theme font-mono mt-0.5">ID: {g.id}</div>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-1">
+                                                <button onClick={(e)=>{e.stopPropagation(); handleEditGameClick(g)}} className="text-gray-400 hover:text-main p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
+                                                <button onClick={(e)=>{e.stopPropagation(); handleDeleteGame(g.id)}} className="text-gray-400 hover:text-red-500 p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
+                                            </div>
+                                        </div> 
+                                    ))}
+                                    {(!games || games.length === 0) && <div className="text-center py-10 text-xs font-bold text-sub-theme">Database game kosong.</div>}
+                                 </div>
+                              </div>
+
+                              {/* Kolom Kanan: Kelola Item */}
+                              <div className="w-full md:w-2/3 flex flex-col gap-4">
+                                 <div className="flex items-center justify-between mb-2">
+                                     <h2 className="text-lg font-black text-main flex items-center gap-2"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h2>
+                                     <div className="text-[10px] bg-gray-100 dark:bg-white/10 border border-theme px-3 py-1.5 rounded-lg text-main font-bold flex items-center gap-2">Target Game: <span className="text-orange-600 dark:text-orange-400">{(games||[]).find(g=>g.id===adminSelectedGame)?.name || 'Pilih game di samping'}</span></div>
+                                 </div>
+
+                                 <form onSubmit={handleSaveItem} className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-3xl border border-emerald-500/30 flex flex-col sm:flex-row gap-3 shrink-0 shadow-inner">
+                                    <div className="flex-1 space-y-1">
+                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Nama Produk / Item Top Up</label>
+                                        <input type="text" required value={newItemName} onChange={(e)=>setNewItemName(e.target.value)} placeholder="Contoh: 86 Diamonds" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50"/>
+                                    </div>
+                                    <div className="flex-1 sm:max-w-[200px] space-y-1">
+                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Harga Jual (Rp)</label>
+                                        <input type="number" required value={newItemPrice} onChange={(e)=>setNewItemPrice(e.target.value)} placeholder="25000" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50 font-mono"/>
+                                    </div>
+                                    <div className="flex gap-2 items-end pt-4 sm:pt-0">
+                                        <button type="submit" disabled={!adminSelectedGame} className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 h-[46px]">{editingItemId ? 'Update Data' : 'Tambah Baru'}</button>
+                                        {editingItemId && <button type="button" onClick={()=>{setEditingItemId(null); setNewItemName(''); setNewItemPrice('');}} className="bg-gray-200 dark:bg-white/10 hover:bg-gray-300 dark:hover:bg-white/20 text-main px-4 py-3.5 rounded-xl transition h-[46px]"><IconX className="w-4 h-4"/></button>}
+                                    </div>
+                                 </form>
+                                 
+                                 <div className="flex-1 bg-gray-50 dark:bg-black/40 rounded-3xl p-5 border border-theme overflow-y-auto custom-scrollbar shadow-inner">
+                                    <h3 className="text-[10px] font-black text-sub-theme mb-4 uppercase tracking-widest">Daftar Produk Aktif ({(items||[]).filter(i=>i.gameId===adminSelectedGame).length})</h3>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                       {(items||[]).filter(i=>i.gameId===adminSelectedGame).sort((a,b)=>a.price-b.price).map(i => (
+                                          <div key={i.id} className="bg-white dark:bg-white/5 p-4 rounded-2xl flex flex-col justify-between border border-theme hover:border-emerald-500/50 transition group relative overflow-hidden shadow-sm">
+                                             <div className="mb-4 relative z-10">
+                                                 <div className="text-main font-bold text-sm leading-tight mb-1">{i.name}</div>
+                                                 <div className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-sm">{formatRupiah(i.price)}</div>
+                                             </div>
+                                             <div className="flex justify-end gap-2 relative z-10 pt-2 border-t border-theme mt-auto">
+                                                <button onClick={()=>handleEditItemClick(adminSelectedGame, i)} className="text-gray-400 hover:text-main p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
+                                                <button onClick={()=>handleDeleteItem(i.id)} className="text-gray-400 hover:text-red-500 p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
+                                             </div>
+                                          </div>
+                                       ))}
+                                       {(!items || items.filter(i=>i.gameId===adminSelectedGame).length === 0) && (
+                                          <div className="col-span-full flex flex-col items-center justify-center py-16 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
+                                              <IconBox className="w-12 h-12 mb-3 opacity-30"/>
+                                              <span className="font-bold text-sm">Belum ada produk untuk game ini.</span>
+                                          </div>
+                                       )}
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        )}
+
+                        {/* TAB: PUSAT PROMOSI */}
+                        {activeAdminTab === 'promo' && (
+                           <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full space-y-6">
+                               <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
+                                   <div>
+                                       <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconPercent className="w-6 h-6 text-orange-500"/> Pusat Promosi & Event</h2>
+                                       <p className="text-xs text-sub-theme font-medium mt-1">Kelola Diskon Otomatis, Promo Per Game, Flash Sale, Kupon, dan Event Harian.</p>
+                                   </div>
+                               </div>
+
+                               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full pb-6">
+                                   
+                                   {/* Form Buat Promo */}
+                                   <div className="lg:col-span-5 flex flex-col h-full">
+                                      <form onSubmit={handleSavePromo} className="w-full bg-gray-50 dark:bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner h-fit">
+                                         <h3 className="text-lg font-black text-main mb-6">Formulir Terbitkan Promo</h3>
+                                         
+                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
+                                             <button type="button" onClick={()=>setPromoModalType('item')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='item' ? 'bg-orange-50 dark:bg-orange-500/20 border-orange-500/50 text-orange-600 dark:text-orange-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎯 Diskon Item</button>
+                                             <button type="button" onClick={()=>setPromoModalType('game')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='game' ? 'bg-blue-50 dark:bg-blue-500/20 border-blue-500/50 text-blue-600 dark:text-blue-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎮 Promo Game</button>
+                                             <button type="button" onClick={()=>setPromoModalType('flash')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='flash' ? 'bg-red-50 dark:bg-red-500/20 border-red-500/50 text-red-600 dark:text-red-400' : 'bg-transparent border-theme text-sub-theme'}`}>⚡ Flash Sale</button>
+                                             <button type="button" onClick={()=>setPromoModalType('code')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='code' ? 'bg-purple-50 dark:bg-purple-500/20 border-purple-500/50 text-purple-600 dark:text-purple-400' : 'bg-transparent border-theme text-sub-theme'}`}>🔑 Kode Kupon</button>
+                                             <button type="button" onClick={()=>setPromoModalType('day')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='day' ? 'bg-emerald-50 dark:bg-emerald-500/20 border-emerald-500/50 text-emerald-600 dark:text-emerald-400' : 'bg-transparent border-theme text-sub-theme'}`}>📅 Hari Spesial</button>
+                                         </div>
+                                         
+                                         <div className="space-y-4">
+                                             <div className="flex gap-3">
+                                                 <div className="flex-1 space-y-1">
+                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Jenis Potongan</label>
+                                                     <select value={promoForm.type} onChange={(e)=>setPromoForm({...promoForm, type: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
+                                                         <option value="percentage">Persen (%)</option>
+                                                         <option value="fixed">Nominal Harga (Rp)</option>
+                                                     </select>
+                                                 </div>
+                                                 <div className="flex-1 space-y-1">
+                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Besaran Nilai</label>
+                                                     <input type="number" required value={promoForm.discount} onChange={(e)=>setPromoForm({...promoForm, discount: e.target.value})} placeholder="Contoh: 10" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 font-mono" />
+                                                 </div>
+                                             </div>
+
+                                             {/* Conditional Inputs */}
+                                             {(promoModalType==='flash' || promoModalType==='item') && (
+                                                 <div className="space-y-1">
+                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Target Produk Spesifik</label>
+                                                     <select value={promoTargetItem} onChange={(e)=>setPromoTargetItem(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
+                                                         <option value="">-- Pilih Item dari Katalog --</option>
+                                                         {(items||[]).map(i=><option key={i.id} value={i.id}>{((games||[]).find(g=>g.id===i.gameId)?.name || 'Game')} - {i.name} ({formatRupiah(i.price)})</option>)}
+                                                     </select>
+                                                 </div>
+                                             )}
+
+                                             {promoModalType==='game' && (
+                                                 <div className="space-y-1">
+                                                     <label className="text-[9px] font-black text-blue-500 uppercase tracking-widest ml-1">Terapkan Diskon ke Semua Item Game Ini</label>
+                                                     <select value={promoTargetGame} onChange={(e)=>setPromoTargetGame(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-blue-500 appearance-none">
+                                                         <option value="">-- Pilih Game --</option>
+                                                         {(games||[]).map(g=><option key={g.id} value={g.id}>{g.name}</option>)}
+                                                     </select>
+                                                 </div>
+                                             )}
+
+                                             {promoModalType==='flash' && (
+                                                <div className="space-y-4 pt-2 border-t border-theme">
+                                                   <div className="grid grid-cols-2 gap-3">
+                                                       <div className="space-y-1">
+                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Mulai Berlaku</label>
+                                                           <input type="datetime-local" required value={promoForm.startTime} onChange={(e)=>setPromoForm({...promoForm, startTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
+                                                       </div>
+                                                       <div className="space-y-1">
+                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Berakhir Pada</label>
+                                                           <input type="datetime-local" required value={promoForm.endTime} onChange={(e)=>setPromoForm({...promoForm, endTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
+                                                       </div>
+                                                   </div>
+                                                   <div className="space-y-1">
+                                                       <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Batas Kuota / Stok Promo</label>
+                                                       <input type="number" required value={promoForm.stock} onChange={(e)=>setPromoForm({...promoForm, stock: e.target.value})} placeholder="Contoh: 50 pembeli pertama" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-red-500 font-mono"/>
+                                                   </div>
+                                                </div>
+                                             )}
+
+                                             {promoModalType==='code' && (
+                                                <div className="space-y-4 pt-2 border-t border-theme">
+                                                   <div className="space-y-1">
+                                                       <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Teks Kode Kupon Rahasia</label>
+                                                       <input type="text" required value={promoForm.code} onChange={(e)=>setPromoForm({...promoForm, code: (e.target.value||'').replace(/\s/g, '').toUpperCase()})} placeholder="Ketik Kode (Misal: VIPERPROMO)" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-purple-500 font-mono uppercase font-black"/>
+                                                   </div>
+                                                   <div className="grid grid-cols-2 gap-3">
+                                                       <div className="space-y-1">
+                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Maks. Pengguna</label>
+                                                           <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} placeholder="Contoh: 100" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
+                                                       </div>
+                                                       <div className="space-y-1">
+                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Min. Belanja (Rp)</label>
+                                                           <input type="number" value={promoForm.minPurchase} onChange={(e)=>setPromoForm({...promoForm, minPurchase: e.target.value})} placeholder="Opsional (0)" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
+                                                       </div>
+                                                   </div>
+                                                </div>
+                                             )}
+
+                                             {promoModalType==='day' && (
+                                                <div className="space-y-1 pt-2 border-t border-theme">
+                                                    <label className="text-[9px] font-black text-emerald-500 uppercase tracking-widest ml-1">Pilih Hari Aktif Promo Harian</label>
+                                                    <select value={promoForm.targetDay} onChange={(e)=>setPromoForm({...promoForm, targetDay: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 appearance-none">
+                                                        <option value="1">Senin</option><option value="2">Selasa</option><option value="3">Rabu</option><option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option><option value="0">Minggu</option>
+                                                    </select>
+                                                </div>
+                                             )}
+                                         </div>
+                                         
+                                         <button type="submit" className="w-full bg-black text-white dark:bg-white hover:opacity-80 dark:text-black py-4 rounded-xl font-black text-sm uppercase tracking-widest shadow-xl mt-8 transition transform hover:-translate-y-1">Terbitkan Promo Ke Server</button>
+                                      </form>
+                                   </div>
+
+                                   {/* List Promo Database */}
+                                   <div className="lg:col-span-7 bg-gray-50 dark:bg-black/40 rounded-[2.5rem] p-6 md:p-8 border border-theme shadow-inner flex flex-col h-full">
+                                      <h3 className="text-lg font-black text-main mb-2">Database Promosi Aktif</h3>
+                                      <p className="text-[10px] text-sub-theme mb-6">Daftar semua promo yang sedang atau pernah berjalan di sistem.</p>
+                                      
+                                      <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
+                                         {(promos||[]).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p => (
+                                            <div key={p.id} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all shadow-sm relative overflow-hidden group ${p.category === 'flash' ? 'border-red-500/30 bg-red-50 dark:bg-gradient-to-r from-black to-red-950/30' : p.category === 'code' ? 'border-purple-500/30 bg-purple-50 dark:bg-gradient-to-r from-black to-purple-950/30' : p.category === 'game' ? 'border-blue-500/30 bg-blue-50 dark:bg-gradient-to-r from-black to-blue-950/30' : 'border-theme bg-white dark:bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
+                                               
+                                               <div className="flex-1 min-w-0 z-10 relative">
+                                                  <div className="flex items-center gap-2 mb-2">
+                                                     {p.category === 'flash' && <span className="bg-red-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">⚡ Flash Sale</span>}
+                                                     {p.category === 'code' && <span className="bg-purple-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🔑 Kode Kupon</span>}
+                                                     {p.category === 'item' && <span className="bg-orange-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎯 Diskon Spesifik</span>}
+                                                     {p.category === 'game' && <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎮 Promo Game</span>}
+                                                     {p.category === 'day' && <span className="bg-emerald-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">📅 Event Harian</span>}
+                                                     <div className="text-base font-black font-mono tracking-widest text-main truncate max-w-[150px]">{p.code || (p.id||'').split('_')[0]}</div>
+                                                  </div>
+                                                  
+                                                  <div className="text-sm font-bold text-sub-theme">
+                                                     {p.type === 'percentage' ? <span className="text-orange-600 dark:text-orange-400">Potongan {p.discount}% Off</span> : <span className="text-emerald-600 dark:text-emerald-400">Diskon Tunai {formatRupiah(p.discount)}</span>}
+                                                  </div>
+                                                  
+                                                  <div className="flex flex-wrap gap-2 mt-3">
+                                                     {p.minPurchase > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-theme px-2 py-1 rounded text-main font-mono">Min: {formatRupiah(p.minPurchase)}</span>}
+                                                     {p.targetItems?.length > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-orange-500/30 px-2 py-1 rounded text-orange-600 dark:text-orange-400 font-bold truncate max-w-[150px]">Khusus: {(items||[]).find(i=>i.id===p.targetItems[0])?.name || 'Item Terpilih'}</span>}
+                                                     {p.targetGame && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-blue-500/30 px-2 py-1 rounded text-blue-600 dark:text-blue-400 font-bold truncate max-w-[150px]">Semua Item: {(games||[]).find(g=>g.id===p.targetGame)?.name || 'Game Terpilih'}</span>}
+                                                     {(p.maxUses || p.stock) && <span className={`text-[9px] bg-black/5 dark:bg-black/50 border px-2 py-1 rounded font-mono font-bold ${((p.usedBy||[]).length >= (p.maxUses || p.stock)) ? 'border-red-500/30 text-red-600 dark:text-red-500' : 'border-theme text-main'}`}>Terpakai: {(p.usedBy||[]).length||0} / {p.maxUses || p.stock}</span>}
+                                                  </div>
+                                               </div>
+                                               
+                                               <div className="flex gap-2 w-full sm:w-auto mt-3 sm:mt-0 shrink-0 z-10 relative">
+                                                  <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`w-12 h-10 rounded-xl transition-all flex items-center justify-center border shadow-inner ${p.isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-gray-200 dark:bg-gray-800/50 text-gray-500 border-theme hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-main'}`} title={p.isActive ? 'Nonaktifkan Promo' : 'Aktifkan Kembali'}>
+                                                     {p.isActive ? <IconCheckCircle className="w-5 h-5"/> : <IconBlock className="w-5 h-5"/>}
+                                                  </button>
+                                                  <button onClick={() => handleDeletePromo(p.id)} className="w-12 h-10 bg-gray-100 dark:bg-black/50 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-inner group-hover:border-red-500/50" title="Hapus Permanen">
+                                                     <IconTrash className="w-4 h-4"/>
+                                                  </button>
+                                               </div>
+                                            </div>
+                                         ))}
+                                         {(!promos || promos.length === 0) && (
+                                            <div className="flex flex-col items-center justify-center py-24 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
+                                               <IconPercent className="w-12 h-12 mb-4 opacity-30"/>
+                                               <span className="font-bold text-sm">Database promo kosong. Terbitkan promo pertama Anda.</span>
+                                            </div>
+                                         )}
+                                      </div>
+                                   </div>
+                               </div>
                            </div>
                         )}
 
