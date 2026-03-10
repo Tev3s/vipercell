@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v11.0</title>
+  <title>Vipercell - Premium Top Up v11.2</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -27,7 +27,12 @@
              float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } },
              marquee: { '0%': { transform: 'translateX(100%)' }, '100%': { transform: 'translateX(-100%)' } },
              glow: { '0%': { boxShadow: '0 0 5px #f97316, 0 0 10px #f97316' }, '100%': { boxShadow: '0 0 10px #ea580c, 0 0 20px #ea580c' } },
-             slideDown: { '0%': { opacity: 0, transform: 'translateY(-20px) scale(0.95)' }, '100%': { opacity: 1, transform: 'translateY(0) scale(1)' } }
+             slideDown: { '0%': { opacity: 0, transform: 'translateY(-20px) scale(0.95)' }, '100%': { opacity: 1, transform: 'translateY(0) scale(1)' } },
+             bounceUp: {
+               '0%': { opacity: '0', transform: 'translateY(80px) scale(0.8)' },
+               '60%': { opacity: '1', transform: 'translateY(-10px) scale(1.02)' },
+               '100%': { opacity: '1', transform: 'translateY(0) scale(1)' }
+             }
           }
         }
       }
@@ -123,7 +128,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V11.0
+    // FUNGSI HELPER & UTILITIES V11.2
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -238,7 +243,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V11.0 (FIXED TOP ISLAND)
+    // NOTIFICATION (TOAST) V11.2 (FIXED TOP ISLAND)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -280,7 +285,7 @@
     };
 
     // ==========================================
-    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.0
+    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.2
     // ==========================================
     const GlobalLoadingOverlay = ({ active, message }) => {
         if (!active) return null;
@@ -510,7 +515,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V11.0
+    // PREMIUM ORDER SUMMARY MODAL V11.2
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -531,7 +536,7 @@
                     <div className="space-y-3 text-sm">
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Tujuan Pengisian</span><span className="font-mono font-black text-white bg-black/50 px-2 py-1 rounded border border-white/5">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                         
-                        {/* V11.0: Fitur Nickname Opsional */}
+                        {/* V11.2: Fitur Nickname Opsional */}
                         {data.nickname && (
                             <div className="flex justify-between items-center bg-orange-500/10 p-2 rounded-lg border border-orange-500/20">
                                <span className="text-orange-400 text-xs font-bold">Nickname</span>
@@ -574,7 +579,7 @@
         )
     }
 
-    // ADMIN SCANNER RESULT MODAL V11.0
+    // ADMIN SCANNER RESULT MODAL V11.2
     const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
         const { addToast } = useToast();
         if (!isOpen || !order) return null;
@@ -633,7 +638,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.0 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.2 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -748,19 +753,21 @@
           else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); }
       }, [isDarkMode]);
 
-      // Push Notification Setup
+      // Push Notification Setup V11.2
       useEffect(() => {
-          if ('Notification' in window && Notification.permission === 'default') {
-              Notification.requestPermission();
+          if ('Notification' in window) {
+              if (Notification.permission === 'default') {
+                  setTimeout(() => Notification.requestPermission(), 3000);
+              }
           }
       }, []);
 
-      // V11.0 Global Anti-Blank System State
+      // V11.2 Global Anti-Blank System State
       const [sysLoading, setSysLoading] = useState({ active: false, msg: '' });
       const triggerSysLoad = (msg) => setSysLoading({ active: true, msg });
       const closeSysLoad = () => setSysLoading({ active: false, msg: '' });
 
-      // V11.0 Web Bluetooth API States
+      // V11.2 Web Bluetooth API States
       const [bluetoothDevice, setBluetoothDevice] = useState(null);
       const [btCharacteristic, setBtCharacteristic] = useState(null);
       const isPrinterConnected = !!btCharacteristic;
@@ -833,6 +840,9 @@
       const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); 
       const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, orderId: null });
       
+      // V11.2 Bulk Delete Orders Admin
+      const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
+
       const [supportTab, setSupportTab] = useState('member'); 
       const [activeChatEmail, setActiveChatEmail] = useState(null);
       const [adminReplyText, setAdminReplyText] = useState('');
@@ -868,10 +878,8 @@
       const chatBgColor = isDarkMode ? '#0a0a0a' : '#e5ddd5';
       const chatEndRef = useRef(null);
 
-      // --- V11.0 AUTO PRINT STANDBY MODE ---
       const [isStandbyMode, setIsStandbyMode] = useState(false);
 
-      // Kunci scroll saat popup terbuka
       const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen;
       useEffect(() => {
           if (isAnyModalOpen || sysLoading.active) document.body.classList.add('modal-open');
@@ -879,7 +887,6 @@
           return () => { document.body.classList.remove('modal-open'); }
       }, [isAnyModalOpen, sysLoading]);
 
-      // Dynamic Greeting 
       const greeting = useMemo(() => {
           const hour = new Date().getHours();
           if (hour < 11) return 'Pagi 🌅';
@@ -888,7 +895,6 @@
           return 'Malam 🌙';
       }, []);
 
-      // Smart Notification Clear
       useEffect(() => {
           if (currentView === 'chat' && userChat?.status === 'Dijawab') {
               setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{});
@@ -904,18 +910,21 @@
           }
       }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
-      // Push Notifications System
       const prevOrdersRef = useRef([]);
       const prevAdminOrdersRef = useRef([]);
 
+      // User Order Notification V11.2
       useEffect(() => {
-         // User Notification
          if(userOrders?.length > 0 && prevOrdersRef.current?.length > 0) {
              userOrders.forEach(o => {
                  const prevO = prevOrdersRef.current.find(p => p.id === o.id);
-                 if (prevO && prevO.status !== o.status && (o.status === 'Sukses' || o.status === 'Batal' || o.status === 'Sedang Diproses')) {
+                 if (prevO && prevO.status !== o.status) {
                      if('Notification' in window && Notification.permission === 'granted') {
-                         new Notification('Vipercell Order Update', { body: `Pesanan ${o.id} sekarang berstatus: ${o.status}`, icon: globalConfig?.favicon });
+                         let title = '📦 Status Pesanan Berubah';
+                         if (o.status === 'Sukses') title = '✅ Pesanan Berhasil';
+                         else if (o.status === 'Batal') title = '❌ Pesanan Dibatalkan';
+                         const notif = new Notification(title, { body: `Pesanan ${o.id} sekarang berstatus: ${o.status}`, icon: globalConfig?.favicon });
+                         notif.onclick = () => { window.focus(); setExpandedHistoryId(o.id); navigateTo('history'); };
                      }
                  }
              });
@@ -923,26 +932,28 @@
          prevOrdersRef.current = userOrders || [];
       }, [userOrders, globalConfig?.favicon]);
 
-      // ADMIN STANDBY MODE LISTENER (V11.0)
+      // Admin Order Notification V11.2
       useEffect(() => {
-         if (isAdmin && isStandbyMode && adminOrders?.length > 0) {
+         if (isAdmin && adminOrders?.length > 0) {
              if (prevAdminOrdersRef.current?.length > 0) {
-                 // Check for new 'Pending' orders
                  adminOrders.forEach(order => {
                      const isNew = !prevAdminOrdersRef.current.find(p => p.id === order.id);
                      if (isNew && order.status === 'Pending') {
+                         if('Notification' in window && Notification.permission === 'granted') {
+                             const notif = new Notification('🛒 Pesanan Baru', { body: `Pesanan masuk: ${order.id} - ${order.gameName}`, icon: globalConfig?.favicon });
+                             notif.onclick = () => { window.focus(); setActiveAdminTab('orders'); navigateTo('admin'); };
+                         }
                          playSuccessBeep();
                          addToast(`Pesanan Baru Masuk: ${order.id}`, 'info');
-                         // Native Auto Print without prompt
-                         executeBluetoothPrint(order);
+                         if (isStandbyMode) executeBluetoothPrint(order);
                      }
                  });
              }
          }
          prevAdminOrdersRef.current = adminOrders || [];
-      }, [adminOrders, isAdmin, isStandbyMode]);
+      }, [adminOrders, isAdmin, isStandbyMode, globalConfig?.favicon]);
 
-
+      // User Chat Notification V11.2
       const prevChatRef = useRef([]);
       useEffect(() => {
          if(userChat?.messages) {
@@ -950,13 +961,35 @@
              if(prevChatRef.current?.length > 0 && msgs.length > prevChatRef.current.length) {
                  const lastMsg = msgs[msgs.length - 1];
                  if(lastMsg.sender === 'admin' && 'Notification' in window && Notification.permission === 'granted') {
-                     new Notification('Balasan CS Vipercell', { body: lastMsg.text, icon: globalConfig?.favicon });
+                     const notif = new Notification('📩 Pesan Baru (Admin)', { body: lastMsg.text, icon: globalConfig?.favicon });
+                     notif.onclick = () => { window.focus(); navigateTo('chat'); };
                  }
              }
              prevChatRef.current = msgs;
          }
       }, [userChat, globalConfig?.favicon]);
 
+      // Admin Chat Notification V11.2
+      const prevAdminChatsRef = useRef([]);
+      useEffect(() => {
+          if (isAdmin && adminChats?.length > 0) {
+              if (prevAdminChatsRef.current?.length > 0) {
+                  adminChats.forEach(chat => {
+                      const prevChat = prevAdminChatsRef.current.find(c => c.id === chat.id);
+                      if (prevChat && chat.messages?.length > prevChat.messages?.length) {
+                          const lastMsg = chat.messages[chat.messages.length - 1];
+                          if (lastMsg.sender === 'user') {
+                              if('Notification' in window && Notification.permission === 'granted') {
+                                   const notif = new Notification('💬 Pesan Bantuan Baru', { body: `Dari ${chat.id}: ${lastMsg.text}`, icon: globalConfig?.favicon });
+                                   notif.onclick = () => { window.focus(); setActiveAdminTab('support'); setSupportTab('member'); setActiveChatEmail(chat.id); navigateTo('admin'); };
+                              }
+                          }
+                      }
+                  });
+              }
+              prevAdminChatsRef.current = adminChats || [];
+          }
+      }, [adminChats, isAdmin, globalConfig?.favicon]);
 
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
@@ -1137,33 +1170,45 @@
 
       const handleCheckID = async () => { addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info'); }
 
-      // --- PRINT BLUETOOTH NATIVE V11.0 ---
+      // --- PRINT BLUETOOTH NATIVE V11.2 ---
       const getReceiptBytes = (order) => {
           let text = "";
           text += '\x1B' + '@'; // Init
           text += '\x1B' + 'a' + '\x01'; // Center
-          text += '\x1B' + 'E' + '\x01'; // Bold
-          text += 'VIPERCELL STORE\n';
-          text += '\x1B' + 'E' + '\x00'; // Bold off
-          text += '--------------------------------\n';
-          text += '\x1B' + 'a' + '\x00'; // Left
-          text += `TRX    : ${order.id}\n`;
-          text += `STATUS : ${order.status.toUpperCase()}\n`;
-          text += `TANGGAL: ${new Date(order.createdAt).toLocaleDateString('id-ID')}\n`;
-          text += '--------------------------------\n';
-          text += `GAME   : ${order.gameName}\n`;
-          text += `ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`;
-          if(order.targetNickname) text += `NICK   : ${order.targetNickname}\n`;
-          text += `ITEM   : ${order.nominalName}\n`;
-          text += `METODE : ${order.paymentMethod}\n`;
-          text += '--------------------------------\n';
-          text += '\x1B' + 'E' + '\x01';
-          text += `TOTAL  : ${formatRupiah(order.priceTotal)}\n`;
-          text += '\x1B' + 'E' + '\x00';
-          text += '--------------------------------\n';
-          text += '\x1B' + 'a' + '\x01'; // Center
-          text += 'Terima kasih\n';
-          text += 'Vipercell v11.0\n';
+          
+          if (order.paymentMethod.toLowerCase().includes('cash')) {
+              text += '\x1B' + 'E' + '\x01'; // Bold
+              text += 'VIPERCELL\n';
+              text += '\x1B' + 'E' + '\x00';
+              text += '--------------------------------\n';
+              text += `TRX     : ${order.id}\n`;
+              text += `TANGGAL : ${new Date(order.createdAt).toLocaleDateString('id-ID')}\n`;
+              text += '--------------------------------\n';
+              text += 'Pembayaran Cash\n';
+              text += 'Terima kasih\n';
+          } else {
+              text += '\x1B' + 'E' + '\x01'; // Bold
+              text += 'VIPERCELL STORE\n';
+              text += '\x1B' + 'E' + '\x00'; // Bold off
+              text += '--------------------------------\n';
+              text += '\x1B' + 'a' + '\x00'; // Left
+              text += `TRX    : ${order.id}\n`;
+              text += `STATUS : ${order.status.toUpperCase()}\n`;
+              text += '--------------------------------\n';
+              text += `GAME   : ${order.gameName}\n`;
+              text += `ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`;
+              if(order.targetNickname) text += `NICK   : ${order.targetNickname}\n`;
+              text += `ITEM   : ${order.nominalName}\n`;
+              text += `METODE : ${order.paymentMethod}\n`;
+              text += '--------------------------------\n';
+              text += '\x1B' + 'E' + '\x01';
+              text += `TOTAL  : ${formatRupiah(order.priceTotal)}\n`;
+              text += '\x1B' + 'E' + '\x00';
+              text += `TANGGAL: ${new Date(order.createdAt).toLocaleDateString('id-ID')}\n`;
+              text += '--------------------------------\n';
+              text += '\x1B' + 'a' + '\x01'; // Center
+              text += 'Terima kasih\n';
+          }
           text += '\n\n\n'; // Feed lines
           return new TextEncoder().encode(text);
       };
@@ -1175,7 +1220,6 @@
                   filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
                   optionalServices: ['0000e7810-0000-1000-8000-00805f9b34fb']
               }).catch(err => {
-                  // Fallback broader search if specific UUID fails
                   return navigator.bluetooth.requestDevice({
                       acceptAllDevices: true,
                       optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2']
@@ -1185,7 +1229,6 @@
               setBluetoothDevice(device);
               const server = await device.gatt.connect();
               
-              // Find the right service & characteristic (Common ESC/POS UUIDs)
               const services = await server.getPrimaryServices();
               let targetCharacteristic = null;
 
@@ -1239,11 +1282,9 @@
 
       const executeBluetoothPrint = async (order) => {
           if (!order) return;
-          
           if (isPrinterConnected && btCharacteristic) {
               try {
                   const bytes = getReceiptBytes(order);
-                  // Split bytes into chunks if needed (some BT printers max MTU is 512)
                   const CHUNK_SIZE = 300;
                   for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
                       await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE));
@@ -1251,7 +1292,7 @@
                   addToast('Struk berhasil dicetak', 'success');
               } catch (e) {
                   addToast('Gagal print Bluetooth, mencoba mode popup...', 'warning');
-                  printReceiptFallback(order); // fallback
+                  printReceiptFallback(order); 
               }
           } else {
               printReceiptFallback(order);
@@ -1271,23 +1312,32 @@
                      .divider { border-bottom: 1px dashed #000; margin: 8px 0; }
                      .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
                  </style></head><body>
-                     <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL STORE</div>
-                     <div class="text-center" style="font-size: 10px; margin-top: 2px;">Bukti Top Up</div>
-                     <div class="divider"></div>
-                     <div class="row"><span>TRX</span><span>${order.id}</span></div>
-                     <div class="row"><span>STATUS</span><span>${order.status.toUpperCase()}</span></div>
-                     <div class="row"><span>TGL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
-                     <div class="divider"></div>
-                     <div style="margin-bottom: 4px;">GAME   : ${order.gameName}</div>
-                     <div style="margin-bottom: 4px;">ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
-                     ${order.targetNickname ? `<div style="margin-bottom: 4px;">NICK   : ${order.targetNickname}</div>` : ''}
-                     <div style="margin-bottom: 4px;">ITEM   : ${order.nominalName}</div>
-                     <div style="margin-bottom: 4px;">METODE : ${order.paymentMethod}</div>
-                     <div class="divider"></div>
-                     <div class="row font-bold" style="font-size: 14px;"><span>TOTAL</span><span>${formatRupiah(order.priceTotal)}</span></div>
-                     <div class="divider"></div>
-                     <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
-                     <div class="text-center" style="font-size: 8px; margin-top: 2px;">Vipercell v11.0</div>
+                     ${order.paymentMethod.toLowerCase().includes('cash') ? `
+                        <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL</div>
+                        <div class="divider"></div>
+                        <div class="row"><span>TRX</span><span>${order.id}</span></div>
+                        <div class="row"><span>TANGGAL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
+                        <div class="divider"></div>
+                        <div class="text-center" style="margin-bottom: 4px;">Pembayaran Cash</div>
+                        <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
+                     ` : `
+                        <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL STORE</div>
+                        <div class="text-center" style="font-size: 10px; margin-top: 2px;">Bukti Top Up</div>
+                        <div class="divider"></div>
+                        <div class="row"><span>TRX</span><span>${order.id}</span></div>
+                        <div class="row"><span>STATUS</span><span>${order.status.toUpperCase()}</span></div>
+                        <div class="divider"></div>
+                        <div style="margin-bottom: 4px;">GAME   : ${order.gameName}</div>
+                        <div style="margin-bottom: 4px;">ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
+                        ${order.targetNickname ? `<div style="margin-bottom: 4px;">NICK   : ${order.targetNickname}</div>` : ''}
+                        <div style="margin-bottom: 4px;">ITEM   : ${order.nominalName}</div>
+                        <div style="margin-bottom: 4px;">METODE : ${order.paymentMethod}</div>
+                        <div class="divider"></div>
+                        <div class="row font-bold" style="font-size: 14px;"><span>TOTAL</span><span>${formatRupiah(order.priceTotal)}</span></div>
+                        <div class="row" style="font-size: 10px; margin-top: 5px;"><span>TANGGAL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
+                        <div class="divider"></div>
+                        <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
+                     `}
                  </body></html>
              `);
              printWindow.document.close(); printWindow.focus();
@@ -1381,7 +1431,7 @@
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // V11.0 Checkout Validation includes optional nickname
+      // V11.2 Checkout Validation
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1404,7 +1454,7 @@
           else { processCheckout(); } 
       };
 
-      // V11.0 Auto Redirect after checkout
+      // V11.2 Process Checkout with Anti Blank
       const processCheckout = async () => {
         setIsProcessing(true);
         triggerSysLoad('Memproses Transaksi Anda...');
@@ -1438,7 +1488,6 @@
           setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); playSuccessBeep(); 
           setOrderSuccessModal(true);
           
-          // Auto Redirect (V11.0 Fix Blank Page)
           setTimeout(() => {
               setOrderSuccessModal(false);
               navigateTo('history');
@@ -1471,6 +1520,32 @@
           catch(e) { addToast("Gagal menghapus data. Coba lagi.", 'error'); } 
           finally { setAuthLoading(false); setDangerModal({isOpen: false}); closeSysLoad(); }
       });
+
+      // V11.2 Admin Bulk Delete Function
+      const handleSelectOrder = (id) => {
+          setSelectedOrdersForDelete(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
+      }
+      
+      const handleBulkDeleteOrders = () => {
+          if(selectedOrdersForDelete.length === 0) return;
+          requestDangerConfirm(`Hapus permanen ${selectedOrdersForDelete.length} pesanan yang dipilih?`, async () => {
+              triggerSysLoad('Menghapus pesanan...');
+              try {
+                  const batch = writeBatch(db);
+                  selectedOrdersForDelete.forEach(id => {
+                      batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', id), { status: 'Dihapus' });
+                  });
+                  await batch.commit();
+                  setSelectedOrdersForDelete([]);
+                  addToast('Data pesanan berhasil dihapus!', 'success');
+                  setDangerModal({isOpen:false});
+              } catch(e) {
+                  addToast('Gagal menghapus data.', 'error');
+              } finally {
+                  closeSysLoad();
+              }
+          });
+      }
 
       const handleCloseTicket = async (email) => {
          try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); }
@@ -1514,7 +1589,26 @@
           } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
-      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diperbarui', 'success'); } catch(e) { addToast('Gagal upload', 'error'); } finally { closeSysLoad() } } };
+      // V11.2 Favicon Validation
+      const handleFaviconUpload = async (e) => { 
+          const file = e.target.files[0]; 
+          if (file) { 
+              if(file.size > 2 * 1024 * 1024) return addToast('Ukuran file maksimal 2MB!', 'error');
+              if(!['image/png', 'image/jpeg', 'image/svg+xml', 'image/x-icon', 'image/webp'].includes(file.type)) return addToast('Format file tidak didukung!', 'error');
+              
+              try { 
+                  triggerSysLoad('Mengunggah Icon Baru...'); 
+                  const base64 = await compressImage(file, 128); 
+                  await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); 
+                  addToast('Icon Website berhasil diperbarui secara realtime.', 'success'); 
+              } catch(e) { 
+                  addToast('Gagal upload', 'error'); 
+              } finally { 
+                  closeSysLoad() 
+              } 
+          } 
+      };
+
       const handleDeleteFavicon = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } finally { closeSysLoad() } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); try { triggerSysLoad(); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } } };
       const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } });
@@ -1614,7 +1708,6 @@
 
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
       
-      // Calculate dynamic price for bottom bar
       const currentBasePrice = selectedNominal ? calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id) : 0;
       const currentUsedCashback = useCashback ? Math.min(currentBasePrice, (currentUserData?.saldoCashback || 0)) : 0;
       const displayTotal = currentBasePrice - currentUsedCashback;
@@ -1741,9 +1834,9 @@
              </div>
           )}
 
-          {/* CHAT BANTUAN OVERLAY */}
+          {/* CHAT BANTUAN OVERLAY V11.2 (ANIMASI MELAMBUNG) */}
           {currentView === 'chat' && (
-             <div className={`animate-in fade-in slide-in-from-bottom-8 duration-500 transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20'}`}>
+             <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col animate-in fade-in duration-300' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-[bounceUp_0.6s_cubic-bezier(0.175,0.885,0.32,1.275)_forwards]'}`}>
                 <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
                    <div className="flex items-center gap-3 md:gap-4">
                        {!isChatFullScreen && <button onClick={handleBack} className="p-2.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-main rounded-xl transition border border-theme flex items-center justify-center shrink-0 shadow-sm"><IconChevronLeft className="w-5 h-5"/></button>}
@@ -1862,7 +1955,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.0) */}
+          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.2) */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1915,7 +2008,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V11.0 */}
+                {/* Greeting Dinamis V11.2 */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -2013,7 +2106,7 @@
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
                             
-                            {/* Card 1: Data Akun V11.0 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
+                            {/* Card 1: Data Akun V11.2 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
                             <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
@@ -2043,7 +2136,7 @@
                                   )}
                                </div>
 
-                               {/* V11.0: Fitur Nickname Opsional */}
+                               {/* V11.2: Fitur Nickname Opsional */}
                                <div className="flex flex-col gap-3 relative z-10 mt-4">
                                    <div className="relative group flex-1">
                                        <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -2435,7 +2528,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V11.0)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V11.2)                                         */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2446,7 +2539,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.0</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.2</span>
                         </div>
                      </div>
 
@@ -2538,7 +2631,7 @@
                            </div>
                         )}
 
-                        {/* TAB: DAFTAR PESANAN V11.0 (PRINT STRUK NATIVE & STANDBY MODE) */}
+                        {/* TAB: DAFTAR PESANAN V11.2 (PRINT STRUK NATIVE & BULK DELETE) */}
                         {activeAdminTab === 'orders' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -2555,19 +2648,37 @@
                                  </div>
                               </div>
 
-                              <div className="relative mb-6">
-                                 <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                                 <input type="text" placeholder="Cari berdasarkan ID Transaksi / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 font-medium transition shadow-inner" />
+                              <div className="relative mb-6 flex gap-3">
+                                 <div className="relative flex-1">
+                                    <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
+                                    <input type="text" placeholder="Cari berdasarkan ID Transaksi / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 font-medium transition shadow-inner" />
+                                 </div>
+                                 {selectedOrdersForDelete.length > 0 && (
+                                     <button onClick={handleBulkDeleteOrders} className="bg-red-600 hover:bg-red-500 text-white px-4 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg flex items-center gap-2 transition whitespace-nowrap">
+                                        <IconTrash className="w-4 h-4"/> Hapus ({selectedOrdersForDelete.length})
+                                     </button>
+                                 )}
                               </div>
 
                               <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-gray-50 dark:bg-black/50 rounded-[2rem] border border-theme shadow-inner">
                                  <table className="w-full text-left text-sm text-main min-w-[900px]">
                                     <thead className="text-[10px] text-sub-theme uppercase tracking-widest bg-gray-100 dark:bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-theme">
-                                       <tr><th className="px-5 py-4 font-black">Pelanggan & ID</th><th className="px-5 py-4 font-black">Game & Produk</th><th className="px-5 py-4 font-black">Data Tujuan Pengisian</th><th className="px-5 py-4 font-black">Nominal Tagihan</th><th className="px-5 py-4 font-black">Status</th><th className="px-5 py-4 text-center font-black">Aksi Tindakan</th></tr>
+                                       <tr>
+                                          <th className="px-5 py-4 w-10 text-center"><IconCheckCircle className="w-4 h-4 mx-auto opacity-50"/></th>
+                                          <th className="px-5 py-4 font-black">Pelanggan & ID</th>
+                                          <th className="px-5 py-4 font-black">Game & Produk</th>
+                                          <th className="px-5 py-4 font-black">Data Tujuan Pengisian</th>
+                                          <th className="px-5 py-4 font-black">Nominal Tagihan</th>
+                                          <th className="px-5 py-4 font-black">Status</th>
+                                          <th className="px-5 py-4 text-center font-black">Aksi Tindakan</th>
+                                       </tr>
                                     </thead>
                                     <tbody className="divide-y divide-theme">
                                     {(adminOrders || []).filter(o => o?.status !== 'Dihapus' && ((o?.id || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()) || (o?.userEmail || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()))).map(order => (
-                                       <tr key={order.id} className="hover:bg-gray-100 dark:hover:bg-white/[0.03] transition">
+                                       <tr key={order.id} className={`transition ${selectedOrdersForDelete.includes(order.id) ? 'bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.03]'}`}>
+                                          <td className="px-5 py-4 text-center">
+                                              <input type="checkbox" checked={selectedOrdersForDelete.includes(order.id)} onChange={() => handleSelectOrder(order.id)} className="w-4 h-4 text-orange-500 rounded border-gray-300 focus:ring-orange-500 cursor-pointer" />
+                                          </td>
                                           <td className="px-5 py-4">
                                              <div className="font-bold text-main truncate max-w-[150px]">{(order?.userEmail || 'Guest').split('@')[0]}</div>
                                              <div className="text-[9px] text-sub-theme font-mono mt-1 truncate max-w-[150px] bg-gray-200 dark:bg-black px-2 py-0.5 rounded border border-theme inline-block">{order?.id}</div>
@@ -2605,12 +2716,11 @@
                                                       <button onClick={() => updateOrderStatus(order.id, 'Batal')} className="p-2.5 bg-orange-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
                                                 )}
-                                                <button onClick={() => deleteOrder(order?.id)} className="p-2.5 bg-gray-200 dark:bg-white/5 border border-theme text-gray-500 rounded-xl hover:bg-red-500 hover:border-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen"><IconTrash className="w-4 h-4" /></button>
                                              </div>
                                           </td>
                                        </tr>
                                     ))}
-                                    {(!adminOrders || adminOrders.filter(o => o.status !== 'Dihapus').length === 0) && (<tr><td colSpan="6" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Tidak ada pesanan yang sesuai dalam database.</td></tr>)}
+                                    {(!adminOrders || adminOrders.filter(o => o.status !== 'Dihapus').length === 0) && (<tr><td colSpan="7" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Tidak ada pesanan yang sesuai dalam database.</td></tr>)}
                                     </tbody>
                                  </table>
                               </div>
@@ -2687,20 +2797,18 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V11.0 */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
                               
                               {/* Left Sidebar (Kategori Bantuan & Chat) */}
                               <div className={`w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-theme flex flex-col h-[50vh] lg:h-full bg-white dark:bg-white/[0.02] ${activeChatEmail ? 'hidden lg:flex' : 'flex'}`}>
                                  
-                                 {/* Navigasi Kategori (Member | Broadcast) */}
                                  <div className="flex bg-gray-100 dark:bg-black p-2 border-b border-theme shrink-0">
                                      <button onClick={()=>setSupportTab('member')} className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='member' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30' : 'text-sub-theme hover:text-main'}`}>Member VIP</button>
                                      <button onClick={()=>setSupportTab('broadcast')} className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='broadcast' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30' : 'text-sub-theme hover:text-main'}`}>Siaran Pesan</button>
                                  </div>
 
-                                 {/* Panel: Chat Member Terdaftar */}
                                  {supportTab === 'member' && (
                                      <div className="flex-1 flex flex-col overflow-hidden relative">
                                         <div className="p-3 bg-blue-600/10 font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center justify-between shrink-0 border-b border-blue-500/20">
@@ -2714,7 +2822,6 @@
                                             </div>
                                         </div>
 
-                                        {/* Loading & Error States untuk Chat Admin V11.0 */}
                                         {loadingAdminChats && (
                                             <div className="absolute inset-0 top-[90px] bg-white/80 dark:bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
                                                 <IconLoader className="w-8 h-8 text-blue-500 animate-spin mb-3"/>
@@ -2809,11 +2916,10 @@
 
                               </div>
 
-                              {/* Right Chat Area (WA Style) */}
+                              {/* Right Chat Area */}
                               <div className={`w-full lg:w-2/3 flex flex-col h-[70vh] lg:h-full relative overflow-hidden transition-colors duration-500 ${!activeChatEmail ? 'hidden lg:flex' : 'flex'}`} style={{ backgroundColor: chatBgColor }}>
                                  {activeChatEmail ? (
                                     <>
-                                       {/* Header Chat Detail */}
                                        <div className="p-3 md:p-4 bg-card font-black text-sm border-b border-theme flex justify-between items-center shadow-sm z-10 shrink-0">
                                           <div className="flex items-center gap-3 min-w-0 pr-2">
                                               <button onClick={()=>setActiveChatEmail(null)} className="lg:hidden p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl hover:text-main shrink-0"><IconChevronLeft className="w-4 h-4"/></button>
@@ -2837,7 +2943,6 @@
                                           </div>
                                        </div>
 
-                                       {/* Area Pesan Chat */}
                                        <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-4 custom-scrollbar relative z-10">
                                           <div className="text-center text-[9px] uppercase tracking-widest text-sub-theme font-black bg-white/80 dark:bg-black/40 py-1.5 px-4 rounded-full w-fit mx-auto border border-theme mb-4 shadow-sm">Riwayat Obrolan</div>
                                           
@@ -2875,7 +2980,6 @@
                                           <div ref={adminChatEndRef} className="h-2"/>
                                        </div>
 
-                                       {/* Input Chat Balasan dengan Tombol Cepat V11.0 */}
                                        <div className="p-3 md:p-4 border-t border-theme bg-card z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0 pb-safe">
                                           {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
@@ -2901,7 +3005,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.0 */}
+                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.2 */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2945,7 +3049,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.0 */}
+                                 {/* Panel Bluetooth Printer V11.2 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal Bluetooth. Fitur Auto-Print akan otomatis mencetak struk ketika pesanan masuk di mode Standby.</p>
