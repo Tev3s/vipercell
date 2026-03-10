@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v10.4</title>
+  <title>Vipercell - Premium Top Up v10.5</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -123,7 +123,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V10.4
+    // FUNGSI HELPER & UTILITIES V10.5
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -236,7 +236,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V10.4 (FIXED TOP ISLAND)
+    // NOTIFICATION (TOAST) V10.5 (FIXED TOP ISLAND)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -278,7 +278,7 @@
     };
 
     // ==========================================
-    // UI MODALS & DIALOGS (NAVY SECURITY STYLE V10.4)
+    // UI MODALS & DIALOGS (NAVY SECURITY STYLE V10.5)
     // ==========================================
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
@@ -286,10 +286,10 @@
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
              <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden border border-white/10 shadow-2xl">
                 <div className="w-16 h-16 bg-red-500/10 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20"><IconTrash className="w-8 h-8" /></div>
-                <h3 className="text-xl font-black mb-2 text-white">Konfirmasi Aksi</h3>
-                <p className="text-sm text-gray-400 mb-8 font-medium">{message}</p>
+                <h3 className="text-xl font-black mb-2 text-main">Konfirmasi Aksi</h3>
+                <p className="text-sm text-sub-theme mb-8 font-medium">{message}</p>
                 <div className="flex gap-3">
-                   <button onClick={onCancel} className="flex-1 py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 transition text-white text-sm">Batal</button>
+                   <button onClick={onCancel} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition text-main text-sm">Batal</button>
                    <button onClick={onConfirm} className="flex-1 py-3.5 rounded-xl font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition text-sm">Ya, Lanjutkan</button>
                 </div>
              </div>
@@ -530,7 +530,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V10.4
+    // PREMIUM ORDER SUMMARY MODAL V10.5
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -587,12 +587,12 @@
         )
     }
 
-    // ADMIN SCANNER RESULT MODAL V10.4
+    // ADMIN SCANNER RESULT MODAL V10.5
     const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
         const { addToast } = useToast();
         if (!isOpen || !order) return null;
         
-        const pastOrders = allGlobalOrders.filter(o => o.userEmail === order.userEmail && o.status === 'Sukses').length;
+        const pastOrders = (allGlobalOrders||[]).filter(o => o.userEmail === order.userEmail && o.status === 'Sukses').length;
         const vip = calculateVIPLevel(pastOrders);
         const cashbackEarned = order.priceTotal * vip.cashback;
 
@@ -643,7 +643,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v10.4 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v10.5 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -824,7 +824,7 @@
       
       const [adminOrderSearch, setAdminOrderSearch] = useState('');
       const [adminMemberSearch, setAdminMemberSearch] = useState('');
-      const [adminChatSearch, setAdminChatSearch] = useState(''); // NEW V10.4 State
+      const [adminChatSearch, setAdminChatSearch] = useState('');
       const [isScannerOpen, setIsScannerOpen] = useState(false); 
       const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); 
       const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, orderId: null });
@@ -839,10 +839,10 @@
          "Website Vipercell baru saja diperbarui dengan fitur terbaru. Selamat menikmati!"
       ]);
       const [adminTrxModal, setAdminTrxModal] = useState({ isOpen: false, order: null });
+      
       const [broadcastMsg, setBroadcastMsg] = useState('');
-      const [broadcastTarget, setBroadcastTarget] = useState('all');
-      const [broadcastEmails, setBroadcastEmails] = useState('');
-
+      const [selectedBroadcastUsers, setSelectedBroadcastUsers] = useState([]); // Array email
+      
       const [selectedGame, setSelectedGame] = useState(null);
       const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
@@ -858,7 +858,6 @@
       const [chatInput, setChatInput] = useState('');
       const [loadingChat, setLoadingChat] = useState(false);
       const [isChatFullScreen, setIsChatFullScreen] = useState(false);
-      const [chatBgColor, setChatBgColor] = useState(() => localStorage.getItem('chatBg') || (isDarkMode ? '#0a0a0a' : '#e5ddd5'));
       const chatEndRef = useRef(null);
 
       // Kunci scroll saat popup terbuka
@@ -897,7 +896,7 @@
       // Push Notifications System
       const prevOrdersRef = useRef([]);
       useEffect(() => {
-         if(userOrders.length > 0 && prevOrdersRef.current.length > 0) {
+         if(userOrders?.length > 0 && prevOrdersRef.current?.length > 0) {
              userOrders.forEach(o => {
                  const prevO = prevOrdersRef.current.find(p => p.id === o.id);
                  if (prevO && prevO.status !== o.status && (o.status === 'Sukses' || o.status === 'Batal' || o.status === 'Sedang Diproses')) {
@@ -907,14 +906,14 @@
                  }
              });
          }
-         prevOrdersRef.current = userOrders;
+         prevOrdersRef.current = userOrders || [];
       }, [userOrders, globalConfig?.favicon]);
 
       const prevChatRef = useRef([]);
       useEffect(() => {
          if(userChat?.messages) {
              const msgs = userChat.messages;
-             if(prevChatRef.current.length > 0 && msgs.length > prevChatRef.current.length) {
+             if(prevChatRef.current?.length > 0 && msgs.length > prevChatRef.current.length) {
                  const lastMsg = msgs[msgs.length - 1];
                  if(lastMsg.sender === 'admin' && 'Notification' in window && Notification.permission === 'granted') {
                      new Notification('Balasan CS Vipercell', { body: lastMsg.text, icon: globalConfig?.favicon });
@@ -962,19 +961,28 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory]);
 
+      // REALTIME LISTENER YANG DIPERKUAT (ANTI-BLANK)
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
-                if (snap.exists()) {
-                   const d = snap.data(); setGlobalConfig(d); setIsStoreOpen(d.isOpen ?? true); 
-                   setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' });
-                   setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
-                } else { if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, runningTexts: ['⚡ Top Up Aman Vipercell'], banners: [], gallery: [] }).catch(()=>{}); }
+                try {
+                    if (snap.exists()) {
+                       const d = snap.data(); setGlobalConfig(d); setIsStoreOpen(d.isOpen ?? true); 
+                       setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' });
+                       setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
+                    } else { if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, runningTexts: ['⚡ Top Up Aman Vipercell'], banners: [], gallery: [] }).catch(()=>{}); }
+                } catch(err) {}
              });
 
-             const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
-             const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
-             const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); });
+             const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { 
+                 try { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); } catch(err){} 
+             });
+             const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { 
+                 try { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); } catch(err){} 
+             });
+             const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { 
+                 try { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); } catch(err){} 
+             });
              return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); };
          } catch(e) {}
       }, [isSuperAdmin]);
@@ -1002,10 +1010,12 @@
          try {
              const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid);
              const unsubUser = onSnapshot(userRef, (docSnap) => { 
-                 if(docSnap.exists()) { 
-                     if(docSnap.data().isBlocked) { signOut(auth); addToast('Akun diblokir.', 'error'); return; }
-                     setCurrentUserData({ id: docSnap.id, ...docSnap.data() }); 
-                 } else { setDoc(userRef, { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), saldoCashback: 0, isBlocked: false }).catch(()=>{}); } 
+                 try {
+                     if(docSnap.exists()) { 
+                         if(docSnap.data().isBlocked) { signOut(auth); addToast('Akun diblokir.', 'error'); return; }
+                         setCurrentUserData({ id: docSnap.id, ...docSnap.data() }); 
+                     } else { setDoc(userRef, { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), saldoCashback: 0, isBlocked: false }).catch(()=>{}); } 
+                 } catch(err){}
              });
              return () => unsubUser();
          } catch(e){}
@@ -1016,18 +1026,28 @@
          let unsubs = [];
          try {
              unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders'), (snap) => {
-                const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
-                fetchedAll.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
-                setAllGlobalOrders(fetchedAll); setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email)); if (isAdmin) setAdminOrders(fetchedAll); 
+                try {
+                    const fetchedAll = []; snap.forEach(d => fetchedAll.push({ id: d.id, ...d.data() }));
+                    fetchedAll.sort((a,b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0));
+                    setAllGlobalOrders(fetchedAll); setUserOrders(fetchedAll.filter(o => o.userEmail === authUser.email)); if (isAdmin) setAdminOrders(fetchedAll); 
+                } catch(err){}
              }));
 
              if (isAdmin) {
-                unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => { const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()})); setMemberList(m); }));
-                unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => { const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() })); setAdminChats(fetched); }));
-                unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), (snap) => { if(snap.exists() && snap.data().list) setChatTemplates(snap.data().list); }));
+                unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => { 
+                    try { const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()})); setMemberList(m); } catch(err){} 
+                }));
+                unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), (snap) => { 
+                    try { const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() })); setAdminChats(fetched); } catch(err){} 
+                }));
+                unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), (snap) => { 
+                    try { if(snap.exists() && snap.data().list) setChatTemplates(snap.data().list); } catch(err){} 
+                }));
              }
              
-             unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => { if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] }); }));
+             unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => { 
+                 try { if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] }); } catch(err){} 
+             }));
          } catch(e) {}
          return () => unsubs.forEach(fn => fn());
       }, [authUser, isAdmin]);
@@ -1146,12 +1166,12 @@
           return Math.max(0, price); 
       };
 
-      const userTotalTx = userOrders.filter(o => o.status === 'Sukses').length;
+      const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0;
       const userVipData = calculateVIPLevel(userTotalTx);
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // Smart Validation Checkout - V10.4 Update
+      // Smart Validation Checkout - V10.5 Update
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1216,13 +1236,23 @@
 
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
+      // --- PERBAIKAN WIPE DATA (V10.5) ---
       const handleWipeData = async () => DangerDialog('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
           setAuthLoading(true); 
-          try { const batch = writeBatch(db); const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); p1.forEach(d => batch.delete(d.ref)); const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); p2.forEach(d => batch.delete(d.ref)); await batch.commit(); addToast('Data berhasil dihapus', 'success'); } 
-          catch(e) { addToast("Gagal menghapus data", 'error'); } setAuthLoading(false); setDangerModal({isOpen: false});
+          try { 
+              const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); 
+              const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); 
+              const deletePromises = [];
+              p1.forEach(d => deletePromises.push(deleteDoc(d.ref)));
+              p2.forEach(d => deletePromises.push(deleteDoc(d.ref)));
+              await Promise.all(deletePromises);
+              addToast('Data riwayat berhasil dibersihkan', 'success'); 
+          } 
+          catch(e) { addToast("Gagal menghapus data. Coba lagi.", 'error'); } 
+          finally { setAuthLoading(false); setDangerModal({isOpen: false}); }
       });
 
-      // --- NEW ADMIN CHAT FUNCTIONS V10.4 ---
+      // --- NEW ADMIN CHAT FUNCTIONS V10.5 ---
       const handleCloseTicket = async (email) => {
          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); }
          catch(e) { addToast('Gagal menutup tiket.', 'error'); }
@@ -1234,6 +1264,13 @@
              try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); setDangerModal({isOpen: false}); }
              catch(err) { addToast('Gagal menghapus.', 'error'); }
          });
+      };
+
+      const toggleBroadcastUser = (email) => {
+          setSelectedBroadcastUsers(prev => {
+              if (prev.includes(email)) return prev.filter(e => e !== email);
+              return [...prev, email];
+          });
       };
       // ---------------------------------------
 
@@ -1271,7 +1308,7 @@
       const executeStatusUpdate = async (orderId, newStatus, order) => {
          try {
              await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
-             if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const mOrders = allGlobalOrders.filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId); const vip = calculateVIPLevel(mOrders.length); if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); } } }
+             if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const mOrders = (allGlobalOrders||[]).filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId); const vip = calculateVIPLevel(mOrders.length); if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); } } }
              addToast(`Status diubah ke ${newStatus}`, 'success');
          } catch (e) { addToast("Gagal update status", 'error'); }
       };
@@ -1299,20 +1336,25 @@
       const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
       const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} };
 
+      // --- PERBAIKAN BROADCAST (V10.5) ---
       const handleBroadcast = async (e) => {
          e.preventDefault();
          if(!(broadcastMsg||'').trim()) return;
+         
+         let targets = [];
+         if(broadcastTarget === 'all') targets = (memberList||[]).map(m=>m.email);
+         else targets = selectedBroadcastUsers;
+
+         if (targets.length === 0) return addToast('Pilih setidaknya 1 member untuk broadcast!', 'warning');
+
          setAuthLoading(true);
          try {
-             let targets = [];
-             if(broadcastTarget === 'all') targets = memberList.map(m=>m.email);
-             else targets = (broadcastEmails||'').split(',').map(e=>e.trim()).filter(e=>e);
              for (const email of targets) {
                  const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email);
                  const newMsg = { sender: 'admin', text: broadcastMsg, time: new Date().toISOString(), role: 'Sistem Informasi' };
                  await setDoc(chatRef, { messages: arrayUnion(newMsg), status: 'Dijawab', updatedAt: new Date().toISOString() }, {merge: true});
              }
-             addToast(`Broadcast sukses dikirim ke ${targets.length} user`, 'success'); setBroadcastMsg(''); setBroadcastEmails('');
+             addToast(`Broadcast sukses dikirim ke ${targets.length} member`, 'success'); setBroadcastMsg(''); setSelectedBroadcastUsers([]);
          } catch(err) { addToast('Gagal kirim broadcast', 'error'); }
          setAuthLoading(false);
       };
@@ -1444,8 +1486,8 @@
                    <h3 className="text-xl font-black mb-2 text-main">Konfirmasi Uang Tunai</h3>
                    <p className="text-sm text-sub-theme mb-8 font-medium">Apakah Anda yakin pembayaran secara tunai (Cash) sudah diterima untuk pesanan ini?</p>
                    <div className="flex gap-3">
-                      <button onClick={() => setCashConfirmModal({isOpen: false, orderId: null})} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 text-gray-800 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition dark:text-white text-sm">Belum</button>
-                      <button onClick={() => { executeStatusUpdate(cashConfirmModal.orderId, 'Sukses', adminOrders.find(o=>o.id===cashConfirmModal.orderId)); setCashConfirmModal({isOpen: false, orderId: null}); }} className="flex-1 py-3.5 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 transition text-sm">Ya, Lunas</button>
+                      <button onClick={() => setCashConfirmModal({isOpen: false, orderId: null})} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition dark:text-white text-sm">Belum</button>
+                      <button onClick={() => { executeStatusUpdate(cashConfirmModal.orderId, 'Sukses', (adminOrders||[]).find(o=>o.id===cashConfirmModal.orderId)); setCashConfirmModal({isOpen: false, orderId: null}); }} className="flex-1 py-3.5 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-500/30 transition text-sm">Ya, Lunas</button>
                    </div>
                 </div>
              </div>
@@ -1469,7 +1511,7 @@
              </div>
           )}
 
-          {/* CHAT BANTUAN OVERLAY (WA STYLE V10.4) */}
+          {/* CHAT BANTUAN OVERLAY (WA STYLE V10.5) */}
           {currentView === 'chat' && (
              <div className={`animate-in fade-in slide-in-from-bottom-8 duration-500 transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20'}`}>
                 <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
@@ -1482,16 +1524,13 @@
                        </div>
                    </div>
                    <div className="flex gap-2">
-                       <button onClick={()=>setChatBgColor(chatBgColor === '#e5ddd5' ? '#0a0a0a' : '#e5ddd5')} className="p-2.5 bg-gray-100 dark:bg-white/5 text-sub-theme hover:text-main rounded-xl transition border border-theme tooltip" title="Ubah Latar Chat">
-                           <IconImage className="w-5 h-5"/>
-                       </button>
                        <button onClick={()=>setIsChatFullScreen(!isChatFullScreen)} className="p-2.5 bg-gray-100 dark:bg-white/5 text-sub-theme hover:text-main rounded-xl transition border border-theme" title={isChatFullScreen ? 'Keluar Layar Penuh' : 'Layar Penuh'}>
                            {isChatFullScreen ? <IconMinimize className="w-5 h-5"/> : <IconExpand className="w-5 h-5"/>}
                        </button>
                    </div>
                 </div>
                 
-                <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar relative z-10 transition-colors duration-500" style={{ backgroundColor: chatBgColor }}>
+                <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar relative z-10 transition-colors duration-500 bg-gray-50 dark:bg-[#0a0a0a]">
                    <div className="text-center text-[10px] uppercase tracking-widest text-gray-500 font-black bg-white/80 dark:bg-black/40 py-2 px-5 rounded-full w-fit mx-auto shadow-sm border border-theme relative z-10">Percakapan Anda Tersimpan</div>
                    {loadingChat ? (
                        <div className="flex flex-col items-center justify-center py-20 relative z-10"><IconLoader className="w-10 h-10 text-orange-500 animate-spin mb-4" /><span className="text-gray-500 font-bold text-xs uppercase tracking-widest">Sinkronisasi Chat...</span></div>
@@ -1593,9 +1632,9 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL */}
+          {/* RUNNING TEXT GLOBAL (NAVY THEME V10.5) */}
           {currentView !== 'chat' && (
-             <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-600 to-red-600 border-b border-orange-400/30 shadow-md">
+             <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
                    <div className="animate-marquee text-[10px] font-black uppercase tracking-widest text-white drop-shadow-sm flex gap-8">
                       {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m1-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
@@ -1646,7 +1685,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V10.4 */}
+                {/* Greeting Dinamis V10.5 */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -1873,7 +1912,7 @@
                                </div>
                             </div>
 
-                            {/* Card 4: Ringkasan & Checkout Button (V10.4 - Absolute Placed under Payment) */}
+                            {/* Card 4: Ringkasan & Checkout Button (V10.5 - Absolute Placed under Payment) */}
                             <div className="clean-card p-6 md:p-8 shadow-[0_10px_40px_rgba(249,115,22,0.15)] border-t-4 border-emerald-500 relative overflow-hidden mt-6">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconCheckCircle className="w-24 h-24 text-emerald-500"/></div>
                                <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
@@ -2155,7 +2194,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V10.4)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V10.5)                                         */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2166,7 +2205,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v10.4</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v10.5</span>
                         </div>
                      </div>
 
@@ -2193,7 +2232,7 @@
                      </div>
                      
                      <div className="mt-auto hidden lg:block pt-8 px-2 pb-2 border-t border-theme">
-                        <div className="bg-gray-50 dark:bg-black rounded-2xl p-4 border border-theme flex items-center gap-3 shadow-inner">
+                        <div className="bg-gray-50 dark:bg-black rounded-2xl p-4 border border-theme flex items-center gap-bu3 shadow-inner">
                            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
                            <div>
                               <div className="text-xs font-black text-main">Sistem Aktif</div>
@@ -2214,21 +2253,21 @@
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500">
                               <h2 className="text-2xl font-black mb-6 text-main px-2 flex items-center gap-2"><IconTrendingUp className="w-6 h-6 text-red-500"/> Ringkasan Sistem Server</h2>
                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                                 <div className="bg-gradient-to-br from-blue-600 to-indigo-800 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-blue-500/30">
-                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                                    <IconList className="w-8 h-8 mb-4 opacity-90" />
+                                 <div className="bg-gradient-to-br from-navy-800 to-navy-950 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-navy-700">
+                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+                                    <IconList className="w-8 h-8 mb-4 text-orange-500 opacity-90" />
                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Total Pesanan Masuk</p>
                                     <p className="text-4xl font-black drop-shadow-md font-mono">{(allGlobalOrders||[]).length}</p>
                                  </div>
-                                 <div className="bg-gradient-to-br from-emerald-500 to-green-700 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-emerald-400/30">
-                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                                    <IconCheckCircle className="w-8 h-8 mb-4 opacity-90" />
+                                 <div className="bg-gradient-to-br from-navy-800 to-navy-950 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-navy-700">
+                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+                                    <IconCheckCircle className="w-8 h-8 mb-4 text-emerald-500 opacity-90" />
                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Pesanan Berhasil (Sukses)</p>
                                     <p className="text-4xl font-black drop-shadow-md font-mono">{(allGlobalOrders||[]).filter(o => o.status === 'Sukses').length}</p>
                                  </div>
-                                 <div className="bg-gradient-to-br from-orange-500 to-red-600 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-orange-400/30">
-                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/20 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
-                                    <IconUsers className="w-8 h-8 mb-4 opacity-90" />
+                                 <div className="bg-gradient-to-br from-navy-800 to-navy-950 rounded-[2rem] p-6 text-white shadow-lg relative overflow-hidden group hover:scale-[1.02] transition-transform border border-navy-700">
+                                    <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl group-hover:scale-150 transition-transform duration-700"></div>
+                                    <IconUsers className="w-8 h-8 mb-4 text-blue-500 opacity-90" />
                                     <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Member Terdaftar</p>
                                     <p className="text-4xl font-black drop-shadow-md font-mono">{(memberList||[]).length}</p>
                                  </div>
@@ -2349,7 +2388,7 @@
                                        </tr>
                                     </thead>
                                     <tbody className="divide-y divide-theme">
-                                    {memberList.filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
+                                    {(memberList||[]).filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
                                        <tr key={m.id} className={`transition ${m.isBlocked ? 'opacity-50 bg-red-500/5' : 'hover:bg-gray-100 dark:hover:bg-white/[0.03]'}`}>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center gap-3">
@@ -2394,7 +2433,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V10.4 UPDATE */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V10.5 UPDATE */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
                               
@@ -2412,7 +2451,7 @@
                                      <div className="flex-1 flex flex-col overflow-hidden">
                                         <div className="p-3 bg-blue-600/10 font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center justify-between shrink-0 border-b border-blue-500/20">
                                             <span><IconMessageSquare className="w-4 h-4 inline mr-1"/> Tiket Masuk</span>
-                                            <span className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-[9px]">{adminChats.filter(c=>c.status==='Open').length} Baru</span>
+                                            <span className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-[9px]">{(adminChats||[]).filter(c=>c.status==='Open').length} Baru</span>
                                         </div>
                                         <div className="p-2 border-b border-theme bg-card shrink-0">
                                             <div className="relative">
@@ -2421,19 +2460,26 @@
                                             </div>
                                         </div>
                                         <div className="overflow-y-auto flex-1 custom-scrollbar">
-                                           {adminChats.filter(c=>c.messages?.length>0 && c.id.toLowerCase().includes(adminChatSearch.toLowerCase())).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => (
+                                           {(adminChats||[]).filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => {
+                                              const memberData = (memberList||[]).find(m => m.email === c.id);
+                                              return (
                                               <div key={c.id} onClick={()=>setActiveChatEmail(c.id)} className={`p-4 border-b border-theme cursor-pointer transition flex items-center justify-between group ${activeChatEmail===c.id?'bg-blue-50 dark:bg-blue-600/20 border-l-4 border-l-blue-500':'hover:bg-gray-100 dark:hover:bg-white/5 border-l-4 border-l-transparent'}`}>
-                                                 <div className="min-w-0 flex-1 pr-2">
-                                                    <div className="text-xs font-black text-main truncate">{c.id}</div>
-                                                    <div className="text-[10px] text-sub-theme truncate mt-1">{c.messages[c.messages.length-1].text}</div>
+                                                 <div className="flex items-center gap-3 min-w-0 pr-2">
+                                                    <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-[10px] text-main overflow-hidden border border-theme shrink-0">
+                                                       {memberData?.avatar ? <img src={memberData.avatar} className="w-full h-full object-cover"/> : (memberData?.name||c.id||'U').charAt(0).toUpperCase()}
+                                                    </div>
+                                                    <div className="min-w-0 flex-1">
+                                                       <div className="text-xs font-black text-main truncate">{memberData?.name || c.id}</div>
+                                                       <div className="text-[10px] text-sub-theme truncate mt-1">{c.messages[c.messages.length-1].text}</div>
+                                                    </div>
                                                  </div>
                                                  <div className="flex items-center gap-2 shrink-0">
                                                     {c.status==='Open' && <span className="w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_5px_red] animate-pulse"></span>}
                                                     <button onClick={(e) => handleDeleteChat(c.id, e)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition opacity-0 group-hover:opacity-100" title="Hapus Riwayat"><IconTrash className="w-3.5 h-3.5"/></button>
                                                  </div>
                                               </div>
-                                           ))}
-                                           {adminChats.filter(c=>c.messages?.length>0 && c.id.toLowerCase().includes(adminChatSearch.toLowerCase())).length===0 && <div className="text-xs text-center text-sub-theme p-8 font-bold">Tidak ada riwayat chat.</div>}
+                                           )})}
+                                           {(!adminChats || adminChats.filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).length===0) && <div className="text-xs text-center text-sub-theme p-8 font-bold">Tidak ada riwayat chat.</div>}
                                         </div>
                                      </div>
                                  )}
@@ -2447,29 +2493,46 @@
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="text-[10px] font-bold text-sub-theme mb-1 block">Tujuan Pengiriman</label>
-                                                <select value={broadcastTarget} onChange={(e)=>setBroadcastTarget(e.target.value)} className="w-full input-theme rounded-xl p-3 text-xs">
+                                                <select value={broadcastTarget} onChange={(e)=>{setBroadcastTarget(e.target.value); setSelectedBroadcastUsers([]);}} className="w-full input-theme rounded-xl p-3 text-xs">
                                                     <option value="all">Ke Semua Member ({(memberList||[]).length})</option>
-                                                    <option value="specific">Ke Email Spesifik / Beberapa</option>
+                                                    <option value="specific">Pilih Member Tertentu ({(selectedBroadcastUsers||[]).length})</option>
                                                 </select>
                                             </div>
+                                            
+                                            {/* UI Checkbox Member untuk Broadcast */}
                                             {broadcastTarget === 'specific' && (
-                                                <div>
-                                                    <label className="text-[10px] font-bold text-sub-theme mb-1 block">Daftar Email Tujuan</label>
-                                                    <input type="text" value={broadcastEmails} onChange={(e)=>setBroadcastEmails(e.target.value)} placeholder="email1@x.com, email2@x.com" className="w-full input-theme rounded-xl p-3 text-xs" />
+                                                <div className="border border-theme rounded-xl overflow-hidden flex flex-col h-48 bg-white dark:bg-black/50 shadow-inner">
+                                                   <div className="p-2 border-b border-theme bg-gray-100 dark:bg-white/5 flex justify-between items-center shrink-0">
+                                                      <span className="text-[10px] font-bold text-main">Pilih Member:</span>
+                                                      <button type="button" onClick={() => setSelectedBroadcastUsers((memberList||[]).map(m=>m.email))} className="text-[9px] bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2 py-1 rounded font-bold hover:bg-blue-500 hover:text-white transition">Pilih Semua</button>
+                                                   </div>
+                                                   <div className="overflow-y-auto flex-1 custom-scrollbar p-2 space-y-1">
+                                                      {(memberList||[]).map(m => (
+                                                         <label key={m.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg cursor-pointer transition border border-transparent hover:border-theme">
+                                                            <input type="checkbox" checked={selectedBroadcastUsers.includes(m.email)} onChange={() => toggleBroadcastUser(m.email)} className="w-4 h-4 text-orange-500 rounded border-gray-300 focus:ring-orange-500 dark:focus:ring-orange-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                                                            <div className="min-w-0">
+                                                               <div className="text-xs font-bold text-main truncate">{m.name}</div>
+                                                               <div className="text-[9px] text-sub-theme font-mono truncate">{m.email}</div>
+                                                            </div>
+                                                         </label>
+                                                      ))}
+                                                      {(!memberList || memberList.length === 0) && <p className="text-[10px] text-center text-sub-theme py-4">Belum ada member terdaftar.</p>}
+                                                   </div>
                                                 </div>
                                             )}
+
                                             <div>
                                                 <label className="text-[10px] font-bold text-sub-theme mb-1 block">Template Cepat (Opsional)</label>
                                                 <select onChange={(e)=>{if(e.target.value) setBroadcastMsg(e.target.value); e.target.value="";}} className="w-full input-theme rounded-xl p-3 text-xs">
                                                     <option value="">-- Isi otomatis dengan template --</option>
-                                                    {chatTemplates.map((t,i)=><option key={i} value={t}>{t.substring(0,40)}...</option>)}
+                                                    {(chatTemplates||[]).map((t,i)=><option key={i} value={t}>{t.substring(0,40)}...</option>)}
                                                 </select>
                                             </div>
                                             <div>
                                                 <label className="text-[10px] font-bold text-sub-theme mb-1 block">Isi Pesan Broadcast</label>
                                                 <textarea required value={broadcastMsg} onChange={(e)=>setBroadcastMsg(e.target.value)} placeholder="Tulis isi pesan pengumuman..." className="w-full h-32 input-theme rounded-xl p-4 text-xs resize-none"></textarea>
                                             </div>
-                                            <button onClick={handleBroadcast} disabled={authLoading || !(broadcastMsg||'').trim()} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3 rounded-xl shadow-lg transition text-xs uppercase tracking-widest">Kirim Sekarang</button>
+                                            <button onClick={handleBroadcast} disabled={authLoading || !(broadcastMsg||'').trim() || (broadcastTarget === 'specific' && selectedBroadcastUsers.length === 0)} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3 rounded-xl shadow-lg transition text-xs uppercase tracking-widest disabled:opacity-50">Kirim Sekarang</button>
                                         </div>
                                     </div>
                                  )}
@@ -2484,19 +2547,23 @@
                                        <div className="p-3 md:p-4 bg-card font-black text-sm border-b border-theme flex justify-between items-center shadow-sm z-10 shrink-0">
                                           <div className="flex items-center gap-3 min-w-0 pr-2">
                                               <button onClick={()=>setActiveChatEmail(null)} className="lg:hidden p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl hover:text-main shrink-0"><IconChevronLeft className="w-4 h-4"/></button>
-                                              <div className="w-8 h-8 bg-blue-500/20 text-blue-600 dark:text-blue-500 rounded-full flex items-center justify-center border border-blue-500/30 shrink-0"><IconUser className="w-4 h-4"/></div>
+                                              <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-[10px] text-main overflow-hidden border border-theme shrink-0">
+                                                 {(() => {
+                                                    const mData = (memberList||[]).find(m => m.email === activeChatEmail);
+                                                    return mData?.avatar ? <img src={mData.avatar} className="w-full h-full object-cover"/> : (mData?.name||activeChatEmail||'U').charAt(0).toUpperCase();
+                                                 })()}
+                                              </div>
                                               <div className="min-w-0">
-                                                 <span className="text-main block truncate">{activeChatEmail}</span>
-                                                 <span className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Member VIP</span>
+                                                 <span className="text-main block truncate">{(memberList||[]).find(m => m.email === activeChatEmail)?.name || activeChatEmail}</span>
+                                                 <span className="text-[9px] text-sub-theme font-bold uppercase tracking-widest font-mono">{activeChatEmail}</span>
                                               </div>
                                           </div>
                                           <div className="flex items-center gap-2 shrink-0">
-                                              {adminChats.find(c=>c.id===activeChatEmail)?.status !== 'Selesai' && (
+                                              {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status !== 'Selesai' && (
                                                   <button onClick={()=>handleCloseTicket(activeChatEmail)} className="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white rounded-xl transition tooltip border border-emerald-500/30 flex items-center gap-1" title="Tandai Selesai">
                                                       <IconCheckCircle className="w-4 h-4"/> <span className="hidden sm:inline text-[9px] uppercase tracking-widest font-black">Selesai</span>
                                                   </button>
                                               )}
-                                              <button onClick={()=>setChatBgColor(chatBgColor === '#e5ddd5' ? '#0a0a0a' : '#e5ddd5')} className="p-2 bg-gray-100 dark:bg-white/5 text-sub-theme hover:text-main rounded-xl tooltip border border-theme transition" title="Ubah Latar"><IconImage className="w-4 h-4"/></button>
                                           </div>
                                        </div>
 
@@ -2504,11 +2571,11 @@
                                        <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-4 custom-scrollbar relative z-10">
                                           <div className="text-center text-[9px] uppercase tracking-widest text-sub-theme font-black bg-white/80 dark:bg-black/40 py-1.5 px-4 rounded-full w-fit mx-auto border border-theme mb-4 shadow-sm">Riwayat Obrolan</div>
                                           
-                                          {supportTab === 'member' && (adminChats.find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
+                                          {supportTab === 'member' && ((adminChats||[]).find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
                                              const trxMatch = m.text.match(/(?:ID|TRX|Pesanan ID):\s*([a-zA-Z0-9_-]+)/i);
                                              const orderIdFromText = trxMatch ? trxMatch[1] : null;
                                              let matchedOrder = null;
-                                             if (orderIdFromText) { matchedOrder = allGlobalOrders.find(o => o.id === orderIdFromText); }
+                                             if (orderIdFromText) { matchedOrder = (allGlobalOrders||[]).find(o => o.id === orderIdFromText); }
 
                                              return (
                                              <div key={i} className={`flex w-full ${m.sender==='admin'?'justify-end':'justify-start'} animate-in fade-in slide-in-from-bottom-2`}>
@@ -2538,15 +2605,15 @@
                                           <div ref={adminChatEndRef} className="h-2"/>
                                        </div>
 
-                                       {/* Input Chat Balasan dengan Tombol Cepat V10.4 */}
+                                       {/* Input Chat Balasan dengan Tombol Cepat V10.5 */}
                                        <div className="p-3 md:p-4 border-t border-theme bg-card z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0 pb-safe">
-                                          {adminChats.find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
+                                          {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
                                           )}
                                           <div className="flex gap-2 mb-3 overflow-x-auto pb-1 custom-scrollbar">
-                                              <button onClick={()=>handleAdminSendChat(null, "Pesanan Anda sedang diproses.\nMohon tunggu sekitar 3 menit ya.", false)} className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-blue-500 hover:text-white transition">⏱️ Proses (3 Menit)</button>
-                                              <button onClick={()=>handleAdminSendChat(null, "Pesanan gagal diproses.\nSilakan hubungi admin untuk bantuan lebih lanjut.", false)} className="px-3 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-red-500 hover:text-white transition">❌ Gagal Proses</button>
-                                              {chatTemplates.map((t,i)=><button key={i} onClick={()=>handleAdminSendChat(null, t, false)} className="px-3 py-1.5 bg-gray-100 dark:bg-white/5 text-sub-theme border border-theme rounded-full text-[10px] font-black whitespace-nowrap hover:bg-gray-200 dark:hover:bg-white/10 transition truncate max-w-[150px]">{t}</button>)}
+                                              <button onClick={()=>setAdminReplyText("Pesanan Anda sedang diproses. Mohon tunggu sekitar 3 menit ya.")} className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-blue-500 hover:text-white transition">⏱️ Proses (3 Menit)</button>
+                                              <button onClick={()=>setAdminReplyText("Pesanan gagal diproses. Silakan hubungi admin untuk bantuan lebih lanjut.")} className="px-3 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-red-500 hover:text-white transition">❌ Gagal Proses</button>
+                                              {(chatTemplates||[]).map((t,i)=><button key={i} onClick={()=>setAdminReplyText(t)} className="px-3 py-1.5 bg-gray-100 dark:bg-white/5 text-sub-theme border border-theme rounded-full text-[10px] font-black whitespace-nowrap hover:bg-gray-200 dark:hover:bg-white/10 transition truncate max-w-[150px]">{t}</button>)}
                                           </div>
                                           <form onSubmit={(e)=>handleAdminSendChat(e, null, false)} className="flex gap-2">
                                              <input type="text" value={adminReplyText} onChange={(e)=>setAdminReplyText(e.target.value)} placeholder="Ketik balasan pesan..." className="flex-1 input-theme rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition shadow-inner" />
@@ -2555,7 +2622,7 @@
                                        </div>
                                     </>
                                  ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-sub-theme text-sm">
+                                    <div className="flex flex-col items-center justify-center h-full text-sub-theme text-sm bg-gray-50 dark:bg-[#0a0a0a]">
                                         <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-theme"><IconMessageSquare className="w-10 h-10 opacity-30 text-main"/></div>
                                         <p className="font-bold text-center px-6">Pilih tiket chat di daftar sebelah kiri untuk merespons.</p>
                                     </div>
@@ -2816,7 +2883,7 @@
                                             </div>
                                         </div> 
                                     ))}
-                                    {games.length === 0 && <div className="text-center py-10 text-xs font-bold text-sub-theme">Database game kosong.</div>}
+                                    {(!games || games.length === 0) && <div className="text-center py-10 text-xs font-bold text-sub-theme">Database game kosong.</div>}
                                  </div>
                               </div>
 
@@ -2824,7 +2891,7 @@
                               <div className="w-full md:w-2/3 flex flex-col gap-4">
                                  <div className="flex items-center justify-between mb-2">
                                      <h2 className="text-lg font-black text-main flex items-center gap-2"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h2>
-                                     <div className="text-[10px] bg-gray-100 dark:bg-white/10 border border-theme px-3 py-1.5 rounded-lg text-main font-bold flex items-center gap-2">Target Game: <span className="text-orange-600 dark:text-orange-400">{games.find(g=>g.id===adminSelectedGame)?.name || 'Pilih game di samping'}</span></div>
+                                     <div className="text-[10px] bg-gray-100 dark:bg-white/10 border border-theme px-3 py-1.5 rounded-lg text-main font-bold flex items-center gap-2">Target Game: <span className="text-orange-600 dark:text-orange-400">{(games||[]).find(g=>g.id===adminSelectedGame)?.name || 'Pilih game di samping'}</span></div>
                                  </div>
 
                                  <form onSubmit={handleSaveItem} className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-3xl border border-emerald-500/30 flex flex-col sm:flex-row gap-3 shrink-0 shadow-inner">
@@ -3017,7 +3084,7 @@
                                                   <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`w-12 h-10 rounded-xl transition-all flex items-center justify-center border shadow-inner ${p.isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-gray-200 dark:bg-gray-800/50 text-gray-500 border-theme hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-main'}`} title={p.isActive ? 'Nonaktifkan Promo' : 'Aktifkan Kembali'}>
                                                      {p.isActive ? <IconCheckCircle className="w-5 h-5"/> : <IconBlock className="w-5 h-5"/>}
                                                   </button>
-                                                  <button onClick={() => handleDeletePromo(p.id)} className="w-12 h-10 bg-gray-100 dark:bg-black/50 border border-red-500/20 text-red-600 dark:text-red-500 rounded-xl hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-inner group-hover:border-red-500/50" title="Hapus Permanen">
+                                                  <button onClick={() => handleDeletePromo(p.id)} className="w-12 h-10 bg-gray-100 dark:bg-black/50 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-inner group-hover:border-red-500/50" title="Hapus Permanen">
                                                      <IconTrash className="w-4 h-4"/>
                                                   </button>
                                                </div>
