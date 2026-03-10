@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v11.2</title>
+  <title>Vipercell - Premium Top Up v11.2.1</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -22,6 +22,7 @@
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'glow': 'glow 2s ease-in-out infinite alternate',
             'slide-down': 'slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+            'bounce-up': 'bounceUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
           },
           keyframes: {
              float: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } },
@@ -128,7 +129,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V11.2
+    // FUNGSI HELPER & UTILITIES V11.2.1
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -243,7 +244,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V11.2 (FIXED TOP ISLAND)
+    // NOTIFICATION (TOAST) V11.2.1
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -285,7 +286,7 @@
     };
 
     // ==========================================
-    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.2
+    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.2.1
     // ==========================================
     const GlobalLoadingOverlay = ({ active, message }) => {
         if (!active) return null;
@@ -515,7 +516,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V11.2
+    // PREMIUM ORDER SUMMARY MODAL
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -536,7 +537,6 @@
                     <div className="space-y-3 text-sm">
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Tujuan Pengisian</span><span className="font-mono font-black text-white bg-black/50 px-2 py-1 rounded border border-white/5">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                         
-                        {/* V11.2: Fitur Nickname Opsional */}
                         {data.nickname && (
                             <div className="flex justify-between items-center bg-orange-500/10 p-2 rounded-lg border border-orange-500/20">
                                <span className="text-orange-400 text-xs font-bold">Nickname</span>
@@ -579,7 +579,7 @@
         )
     }
 
-    // ADMIN SCANNER RESULT MODAL V11.2
+    // ADMIN SCANNER RESULT MODAL
     const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
         const { addToast } = useToast();
         if (!isOpen || !order) return null;
@@ -638,7 +638,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.2 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.2.1 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -753,7 +753,7 @@
           else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); }
       }, [isDarkMode]);
 
-      // Push Notification Setup V11.2
+      // Push Notification Setup V11.2.1
       useEffect(() => {
           if ('Notification' in window) {
               if (Notification.permission === 'default') {
@@ -762,12 +762,12 @@
           }
       }, []);
 
-      // V11.2 Global Anti-Blank System State
+      // V11.2.1 Global Anti-Blank System State
       const [sysLoading, setSysLoading] = useState({ active: false, msg: '' });
       const triggerSysLoad = (msg) => setSysLoading({ active: true, msg });
       const closeSysLoad = () => setSysLoading({ active: false, msg: '' });
 
-      // V11.2 Web Bluetooth API States
+      // V11.2.1 Web Bluetooth API States
       const [bluetoothDevice, setBluetoothDevice] = useState(null);
       const [btCharacteristic, setBtCharacteristic] = useState(null);
       const isPrinterConnected = !!btCharacteristic;
@@ -840,7 +840,7 @@
       const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); 
       const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, orderId: null });
       
-      // V11.2 Bulk Delete Orders Admin
+      // V11.2.1 Bulk Delete Orders Admin
       const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
 
       const [supportTab, setSupportTab] = useState('member'); 
@@ -913,7 +913,7 @@
       const prevOrdersRef = useRef([]);
       const prevAdminOrdersRef = useRef([]);
 
-      // User Order Notification V11.2
+      // User Order Notification
       useEffect(() => {
          if(userOrders?.length > 0 && prevOrdersRef.current?.length > 0) {
              userOrders.forEach(o => {
@@ -932,7 +932,7 @@
          prevOrdersRef.current = userOrders || [];
       }, [userOrders, globalConfig?.favicon]);
 
-      // Admin Order Notification V11.2
+      // Admin Order Notification
       useEffect(() => {
          if (isAdmin && adminOrders?.length > 0) {
              if (prevAdminOrdersRef.current?.length > 0) {
@@ -953,7 +953,7 @@
          prevAdminOrdersRef.current = adminOrders || [];
       }, [adminOrders, isAdmin, isStandbyMode, globalConfig?.favicon]);
 
-      // User Chat Notification V11.2
+      // User Chat Notification
       const prevChatRef = useRef([]);
       useEffect(() => {
          if(userChat?.messages) {
@@ -969,7 +969,7 @@
          }
       }, [userChat, globalConfig?.favicon]);
 
-      // Admin Chat Notification V11.2
+      // Admin Chat Notification
       const prevAdminChatsRef = useRef([]);
       useEffect(() => {
           if (isAdmin && adminChats?.length > 0) {
@@ -1170,7 +1170,7 @@
 
       const handleCheckID = async () => { addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info'); }
 
-      // --- PRINT BLUETOOTH NATIVE V11.2 ---
+      // --- PRINT BLUETOOTH NATIVE V11.2.1 ---
       const getReceiptBytes = (order) => {
           let text = "";
           text += '\x1B' + '@'; // Init
@@ -1280,73 +1280,31 @@
           }
       };
 
+      // V11.2.1 Native Bluetooth Print (No Fallback Popups)
       const executeBluetoothPrint = async (order) => {
           if (!order) return;
-          if (isPrinterConnected && btCharacteristic) {
-              try {
-                  const bytes = getReceiptBytes(order);
-                  const CHUNK_SIZE = 300;
-                  for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
-                      await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE));
-                  }
-                  addToast('Struk berhasil dicetak', 'success');
-              } catch (e) {
-                  addToast('Gagal print Bluetooth, mencoba mode popup...', 'warning');
-                  printReceiptFallback(order); 
+          if (!isPrinterConnected || !btCharacteristic) {
+              addToast('Printer belum terhubung! Silakan hubungkan di Pengaturan.', 'warning');
+              return;
+          }
+          triggerSysLoad('Sedang mencetak struk...');
+          try {
+              const bytes = getReceiptBytes(order);
+              const CHUNK_SIZE = 256; 
+              for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+                  await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE));
+                  await new Promise(r => setTimeout(r, 50)); 
               }
-          } else {
-              printReceiptFallback(order);
+              addToast('Struk berhasil dicetak', 'success');
+          } catch (e) {
+              addToast('Gagal print Bluetooth. Pastikan printer hidup.', 'error');
+          } finally {
+              closeSysLoad();
           }
       };
 
-      // Fallback old popup window thermal print
-      const printReceiptFallback = (order) => {
-         const printWindow = window.open('', '_blank', 'width=400,height=600');
-         if(printWindow) {
-             printWindow.document.write(`
-                 <html><head><title>Struk - ${order.id}</title>
-                 <style>
-                     @page { margin: 0; size: 58mm auto; }
-                     body { font-family: 'Courier New', Courier, monospace; width: 58mm; padding: 10px; margin: 0 auto; color: #000; font-size: 12px; }
-                     .text-center { text-align: center; } .font-bold { font-weight: bold; }
-                     .divider { border-bottom: 1px dashed #000; margin: 8px 0; }
-                     .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-                 </style></head><body>
-                     ${order.paymentMethod.toLowerCase().includes('cash') ? `
-                        <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL</div>
-                        <div class="divider"></div>
-                        <div class="row"><span>TRX</span><span>${order.id}</span></div>
-                        <div class="row"><span>TANGGAL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
-                        <div class="divider"></div>
-                        <div class="text-center" style="margin-bottom: 4px;">Pembayaran Cash</div>
-                        <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
-                     ` : `
-                        <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL STORE</div>
-                        <div class="text-center" style="font-size: 10px; margin-top: 2px;">Bukti Top Up</div>
-                        <div class="divider"></div>
-                        <div class="row"><span>TRX</span><span>${order.id}</span></div>
-                        <div class="row"><span>STATUS</span><span>${order.status.toUpperCase()}</span></div>
-                        <div class="divider"></div>
-                        <div style="margin-bottom: 4px;">GAME   : ${order.gameName}</div>
-                        <div style="margin-bottom: 4px;">ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
-                        ${order.targetNickname ? `<div style="margin-bottom: 4px;">NICK   : ${order.targetNickname}</div>` : ''}
-                        <div style="margin-bottom: 4px;">ITEM   : ${order.nominalName}</div>
-                        <div style="margin-bottom: 4px;">METODE : ${order.paymentMethod}</div>
-                        <div class="divider"></div>
-                        <div class="row font-bold" style="font-size: 14px;"><span>TOTAL</span><span>${formatRupiah(order.priceTotal)}</span></div>
-                        <div class="row" style="font-size: 10px; margin-top: 5px;"><span>TANGGAL</span><span>${new Date(order.createdAt).toLocaleDateString('id-ID')}</span></div>
-                        <div class="divider"></div>
-                        <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
-                     `}
-                 </body></html>
-             `);
-             printWindow.document.close(); printWindow.focus();
-             setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
-         } else { addToast('Gagal buka popup struk. Izinkan popup browser.', 'error'); }
-      };
-
       const handleAuth = async (e) => {
-        e.preventDefault(); setAuthLoading(true);
+        e.preventDefault(); setAuthLoading(true); triggerSysLoad('Memeriksa Kredensial...');
         try {
           if (authMode === 'register') {
              if(!regName) throw new Error('Nama wajib diisi!');
@@ -1374,11 +1332,11 @@
           else if (error.code === 'auth/user-not-found') { msg = 'Akun belum terdaftar! Silakan daftar.'; setAuthMode('register'); }
           else if (error.code === 'auth/email-already-in-use') msg = 'Email ini sudah pernah digunakan!';
           addToast(msg, 'error');
-        } finally { setAuthLoading(false); }
+        } finally { setAuthLoading(false); closeSysLoad(); }
       };
 
       const handleGoogleLogin = async () => {
-         setAuthLoading(true);
+         setAuthLoading(true); triggerSysLoad('Menghubungkan dengan Google...');
          try {
             const res = await signInWithPopup(auth, googleProvider);
             const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid);
@@ -1387,11 +1345,11 @@
             if (!docSnap.exists()) { await setDoc(userRef, { email: res.user.email, name: res.user.displayName || res.user.email.split('@')[0], avatar: res.user.photoURL || '', lastLogin: new Date().toISOString(), createdAt: new Date().toISOString(), saldoCashback: 0, isBlocked: false }); } 
             else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); }
          } catch (e) { if(e.message === 'blocked') addToast('Akun ini diblokir Admin', 'error'); else addToast('Google Login dibatalkan', 'error'); }
-         setAuthLoading(false);
+         finally { setAuthLoading(false); closeSysLoad(); }
       };
 
       const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { triggerSysLoad('Menyimpan Profil...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } finally { closeSysLoad() } }
-      const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); } };
+      const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Memproses Avatar...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
 
       const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
@@ -1431,7 +1389,6 @@
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // V11.2 Checkout Validation
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1454,7 +1411,7 @@
           else { processCheckout(); } 
       };
 
-      // V11.2 Process Checkout with Anti Blank
+      // V11.2.1 Process Checkout with Anti Blank
       const processCheckout = async () => {
         setIsProcessing(true);
         triggerSysLoad('Memproses Transaksi Anda...');
@@ -1506,22 +1463,28 @@
 
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
+      // V11.2.1 Delete Wipe Setup
       const handleWipeData = async () => DangerDialog('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
           setAuthLoading(true); triggerSysLoad('Menghapus Database...');
           try { 
               const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); 
               const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); 
-              const deletePromises = [];
-              p1.forEach(d => deletePromises.push(deleteDoc(d.ref)));
-              p2.forEach(d => deletePromises.push(deleteDoc(d.ref)));
-              await Promise.all(deletePromises);
+              
+              const batch = writeBatch(db);
+              let count = 0;
+              
+              p1.forEach(d => { batch.delete(d.ref); count++; });
+              p2.forEach(d => { batch.delete(d.ref); count++; });
+              
+              if(count > 0) await batch.commit();
+              
               addToast('Data riwayat berhasil dibersihkan', 'success'); 
           } 
-          catch(e) { addToast("Gagal menghapus data. Coba lagi.", 'error'); } 
+          catch(e) { addToast("Gagal menghapus data.", 'error'); } 
           finally { setAuthLoading(false); setDangerModal({isOpen: false}); closeSysLoad(); }
       });
 
-      // V11.2 Admin Bulk Delete Function
+      // V11.2.1 Admin Bulk Delete Function
       const handleSelectOrder = (id) => {
           setSelectedOrdersForDelete(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
       }
@@ -1529,7 +1492,7 @@
       const handleBulkDeleteOrders = () => {
           if(selectedOrdersForDelete.length === 0) return;
           requestDangerConfirm(`Hapus permanen ${selectedOrdersForDelete.length} pesanan yang dipilih?`, async () => {
-              triggerSysLoad('Menghapus pesanan...');
+              triggerSysLoad('Menghapus pesanan massal...');
               try {
                   const batch = writeBatch(db);
                   selectedOrdersForDelete.forEach(id => {
@@ -1575,7 +1538,7 @@
           try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
-      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
+      const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); triggerSysLoad('Mengunggah...'); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } finally { setAuthLoading(false); closeSysLoad() } } };
       
       const saveSettings = async () => { 
           try { 
@@ -1589,7 +1552,7 @@
           } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
-      // V11.2 Favicon Validation
+      // V11.2.1 Favicon Validation
       const handleFaviconUpload = async (e) => { 
           const file = e.target.files[0]; 
           if (file) { 
@@ -1834,9 +1797,9 @@
              </div>
           )}
 
-          {/* CHAT BANTUAN OVERLAY V11.2 (ANIMASI MELAMBUNG) */}
+          {/* CHAT BANTUAN OVERLAY V11.2.1 (ANIMASI MELAMBUNG) */}
           {currentView === 'chat' && (
-             <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col animate-in fade-in duration-300' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-[bounceUp_0.6s_cubic-bezier(0.175,0.885,0.32,1.275)_forwards]'}`}>
+             <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col animate-in fade-in duration-300' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-bounce-up'}`}>
                 <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
                    <div className="flex items-center gap-3 md:gap-4">
                        {!isChatFullScreen && <button onClick={handleBack} className="p-2.5 bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-main rounded-xl transition border border-theme flex items-center justify-center shrink-0 shadow-sm"><IconChevronLeft className="w-5 h-5"/></button>}
@@ -1955,7 +1918,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.2) */}
+          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.2.1) */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -2008,7 +1971,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V11.2 */}
+                {/* Greeting Dinamis V11.2.1 */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -2106,7 +2069,7 @@
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
                             
-                            {/* Card 1: Data Akun V11.2 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
+                            {/* Card 1: Data Akun V11.2.1 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
                             <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
@@ -2136,7 +2099,7 @@
                                   )}
                                </div>
 
-                               {/* V11.2: Fitur Nickname Opsional */}
+                               {/* V11.2.1: Fitur Nickname Opsional */}
                                <div className="flex flex-col gap-3 relative z-10 mt-4">
                                    <div className="relative group flex-1">
                                        <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -2434,7 +2397,7 @@
                             <p className="text-sm text-sub-theme font-mono mt-2">{authUser.email}</p>
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-5">
                                <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20 font-black uppercase tracking-widest flex items-center gap-1.5"><IconCheckCircle className="w-3 h-3"/> Terverifikasi Akun</span>
-                               <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercase tracking-widest flex items-center gap-1.5 ${userVipData.color}`}>
+                               <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercasetracking-widest flex items-center gap-1.5 ${userVipData.color}`}>
                                    {userVipData.badge} {userVipData.level} Member Rank
                                </span>
                             </div>
@@ -2528,7 +2491,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V11.2)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V11.2.1)                                       */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2539,7 +2502,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.2</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.2.1</span>
                         </div>
                      </div>
 
@@ -2631,7 +2594,7 @@
                            </div>
                         )}
 
-                        {/* TAB: DAFTAR PESANAN V11.2 (PRINT STRUK NATIVE & BULK DELETE) */}
+                        {/* TAB: DAFTAR PESANAN V11.2.1 (PRINT STRUK NATIVE & BULK DELETE PAKE BATCH) */}
                         {activeAdminTab === 'orders' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -2780,7 +2743,7 @@
                                                         <IconWhatsapp className="w-4 h-4"/>
                                                     </button>
                                                 )}
-                                                <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-500 border-orange-500/30 hover:bg-orange-500 hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
+                                                <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30 hover:bg-orange-500 hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
                                                     <IconBlock className="w-4 h-4"/>
                                                 </button>
                                                 <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen">
@@ -3005,7 +2968,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.2 */}
+                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.2.1 */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -3049,7 +3012,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.2 */}
+                                 {/* Panel Bluetooth Printer V11.2.1 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal Bluetooth. Fitur Auto-Print akan otomatis mencetak struk ketika pesanan masuk di mode Standby.</p>
@@ -3143,7 +3106,7 @@
                                      {banners.map((b,i) => (
                                         <div key={i} className="relative bg-black rounded-2xl overflow-hidden border border-theme group shadow-md flex flex-col">
                                            <div className="aspect-video relative overflow-hidden">
-                                              <button onClick={async ()=>{ const nb=[...banners]; nb.splice(i,1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), {banners:nb}, {merge:true}); addToast('Banner dihapus', 'success'); }} className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-lg p-1.5 z-10 shadow-lg transition opacity-0 group-hover:opacity-100"><IconTrash className="w-3.5 h-3.5"/></button>
+                                              <button onClick={async ()=>{ triggerSysLoad('Menghapus Banner...'); const nb=[...banners]; nb.splice(i,1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), {banners:nb}, {merge:true}); addToast('Banner dihapus', 'success'); closeSysLoad(); }} className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-lg p-1.5 z-10 shadow-lg transition opacity-0 group-hover:opacity-100"><IconTrash className="w-3.5 h-3.5"/></button>
                                               <div className="absolute top-2 left-2 bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded z-10 uppercase backdrop-blur-sm border border-white/10">{b.type}</div>
                                               {b.type==='image' ? <img src={b.url} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500"/> : <div className="w-full h-full flex flex-col justify-center items-center text-[9px] text-gray-400 break-all p-4 text-center bg-white/5">{b.type}<br/>{(b.url||'').substring(0,20)}...</div>}
                                            </div>
