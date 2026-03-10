@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v11.2.2</title>
+  <title>Vipercell - Premium Top Up v11.2.3</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -129,7 +129,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V11.2.2
+    // FUNGSI HELPER & UTILITIES
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -244,7 +244,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V11.2.2
+    // NOTIFICATION (TOAST)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -286,7 +286,7 @@
     };
 
     // ==========================================
-    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.2.2
+    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY)
     // ==========================================
     const GlobalLoadingOverlay = ({ active, message }) => {
         if (!active) return null;
@@ -302,7 +302,7 @@
     // ==========================================
     // UI MODALS & DIALOGS 
     // ==========================================
-    const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
+    const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel, confirmText="Ya, Lanjutkan" }) => {
        if (!isOpen) return null;
        return (
           <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -312,7 +312,7 @@
                 <p className="text-sm text-sub-theme mb-8 font-medium">{message}</p>
                 <div className="flex gap-3">
                    <button onClick={onCancel} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition text-main text-sm">Batal</button>
-                   <button onClick={onConfirm} className="flex-1 py-3.5 rounded-xl font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition text-sm">Ya, Lanjutkan</button>
+                   <button onClick={onConfirm} className="flex-1 py-3.5 rounded-xl font-bold bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/30 transition text-sm">{confirmText}</button>
                 </div>
              </div>
           </div>
@@ -638,7 +638,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.2.2 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.2.3 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -753,34 +753,25 @@
           else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); }
       }, [isDarkMode]);
 
-      // Push Notification Setup V11.2.2
-      useEffect(() => {
-          if ('Notification' in window) {
-              if (Notification.permission === 'default') {
-                  setTimeout(() => Notification.requestPermission(), 3000);
-              }
-          }
-      }, []);
-
-      // V11.2.2 Global Anti-Blank System State
+      // V11.2.3 Global Anti-Blank System State
       const [sysLoading, setSysLoading] = useState({ active: false, msg: '' });
       const triggerSysLoad = (msg) => setSysLoading({ active: true, msg });
       const closeSysLoad = () => setSysLoading({ active: false, msg: '' });
 
-      // V11.2.2 Web Bluetooth API States
+      // V11.2.3 Web Bluetooth API States
       const [bluetoothDevice, setBluetoothDevice] = useState(null);
       const [btCharacteristic, setBtCharacteristic] = useState(null);
       const isPrinterConnected = !!btCharacteristic;
 
       const [adminAuthModal, setAdminAuthModal] = useState({ isOpen: false, action: null, title: '', message: '', btnText: '' });
-      const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
+      const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
       const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
       const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
-      const requestConfirm = (msg, action) => setConfirmModal({ isOpen: true, msg, action });
-      const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null }); };
-      const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null });
+      const requestConfirm = (msg, action, btnText="Ya, Lanjutkan") => setConfirmModal({ isOpen: true, msg, action, btnText });
+      const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' }); };
+      const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' });
       const requestDangerConfirm = (msg, action) => setDangerModal({ isOpen: true, msg, action });
       const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); };
       const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
@@ -840,7 +831,7 @@
       const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); 
       const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, orderId: null });
       
-      // V11.2.2 Bulk Delete Orders Admin
+      // V11.2.3 Bulk Delete Orders Admin
       const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
 
       const [supportTab, setSupportTab] = useState('member'); 
@@ -910,102 +901,7 @@
           }
       }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
-      const prevOrdersRef = useRef([]);
-      const prevAdminOrdersRef = useRef([]);
-
-      // User Order Notification v11.2.2 (Safe Mode)
-      useEffect(() => {
-         if(userOrders?.length > 0 && prevOrdersRef.current?.length > 0) {
-             userOrders.forEach(o => {
-                 const prevO = prevOrdersRef.current.find(p => p.id === o.id);
-                 if (prevO && prevO.status !== o.status) {
-                     if('Notification' in window && Notification.permission === 'granted') {
-                         try {
-                             let title = '📦 Status Pesanan Berubah';
-                             if (o.status === 'Sukses') title = '✅ Pesanan Berhasil';
-                             else if (o.status === 'Batal') title = '❌ Pesanan Dibatalkan';
-                             const notif = new Notification(title, { body: `Pesanan ${o.id} sekarang berstatus: ${o.status}`, icon: globalConfig?.favicon });
-                             notif.onclick = () => { window.focus(); setExpandedHistoryId(o.id); navigateTo('history'); };
-                         } catch(e) {
-                             console.warn("Mobile notification not supported", e);
-                         }
-                     }
-                 }
-             });
-         }
-         prevOrdersRef.current = userOrders || [];
-      }, [userOrders, globalConfig?.favicon]);
-
-      // Admin Order Notification v11.2.2 (Safe Mode)
-      useEffect(() => {
-         if (isAdmin && adminOrders?.length > 0) {
-             if (prevAdminOrdersRef.current?.length > 0) {
-                 adminOrders.forEach(order => {
-                     const isNew = !prevAdminOrdersRef.current.find(p => p.id === order.id);
-                     if (isNew && order.status === 'Pending') {
-                         if('Notification' in window && Notification.permission === 'granted') {
-                             try {
-                                 const notif = new Notification('🛒 Pesanan Baru', { body: `Pesanan masuk: ${order.id} - ${order.gameName}`, icon: globalConfig?.favicon });
-                                 notif.onclick = () => { window.focus(); setActiveAdminTab('orders'); navigateTo('admin'); };
-                             } catch(e) {
-                                 console.warn("Mobile notification not supported", e);
-                             }
-                         }
-                         playSuccessBeep();
-                         addToast(`Pesanan Baru Masuk: ${order.id}`, 'info');
-                         if (isStandbyMode) executeBluetoothPrint(order);
-                     }
-                 });
-             }
-         }
-         prevAdminOrdersRef.current = adminOrders || [];
-      }, [adminOrders, isAdmin, isStandbyMode, globalConfig?.favicon]);
-
-      // User Chat Notification v11.2.2 (Safe Mode)
-      const prevChatRef = useRef([]);
-      useEffect(() => {
-         if(userChat?.messages) {
-             const msgs = userChat.messages;
-             if(prevChatRef.current?.length > 0 && msgs.length > prevChatRef.current.length) {
-                 const lastMsg = msgs[msgs.length - 1];
-                 if(lastMsg.sender === 'admin' && 'Notification' in window && Notification.permission === 'granted') {
-                     try {
-                         const notif = new Notification('📩 Pesan Baru (Admin)', { body: lastMsg.text, icon: globalConfig?.favicon });
-                         notif.onclick = () => { window.focus(); navigateTo('chat'); };
-                     } catch(e) {
-                         console.warn("Mobile notification not supported", e);
-                     }
-                 }
-             }
-             prevChatRef.current = msgs;
-         }
-      }, [userChat, globalConfig?.favicon]);
-
-      // Admin Chat Notification v11.2.2 (Safe Mode)
-      const prevAdminChatsRef = useRef([]);
-      useEffect(() => {
-          if (isAdmin && adminChats?.length > 0) {
-              if (prevAdminChatsRef.current?.length > 0) {
-                  adminChats.forEach(chat => {
-                      const prevChat = prevAdminChatsRef.current.find(c => c.id === chat.id);
-                      if (prevChat && chat.messages?.length > prevChat.messages?.length) {
-                          const lastMsg = chat.messages[chat.messages.length - 1];
-                          if (lastMsg.sender === 'user') {
-                              if('Notification' in window && Notification.permission === 'granted') {
-                                  try {
-                                      const notif = new Notification('💬 Pesan Bantuan Baru', { body: `Dari ${chat.id}: ${lastMsg.text}`, icon: globalConfig?.favicon });
-                                      notif.onclick = () => { window.focus(); setActiveAdminTab('support'); setSupportTab('member'); setActiveChatEmail(chat.id); navigateTo('admin'); };
-                                  } catch(e) {
-                                      console.warn("Mobile notification not supported", e);
-                                  }
-                              }
-                          }
-                      }
-                  });
-              }
-              prevAdminChatsRef.current = adminChats || [];
-          }
-      }, [adminChats, isAdmin, globalConfig?.favicon]);
+      // Note v11.2.3: Browser Notification Hooks removed completely for simplicity.
 
       const navigateTo = (view) => {
          setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; });
@@ -1186,7 +1082,7 @@
 
       const handleCheckID = async () => { addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info'); }
 
-      // --- PRINT BLUETOOTH NATIVE V11.2.2 ---
+      // --- PRINT BLUETOOTH NATIVE V11.2.3 ---
       const getReceiptBytes = (order) => {
           let text = "";
           text += '\x1B' + '@'; // Init
@@ -1296,7 +1192,7 @@
           }
       };
 
-      // V11.2.2 Native Bluetooth Print (No Fallback Popups)
+      // V11.2.3 Native Bluetooth Print (No Fallback Popups)
       const executeBluetoothPrint = async (order) => {
           if (!order) return;
           if (!isPrinterConnected || !btCharacteristic) {
@@ -1427,7 +1323,7 @@
           else { processCheckout(); } 
       };
 
-      // V11.2.2 Process Checkout with Anti Blank
+      // V11.2.3 Process Checkout with Anti Blank
       const processCheckout = async () => {
         setIsProcessing(true);
         triggerSysLoad('Memproses Transaksi Anda...');
@@ -1479,51 +1375,57 @@
 
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
-      // V11.2.2 Delete Wipe Setup
-      const handleWipeData = async () => DangerDialog('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
-          setAuthLoading(true); triggerSysLoad('Menghapus Database...');
-          try { 
-              const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); 
-              const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); 
-              
-              const batch = writeBatch(db);
-              let count = 0;
-              
-              p1.forEach(d => { batch.delete(d.ref); count++; });
-              p2.forEach(d => { batch.delete(d.ref); count++; });
-              
-              if(count > 0) await batch.commit();
-              
-              addToast('Data riwayat berhasil dibersihkan', 'success'); 
-          } 
-          catch(e) { addToast("Gagal menghapus data.", 'error'); } 
-          finally { setAuthLoading(false); setDangerModal({isOpen: false}); closeSysLoad(); }
+      // V11.2.3 Delete Wipe Setup - Fix Realtime Sync
+      const handleWipeData = async () => DangerDialog({
+          isOpen: true,
+          message: 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.',
+          onConfirm: async () => { 
+             setAuthLoading(true); triggerSysLoad('Menghapus Database...');
+             try { 
+                 const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); 
+                 const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); 
+                 
+                 const batch = writeBatch(db);
+                 let count = 0;
+                 
+                 p1.forEach(d => { batch.delete(d.ref); count++; });
+                 p2.forEach(d => { batch.delete(d.ref); count++; });
+                 
+                 if(count > 0) await batch.commit();
+                 
+                 addToast('Data riwayat berhasil dibersihkan', 'success'); 
+             } 
+             catch(e) { addToast("Gagal menghapus data.", 'error'); } 
+             finally { setAuthLoading(false); setDangerModal({isOpen: false}); closeSysLoad(); }
+          },
+          onCancel: cancelDangerConfirm,
+          authEmail: authUser?.email
       });
 
-      // V11.2.2 Admin Bulk Delete Function
+      // V11.2.3 Admin Bulk Delete Function (Perfected Hard Delete)
       const handleSelectOrder = (id) => {
           setSelectedOrdersForDelete(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
       }
       
       const handleBulkDeleteOrders = () => {
           if(selectedOrdersForDelete.length === 0) return;
-          requestDangerConfirm(`Hapus permanen ${selectedOrdersForDelete.length} pesanan yang dipilih?`, async () => {
+          requestConfirm(`Apakah Anda yakin ingin menghapus permanen ${selectedOrdersForDelete.length} data pesanan yang dipilih?`, async () => {
               triggerSysLoad('Menghapus pesanan massal...');
               try {
                   const batch = writeBatch(db);
                   selectedOrdersForDelete.forEach(id => {
-                      batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', id), { status: 'Dihapus' });
+                      const docRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', id);
+                      batch.delete(docRef); // Hard delete for clean DB and instant UI refresh
                   });
                   await batch.commit();
                   setSelectedOrdersForDelete([]);
                   addToast('Data pesanan berhasil dihapus!', 'success');
-                  setDangerModal({isOpen:false});
               } catch(e) {
-                  addToast('Gagal menghapus data.', 'error');
+                  addToast('Terjadi kesalahan saat menghapus data.', 'error');
               } finally {
                   closeSysLoad();
               }
-          });
+          }, 'Ya, Hapus Data'); // Custom button text
       }
 
       const handleCloseTicket = async (email) => {
@@ -1533,10 +1435,10 @@
 
       const handleDeleteChat = async (email, e) => {
          if(e) e.stopPropagation();
-         requestDangerConfirm('Hapus permanen riwayat obrolan ini?', async () => {
-             try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); setDangerModal({isOpen: false}); }
+         requestConfirm('Hapus permanen riwayat obrolan ini?', async () => {
+             try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); }
              catch(err) { addToast('Gagal menghapus.', 'error'); } finally { closeSysLoad() }
-         });
+         }, 'Ya, Hapus Chat');
       };
 
       const toggleBroadcastUser = (email) => {
@@ -1568,7 +1470,7 @@
           } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
-      // V11.2.2 Favicon Validation
+      // V11.2.3 Favicon Validation
       const handleFaviconUpload = async (e) => { 
           const file = e.target.files[0]; 
           if (file) { 
@@ -1590,7 +1492,7 @@
 
       const handleDeleteFavicon = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } finally { closeSysLoad() } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); try { triggerSysLoad(); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } } };
-      const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } });
+      const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Foto');
       const toggleStore = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
 
       const updateOrderStatus = async (orderId, newStatus) => { 
@@ -1612,8 +1514,6 @@
              addToast(`Status diubah ke ${newStatus}`, 'success');
          } catch (e) { addToast("Gagal update status", 'error'); } finally { closeSysLoad() }
       };
-
-      const deleteOrder = async (orderId) => requestDangerConfirm('Konfirmasi aksi penghapusan pesanan ini secara permanen.', async () => { try { triggerSysLoad(); await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast("Gagal hapus", 'error'); } finally { closeSysLoad() } });
       
       const handleAdminSendChat = async (e, customText = null, isPublic = false) => {
          if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return;
@@ -1631,7 +1531,7 @@
       };
 
       const handleBlockMember = async (uid, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
-      const handleDeleteMember = async (memberId) => requestDangerConfirm('Menghapus akun member ini secara permanen.', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
+      const handleDeleteMember = async (memberId) => requestConfirm('Menghapus akun member ini secara permanen?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Member');
 
       const saveChatTemplate = async (text) => { if(!text) return; try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} finally { closeSysLoad() } };
@@ -1660,11 +1560,11 @@
 
       const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { triggerSysLoad(); const cleanId = (newGameId||'').toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleEditGameClick = (game) => { setEditingGameId(game.id); setNewGameId(game.id); setNewGameName(game.name); setNewGameDev(game.developer); setNewGameInput(game.inputType); setNewGameImg(game.image); setAdminSelectedGame(game.id); };
-      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus game ini dari katalog beserta produknya?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
+      const handleDeleteGame = async (gameId) => requestConfirm('Hapus game ini dari katalog beserta seluruh produk di dalamnya?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Game');
 
       const handleSaveItem = async (e) => { e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return; try { triggerSysLoad(); if (editingItemId) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true }); } else { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }); } setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); addToast('Produk Item tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
-      const handleDeleteItem = async (itemId) => requestConfirm('Hapus produk ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
+      const handleDeleteItem = async (itemId) => requestConfirm('Hapus produk ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Item');
 
       const handleSavePromo = async (e) => {
           e.preventDefault();
@@ -1682,7 +1582,7 @@
           } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() }
       };
 
-      const handleDeletePromo = (id) => requestConfirm('Hapus permanen promo ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
+      const handleDeletePromo = (id) => requestConfirm('Hapus permanen promo ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Promo');
       const togglePromoStatus = async (id, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
 
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
@@ -1777,8 +1677,7 @@
           
           <GlobalLoadingOverlay active={sysLoading.active} message={sysLoading.msg} />
 
-          <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
-          <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
+          <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           
           {/* Cash Confirmation Modal */}
           {cashConfirmModal.isOpen && (
@@ -1813,7 +1712,7 @@
              </div>
           )}
 
-          {/* CHAT BANTUAN OVERLAY V11.2.2 (ANIMASI MELAMBUNG) */}
+          {/* CHAT BANTUAN OVERLAY */}
           {currentView === 'chat' && (
              <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col animate-in fade-in duration-300' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-bounce-up'}`}>
                 <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
@@ -1934,7 +1833,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.2.2) */}
+          {/* RUNNING TEXT GLOBAL */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1987,7 +1886,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V11.2.2 */}
+                {/* Greeting Dinamis */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -2085,7 +1984,7 @@
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
                             
-                            {/* Card 1: Data Akun V11.2.2 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
+                            {/* Card 1: Data Akun */}
                             <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
@@ -2115,7 +2014,6 @@
                                   )}
                                </div>
 
-                               {/* V11.2.2: Fitur Nickname Opsional */}
                                <div className="flex flex-col gap-3 relative z-10 mt-4">
                                    <div className="relative group flex-1">
                                        <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
@@ -2237,7 +2135,7 @@
                    </div>
                 )}
                 
-                {/* Informasi Tambahan Bawah (Hanya muncul jika tidak pilih game) */}
+                {/* Informasi Tambahan Bawah */}
                 {!selectedGame && (
                    <div className="mt-16 pt-12 border-t border-theme text-center relative z-10 animate-in fade-in duration-1000">
                       <div className="inline-flex items-center justify-center p-4 bg-orange-500/10 rounded-2xl mb-6 border border-orange-500/20"><IconShield className="w-8 h-8 text-orange-600 dark:text-orange-500"/></div>
@@ -2507,7 +2405,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V11.2.2)                                       */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V11.2.3)                                       */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2518,7 +2416,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.2.2</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.2.3</span>
                         </div>
                      </div>
 
@@ -2610,7 +2508,7 @@
                            </div>
                         )}
 
-                        {/* TAB: DAFTAR PESANAN V11.2.2 (PRINT STRUK NATIVE & BULK DELETE PAKE BATCH) */}
+                        {/* TAB: DAFTAR PESANAN V11.2.3 (PRINT STRUK NATIVE & BULK DELETE PAKE BATCH) */}
                         {activeAdminTab === 'orders' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -2653,7 +2551,7 @@
                                        </tr>
                                     </thead>
                                     <tbody className="divide-y divide-theme">
-                                    {(adminOrders || []).filter(o => o?.status !== 'Dihapus' && ((o?.id || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()) || (o?.userEmail || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()))).map(order => (
+                                    {(adminOrders || []).filter(o => ((o?.id || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()) || (o?.userEmail || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()))).map(order => (
                                        <tr key={order.id} className={`transition ${selectedOrdersForDelete.includes(order.id) ? 'bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.03]'}`}>
                                           <td className="px-5 py-4 text-center">
                                               <input type="checkbox" checked={selectedOrdersForDelete.includes(order.id)} onChange={() => handleSelectOrder(order.id)} className="w-4 h-4 text-orange-500 rounded border-gray-300 focus:ring-orange-500 cursor-pointer" />
@@ -2699,7 +2597,7 @@
                                           </td>
                                        </tr>
                                     ))}
-                                    {(!adminOrders || adminOrders.filter(o => o.status !== 'Dihapus').length === 0) && (<tr><td colSpan="7" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Tidak ada pesanan yang sesuai dalam database.</td></tr>)}
+                                    {(!adminOrders || adminOrders.length === 0) && (<tr><td colSpan="7" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Tidak ada pesanan yang sesuai dalam database.</td></tr>)}
                                     </tbody>
                                  </table>
                               </div>
@@ -2816,7 +2714,7 @@
                                         )}
 
                                         <div className="overflow-y-auto flex-1 custom-scrollbar">
-                                           {(adminChats||[]).filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => {
+                                            {(adminChats||[]).filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => {
                                               const memberData = (memberList||[]).find(m => m.email === c.id);
                                               return (
                                               <div key={c.id} onClick={()=>setActiveChatEmail(c.id)} className={`p-4 border-b border-theme cursor-pointer transition flex items-center justify-between group ${activeChatEmail===c.id?'bg-blue-50 dark:bg-blue-600/20 border-l-4 border-l-blue-500':'hover:bg-gray-100 dark:hover:bg-white/5 border-l-4 border-l-transparent'}`}>
@@ -2834,8 +2732,8 @@
                                                     <button onClick={(e) => handleDeleteChat(c.id, e)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition opacity-0 group-hover:opacity-100" title="Hapus Riwayat"><IconTrash className="w-3.5 h-3.5"/></button>
                                                  </div>
                                               </div>
-                                           )})}
-                                           {(!adminChats || adminChats.filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).length===0) && !loadingAdminChats && !adminChatsError && <div className="text-xs text-center text-sub-theme p-8 font-bold">Tidak ada riwayat chat.</div>}
+                                            )})}
+                                            {(!adminChats || adminChats.filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).length===0) && !loadingAdminChats && !adminChatsError && <div className="text-xs text-center text-sub-theme p-8 font-bold">Tidak ada riwayat chat.</div>}
                                         </div>
                                      </div>
                                  )}
@@ -2984,7 +2882,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.2.2 */}
+                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -3028,7 +2926,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.2.2 */}
+                                 {/* Panel Bluetooth Printer V11.2.3 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal Bluetooth. Fitur Auto-Print akan otomatis mencetak struk ketika pesanan masuk di mode Standby.</p>
