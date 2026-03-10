@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell - Premium Top Up v10.8</title>
+  <title>Vipercell - Premium Top Up v11.0</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -123,7 +123,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     // ==========================================
-    // FUNGSI HELPER & UTILITIES V10.8
+    // FUNGSI HELPER & UTILITIES V11.0
     // ==========================================
     const generateOrderID = () => { return 'vpr' + Math.floor(100000 + Math.random() * 900000).toString(); };
 
@@ -230,6 +230,7 @@
     const IconSun = ({className:c}) => <Ic c={c} d={<><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></>}/>;
     const IconMoon = ({className:c}) => <Ic c={c} d={<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>}/>;
     const IconPrinter = ({className:c}) => <Ic c={c} d={<><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></>}/>;
+    const IconBluetooth = ({className:c}) => <Ic c={c} d={<><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></>}/>;
 
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
@@ -237,7 +238,7 @@
     ];
 
     // ==========================================
-    // NOTIFICATION (TOAST) V10.8 (FIXED TOP ISLAND)
+    // NOTIFICATION (TOAST) V11.0 (FIXED TOP ISLAND)
     // ==========================================
     const ToastContext = React.createContext();
     const useToast = () => React.useContext(ToastContext);
@@ -279,7 +280,21 @@
     };
 
     // ==========================================
-    // UI MODALS & DIALOGS (NAVY SECURITY STYLE V10.8)
+    // SISTEM ANTI BLANK (GLOBAL LOADING OVERLAY) v11.0
+    // ==========================================
+    const GlobalLoadingOverlay = ({ active, message }) => {
+        if (!active) return null;
+        return (
+            <div className="fixed inset-0 z-[12000] bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center animate-in fade-in duration-200">
+                <IconLoader className="w-12 h-12 text-orange-500 animate-spin mb-4" />
+                <h3 className="text-white font-black tracking-widest uppercase text-sm mb-1">MOHON TUNGGU</h3>
+                <p className="text-gray-400 text-xs font-medium animate-pulse">{message || 'Sistem sedang memproses data...'}</p>
+            </div>
+        );
+    };
+
+    // ==========================================
+    // UI MODALS & DIALOGS 
     // ==========================================
     const ConfirmDialog = ({ isOpen, message, onConfirm, onCancel }) => {
        if (!isOpen) return null;
@@ -495,7 +510,7 @@
         );
     }
 
-    // PREMIUM ORDER SUMMARY MODAL V10.8 (NICKNAME HIDDEN)
+    // PREMIUM ORDER SUMMARY MODAL V11.0
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => {
        if(!isOpen || !data) return null;
        return (
@@ -516,10 +531,10 @@
                     <div className="space-y-3 text-sm">
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Tujuan Pengisian</span><span className="font-mono font-black text-white bg-black/50 px-2 py-1 rounded border border-white/5">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div>
                         
-                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
-                        {false && data.nickname && (
+                        {/* V11.0: Fitur Nickname Opsional */}
+                        {data.nickname && (
                             <div className="flex justify-between items-center bg-orange-500/10 p-2 rounded-lg border border-orange-500/20">
-                               <span className="text-orange-400 text-xs font-bold">Nickname Terdeteksi</span>
+                               <span className="text-orange-400 text-xs font-bold">Nickname</span>
                                <span className="font-black text-white">{data.nickname}</span>
                             </div>
                         )}
@@ -543,24 +558,23 @@
        )
     }
 
-    const OrderSuccessModal = ({ isOpen, onToHistory, onBack }) => {
+    const OrderSuccessModal = ({ isOpen, onToHistory }) => {
         if(!isOpen) return null;
         return (
             <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
                 <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center border border-emerald-500/30 shadow-[0_0_40px_rgba(16,185,129,0.2)] relative overflow-hidden">
                     <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 border border-emerald-500/50"><IconCheckCircle className="w-10 h-10"/></div>
                     <h3 className="text-xl font-black text-white mb-2">Pesanan Berhasil Dibuat</h3>
-                    <p className="text-xs text-gray-400 mb-8 leading-relaxed">Mohon tunggu proses dari sistem. Anda dapat melihat instruksi pembayaran di riwayat pesanan.</p>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                        <button onClick={onBack} className="w-full py-3.5 rounded-xl font-bold bg-white/5 hover:bg-white/10 text-white text-sm transition order-2 sm:order-1 border border-white/5">Kembali</button>
-                        <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30 order-1 sm:order-2">Lihat Riwayat Pesanan</button>
+                    <p className="text-xs text-gray-400 mb-8 leading-relaxed animate-pulse">Sistem akan mengarahkan Anda ke Riwayat Pesanan...</p>
+                    <div className="flex flex-col gap-3">
+                        <button onClick={onToHistory} className="w-full py-3.5 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white text-sm transition shadow-lg shadow-emerald-500/30">Lihat Riwayat Sekarang</button>
                     </div>
                 </div>
             </div>
         )
     }
 
-    // ADMIN SCANNER RESULT MODAL V10.8 (NICKNAME HIDDEN)
+    // ADMIN SCANNER RESULT MODAL V11.0
     const ScannerResultModal = ({ isOpen, order, allGlobalOrders, onClose, onValidate, onCancelOrder }) => {
         const { addToast } = useToast();
         if (!isOpen || !order) return null;
@@ -584,8 +598,7 @@
                                 <button onClick={()=> { navigator.clipboard.writeText(order.targetUserId); addToast('ID disalin', 'success'); }} className="p-1.5 bg-white/10 hover:bg-white/20 rounded-md transition"><IconCopy className="w-3.5 h-3.5"/></button>
                             </span>
                         </div>
-                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
-                        {false && order.targetNickname && (
+                        {order.targetNickname && (
                            <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Nickname</span><span className="font-bold text-white">{order.targetNickname}</span></div>
                         )}
                         <div className="flex justify-between items-center"><span className="text-gray-400 text-xs">Total Harga</span><span className="font-bold text-emerald-400 text-lg">{formatRupiah(order.priceTotal)}</span></div>
@@ -620,7 +633,7 @@
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" rel="noreferrer" className="p-3 bg-white/5 rounded-2xl border border-theme hover:bg-red-600 hover:text-white transition shadow-sm group"><IconYoutube className="w-5 h-5 text-gray-400 group-hover:text-white"/></a>}
                </div>
                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v10.8 Ultimate</span>
+                  &copy; {new Date().getFullYear()} Vipercell. All rights reserved. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 border border-theme">v11.0 Ultimate</span>
                </div>
             </div>
          </footer>
@@ -742,6 +755,16 @@
           }
       }, []);
 
+      // V11.0 Global Anti-Blank System State
+      const [sysLoading, setSysLoading] = useState({ active: false, msg: '' });
+      const triggerSysLoad = (msg) => setSysLoading({ active: true, msg });
+      const closeSysLoad = () => setSysLoading({ active: false, msg: '' });
+
+      // V11.0 Web Bluetooth API States
+      const [bluetoothDevice, setBluetoothDevice] = useState(null);
+      const [btCharacteristic, setBtCharacteristic] = useState(null);
+      const isPrinterConnected = !!btCharacteristic;
+
       const [adminAuthModal, setAdminAuthModal] = useState({ isOpen: false, action: null, title: '', message: '', btnText: '' });
       const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
@@ -779,7 +802,6 @@
       const [adminList, setAdminList] = useState([]);
       const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); 
       
-      // ADMIN CHAT STATES V10.8 (STABILITY)
       const [adminChats, setAdminChats] = useState([]); 
       const [loadingAdminChats, setLoadingAdminChats] = useState(true);
       const [adminChatsError, setAdminChatsError] = useState(false);
@@ -824,11 +846,12 @@
       
       const [broadcastMsg, setBroadcastMsg] = useState('');
       const [selectedBroadcastUsers, setSelectedBroadcastUsers] = useState([]); // Array email
+      const [broadcastTarget, setBroadcastTarget] = useState('all');
       
       const [selectedGame, setSelectedGame] = useState(null);
       const [userId, setUserId] = useState(''); const [zoneId, setZoneId] = useState(''); const [nickname, setNickname] = useState('');
-      const [isCheckingID, setIsCheckingID] = useState(false); // V10.8 Hidden from UI but state kept
-      const [idCheckSuccess, setIdCheckSuccess] = useState(false); // V10.8 Hidden from UI but state kept
+      const [isCheckingID, setIsCheckingID] = useState(false); 
+      const [idCheckSuccess, setIdCheckSuccess] = useState(false); 
       const [selectedNominal, setSelectedNominal] = useState(null); const [selectedPayment, setSelectedPayment] = useState(null);
       const [inputPromo, setInputPromo] = useState(''); const [activePromo, setActivePromo] = useState(null); 
       const [isProcessing, setIsProcessing] = useState(false);
@@ -845,16 +868,16 @@
       const chatBgColor = isDarkMode ? '#0a0a0a' : '#e5ddd5';
       const chatEndRef = useRef(null);
 
-      // --- V10.8 AUTO PRINT STANDBY MODE ---
+      // --- V11.0 AUTO PRINT STANDBY MODE ---
       const [isStandbyMode, setIsStandbyMode] = useState(false);
 
       // Kunci scroll saat popup terbuka
       const isAnyModalOpen = adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen;
       useEffect(() => {
-          if (isAnyModalOpen) document.body.classList.add('modal-open');
+          if (isAnyModalOpen || sysLoading.active) document.body.classList.add('modal-open');
           else document.body.classList.remove('modal-open');
           return () => { document.body.classList.remove('modal-open'); }
-      }, [isAnyModalOpen]);
+      }, [isAnyModalOpen, sysLoading]);
 
       // Dynamic Greeting 
       const greeting = useMemo(() => {
@@ -881,7 +904,7 @@
           }
       }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
-      // Push Notifications System & STANDBY AUTO PRINT (V10.8)
+      // Push Notifications System
       const prevOrdersRef = useRef([]);
       const prevAdminOrdersRef = useRef([]);
 
@@ -900,7 +923,7 @@
          prevOrdersRef.current = userOrders || [];
       }, [userOrders, globalConfig?.favicon]);
 
-      // ADMIN STANDBY MODE LISTENER (V10.8)
+      // ADMIN STANDBY MODE LISTENER (V11.0)
       useEffect(() => {
          if (isAdmin && isStandbyMode && adminOrders?.length > 0) {
              if (prevAdminOrdersRef.current?.length > 0) {
@@ -910,7 +933,8 @@
                      if (isNew && order.status === 'Pending') {
                          playSuccessBeep();
                          addToast(`Pesanan Baru Masuk: ${order.id}`, 'info');
-                         handlePrintReceipt(order);
+                         // Native Auto Print without prompt
+                         executeBluetoothPrint(order);
                      }
                  });
              }
@@ -971,7 +995,7 @@
          window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown);
       }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory]);
 
-      // REALTIME LISTENER (ANTI-BLANK V10.8)
+      // REALTIME LISTENER 
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
@@ -980,7 +1004,6 @@
                        const d = snap.data(); setGlobalConfig(d); setIsStoreOpen(d.isOpen ?? true); 
                        setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' });
                        setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []);
-                       // Load API Key specifically for Admin
                        if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey);
                     } else { if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, runningTexts: ['⚡ Top Up Aman Vipercell'], banners: [], gallery: [] }).catch(()=>{}); }
                 } catch(err) {}
@@ -1049,7 +1072,6 @@
                 unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), (snap) => { 
                     try { const m = []; snap.forEach(d => m.push({id: d.id, ...d.data()})); setMemberList(m); } catch(err){} 
                 }));
-                // FIX ADMIN SUPPORT BLANK ISSUE
                 setLoadingAdminChats(true);
                 unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats'), 
                    (snap) => { 
@@ -1113,34 +1135,143 @@
          return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); };
       }, [isScannerOpen, adminOrders, addToast]);
 
-      // --- APIGAMES CEK ID LOGIC (V10.8 - DISABLED TEMPORARILY) ---
-      const handleCheckID = async () => {
-          // Fitur Cek ID dinonaktifkan di V10.8 untuk meningkatkan stabilitas.
-          // Struktur tetap dipertahankan agar bisa dipakai kembali di masa depan.
-          addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info');
-      }
-      // -------------------------------------
+      const handleCheckID = async () => { addToast('Fitur Cek ID sedang dinonaktifkan sementara.', 'info'); }
 
-      // --- PRINT STRUK THERMAL 58MM (V10.8) ---
-      const handlePrintReceipt = (order) => {
-         if(!order) return;
+      // --- PRINT BLUETOOTH NATIVE V11.0 ---
+      const getReceiptBytes = (order) => {
+          let text = "";
+          text += '\x1B' + '@'; // Init
+          text += '\x1B' + 'a' + '\x01'; // Center
+          text += '\x1B' + 'E' + '\x01'; // Bold
+          text += 'VIPERCELL STORE\n';
+          text += '\x1B' + 'E' + '\x00'; // Bold off
+          text += '--------------------------------\n';
+          text += '\x1B' + 'a' + '\x00'; // Left
+          text += `TRX    : ${order.id}\n`;
+          text += `STATUS : ${order.status.toUpperCase()}\n`;
+          text += `TANGGAL: ${new Date(order.createdAt).toLocaleDateString('id-ID')}\n`;
+          text += '--------------------------------\n';
+          text += `GAME   : ${order.gameName}\n`;
+          text += `ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`;
+          if(order.targetNickname) text += `NICK   : ${order.targetNickname}\n`;
+          text += `ITEM   : ${order.nominalName}\n`;
+          text += `METODE : ${order.paymentMethod}\n`;
+          text += '--------------------------------\n';
+          text += '\x1B' + 'E' + '\x01';
+          text += `TOTAL  : ${formatRupiah(order.priceTotal)}\n`;
+          text += '\x1B' + 'E' + '\x00';
+          text += '--------------------------------\n';
+          text += '\x1B' + 'a' + '\x01'; // Center
+          text += 'Terima kasih\n';
+          text += 'Vipercell v11.0\n';
+          text += '\n\n\n'; // Feed lines
+          return new TextEncoder().encode(text);
+      };
+
+      const connectBluetoothPrinter = async () => {
+          try {
+              triggerSysLoad('Mencari Printer Bluetooth...');
+              const device = await navigator.bluetooth.requestDevice({
+                  filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }],
+                  optionalServices: ['0000e7810-0000-1000-8000-00805f9b34fb']
+              }).catch(err => {
+                  // Fallback broader search if specific UUID fails
+                  return navigator.bluetooth.requestDevice({
+                      acceptAllDevices: true,
+                      optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2']
+                  });
+              });
+
+              setBluetoothDevice(device);
+              const server = await device.gatt.connect();
+              
+              // Find the right service & characteristic (Common ESC/POS UUIDs)
+              const services = await server.getPrimaryServices();
+              let targetCharacteristic = null;
+
+              for (const service of services) {
+                  const characteristics = await service.getCharacteristics();
+                  for (const char of characteristics) {
+                      if (char.properties.write || char.properties.writeWithoutResponse) {
+                          targetCharacteristic = char;
+                          break;
+                      }
+                  }
+                  if(targetCharacteristic) break;
+              }
+
+              if (targetCharacteristic) {
+                  setBtCharacteristic(targetCharacteristic);
+                  addToast('Printer Bluetooth berhasil terhubung!', 'success');
+              } else {
+                  throw new Error("Karakteristik Write tidak ditemukan di perangkat ini.");
+              }
+          } catch (e) {
+              if (e.name === 'NotFoundError') { addToast('Batal mencari printer.', 'warning'); }
+              else { addToast('Gagal terhubung ke printer. Pastikan Bluetooth aktif.', 'error'); console.error(e); }
+          } finally {
+              closeSysLoad();
+          }
+      };
+
+      const disconnectBluetoothPrinter = () => {
+          if (bluetoothDevice && bluetoothDevice.gatt.connected) {
+              bluetoothDevice.gatt.disconnect();
+          }
+          setBluetoothDevice(null);
+          setBtCharacteristic(null);
+          addToast('Printer diputuskan.', 'info');
+      };
+
+      const testBluetoothPrint = async () => {
+          if (!btCharacteristic) return addToast('Printer belum terhubung!', 'warning');
+          try {
+              triggerSysLoad('Sedang mencetak test...');
+              let text = '\x1B@\x1Ba\x01\x1BE\x01VIPERCELL STORE\n\x1BE\x00--------------------------------\nTEST PRINT BERHASIL\n\n\n';
+              await btCharacteristic.writeValue(new TextEncoder().encode(text));
+              addToast('Test print berhasil!', 'success');
+          } catch (error) {
+              addToast('Gagal print. Coba hubungkan ulang printer.', 'error');
+          } finally {
+              closeSysLoad();
+          }
+      };
+
+      const executeBluetoothPrint = async (order) => {
+          if (!order) return;
+          
+          if (isPrinterConnected && btCharacteristic) {
+              try {
+                  const bytes = getReceiptBytes(order);
+                  // Split bytes into chunks if needed (some BT printers max MTU is 512)
+                  const CHUNK_SIZE = 300;
+                  for (let i = 0; i < bytes.length; i += CHUNK_SIZE) {
+                      await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE));
+                  }
+                  addToast('Struk berhasil dicetak', 'success');
+              } catch (e) {
+                  addToast('Gagal print Bluetooth, mencoba mode popup...', 'warning');
+                  printReceiptFallback(order); // fallback
+              }
+          } else {
+              printReceiptFallback(order);
+          }
+      };
+
+      // Fallback old popup window thermal print
+      const printReceiptFallback = (order) => {
          const printWindow = window.open('', '_blank', 'width=400,height=600');
          if(printWindow) {
              printWindow.document.write(`
-                 <html>
-                 <head>
-                     <title>Struk - ${order.id}</title>
-                     <style>
-                         @page { margin: 0; size: 58mm auto; }
-                         body { font-family: 'Courier New', Courier, monospace; width: 58mm; padding: 10px; margin: 0 auto; color: #000; font-size: 12px; }
-                         .text-center { text-align: center; }
-                         .font-bold { font-weight: bold; }
-                         .divider { border-bottom: 1px dashed #000; margin: 8px 0; }
-                         .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
-                     </style>
-                 </head>
-                 <body>
-                     <div class="text-center font-bold" style="font-size: 16px;">STORE GAMING</div>
+                 <html><head><title>Struk - ${order.id}</title>
+                 <style>
+                     @page { margin: 0; size: 58mm auto; }
+                     body { font-family: 'Courier New', Courier, monospace; width: 58mm; padding: 10px; margin: 0 auto; color: #000; font-size: 12px; }
+                     .text-center { text-align: center; } .font-bold { font-weight: bold; }
+                     .divider { border-bottom: 1px dashed #000; margin: 8px 0; }
+                     .row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+                 </style></head><body>
+                     <div class="text-center font-bold" style="font-size: 16px;">VIPERCELL STORE</div>
                      <div class="text-center" style="font-size: 10px; margin-top: 2px;">Bukti Top Up</div>
                      <div class="divider"></div>
                      <div class="row"><span>TRX</span><span>${order.id}</span></div>
@@ -1149,27 +1280,20 @@
                      <div class="divider"></div>
                      <div style="margin-bottom: 4px;">GAME   : ${order.gameName}</div>
                      <div style="margin-bottom: 4px;">ID     : ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}</div>
+                     ${order.targetNickname ? `<div style="margin-bottom: 4px;">NICK   : ${order.targetNickname}</div>` : ''}
                      <div style="margin-bottom: 4px;">ITEM   : ${order.nominalName}</div>
                      <div style="margin-bottom: 4px;">METODE : ${order.paymentMethod}</div>
                      <div class="divider"></div>
                      <div class="row font-bold" style="font-size: 14px;"><span>TOTAL</span><span>${formatRupiah(order.priceTotal)}</span></div>
                      <div class="divider"></div>
                      <div class="text-center" style="margin-top: 10px; font-size: 10px;">Terima kasih</div>
-                     <div class="text-center" style="font-size: 8px; margin-top: 2px;">Vipercell v10.8</div>
-                 </body>
-                 </html>
+                     <div class="text-center" style="font-size: 8px; margin-top: 2px;">Vipercell v11.0</div>
+                 </body></html>
              `);
-             printWindow.document.close();
-             printWindow.focus();
-             setTimeout(() => { 
-                 printWindow.print(); 
-                 printWindow.close(); 
-             }, 500);
-         } else {
-             addToast('Gagal membuka popup struk. Izinkan popup browser.', 'error');
-         }
+             printWindow.document.close(); printWindow.focus();
+             setTimeout(() => { printWindow.print(); printWindow.close(); }, 500);
+         } else { addToast('Gagal buka popup struk. Izinkan popup browser.', 'error'); }
       };
-      // -----------------------------------------
 
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true);
@@ -1216,11 +1340,11 @@
          setAuthLoading(false);
       };
 
-      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } }
+      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { triggerSysLoad('Menyimpan Profil...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } finally { closeSysLoad() } }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); } };
-      const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } };
+      const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
 
-      const handleSetPin = async (newPin) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } };
+      const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
       
       const getActivePromosForItem = (itemId) => { 
           if(!promos) return []; const now = new Date(); 
@@ -1257,7 +1381,7 @@
 
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // Smart Validation Checkout - V10.8 Update (Tanpa verifikasi Nickname)
+      // V11.0 Checkout Validation includes optional nickname
       const triggerCheckout = () => { 
           if (!userId) { addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); return; }
           if (selectedGame?.inputType === 'id_zone' && !zoneId) { addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); return; }
@@ -1271,8 +1395,7 @@
           const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
           const fPrice = basePrice - usedCashback;
           
-          // Nickname tidak lagi diwajibkan (null)
-          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
+          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: nickname || null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }});
       };
       
       const executeFinalPayment = () => { 
@@ -1281,9 +1404,10 @@
           else { processCheckout(); } 
       };
 
+      // V11.0 Auto Redirect after checkout
       const processCheckout = async () => {
         setIsProcessing(true);
-        addToast('Sedang memproses pesanan...', 'process');
+        triggerSysLoad('Memproses Transaksi Anda...');
         let maxCashback = currentUserData?.saldoCashback || 0;
         let basePrice = calculateFinalPrice(selectedNominal.price + selectedPayment.fee, selectedNominal.id); 
         let usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
@@ -1292,10 +1416,10 @@
         const activeAutoPromos = getActivePromosForItem(selectedNominal.id); let usedPromoIds = []; let appliedPromoCode = [];
         
         if (activePromo) {
-           try {
-               const pDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id));
-               if(pDoc.exists()) { let livePromo = pDoc.data(); if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); } else { addToast("Kuota promo habis.", "error"); setActivePromo(null); setIsProcessing(false); return; } }
-           } catch(e){}
+            try {
+                const pDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id));
+                if(pDoc.exists()) { let livePromo = pDoc.data(); if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); } else { addToast("Kuota promo habis.", "error"); setActivePromo(null); setIsProcessing(false); closeSysLoad(); return; } }
+            } catch(e){}
         }
         const flashPromo = activeAutoPromos.find(p => p.category === 'flash');
         if(flashPromo) { usedPromoIds.push(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', flashPromo.id)); appliedPromoCode.push('FLASH_SALE'); }
@@ -1305,20 +1429,27 @@
           const newOrderId = generateOrderID();
           const orderRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', newOrderId);
           
-          // Nickname field disembunyikan/dikosongkan di V10.8
-          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
+          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname || '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString() });
           
           if(usedCashback > 0) { batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - usedCashback }); }
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
           
           await batch.commit();
-          setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); playSuccessBeep(); setOrderSuccessModal(true);
-        } catch (error) { addToast("Gagal memproses pesanan sistem.", "error"); } finally { setIsProcessing(false); }
+          setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); playSuccessBeep(); 
+          setOrderSuccessModal(true);
+          
+          // Auto Redirect (V11.0 Fix Blank Page)
+          setTimeout(() => {
+              setOrderSuccessModal(false);
+              navigateTo('history');
+          }, 3000);
+
+        } catch (error) { addToast("Gagal memproses pesanan sistem.", "error"); } finally { setIsProcessing(false); closeSysLoad(); }
       };
 
       const handleSendChatUser = async (e, customStr = null) => {
          if(e) e.preventDefault(); const str = customStr || chatInput; if (!(str||'').trim()) return; setLoadingChat(true);
-         try { const newMessages = [...(userChat?.messages || []), { sender: 'user', text: str, time: new Date().toISOString(), role: 'Pelanggan' }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setChatInput(''); setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); } 
+         try { const newMessages = [...(userChat?.messages || []), { sender: 'user', text: str, time: new Date().toISOString(), role: 'Pelanggan' }]; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: newMessages, status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setChatInput(''); setTimeout(()=> { chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); addToast('Pesan dikirim', 'success'); } 
          catch (err) { addToast('Gagal mengirim pesan', 'error'); } setLoadingChat(false);
       };
       
@@ -1327,7 +1458,7 @@
       const openAdminAuthModal = (title, message, btnText, action) => { setAdminAuthModal({ isOpen: true, title, message, btnText, action }); }
 
       const handleWipeData = async () => DangerDialog('Zona Berbahaya (Reset Sistem)', 'Masukkan password admin untuk menghapus semua riwayat transaksi dan chat. Data tidak bisa dikembalikan.', 'Eksekusi Hapus Data', async () => { 
-          setAuthLoading(true); 
+          setAuthLoading(true); triggerSysLoad('Menghapus Database...');
           try { 
               const p1 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders')); 
               const p2 = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats')); 
@@ -1338,19 +1469,19 @@
               addToast('Data riwayat berhasil dibersihkan', 'success'); 
           } 
           catch(e) { addToast("Gagal menghapus data. Coba lagi.", 'error'); } 
-          finally { setAuthLoading(false); setDangerModal({isOpen: false}); }
+          finally { setAuthLoading(false); setDangerModal({isOpen: false}); closeSysLoad(); }
       });
 
       const handleCloseTicket = async (email) => {
-         try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); }
-         catch(e) { addToast('Gagal menutup tiket.', 'error'); }
+         try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); }
+         catch(e) { addToast('Gagal menutup tiket.', 'error'); } finally { closeSysLoad() }
       };
 
       const handleDeleteChat = async (email, e) => {
          if(e) e.stopPropagation();
          requestDangerConfirm('Hapus permanen riwayat obrolan ini?', async () => {
-             try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); setDangerModal({isOpen: false}); }
-             catch(err) { addToast('Gagal menghapus.', 'error'); }
+             try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); setDangerModal({isOpen: false}); }
+             catch(err) { addToast('Gagal menghapus.', 'error'); } finally { closeSysLoad() }
          });
       };
 
@@ -1366,27 +1497,28 @@
           if(adminBannerType === 'youtube' && !fixedUrl.includes('youtube') && !fixedUrl.includes('youtu.be')) fixedUrl = `https://www.youtube.com/watch?v=${fixedUrl}`;
           let safeTargetLink = adminBannerLink; if(safeTargetLink && !safeTargetLink.startsWith('http')) safeTargetLink = 'https://' + safeTargetLink;
           const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl, title: adminBannerTitle, desc: adminBannerDesc, targetLink: safeTargetLink }]; 
-          try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } 
+          try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } setAuthLoading(false); } };
       
       const saveSettings = async () => { 
           try { 
+              triggerSysLoad('Menyimpan Pengaturan...');
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { 
                   igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', 
                   runningTexts,
                   apiGamesKey: adminApiKey 
               }, { merge: true }); 
               addToast('Pengaturan disimpan!', 'success'); 
-          } catch(e) { addToast(e.message, 'error'); } 
+          } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } 
       };
       
-      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diperbarui', 'success'); } catch(e) { addToast('Gagal upload', 'error'); } } };
-      const handleDeleteFavicon = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } };
-      const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); const compressed = await compressImage(file, 400); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } } };
-      const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } });
-      const toggleStore = async () => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } };
+      const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const base64 = await compressImage(file, 64); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon Website diperbarui', 'success'); } catch(e) { addToast('Gagal upload', 'error'); } finally { closeSysLoad() } } };
+      const handleDeleteFavicon = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Favicon dihapus', 'success'); } catch(e) { addToast('Gagal menghapus', 'error'); } finally { closeSysLoad() } };
+      const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { if ((galleryData||[]).length >= 16) return addToast('Maksimal 16 foto!', 'error'); try { triggerSysLoad(); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Foto ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } } };
+      const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } });
+      const toggleStore = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
 
       const updateOrderStatus = async (orderId, newStatus) => { 
          try { 
@@ -1401,13 +1533,14 @@
 
       const executeStatusUpdate = async (orderId, newStatus, order) => {
          try {
+             triggerSysLoad(`Mengubah status pesanan...`);
              await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
              if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const mOrders = (allGlobalOrders||[]).filter(o => o.userEmail === member.email && o.status === 'Sukses' && o.id !== orderId); const vip = calculateVIPLevel(mOrders.length); if(vip.cashback > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + (order.priceTotal * vip.cashback) }, { merge: true }); } } }
              addToast(`Status diubah ke ${newStatus}`, 'success');
-         } catch (e) { addToast("Gagal update status", 'error'); }
+         } catch (e) { addToast("Gagal update status", 'error'); } finally { closeSysLoad() }
       };
 
-      const deleteOrder = async (orderId) => requestDangerConfirm('Konfirmasi aksi penghapusan pesanan ini secara permanen.', async () => { try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast("Gagal hapus", 'error'); } });
+      const deleteOrder = async (orderId) => requestDangerConfirm('Konfirmasi aksi penghapusan pesanan ini secara permanen.', async () => { try { triggerSysLoad(); await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: 'Dihapus' }); addToast('Pesanan dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast("Gagal hapus", 'error'); } finally { closeSysLoad() } });
       
       const handleAdminSendChat = async (e, customText = null, isPublic = false) => {
          if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return;
@@ -1424,11 +1557,11 @@
          setAdminTrxModal({isOpen: false, order: null});
       };
 
-      const handleBlockMember = async (uid, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
-      const handleDeleteMember = async (memberId) => requestDangerConfirm('Menghapus akun member ini secara permanen.', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleBlockMember = async (uid, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir akun dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
+      const handleDeleteMember = async (memberId) => requestDangerConfirm('Menghapus akun member ini secara permanen.', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Member dihapus.', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
 
-      const saveChatTemplate = async (text) => { if(!text) return; try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
-      const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} };
+      const saveChatTemplate = async (text) => { if(!text) return; try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: [...chatTemplates, text] }, { merge: true }); addToast('Template disimpan', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
+      const deleteChatTemplate = async (index) => { const nt = [...chatTemplates]; nt.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), { list: nt }, { merge: true }); addToast('Template dihapus', 'success'); } catch(e){} finally { closeSysLoad() } };
 
       const handleBroadcast = async (e) => {
          e.preventDefault();
@@ -1440,7 +1573,7 @@
 
          if (targets.length === 0) return addToast('Pilih setidaknya 1 member untuk broadcast!', 'warning');
 
-         setAuthLoading(true);
+         setAuthLoading(true); triggerSysLoad(`Mengirim ke ${targets.length} member...`);
          try {
              for (const email of targets) {
                  const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email);
@@ -1449,20 +1582,21 @@
              }
              addToast(`Broadcast sukses dikirim ke ${targets.length} member`, 'success'); setBroadcastMsg(''); setSelectedBroadcastUsers([]);
          } catch(err) { addToast('Gagal kirim broadcast', 'error'); }
-         setAuthLoading(false);
+         setAuthLoading(false); closeSysLoad();
       };
 
-      const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { const cleanId = (newGameId||'').toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
+      const handleSaveGame = async (e) => { e.preventDefault(); if (!newGameId || !newGameName) return; try { triggerSysLoad(); const cleanId = (newGameId||'').toLowerCase().replace(/\s+/g, ''); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), { name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300' }, { merge: true }); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setEditingGameId(null); addToast('Katalog Game tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleEditGameClick = (game) => { setEditingGameId(game.id); setNewGameId(game.id); setNewGameName(game.name); setNewGameDev(game.developer); setNewGameInput(game.inputType); setNewGameImg(game.image); setAdminSelectedGame(game.id); };
-      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus game ini dari katalog beserta produknya?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeleteGame = async (gameId) => requestDangerConfirm('Hapus game ini dari katalog beserta produknya?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId)); addToast('Game dihapus', 'success'); setDangerModal({isOpen:false}); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
 
-      const handleSaveItem = async (e) => { e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return; try { if (editingItemId) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true }); } else { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }); } setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); addToast('Produk Item tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } };
+      const handleSaveItem = async (e) => { e.preventDefault(); if(!newItemName || !newItemPrice || !adminSelectedGame) return; try { triggerSysLoad(); if (editingItemId) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', editingItemId), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }, { merge: true }); } else { await addDoc(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), { name: newItemName, price: Number(newItemPrice), gameId: adminSelectedGame }); } setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); addToast('Produk Item tersimpan!', 'success'); } catch (e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.price); };
-      const handleDeleteItem = async (itemId) => requestConfirm('Hapus produk ini?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
+      const handleDeleteItem = async (itemId) => requestConfirm('Hapus produk ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId)); addToast('Item dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
 
       const handleSavePromo = async (e) => {
           e.preventDefault();
           try {
+              triggerSysLoad();
               const promoId = promoModalType === 'code' ? (promoForm.code||'').toUpperCase() : `${promoModalType}_${Date.now()}`;
               let promoData = { id: promoId, category: promoModalType, type: promoForm.type, discount: Number(promoForm.discount), isActive: true, createdAt: new Date().toISOString() };
               if(promoModalType === 'code') { promoData.code = (promoForm.code||'').toUpperCase(); promoData.maxUses = Number(promoForm.maxUses); promoData.minPurchase = Number(promoForm.minPurchase || 0); promoData.usedBy = []; } 
@@ -1472,11 +1606,11 @@
               else if(promoModalType === 'day') { promoData.targetDay = parseInt(promoForm.targetDay); }
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', promoId), promoData);
               addToast('Promo berhasil diterbitkan!', 'success'); setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5'});
-          } catch(e) { addToast(e.message, 'error'); }
+          } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() }
       };
 
-      const handleDeletePromo = (id) => requestConfirm('Hapus permanen promo ini?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } });
-      const togglePromoStatus = async (id, currentStatus) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } };
+      const handleDeletePromo = (id) => requestConfirm('Hapus permanen promo ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Promo dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } });
+      const togglePromoStatus = async (id, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
 
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
       
@@ -1568,6 +1702,9 @@
       // ==========================================
       return (
         <div className="flex-grow flex flex-col relative z-10 min-h-screen bg-main">
+          
+          <GlobalLoadingOverlay active={sysLoading.active} message={sysLoading.msg} />
+
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
           
@@ -1589,7 +1726,7 @@
           <ChangePinModal isOpen={changePinModalOpen} authEmail={authUser?.email} oldPinHash={currentUserData?.pin} onSuccess={handleSetPin} onCancel={()=>setChangePinModalOpen(false)} />
           <PinModal isOpen={pinModalState.isOpen} mode={pinModalState.mode} expectedPin={pinModalState.expectedPin} onSuccess={pinModalState.onSuccess} onCancel={() => setPinModalState({isOpen:false, mode:'setup', onSuccess:null})} />
           <OrderSummaryModal isOpen={checkoutSummary.isOpen} data={checkoutSummary.data} onConfirm={executeFinalPayment} onCancel={()=>setCheckoutSummary({isOpen:false, data:null})} isProcessing={isProcessing} />
-          <OrderSuccessModal isOpen={orderSuccessModal} onBack={() => {setOrderSuccessModal(false); setSelectedGame(null); window.scrollTo({top:0, behavior:'smooth'});}} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} />
+          <OrderSuccessModal isOpen={orderSuccessModal} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} />
           <ScannerResultModal isOpen={scannerResultModal.isOpen} order={scannerResultModal.order} allGlobalOrders={allGlobalOrders} onClose={() => setScannerResultModal({isOpen: false, order: null})} onValidate={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} onCancelOrder={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} />
 
           {/* SCANNER KASIR QR (ADMIN ONLY) */}
@@ -1725,7 +1862,7 @@
              </nav>
           )}
 
-          {/* RUNNING TEXT GLOBAL (NAVY THEME V10.8) */}
+          {/* RUNNING TEXT GLOBAL (NAVY THEME V11.0) */}
           {currentView !== 'chat' && (
              <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-navy-800 to-navy-950 border-b border-white/10 shadow-md">
                 <div className="marquee-container py-1.5">
@@ -1778,7 +1915,7 @@
             {/* ========================================================================= */}
             <div className={currentView === 'home' ? 'animate-in fade-in slide-in-from-bottom-4' : 'absolute opacity-0 pointer-events-none w-0 h-0 overflow-hidden'}>
                 
-                {/* Greeting Dinamis V10.8 */}
+                {/* Greeting Dinamis V11.0 */}
                 <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                     <div>
                         <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
@@ -1876,7 +2013,7 @@
                          {/* Kolom Kiri: Input ID & Pilihan Item */}
                          <div className="lg:col-span-7 space-y-6">
                             
-                            {/* Card 1: Data Akun V10.8 (CEK ID DINONAKTIFKAN SEMENTARA) */}
+                            {/* Card 1: Data Akun V11.0 (NICKNAME DIAKTIFKAN KEMBALI SEBAGAI OPSIONAL) */}
                             <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconUser className="w-24 h-24"/></div>
                                <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
@@ -1906,18 +2043,13 @@
                                   )}
                                </div>
 
-                               {/* V10.8: Tombol & Nickname API Dinonaktifkan Sementara (Kode Disembunyikan, tidak dihapus) */}
-                               {false && (
-                               <div className="flex flex-col sm:flex-row gap-3 relative z-10">
+                               {/* V11.0: Fitur Nickname Opsional */}
+                               <div className="flex flex-col gap-3 relative z-10 mt-4">
                                    <div className="relative group flex-1">
                                        <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500 group-focus-within:text-orange-500 transition-colors" />
-                                       <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Klik Cek ID untuk melihat Nickname" readOnly={idCheckSuccess} className={`w-full rounded-2xl py-4 pl-12 pr-4 font-bold transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600 ${idCheckSuccess ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/50 focus:outline-none' : 'input-theme focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500/50'}`}/>
+                                       <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Masukkan Nickname (Opsional - Muncul di Struk)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500/50 transition shadow-inner placeholder-gray-400 dark:placeholder-gray-600" />
                                    </div>
-                                   <button onClick={handleCheckID} disabled={isCheckingID || !userId} className="bg-orange-600 hover:bg-orange-500 text-white font-black py-4 px-6 rounded-2xl uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition disabled:opacity-50 shadow-lg">
-                                       {isCheckingID ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconSearch className="w-4 h-4"/> Cek ID</>}
-                                   </button>
                                </div>
-                               )}
 
                                <p className="text-[10px] text-sub-theme mt-3 font-medium">Pastikan ID dan Server/Tag sudah benar. Kesalahan penulisan ID bukan tanggung jawab sistem.</p>
                             </div>
@@ -2013,7 +2145,7 @@
                                </div>
                             </div>
 
-                            {/* Card 4: Ringkasan & Checkout Button (V10.8) */}
+                            {/* Card 4: Ringkasan & Checkout Button */}
                             <div className="clean-card p-6 md:p-8 shadow-[0_10px_40px_rgba(249,115,22,0.15)] border-t-4 border-emerald-500 relative overflow-hidden mt-6">
                                <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 pointer-events-none"><IconCheckCircle className="w-24 h-24 text-emerald-500"/></div>
                                <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
@@ -2123,13 +2255,14 @@
                                             <p className="text-[9px] font-black text-sub-theme uppercase tracking-widest mb-1">Target Pengisian</p>
                                             <p className="font-mono text-sm font-bold text-main bg-white dark:bg-white/5 px-3 py-1.5 rounded-lg inline-block border border-theme">{(order.targetUserId || '')} {(order.targetZoneId || '') && `(${(order.targetZoneId || '')})`}</p>
                                         </div>
-                                        {/* V10.8: Fitur Nickname dinonaktifkan sementara */}
-                                        {false && order.targetNickname && (
+                                        
+                                        {order.targetNickname && (
                                             <div>
                                                 <p className="text-[9px] font-black text-orange-500 uppercase tracking-widest mb-1">Nickname Game</p>
                                                 <p className="font-bold text-sm text-main">{order.targetNickname}</p>
                                             </div>
                                         )}
+
                                         <div>
                                             <p className="text-[9px] font-black text-sub-theme uppercase tracking-widest mb-1">Waktu Transaksi Dibuat</p>
                                             <p className="text-xs font-bold text-main">{order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : '-'}</p>
@@ -2302,7 +2435,7 @@
             )}
 
             {/* ========================================================================= */}
-            {/* VIEW: ADMIN PANEL (LENGKAP V10.8)                                         */}
+            {/* VIEW: ADMIN PANEL (LENGKAP V11.0)                                         */}
             {/* ========================================================================= */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-in fade-in pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -2313,7 +2446,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(220,38,38,0.5)] shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black leading-tight text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v10.8</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase tracking-widest font-bold mt-1 inline-block border border-theme">Vipercell v11.0</span>
                         </div>
                      </div>
 
@@ -2325,7 +2458,7 @@
                            { id: 'promo', label: 'Pusat Promosi', icon: IconPercent },
                            { id: 'members', label: 'Data Member', icon: IconUsers },
                            { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount },
-                           { id: 'settings', label: 'Peraturan Web', icon: IconSettings }
+                           { id: 'settings', label: 'Pengaturan Web', icon: IconSettings }
                         ].map(tab => {
                            const TabIcon = tab.icon;
                            return (
@@ -2405,14 +2538,14 @@
                            </div>
                         )}
 
-                        {/* TAB: DAFTAR PESANAN V10.8 (PRINT STRUK & STANDBY MODE) */}
+                        {/* TAB: DAFTAR PESANAN V11.0 (PRINT STRUK NATIVE & STANDBY MODE) */}
                         {activeAdminTab === 'orders' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                                  <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconList className="w-6 h-6 text-red-500"/> Manajemen Pesanan</h2>
                                  <div className="flex items-center gap-3 w-full sm:w-auto">
                                     <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-theme tooltip" title="Buka jendela print otomatis saat ada pesanan baru">
-                                       <span className="text-[10px] font-bold text-main uppercase tracking-widest">Auto Print</span>
+                                       <span className="text-[10px] font-bold text-main uppercase tracking-widest">Auto Print BT</span>
                                        <label className="relative inline-flex items-center cursor-pointer">
                                           <input type="checkbox" className="sr-only peer" checked={isStandbyMode} onChange={(e) => setIsStandbyMode(e.target.checked)} />
                                           <div className="w-9 h-5 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-500 shadow-inner"></div>
@@ -2445,11 +2578,11 @@
                                           </td>
                                           <td className="px-5 py-4">
                                              <div className="font-mono font-bold bg-white dark:bg-white/5 rounded-lg inline-flex flex-col gap-1 px-3 py-2 border border-theme shadow-sm text-main max-w-[220px] overflow-hidden overflow-ellipsis text-xs">
-                                                 <div className="flex justify-between items-center w-full">
-                                                     <span className="truncate">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</span>
-                                                     <button onClick={()=>{navigator.clipboard.writeText(order?.targetUserId); addToast('ID Game disalin', 'success');}} className="p-1 text-gray-400 hover:text-main transition shrink-0 tooltip" title="Salin ID Game"><IconCopy className="w-3.5 h-3.5"/></button>
-                                                 </div>
-                                                 {/* V10.8 Nickname Dihilangkan Sementara dari Admin Table */}
+                                                <div className="flex justify-between items-center w-full">
+                                                   <span className="truncate">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</span>
+                                                   <button onClick={()=>{navigator.clipboard.writeText(order?.targetUserId); addToast('ID Game disalin', 'success');}} className="p-1 text-gray-400 hover:text-main transition shrink-0 tooltip" title="Salin ID Game"><IconCopy className="w-3.5 h-3.5"/></button>
+                                                </div>
+                                                {order?.targetNickname && <div className="text-[10px] text-orange-500 font-bold border-t border-theme pt-1 mt-1 truncate">{order.targetNickname}</div>}
                                              </div>
                                           </td>
                                           <td className="px-5 py-4">
@@ -2465,7 +2598,7 @@
                                           </td>
                                           <td className="px-5 py-4">
                                              <div className="flex items-center justify-center gap-2">
-                                                <button onClick={() => handlePrintReceipt(order)} className="p-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition tooltip shadow-sm" title="Cetak Struk Thermal"><IconPrinter className="w-4 h-4" /></button>
+                                                <button onClick={() => executeBluetoothPrint(order)} className="p-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition tooltip shadow-sm" title="Cetak Struk BT"><IconPrinter className="w-4 h-4" /></button>
                                                 {order?.status === 'Pending' && (
                                                    <>
                                                       <button onClick={() => updateOrderStatus(order.id, 'Sukses')} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas / Sukses"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
@@ -2554,7 +2687,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V10.8 UPDATE */}
+                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) - WHATSAPP STYLE V11.0 */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
                               
@@ -2581,7 +2714,7 @@
                                             </div>
                                         </div>
 
-                                        {/* Loading & Error States untuk Chat Admin V10.8 */}
+                                        {/* Loading & Error States untuk Chat Admin V11.0 */}
                                         {loadingAdminChats && (
                                             <div className="absolute inset-0 top-[90px] bg-white/80 dark:bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
                                                 <IconLoader className="w-8 h-8 text-blue-500 animate-spin mb-3"/>
@@ -2603,7 +2736,7 @@
                                               <div key={c.id} onClick={()=>setActiveChatEmail(c.id)} className={`p-4 border-b border-theme cursor-pointer transition flex items-center justify-between group ${activeChatEmail===c.id?'bg-blue-50 dark:bg-blue-600/20 border-l-4 border-l-blue-500':'hover:bg-gray-100 dark:hover:bg-white/5 border-l-4 border-l-transparent'}`}>
                                                  <div className="flex items-center gap-3 min-w-0 pr-2">
                                                     <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-[10px] text-main overflow-hidden border border-theme shrink-0">
-                                                       {memberData?.avatar ? <img src={memberData.avatar} className="w-full h-full object-cover"/> : (memberData?.name||c.id||'U').charAt(0).toUpperCase()}
+                                                        {memberData?.avatar ? <img src={memberData.avatar} className="w-full h-full object-cover"/> : (memberData?.name||c.id||'U').charAt(0).toUpperCase()}
                                                     </div>
                                                     <div className="min-w-0 flex-1">
                                                        <div className="text-xs font-black text-main truncate">{memberData?.name || c.id}</div>
@@ -2697,9 +2830,9 @@
                                           </div>
                                           <div className="flex items-center gap-2 shrink-0">
                                               {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status !== 'Selesai' && (
-                                                  <button onClick={()=>handleCloseTicket(activeChatEmail)} className="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white rounded-xl transition tooltip border border-emerald-500/30 flex items-center gap-1" title="Tandai Selesai">
-                                                      <IconCheckCircle className="w-4 h-4"/> <span className="hidden sm:inline text-[9px] uppercase tracking-widest font-black">Selesai</span>
-                                                  </button>
+                                                 <button onClick={()=>handleCloseTicket(activeChatEmail)} className="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white rounded-xl transition tooltip border border-emerald-500/30 flex items-center gap-1" title="Tandai Selesai">
+                                                     <IconCheckCircle className="w-4 h-4"/> <span className="hidden sm:inline text-[9px] uppercase tracking-widest font-black">Selesai</span>
+                                                 </button>
                                               )}
                                           </div>
                                        </div>
@@ -2742,7 +2875,7 @@
                                           <div ref={adminChatEndRef} className="h-2"/>
                                        </div>
 
-                                       {/* Input Chat Balasan dengan Tombol Cepat V10.8 */}
+                                       {/* Input Chat Balasan dengan Tombol Cepat V11.0 */}
                                        <div className="p-3 md:p-4 border-t border-theme bg-card z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0 pb-safe">
                                           {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
@@ -2768,7 +2901,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PERATURAN WEB (PENGATURAN) V10.8 */}
+                        {/* TAB: PENGATURAN WEB & BLUETOOTH PRINTER V11.0 */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-in fade-in slide-in-from-right-8 duration-500 space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2812,16 +2945,34 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel API Games Key V10.8 (Hidden Feature, settings remains) */}
-                                 <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                                     <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconKey className="w-5 h-5 text-orange-500"/> Pengaturan API Integrasi</h3>
-                                     <p className="text-[10px] text-sub-theme mb-6">Kunci rahasia untuk integrasi cek nickname game otomatis via APIGames.id. <span className="text-orange-500 font-bold">(Sedang Dinonaktifkan Sementara V10.8)</span></p>
+                                 {/* Panel Bluetooth Printer V11.0 */}
+                                 <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
+                                     <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
+                                     <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal Bluetooth. Fitur Auto-Print akan otomatis mencetak struk ketika pesanan masuk di mode Standby.</p>
                                      
-                                     <div className="relative group mb-4">
-                                        <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" />
-                                        <input type="text" value={adminApiKey} onChange={(e)=>setAdminApiKey(e.target.value)} placeholder="Masukkan API Key Baru..." className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:border-orange-500 font-mono shadow-sm opacity-50" />
+                                     <div className="bg-white dark:bg-black/40 p-4 rounded-2xl border border-blue-500/20 mb-6 flex items-center justify-between shadow-sm">
+                                         <div className="flex items-center gap-3">
+                                             <div className={`w-3 h-3 rounded-full animate-pulse ${isPrinterConnected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'}`}></div>
+                                             <div>
+                                                 <p className="text-xs font-black text-main">{isPrinterConnected ? 'Printer Terhubung' : 'Tidak Ada Printer'}</p>
+                                                 <p className="text-[9px] font-bold text-sub-theme uppercase tracking-widest mt-0.5">{bluetoothDevice ? bluetoothDevice.name || 'Unknown Device' : 'Silakan hubungkan perangkat'}</p>
+                                             </div>
+                                         </div>
                                      </div>
-                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan API Key</button>
+
+                                     <div className="grid grid-cols-2 gap-3 mt-auto">
+                                         {!isPrinterConnected ? (
+                                             <button type="button" onClick={connectBluetoothPrinter} className="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                                                 <IconBluetooth className="w-4 h-4"/> Hubungkan Printer
+                                             </button>
+                                         ) : (
+                                             <>
+                                                 <button type="button" onClick={testBluetoothPrint} className="bg-gray-800 hover:bg-black text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Tes Cetak</button>
+                                                 <button type="button" onClick={disconnectBluetoothPrinter} className="bg-red-600 hover:bg-red-500 text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Putuskan Printer</button>
+                                                 <button type="button" onClick={connectBluetoothPrinter} className="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Ganti Printer</button>
+                                             </>
+                                         )}
+                                     </div>
                                  </div>
 
                                  {/* Panel Sosial Media */}
