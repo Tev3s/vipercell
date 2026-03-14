@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Vipercell v11.5.1</title>
+  <title>Vipercell v11.6.5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -46,14 +46,14 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.5.1 Engine</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.6.5 Engine</p>
     </div>
   </div>
 
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
     const firebaseConfig = { apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc", authDomain: "vipercell-8502b.firebaseapp.com", projectId: "vipercell-8502b", storageBucket: "vipercell-8502b.firebasestorage.app", messagingSenderId: "509296616890", appId: "1:509296616890:web:57e7521494db9c52942983" };
@@ -261,6 +261,41 @@
         )
     }
 
+    const GoogleSetupModal = ({ isOpen, user, isNew, existingData, onSubmit, onCancel, loading }) => {
+        const [phone, setPhone] = useState('');
+        const [password, setPassword] = useState('');
+        const [showPass, setShowPass] = useState(false);
+
+        if(!isOpen) return null;
+        return (
+            <div className="fixed inset-0 z-[12000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
+                <div className="clean-card p-6 md:p-8 max-w-sm w-full relative shadow-2xl border-orange-500/50">
+                    <div className="w-16 h-16 bg-orange-500/10 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-orange-500/20">
+                        <IconShieldAlert className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-black text-center mb-2 text-main">Pengamanan Akun</h3>
+                    <p className="text-xs text-sub-theme text-center mb-6">Demi keamanan dan kelengkapan data, pengguna Google {isNew ? 'baru' : 'lama'} wajib memiliki Nomor HP unik dan Kata Sandi cadangan.</p>
+                    
+                    <form onSubmit={(e) => onSubmit(e, phone, password)} className="space-y-4">
+                        <div className="relative group">
+                            <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                            <input type="tel" required value={phone} onChange={(e)=>{ const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setPhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="No HP/WA (10-13 Angka)" />
+                        </div>
+                        <div className="relative group">
+                            <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
+                            <input type={showPass?"text":"password"} required minLength="6" value={password} onChange={(e)=>setPassword(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-12 focus:outline-none focus:border-orange-500 text-sm" placeholder="Sandi Login Cadangan (Min. 6)" />
+                            <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-main">{showPass ? <IconEyeOff className="w-5 h-5"/>:<IconEye className="w-5 h-5"/>}</button>
+                        </div>
+                        <div className="flex gap-3 mt-6">
+                            <button type="button" onClick={onCancel} disabled={loading} className="flex-1 py-4 rounded-2xl font-bold bg-gray-200 dark:bg-white/5 text-sub-theme text-xs uppercase">Batal & Keluar</button>
+                            <button type="submit" disabled={loading || phone.length < 10 || password.length < 6} className="flex-[1.5] py-4 rounded-2xl font-black bg-orange-600 text-white shadow-lg text-xs uppercase disabled:opacity-50">{loading ? <IconLoader className="w-5 h-5 mx-auto animate-spin"/> : 'Simpan Data'}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        )
+    }
+
     const ChangePinModal = ({ isOpen, authEmail, oldPinHash, onSuccess, onCancel }) => {
         const [step, setStep] = useState(oldPinHash ? 1 : 2);
         const [pinInput, setPinInput] = useState(''); const [newPinCache, setNewPinCache] = useState('');
@@ -463,7 +498,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.5.1 Ultimate</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.6.5 Ultimate</span></div>
             </div>
          </footer>
        )
@@ -552,6 +587,8 @@
       const [regName, setRegName] = useState(''); const [regPhone, setRegPhone] = useState(''); const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
       const [authLoading, setAuthLoading] = useState(false); const [resetCooldown, setResetCooldown] = useState(0);
 
+      const [googleSetupModal, setGoogleSetupModal] = useState({ isOpen: false, user: null, isNew: false, existingData: null });
+
       const [currentUserData, setCurrentUserData] = useState(null); const [showPasswordForm, setShowPasswordForm] = useState(false);
       const [currentPassword, setCurrentPassword] = useState(''); const [newPassword, setNewPassword] = useState(''); const [confirmNewPassword, setConfirmNewPassword] = useState('');
       const [uploadingAvatar, setUploadingAvatar] = useState(false); const [profileName, setProfileName] = useState(''); const [profilePhone, setProfilePhone] = useState(''); const [profileAvatar, setProfileAvatar] = useState('');
@@ -563,6 +600,7 @@
       
       const [adminList, setAdminList] = useState([]); const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); 
       const [adminChats, setAdminChats] = useState([]); const [loadingAdminChats, setLoadingAdminChats] = useState(true); const [adminChatsError, setAdminChatsError] = useState(false);
+      const [adminFeedbacks, setAdminFeedbacks] = useState([]);
 
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL; const isAdmin = isSuperAdmin || (adminList || []).includes(authUser?.email);
 
@@ -597,7 +635,7 @@
       const [isStandbyMode, setIsStandbyMode] = useState(false);
       const [helpTab, setHelpTab] = useState('chat');
 
-      useEffect(() => { if (adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active) document.body.classList.add('modal-open'); else document.body.classList.remove('modal-open'); return () => document.body.classList.remove('modal-open'); }, [adminAuthModal, confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading]);
+      useEffect(() => { if (adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen) document.body.classList.add('modal-open'); else document.body.classList.remove('modal-open'); return () => document.body.classList.remove('modal-open'); }, [adminAuthModal, confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal]);
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
       useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
       useEffect(() => { if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) { const chat = (adminChats||[]).find(c => c.id === activeChatEmail); if (chat && chat.status === 'Open') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{}); } }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
@@ -620,7 +658,7 @@
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
       useEffect(() => { if (globalConfig?.favicon) { let link = document.querySelector("link[rel~='icon']"); if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); } link.href = globalConfig.favicon; } }, [globalConfig?.favicon]);
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, orderId: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, orderId: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
 
       useEffect(() => {
          try {
@@ -647,8 +685,8 @@
                  const userDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', user.uid));
                  if (userDoc.exists() && userDoc.data().isBlocked) { await signOut(auth); addToast('Akun diblokir Admin.', 'error'); setAuthUser(null); }
                  else { setAuthUser(user); getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'admins')).then(d => { if(d.exists()) setAdminList(d.data().emails || []); }).catch(()=>{}); }
-              } else { setAuthUser(null); }
-          } catch(e) { setAuthUser(null); } finally { setIsAuthChecking(false); clearTimeout(timer); }
+              } else { setAuthUser(null); setGoogleSetupModal({isOpen:false}); }
+          } catch(e) { setAuthUser(null); setGoogleSetupModal({isOpen:false}); } finally { setIsAuthChecking(false); clearTimeout(timer); }
         });
         return () => { unsubscribe(); clearTimeout(timer); };
       }, [addToast]);
@@ -657,7 +695,6 @@
          if(!authUser) return;
          const unsubUser = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), (docSnap) => { 
              if(docSnap.exists()) { if(docSnap.data().isBlocked) { signOut(auth); addToast('Akun diblokir.', 'error'); return; } setCurrentUserData({ id: docSnap.id, ...docSnap.data() }); } 
-             else setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { email: authUser.email, name: (authUser.email || '').split('@')[0], createdAt: new Date().toISOString(), lastLogin: new Date().toISOString(), saldoCashback: 0, isBlocked: false }).catch(()=>{}); 
          });
          return () => unsubUser();
       }, [authUser, addToast]);
@@ -675,6 +712,9 @@
                (snap) => { const fetched = []; snap.forEach(d => fetched.push({ id: d.id, ...d.data() })); setAdminChats(fetched); setAdminChatsError(false); setLoadingAdminChats(false); },
                (err) => { setAdminChatsError(true); setLoadingAdminChats(false); }
             ));
+            unsubs.push(onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks'), (snap) => {
+               const fb = []; snap.forEach(d => fb.push({ id: d.id, ...d.data() })); fb.sort((a,b)=> new Date(b.createdAt||0) - new Date(a.createdAt||0)); setAdminFeedbacks(fb);
+            }));
             unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'templates'), (snap) => { if(snap.exists() && snap.data().list) setChatTemplates(snap.data().list); }));
          }
          unsubs.push(onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), (docSnap) => { if(docSnap.exists()) setUserChat(docSnap.data()); else setUserChat({ status: 'Selesai', messages: [] }); }));
@@ -686,6 +726,7 @@
 
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0);
+      const unreadFeedbacksCount = ((adminFeedbacks || []).filter(f => f.status === 'Unread').length || 0);
       const prevAdminOrdersRef = useRef([]);
 
       useEffect(() => {
@@ -762,22 +803,113 @@
       const testBluetoothPrint = async () => { if (!btCharacteristic) return addToast('Printer belum terhubung!', 'warning'); try { triggerSysLoad('Sedang mencetak test...'); let text = `\x1B@\x1Ba\x01\x1BE\x01${globalConfig?.appName || 'VIPERCELL'}\n\x1BE\x00--------------------------------\n\x1Ba\x01TEST PRINT BERHASIL\n\n`; await btCharacteristic.writeValue(new TextEncoder().encode(text)); addToast('Test print berhasil!', 'success'); } catch (error) { addToast('Gagal print. Coba hubungkan ulang printer.', 'error'); } finally { closeSysLoad(); } };
       const executeBluetoothPrint = async (order) => { if (!order) return; if (!isPrinterConnected || !btCharacteristic) { addToast('Printer belum terhubung! Silakan hubungkan di Pengaturan.', 'warning'); return; } triggerSysLoad('Sedang mencetak struk...'); try { const bytes = getReceiptBytes(order); const CHUNK_SIZE = 256; for (let i = 0; i < bytes.length; i += CHUNK_SIZE) { await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE)); await new Promise(r => setTimeout(r, 50)); } addToast('Struk berhasil dicetak', 'success'); } catch (e) { addToast('Gagal print Bluetooth.', 'error'); } finally { closeSysLoad(); } };
 
+      const isPhoneUsed = async (phoneStr, currentUid = null) => {
+          const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('phone', '==', phoneStr));
+          const snap = await getDocs(q);
+          if(snap.empty) return false;
+          let used = false;
+          snap.forEach(d => { if(d.id !== currentUid) used = true; });
+          return used;
+      }
+
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true); triggerSysLoad('Memeriksa Kredensial...');
         try {
-          if (authMode === 'register') { if(!regName) throw new Error('Nama wajib diisi!'); if(regPhone && !/^\d{10,12}$/.test(regPhone)) { addToast('Nomor HP/WA tidak valid (Harus 10-12 angka).', 'error'); setAuthLoading(false); return; } const cred = await createUserWithEmailAndPassword(auth, email, password); const now = new Date().toISOString(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone || '', lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false }); await sendEmailVerification(cred.user); await signOut(auth); addToast('Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', 'success'); setAuthMode('login'); }
+          if (authMode === 'register') { 
+              if(!regName) throw new Error('Nama wajib diisi!'); 
+              if(!regPhone || !/^\d{10,13}$/.test(regPhone)) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP/WA tidak valid (Harus 10-13 angka).', 'error'); } 
+              
+              const used = await isPhoneUsed(regPhone);
+              if(used) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP ini sudah dipakai oleh akun lain!', 'error'); }
+
+              const cred = await createUserWithEmailAndPassword(auth, email, password); 
+              const now = new Date().toISOString(); 
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false }); 
+              await sendEmailVerification(cred.user); await signOut(auth); 
+              addToast('Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', 'success'); setAuthMode('login'); 
+          }
           else if (authMode === 'login') { const cred = await signInWithEmailAndPassword(auth, email, password); if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) { await signOut(auth); throw new Error('email-not-verified'); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); }
           else if (authMode === 'forgot') { if (resetCooldown > 0) return; await sendPasswordResetEmail(auth, email); addToast('Link reset sandi telah dikirim. Tunggu 2 menit sebelum meminta kode baru (Cek SPAM).', 'success'); setResetCooldown(120); const intv = setInterval(() => { setResetCooldown(c => { if(c <= 1) { clearInterval(intv); return 0; } return c-1; }); }, 1000); }
         } catch (error) { let msg = error.message; if (error.message === 'email-not-verified') msg = 'Email belum diverifikasi! Cek SPAM.'; else if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') msg = 'Kombinasi email dan sandi salah!'; else if (error.code === 'auth/user-not-found') { msg = 'Akun belum terdaftar! Silakan daftar.'; setAuthMode('register'); } else if (error.code === 'auth/email-already-in-use') msg = 'Email ini sudah pernah digunakan!'; addToast(msg, 'error'); } finally { setAuthLoading(false); closeSysLoad(); }
       };
 
-      const handleGoogleLogin = async () => { setAuthLoading(true); triggerSysLoad('Menghubungkan dengan Google...'); try { const res = await signInWithPopup(auth, googleProvider); const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); const docSnap = await getDoc(userRef); if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('blocked'); } if (!docSnap.exists()) { await setDoc(userRef, { email: res.user.email, name: res.user.displayName || res.user.email.split('@')[0], avatar: res.user.photoURL || '', lastLogin: new Date().toISOString(), createdAt: new Date().toISOString(), saldoCashback: 0, isBlocked: false }); navigateTo('home'); addToast('Berhasil mendaftar via Google!', 'success'); } else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); } } catch (e) { if(e.message === 'blocked') addToast('Akun ini diblokir Admin', 'error'); else addToast('Google Login dibatalkan', 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
+      const handleGoogleLogin = async () => { 
+          setAuthLoading(true); triggerSysLoad('Menghubungkan dengan Google...'); 
+          try { 
+              const res = await signInWithPopup(auth, googleProvider); 
+              const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); 
+              const docSnap = await getDoc(userRef); 
+              if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('blocked'); } 
+              
+              if (!docSnap.exists() || !docSnap.data().phone) { 
+                  setGoogleSetupModal({ isOpen: true, user: res.user, isNew: !docSnap.exists(), existingData: docSnap.data() || null });
+              } else { 
+                  await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); 
+                  navigateTo('home');
+              } 
+          } catch (e) { if(e.message === 'blocked') addToast('Akun ini diblokir Admin', 'error'); else addToast('Google Login dibatalkan', 'error'); } finally { setAuthLoading(false); closeSysLoad(); } 
+      };
 
-      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { triggerSysLoad('Menyimpan Profil...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Profil disimpan!', 'success'); } catch(err) { addToast('Gagal.', 'error'); } finally { closeSysLoad() } }
+      const handleGoogleSetupSubmit = async (e, phone, pass) => {
+          e.preventDefault();
+          if(!phone || !pass) return addToast('Isi semua form', 'error');
+          if(phone.length < 10 || phone.length > 13) return addToast('Nomor HP tidak valid', 'error');
+          try {
+              setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan Data...');
+              const used = await isPhoneUsed(phone, auth.currentUser?.uid);
+              if(used) throw new Error('Nomor HP sudah terdaftar di akun lain!');
+              
+              await updatePassword(auth.currentUser, pass);
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), {
+                  email: auth.currentUser.email,
+                  name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0],
+                  avatar: auth.currentUser.photoURL || '',
+                  phone: phone,
+                  lastLogin: new Date().toISOString(),
+                  createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt,
+                  saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0,
+                  isBlocked: false
+              }, { merge: true });
+              
+              setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null});
+              navigateTo('home');
+              addToast('Akun berhasil disiapkan!', 'success');
+          } catch(err) {
+              addToast(err.message, 'error');
+          } finally { setAuthLoading(false); closeSysLoad(); }
+      };
+
+      const handleUpdateProfile = async (e) => { 
+          e.preventDefault(); if(!currentUserData) return; 
+          try { 
+              triggerSysLoad('Menyimpan Profil...'); 
+              if (profilePhone && profilePhone !== currentUserData.phone) {
+                  if(profilePhone.length < 10 || profilePhone.length > 13) throw new Error('Nomor HP tidak valid');
+                  const used = await isPhoneUsed(profilePhone, authUser.uid);
+                  if(used) throw new Error('Nomor HP sudah dipakai akun lain!');
+              }
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); 
+              addToast('Profil disimpan!', 'success'); 
+          } catch(err) { addToast(err.message || 'Gagal.', 'error'); } finally { closeSysLoad() } 
+      }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Memproses Avatar...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
       
-      const handleSendFeedback = async (e) => { e.preventDefault(); if(!feedbackText.trim()) return; try { triggerSysLoad('Mengirim masukan...'); const newMsg = { sender: 'user', text: `[MASUKAN/SARAN] ${feedbackText}`, time: new Date().toISOString(), role: 'Feedback' }; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { messages: arrayUnion(newMsg), status: 'Open', updatedAt: new Date().toISOString() }, { merge: true }); setFeedbackText(''); addToast('Masukan Anda telah dikirim ke Admin.', 'success'); setHelpTab('chat'); } catch(err) { addToast('Gagal mengirim', 'error'); } finally { closeSysLoad(); } }
+      const handleSendFeedback = async (e) => { 
+          e.preventDefault(); if(!feedbackText.trim()) return; 
+          try { 
+              triggerSysLoad('Mengirim masukan...'); 
+              const fbId = `fb_${Date.now()}`;
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', fbId), { 
+                  senderEmail: authUser.email, 
+                  senderName: currentUserData?.name || authUser.email, 
+                  text: feedbackText, 
+                  createdAt: new Date().toISOString(), 
+                  status: 'Unread' 
+              }); 
+              setFeedbackText(''); addToast('Saran & Masukan Anda telah dikirim ke Tim.', 'success'); setHelpTab('chat'); 
+          } catch(err) { addToast('Gagal mengirim saran', 'error'); } finally { closeSysLoad(); } 
+      }
       const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
       
       const getActivePromosForItem = (itemId) => { if(!promos) return []; const now = new Date(); return promos.filter(p => { if(!p.isActive) return false; if(p.category === 'flash') { if(now > new Date(p.endTime) || (p.usedBy||[]).length >= p.stock) return false; if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'game') { if(p.targetGame && p.targetGame !== selectedGame?.id) return false; return true; } if(p.category === 'day') return now.getDay() === parseInt(p.targetDay); return false; }); };
@@ -789,7 +921,20 @@
       const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0; const userVipData = calculateVIPLevel(userTotalTx);
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      const triggerCheckout = () => { if (!userId) return addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); if (selectedGame?.inputType === 'id_zone' && !zoneId) return addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); if (selectedGame?.inputType === 'riot_id' && !zoneId) return addToast('❌ Data Akun: Tagline (#) Riot belum diisi!', 'warning'); if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) return addToast('❌ Data Akun: ID Game hanya boleh berisi angka.', 'error'); if (!selectedNominal) return addToast('❌ Produk: Pilih produk top up terlebih dahulu.', 'warning'); if (!selectedPayment) return addToast('❌ Pembayaran: Pilih metode pembayaran.', 'warning'); const maxCashback = currentUserData?.saldoCashback || 0; const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; const fPrice = basePrice - usedCashback; setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: nickname || null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }}); };
+      const triggerCheckout = () => { 
+          if (!currentUserData?.phone) return addToast('❌ Keamanan: Lengkapi Nomor HP Anda di menu Profil sebelum checkout.', 'error');
+          if (!userId) return addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); 
+          if (selectedGame?.inputType === 'id_zone' && !zoneId) return addToast('❌ Data Akun: Server / Zone ID belum diisi!', 'warning'); 
+          if (selectedGame?.inputType === 'riot_id' && !zoneId) return addToast('❌ Data Akun: Tagline (#) Riot belum diisi!', 'warning'); 
+          if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) return addToast('❌ Data Akun: ID Game hanya boleh berisi angka.', 'error'); 
+          if (!selectedNominal) return addToast('❌ Produk: Pilih produk top up terlebih dahulu.', 'warning'); 
+          if (!selectedPayment) return addToast('❌ Pembayaran: Pilih metode pembayaran.', 'warning'); 
+          const maxCashback = currentUserData?.saldoCashback || 0; 
+          const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); 
+          const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
+          const fPrice = basePrice - usedCashback; 
+          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: nickname || null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }}); 
+      };
       
       const executeFinalPayment = () => { setCheckoutSummary({isOpen: false, data: null}); if (currentUserData?.pin) { setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: () => { setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); processCheckout(); }}); } else { processCheckout(); } };
 
@@ -818,6 +963,8 @@
       const handleCloseTicket = async (email) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email), { status: 'Selesai', updatedAt: new Date().toISOString() }, { merge: true }); addToast('Tiket diselesaikan.', 'success'); setActiveChatEmail(null); } catch(e) { addToast('Gagal menutup tiket.', 'error'); } finally { closeSysLoad() } };
       const handleDeleteChat = async (email, e) => { if(e) e.stopPropagation(); requestConfirm('Hapus permanen riwayat obrolan ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email)); addToast('Riwayat chat dihapus.', 'success'); if(activeChatEmail === email) setActiveChatEmail(null); } catch(err) { addToast('Gagal menghapus.', 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Chat'); };
       const toggleBroadcastUser = (email) => { setSelectedBroadcastUsers(prev => prev.includes(email) ? prev.filter(e => e !== email) : [...prev, email]); };
+      const handleMarkFeedbackRead = async (id) => { try { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', id), {status: 'Read'}, {merge: true}); } catch(e) {} };
+      const handleDeleteFeedback = async (id) => { requestConfirm('Hapus saran ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', id)); addToast('Saran dihapus', 'success'); } catch(e) {} finally { closeSysLoad() } }, 'Hapus') };
 
       const handleAddBanner = async () => { if(!adminBannerUrl) return; let fixedUrl = adminBannerUrl; if(adminBannerType === 'youtube' && !fixedUrl.includes('youtube') && !fixedUrl.includes('youtu.be')) fixedUrl = `https://www.youtube.com/watch?v=${fixedUrl}`; let safeTargetLink = adminBannerLink; if(safeTargetLink && !safeTargetLink.startsWith('http')) safeTargetLink = 'https://' + safeTargetLink; const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl, title: adminBannerTitle, desc: adminBannerDesc, targetLink: safeTargetLink }]; try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); triggerSysLoad('Mengunggah...'); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('File banner siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses gambar', 'error'); } finally { setAuthLoading(false); closeSysLoad() } } };
@@ -874,12 +1021,12 @@
                      {authMode === 'register' && (
                         <div className="animate-slide-down space-y-4">
                            <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" /><input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nama Lengkap" /></div>
-                           <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>{ const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setRegPhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="No HP/WA (10-12 Angka)" /></div>
+                           <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>{ const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setRegPhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="No HP/WA (10-13 Angka)" /></div>
                         </div>
                      )}
                      <div className="relative group"><IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" /><input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Alamat Email" /></div>
                      {authMode !== 'forgot' && (<div className="relative group"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 transition-colors" /><input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Kata Sandi (Min. 6 Karakter)" /></div>)}
-                     <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0)} className={`w-full py-4 rounded-2xl font-black transition-all flex justify-center items-center gap-2 text-sm uppercase tracking-widest mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-gray-300 dark:bg-white/5 text-gray-500' : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg'}`}>{authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk Akun' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Link Reset Sandi')}</button>
+                     <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0) || (authMode === 'register' && (regPhone.length < 10 || password.length < 6))} className={`w-full py-4 rounded-2xl font-black transition-all flex justify-center items-center gap-2 text-sm uppercase tracking-widest mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-gray-300 dark:bg-white/5 text-gray-500' : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg disabled:opacity-50'}`}>{authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk Akun' : authMode === 'register' ? 'Daftar Sekarang' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Link Reset Sandi')}</button>
                   </form>
                   {authMode === 'login' && (
                      <>
@@ -892,6 +1039,7 @@
                   </div>
                </div>
             </div>
+            <GoogleSetupModal isOpen={googleSetupModal.isOpen} user={googleSetupModal.user} isNew={googleSetupModal.isNew} existingData={googleSetupModal.existingData} onSubmit={handleGoogleSetupSubmit} onCancel={() => { signOut(auth); setGoogleSetupModal({isOpen:false}); setAuthUser(null); }} loading={authLoading} />
           </div>
         );
       }
@@ -943,7 +1091,7 @@
                     <button onClick={()=>setIsScannerOpen(false)} className="text-white bg-red-500 rounded-full p-2.5"><IconX className="w-5 h-5"/></button>
                 </div>
                 <div id="reader" className="w-full h-full flex-1"></div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10"><IconQrcode className="w-4 h-4"/> Posisikan QR di Kotengah</div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10"><IconQrcode className="w-4 h-4"/> Posisikan QR di Tengah</div>
              </div>
           )}
 
@@ -1006,7 +1154,7 @@
                              <p className="text-[10px] text-sub-theme font-medium mb-6 relative z-10">Punya saran fitur atau keluhan? Beritahu tim kami.</p>
                              <form onSubmit={handleSendFeedback} className="flex flex-col gap-3 relative z-10">
                                  <textarea required value={feedbackText} onChange={(e)=>setFeedbackText(e.target.value)} placeholder="Tulis masukan, kritik, atau saran Anda..." className="w-full input-theme rounded-2xl py-4 px-5 focus:outline-none focus:border-blue-500 min-h-[150px] resize-none text-sm"></textarea>
-                                 <button type="submit" disabled={!feedbackText.trim()} className="w-full bg-blue-600 text-white py-3.5 px-8 rounded-xl font-black text-xs uppercase disabled:opacity-50">Kirim Saran</button>
+                                 <button type="submit" disabled={!feedbackText.trim()} className="w-full bg-blue-600 text-white py-3.5 px-8 rounded-xl font-black text-xs uppercase disabled:opacity-50">Kirim Saran Ke Developer</button>
                              </form>
                         </div>
                     </div>
@@ -1053,7 +1201,7 @@
                     <button onClick={()=>navigateTo('chat')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'chat' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>
                        Bantuan {(userChat?.status === 'Dijawab') && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>}
                     </button>
-                    {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-500 text-white' : 'text-red-500'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount}</span>}</button>}
+                    {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-500 text-white' : 'text-red-500'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0 || unreadFeedbacksCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>}</button>}
                  </div>
 
                  <div className="flex items-center gap-3 relative">
@@ -1117,7 +1265,7 @@
                           <IconMessageSquare className="w-5 h-5"/> Pusat Bantuan & Saran {(userChat?.status === 'Dijawab') && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>}
                        </button>
                        <button onClick={()=>navigateTo('profile')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'profile' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconUser className="w-5 h-5"/> Akun & Profil</button>
-                       {isAdmin && ( <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold mt-4 ${currentView === 'admin' ? 'bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/50' : 'text-red-600'}`}> <IconShieldAlert className="w-5 h-5"/> Admin Panel {(pendingOrdersCount + openChatsCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">{pendingOrdersCount + openChatsCount}</span>} </button> )}
+                       {isAdmin && ( <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold mt-4 ${currentView === 'admin' ? 'bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/50' : 'text-red-600'}`}> <IconShieldAlert className="w-5 h-5"/> Admin Panel {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>} </button> )}
                    </div>
                    
                    <div className="p-4 border-t border-theme">
@@ -1490,8 +1638,8 @@
                                <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-main"><div className="bg-orange-500/20 p-2 rounded-xl text-orange-600 dark:text-orange-500"><IconUser className="w-5 h-5"/></div> Data Personal</h3>
                                <form onSubmit={handleUpdateProfile} className="space-y-5">
                                   <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nama Lengkap" /></div>
-                                  <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="tel" value={profilePhone} onChange={(e)=>setProfilePhone(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nomor WhatsApp" /></div>
-                                  <button type="submit" className="w-full bg-black text-white dark:bg-white dark:text-black py-4 rounded-2xl font-black text-xs uppercase">Simpan Data</button>
+                                  <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="tel" required value={profilePhone} onChange={(e)=> { const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setProfilePhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nomor Handphone Unik" /></div>
+                                  <button type="submit" disabled={!profilePhone || profilePhone.length < 10} className="w-full bg-black text-white dark:bg-white dark:text-black py-4 rounded-2xl font-black text-xs uppercase disabled:opacity-50">Simpan Data</button>
                                </form>
                             </div>
                          </div>
@@ -1544,12 +1692,12 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.5.1</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.6.5</span>
                         </div>
                      </div>
 
                      <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 custom-scrollbar flex-1">
-                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'members', label: 'Data Member', icon: IconUsers }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
+                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'members', label: 'Data Member', icon: IconUsers }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
                            const TabIcon = tab.icon;
                            return (
                            <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-auto lg:w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-bold transition-all whitespace-nowrap shrink-0 border ${activeAdminTab === tab.id ? 'bg-red-600 text-white border-red-500' : 'bg-transparent text-sub-theme border-transparent hover:bg-gray-100 dark:hover:bg-white/5'}`}>
@@ -1573,7 +1721,7 @@
                                     <p className="text-[10px] font-black uppercase opacity-80 mb-1">Total Pesanan Masuk</p>
                                     <p className="text-4xl font-black font-mono">{(allGlobalOrders||[]).length}</p>
                                  </div>
-                                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 rounded-[2rem] p-6 text-white shadow-lg border border-theme">
+                                 <div className="bg-gradient-to-br from-orange-500to-orange-600 dark:from-navy-800 dark:to-navy-950 rounded-[2rem] p-6 text-white shadow-lg border border-theme">
                                     <IconCheckCircle className="w-8 h-8 mb-4 text-white opacity-90" />
                                     <p className="text-[10px] font-black uppercase opacity-80 mb-1">Pesanan Berhasil (Sukses)</p>
                                     <p className="text-4xl font-black font-mono">{(allGlobalOrders||[]).filter(o => o.status === 'Sukses').length}</p>
@@ -1615,7 +1763,7 @@
                                  <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconList className="w-6 h-6 text-red-500"/> Manajemen Pesanan</h2>
                                  <div className="flex items-center gap-3 w-full sm:w-auto">
                                     <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-theme">
-                                       <span className="text-px] font-bold text-main uppercase tracking-widest">Auto Print BT</span>
+                                       <span className="text-[10px] font-bold text-main uppercase tracking-widest">Auto Print BT</span>
                                        <label className="relative inline-flex items-center cursor-pointer">
                                           <input type="checkbox" className="sr-only peer" checked={isStandbyMode} onChange={(e) => setIsStandbyMode(e.target.checked)} />
                                           <div className="w-9 h-5 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-emerald-500"></div>
@@ -1773,18 +1921,20 @@
                            </div>
                         )}
 
-                        {/* TAB: PUSAT BANTUAN (TICKET & CHAT) */}
+                        {/* TAB: PUSAT BANTUAN (TICKET, BROADCAST & FEEDBACK) */}
                         {activeAdminTab === 'support' && (
                            <div className="animate-slide-down flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
                               
                               {/* Left Sidebar */}
                               <div className={`w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-theme flex flex-col h-[50vh] lg:h-full bg-white dark:bg-white/[0.02] ${activeChatEmail ? 'hidden lg:flex' : 'flex'}`}>
                                  
-                                 <div className="flex bg-gray-100 dark:bg-black p-2 border-b border-theme shrink-0">
-                                     <button onClick={()=>setSupportTab('member')} className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='member' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30' : 'text-sub-theme hover:text-main'}`}>Member VIP</button>
-                                     <button onClick={()=>setSupportTab('broadcast')} className={`flex-1 py-2 text-[10px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='broadcast' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30' : 'text-sub-theme hover:text-main'}`}>Siaran Pesan</button>
+                                 <div className="flex bg-gray-100 dark:bg-black p-2 border-b border-theme shrink-0 overflow-x-auto custom-scrollbar">
+                                     <button onClick={()=>setSupportTab('member')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='member' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30' : 'text-sub-theme hover:text-main'}`}>Live Chat</button>
+                                     <button onClick={()=>setSupportTab('broadcast')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='broadcast' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30' : 'text-sub-theme hover:text-main'}`}>Siaran</button>
+                                     <button onClick={()=>setSupportTab('feedback')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='feedback' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'text-sub-theme hover:text-main'}`}>Saran {unreadFeedbacksCount > 0 && <span className="bg-emerald-500 text-white px-1.5 py-0.5 rounded-full ml-1">{unreadFeedbacksCount}</span>}</button>
                                  </div>
 
+                                 {/* Panel Live Chat */}
                                  {supportTab === 'member' && (
                                      <div className="flex-1 flex flex-col overflow-hidden relative">
                                         <div className="p-3 bg-blue-600/10 font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center justify-between shrink-0 border-b border-blue-500/20">
@@ -1830,7 +1980,7 @@
                                      </div>
                                  )}
 
-                                 {/* Panel: Broadcast Pesan */}
+                                 {/* Panel Broadcast Pesan */}
                                  {supportTab === 'broadcast' && (
                                     <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
                                         <h3 className="font-black text-sm text-main mb-2 flex items-center gap-2"><IconSend className="w-4 h-4 text-orange-500"/> Kirim Pesan Siaran</h3>
@@ -1882,11 +2032,45 @@
                                     </div>
                                  )}
 
+                                 {/* Panel Feedback / Saran */}
+                                 {supportTab === 'feedback' && (
+                                    <div className="p-4 overflow-y-auto flex-1 custom-scrollbar space-y-4 bg-emerald-50 dark:bg-[#0a0a0a]">
+                                        <h3 className="font-black text-sm text-emerald-600 dark:text-emerald-500 mb-2 flex items-center gap-2"><IconMessageSquare className="w-4 h-4"/> Kotak Saran Pelanggan</h3>
+                                        <p className="text-[10px] text-sub-theme mb-4">Daftar masukan dan ide dari pengguna.</p>
+                                        
+                                        {(adminFeedbacks||[]).map(f => (
+                                            <div key={f.id} className={`p-4 rounded-2xl border transition-all shadow-sm ${f.status === 'Unread' ? 'bg-white dark:bg-emerald-900/20 border-emerald-500/50 ring-1 ring-emerald-500/30' : 'bg-gray-100 dark:bg-white/5 border-theme'}`}>
+                                                <div className="flex justify-between items-start mb-3">
+                                                    <div className="min-w-0 pr-2">
+                                                        <div className="text-xs font-black text-main truncate">{f.senderName}</div>
+                                                        <div className="text-[9px] text-sub-theme font-mono truncate">{f.senderEmail}</div>
+                                                    </div>
+                                                    <div className="text-right shrink-0">
+                                                        <div className="text-[8px] font-bold text-sub-theme">{new Date(f.createdAt).toLocaleDateString('id-ID')}</div>
+                                                        {f.status === 'Unread' && <span className="bg-emerald-500 text-white text-[8px] font-black px-2 py-0.5 rounded uppercase mt-1 inline-block">Baru</span>}
+                                                    </div>
+                                                </div>
+                                                <p className="text-xs font-medium text-main bg-gray-50 dark:bg-black/50 p-3 rounded-xl border border-theme mb-3 leading-relaxed">{f.text}</p>
+                                                <div className="flex justify-end gap-2 border-t border-theme pt-3">
+                                                    {f.status === 'Unread' && <button onClick={()=>handleMarkFeedbackRead(f.id)} className="text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-3 py-1.5 rounded hover:bg-emerald-500 hover:text-white transition">Tandai Dibaca</button>}
+                                                    <button onClick={()=>handleDeleteFeedback(f.id)} className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition">Hapus</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                        {(!adminFeedbacks || adminFeedbacks.length === 0) && (
+                                            <div className="text-center py-12 border border-dashed border-theme rounded-2xl bg-white dark:bg-black/20">
+                                                <IconCheckCircle className="w-8 h-8 text-emerald-500/50 mx-auto mb-2"/>
+                                                <p className="text-xs font-bold text-sub-theme">Belum ada saran yang masuk.</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                 )}
+
                               </div>
 
-                              {/* Right Chat Area */}
-                              <div className={`w-full lg:w-2/3 flex flex-col h-[70vh] lg:h-full relative overflow-hidden transition-colors duration-500 ${!activeChatEmail ? 'hidden lg:flex' : 'flex'}`} style={{ backgroundColor: chatBgColor }}>
-                                 {activeChatEmail ? (
+                              {/* Right Chat Area (Hanya muncul jika tab Member/Live Chat dipilih & ada activeChatEmail) */}
+                              <div className={`w-full lg:w-2/3 flex flex-col h-[70vh] lg:h-full relative overflow-hidden transition-colors duration-500 ${(supportTab !== 'member' || !activeChatEmail) ? 'hidden lg:flex' : 'flex'}`} style={{ backgroundColor: chatBgColor }}>
+                                 {supportTab === 'member' && activeChatEmail ? (
                                     <>
                                        <div className="p-3 md:p-4 bg-card font-black text-sm border-b border-theme flex justify-between items-center shadow-sm z-10 shrink-0">
                                           <div className="flex items-center gap-3 min-w-0 pr-2">
@@ -1914,7 +2098,7 @@
                                        <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-4 custom-scrollbar relative z-10">
                                           <div className="text-center text-[9px] uppercase tracking-widest text-sub-theme font-black bg-white/80 dark:bg-black/40 py-1.5 px-4 rounded-full w-fit mx-auto border border-theme mb-4 shadow-sm">Riwayat Obrolan</div>
                                           
-                                          {supportTab === 'member' && ((adminChats||[]).find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
+                                          {((adminChats||[]).find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
                                              const trxMatch = m.text.match(/(?:ID|TRX|Pesanan ID):\s*([a-zA-Z0-9_-]+)/i);
                                              const orderIdFromText = trxMatch ? trxMatch[1] : null;
                                              let matchedOrder = null;
@@ -1966,7 +2150,7 @@
                                  ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-sub-theme text-sm bg-gray-50 dark:bg-[#0a0a0a]">
                                         <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-theme"><IconMessageSquare className="w-10 h-10 opacity-30 text-main"/></div>
-                                        <p className="font-bold text-center px-6">Pilih tiket chat di daftar sebelah kiri untuk merespons.</p>
+                                        <p className="font-bold text-center px-6">Buka tab Member VIP di kiri dan pilih pesan untuk merespons.</p>
                                     </div>
                                  )}
                               </div>
@@ -2029,10 +2213,10 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.5.1 */}
+                                 {/* Panel Bluetooth Printer V11.6.5 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
-                                     <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak sekarang lebih hemat kertas dan menyertakan harga. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
+                                     <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
                                      
                                      <div className="bg-white dark:bg-black/40 p-4 rounded-2xl border border-blue-500/20 mb-6 flex items-center justify-between shadow-sm">
                                          <div className="flex items-center gap-3">
@@ -2096,7 +2280,7 @@
                                           <option value="image">🖼️ Format Gambar</option>
                                           <option value="video">🎬 Format Video</option>
                                           <option value="youtube">▶️ Format YouTube</option>
-                                          <option value="tiktok">📱 Format TikTok (Baru)</option>
+                                          <option value="tiktok">📱 Format TikTok</option>
                                        </select>
                                        
                                        {(adminBannerType === 'youtube' || adminBannerType === 'tiktok') ? (
