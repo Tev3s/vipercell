@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vipercell">
-  <title>Vipercell v11.7.5</title>
+  <title>Vipercell v11.7.6</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -50,7 +50,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.7.5 PWA Optimized</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.7.6 APK Builder</p>
     </div>
   </div>
 
@@ -504,7 +504,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.7.5 Ultimate</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.7.6 Ultimate</span></div>
             </div>
          </footer>
        )
@@ -570,7 +570,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA & Notification Engine v11.7.5 ---
+      // --- PWA & Notification Engine v11.7.6 ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
       const [notificationPermission, setNotificationPermission] = useState('default');
@@ -598,32 +598,32 @@
       }, []);
 
       useEffect(() => {
+          // FIX WebAPK: Gunakan URL Absolut, bukan "."
+          const currentUrl = window.location.href.split('?')[0].split('#')[0];
+          
           const manifestData = {
               name: globalConfig?.appName || "Vipercell",
               short_name: (globalConfig?.appName || "Vipercell").substring(0, 10),
-              start_url: ".",
+              start_url: currentUrl, // <--- FIX UTAMA DISINI
               display: "standalone",
               background_color: isDarkMode ? "#050505" : "#f0f2f5",
               theme_color: "#f97316",
-              icons: [{ src: globalConfig?.favicon || "https://via.placeholder.com/192", sizes: "192x192", type: "image/png" }, { src: globalConfig?.favicon || "https://via.placeholder.com/512", sizes: "512x512", type: "image/png" }]
+              icons: [
+                  { src: globalConfig?.favicon || "https://via.placeholder.com/192", sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
+                  { src: globalConfig?.favicon || "https://via.placeholder.com/512", sizes: "512x512", type: "image/png", purpose: "any maskable" }
+              ]
           };
-          const manifestBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-          const manifestUrl = URL.createObjectURL(manifestBlob);
+          
+          // FIX WebAPK: Gunakan Data URI alih-alih Blob URL
+          const manifestString = JSON.stringify(manifestData);
+          const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString);
+          
           let link = document.querySelector('link[rel="manifest"]');
           if (!link) { link = document.createElement('link'); link.rel = 'manifest'; document.head.appendChild(link); }
           link.href = manifestUrl;
 
-          if ('serviceWorker' in navigator) {
-              const swCode = `
-                  const CACHE_NAME = 'vipercell-v11.7.5';
-                  self.addEventListener('install', (e) => { self.skipWaiting(); });
-                  self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
-                  self.addEventListener('fetch', (e) => { }); 
-              `;
-              const swBlob = new Blob([swCode], {type: 'application/javascript'});
-              const swUrl = URL.createObjectURL(swBlob);
-              navigator.serviceWorker.register(swUrl).catch(err=>console.error('PWA Error', err));
-          }
+          // Kita menghapus Blob Service Worker karena Google WebAPK builder menolak membaca script lokal/virtual.
+          // Untungnya Chrome Android versi 108+ tetap mengizinkan Instal PWA (WebAPK) tanpa SW jika manifestnya valid!
       }, [globalConfig?.appName, globalConfig?.favicon, isDarkMode]);
 
       const handleInstallPwa = () => {
@@ -634,12 +634,12 @@
                   setDeferredPrompt(null);
               });
           } else {
-              addToast('Buka browser menu -> "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
+              addToast('Buka menu browser Anda (titik tiga) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
           }
       }
 
       const requestNotificationPermission = async () => {
-          if (!isPwaMode) return; // Fail-safe, UI shouldn't show anyway
+          if (!isPwaMode) return; // Fail-safe: Notif cuma buat app yg udah diinstall
           if (!('Notification' in window)) return addToast('Perangkat tidak mendukung notifikasi.', 'error');
           try {
              const perm = await Notification.requestPermission();
@@ -1741,7 +1741,7 @@
                                               <>
                                                  <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Tunjukkan QR ke Kasir</p>
                                                  <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-3"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CASH-VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}&margin=10`} className="w-40 h-40 object-contain" /></div>
-                                                 <div className="text-center w-full bg-gray-50 dark:bg-white/5 p-3 rounded-xl border border-theme"><p className="text-[9px] text-sub-theme font-mono">{order.id}</p><p className="text-sm font-black text-orange-500">{formatRupiah(order.priceTotal)}</p></div>
+                                                 <div className="text-center w-full bg-gray-50 dark:bg-white/5 p-3 rounded-xlborder border-theme"><p className="text-[9px] text-sub-theme font-mono">{order.id}</p><p className="text-sm font-black text-orange-500">{formatRupiah(order.priceTotal)}</p></div>
                                               </>
                                            )}
                                         </div>
@@ -1808,7 +1808,7 @@
                                 <p className="text-xs font-medium text-sub-theme mb-5">Total Transaksi Sukses: <span className="font-black text-main">{userTotalTx}x</span></p>
                                 <div className="bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl p-4 flex justify-between items-center mb-4">
                                     <div><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Benefit Cashback</p><p className="font-mono text-xl font-black text-orange-600 dark:text-orange-400">{userVipData.cashback * 100}% <span className="text-[10px] text-sub-theme">/ Trx</span></p></div>
-                                    <div className="text-right"><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Saldo Terkumpul</p><p className="font-mono text-xl font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(currentUserData?.saldoCashback ||0)}</p></div>
+                                    <div className="text-right"><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Saldo Terkumpul</p><p className="font-mono text-xl font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</p></div>
                                 </div>
                             </div>
 
@@ -1859,7 +1859,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.7.5 PWA</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.7.6 PWA</span>
                         </div>
                      </div>
 
@@ -2382,7 +2382,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.7.5 */}
+                                 {/* Panel Bluetooth Printer V11.7.6 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
