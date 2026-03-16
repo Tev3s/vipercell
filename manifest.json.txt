@@ -1,0 +1,24 @@
+{
+  "name": "Vipercell Top Up",
+  "short_name": "Vipercell",
+  "description": "Platform Layanan Top Up Game Tercepat & Terpercaya",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#f97316",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192/f97316/ffffff?text=VC",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512/f97316/ffffff?text=VC",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
