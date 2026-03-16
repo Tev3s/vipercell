@@ -1,68 +1,38 @@
-const CACHE_NAME = 'vipercell-pwa-v11.8.5';
-const urlsToCache = [
-  './index.html',
-  './manifest.json'
-];
+const CACHE_NAME = 'vipercell-pwa-v11.8.6';
 
-// Install Service Worker & Cache File
+// Langsung install tanpa syarat file eksternal (Bulletproof)
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
-  );
   self.skipWaiting();
 });
 
-// Bersihkan Cache Lama jika ada Update
 self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim();
+  event.waitUntil(self.clients.claim());
 });
 
-// Mode Offline (Ambil dari Cache jika tidak ada sinyal)
+// Wajib ada event fetch agar Chrome meresmikan ini sebagai PWA
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    }).catch(() => {
-      return caches.match('./index.html');
+    fetch(event.request).catch(() => {
+      return new Response('Vipercell sedang offline. Pastikan koneksi internet aktif.');
     })
   );
 });
 
-// Menangani Notifikasi Asli (Push)
+// Handle Notifikasi Push Native
 self.addEventListener('push', event => {
   let data = { title: 'Vipercell', body: 'Ada pengumuman baru untuk Anda!' };
-  
   if (event.data) {
     data = event.data.json();
   }
-  
   const options = {
     body: data.body,
-    icon: 'https://via.placeholder.com/192/f97316/ffffff?text=VC',
-    badge: 'https://via.placeholder.com/96/f97316/ffffff?text=VC',
-    vibrate: [200, 100, 200],
-    data: { url: self.location.origin }
+    vibrate: [200, 100, 200]
   };
-  
   event.waitUntil(
     self.registration.showNotification(data.title, options)
   );
 });
 
-// Aksi saat Notifikasi Diklik (Buka Aplikasi)
 self.addEventListener('notificationclick', event => {
   event.notification.close();
   event.waitUntil(
