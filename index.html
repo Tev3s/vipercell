@@ -8,10 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vipercell">
   
-  <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
-  <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
-  
-  <title>Vipercell v12.0</title>
+  <title>Vipercell v12.0.1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -54,7 +51,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.0 Engine</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.0.1 Core</p>
     </div>
   </div>
 
@@ -107,7 +104,6 @@
         return { level: 'Bronze', badge: '🥉', color: 'text-orange-400 border-orange-500 bg-orange-500/10', cashback: 0 };
     }
 
-    // --- ICONS ---
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}><path d={d}/></svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>;
     const IconChevronLeft = ({className:c}) => <Ic c={c} d="M15 18l-6-6 6-6"/>;
@@ -508,7 +504,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.0 Core</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.0.1 Serverless</span></div>
             </div>
          </footer>
        )
@@ -574,7 +570,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA Engine v12.0 (Notification Removed, Icon Synced) ---
+      // --- PWA Engine v12.0.1 (Notification Removed, Icon Synced) ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -632,21 +628,11 @@
           linkManifest.href = manifestUrl;
 
           // Inject Apple Touch Icon & Favicon dynamically for perfect PWA sync
-          let linkAppleIcon = document.querySelector('link[rel="apple-touch-icon"]');
-          if (!linkAppleIcon) {
-              linkAppleIcon = document.createElement('link');
-              linkAppleIcon.rel = 'apple-touch-icon';
-              document.head.appendChild(linkAppleIcon);
-          }
-          linkAppleIcon.href = appIcon;
+          let linkAppleIcon = document.getElementById('apple-touch-icon');
+          if (linkAppleIcon) linkAppleIcon.href = appIcon;
 
-          let linkFavicon = document.querySelector('link[rel="shortcut icon"]');
-          if (!linkFavicon) {
-              linkFavicon = document.createElement('link');
-              linkFavicon.rel = 'shortcut icon';
-              document.head.appendChild(linkFavicon);
-          }
-          linkFavicon.href = appIcon;
+          let linkFavicon = document.getElementById('favicon-link');
+          if (linkFavicon) linkFavicon.href = appIcon;
 
       }, [globalConfig?.appName, globalConfig?.favicon, isDarkMode]);
 
@@ -998,8 +984,8 @@
                   if(used) throw new Error('Nomor HP sudah dipakai akun lain!');
               }
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); 
-              addToast('Profil disimpan!', 'success'); 
-          } catch(err) { addToast(err.message || 'Gagal.', 'error'); } finally { closeSysLoad() } 
+              addToast('Profil berhasil disimpan!', 'success'); 
+          } catch(err) { addToast(err.message || 'Gagal menyimpan.', 'error'); } finally { closeSysLoad() } 
       }
       
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Memproses Avatar...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
@@ -1194,450 +1180,241 @@
           <OrderSuccessModal isOpen={orderSuccessModal} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} onDone={() => { setOrderSuccessModal(false); navigateTo('home'); }} />
           <ScannerResultModal isOpen={scannerResultModal.isOpen} order={scannerResultModal.order} allGlobalOrders={allGlobalOrders} onClose={() => setScannerResultModal({isOpen: false, order: null})} onValidate={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} onCancelOrder={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} />
 
-          {isScannerOpen && (
-             <div className="fixed inset-0 bg-black z-[9999] flex flex-col animate-slide-down">
-                <div className="flex justify-between items-center p-5 z-10 absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
-                    <p className="text-white font-black text-lg flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Scanner Kasir</p>
-                    <button onClick={()=>setIsScannerOpen(false)} className="text-white bg-red-500 rounded-full p-2.5"><IconX className="w-5 h-5"/></button>
-                </div>
-                <div id="reader" className="w-full h-full flex-1"></div>
-                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10"><IconQrcode className="w-4 h-4"/> Posisikan QR di Tengah</div>
-             </div>
-          )}
-
-          {currentView === 'chat' && (
-             <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col bg-card animate-slide-down' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-bounce-up'}`}>
-                <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
-                   <div className="flex items-center gap-3 md:gap-4">
-                       {!isChatFullScreen && <button onClick={handleBack} className="p-2.5 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme flex items-center justify-center shrink-0"><IconChevronLeft className="w-5 h-5"/></button>}
-                       <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shrink-0"><IconMessageSquare className="w-6 h-6 text-white"/></div>
-                       <div className="min-w-0">
-                          <h2 className="text-lg font-black leading-tight text-main truncate">Pusat Bantuan & Saran</h2>
-                          <p className="text-[10px] text-emerald-500 font-bold uppercase flex items-center gap-1.5 mt-0.5"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online</p>
-                       </div>
-                   </div>
-                   <button onClick={()=>setIsChatFullScreen(!isChatFullScreen)} className="p-2.5 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme">
-                       {isChatFullScreen ? <IconMinimize className="w-5 h-5"/> : <IconExpand className="w-5 h-5"/>}
-                   </button>
-                </div>
-
-                <div className="flex gap-2 bg-gray-100 dark:bg-black p-1 rounded-xl w-[90%] max-w-sm mx-auto mt-4 shrink-0 z-10 shadow-sm border border-theme">
-                     <button onClick={()=>setHelpTab('chat')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='chat'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Live Chat CS</button>
-                     <button onClick={()=>setHelpTab('saran')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='saran'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Kotak Saran</button>
-                </div>
-                
-                {helpTab === 'chat' && (
-                    <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar relative z-10 transition-colors duration-500 bg-gray-50 dark:bg-[#0a0a0a]">
-                       <div className="text-center text-[10px] uppercase text-gray-500 font-black bg-white/80 dark:bg-black/40 py-2 px-5 rounded-full w-fit mx-auto border border-theme relative z-10">Percakapan Tersimpan</div>
-                       {loadingChat ? (
-                           <div className="flex flex-col items-center justify-center py-20 relative z-10"><IconLoader className="w-10 h-10 text-orange-500 animate-spin mb-4" /></div>
-                       ) : (
-                          <div className="relative z-10 space-y-4 pb-4 max-w-4xl mx-auto w-full">
-                             {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-3 px-6 rounded-xl text-xs font-bold w-fit mx-auto shadow-sm">✔ Tiket ditutup. Kirim pesan baru untuk bertanya.</div>)}
-                             {(!userChat || !(userChat.messages || []).length) && (
-                                <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-                                   <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6"><IconMessageSquare className="w-10 h-10 opacity-30" /></div>
-                                   <p className="font-bold text-sm text-center">Kirim pesan untuk meminta bantuan CS.</p>
-                                </div>
-                             )}
-                             {(userChat?.messages || []).map((msg, i) => (
-                                <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-slide-down`}>
-                                   <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
-                                      {msg.role && msg.sender === 'admin' && <span className={`text-[9px] font-bold uppercase mb-1.5 ml-1 ${msg.role.includes('Sistem') ? 'text-blue-500' : 'text-emerald-600'}`}>{msg.role}</span>}
-                                      <div className="px-4 py-2 text-sm shadow-sm font-medium leading-relaxed" style={{ backgroundColor: msg.sender === 'user' ? 'var(--chat-user)' : 'var(--chat-admin)', color: msg.sender === 'user' ? (isDarkMode ? '#fff' : '#111') : 'var(--chat-text)', borderRadius: msg.sender === 'user' ? '1rem 0 1rem 1rem' : '0 1rem 1rem 1rem' }}>
-                                         {msg.text}
-                                         <div className={`text-[9px] font-bold mt-1 text-right opacity-70`}>{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</div>
-                                      </div>
-                                   </div>
-                                </div>
-                             ))}
-                          </div>
-                       )}
-                       <div ref={chatEndRef} className="h-4"/>
-                    </div>
-                )}
-
-                {helpTab === 'saran' && (
-                    <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-gray-50 dark:bg-[#0a0a0a]">
-                        <div className="bg-blue-50 dark:bg-blue-950/20 p-8 rounded-[2.5rem] border border-blue-500/30 max-w-2xl mx-auto shadow-sm">
-                             <h3 className="text-lg font-black mb-2 flex items-center gap-3 text-main relative z-10"><div className="bg-blue-500/20 p-2 rounded-xl text-blue-600 dark:text-blue-500 border border-blue-500/20"><IconMessageSquare className="w-5 h-5"/></div> Kirim Masukan</h3>
-                             <p className="text-[10px] text-sub-theme font-medium mb-6 relative z-10">Punya saran fitur atau keluhan? Beritahu tim kami.</p>
-                             <form onSubmit={handleSendFeedback} className="flex flex-col gap-3 relative z-10">
-                                 <textarea required value={feedbackText} onChange={(e)=>setFeedbackText(e.target.value)} placeholder="Tulis masukan, kritik, atau saran Anda..." className="w-full input-theme rounded-2xl py-4 px-5 focus:outline-none focus:border-blue-500 min-h-[150px] resize-none text-sm"></textarea>
-                                 <button type="submit" disabled={!feedbackText.trim()} className="w-full bg-blue-600 text-white py-3.5 px-8 rounded-xl font-black text-xs uppercase disabled:opacity-50">Kirim Saran Ke Developer</button>
-                             </form>
-                        </div>
-                    </div>
-                )}
-                
-                {helpTab === 'chat' && (
-                    <div className="p-3 md:p-4 bg-card border-t border-theme z-20 shrink-0 pb-safe">
-                       <form onSubmit={handleSendChatUser} className="flex gap-2 relative max-w-4xl mx-auto">
-                          <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Ketik pesan..." className="flex-1 input-theme rounded-2xl px-4 py-3 md:py-4 text-sm focus:outline-none focus:border-orange-500" />
-                          <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 text-white px-5 md:px-8 rounded-2xl font-black disabled:opacity-50 flex items-center justify-center gap-2">
-                             {loadingChat ? <IconLoader className="w-5 h-5 animate-spin"/> : <><IconSend className="w-5 h-5"/> <span className="hidden sm:inline text-xs">Kirim</span></>}
-                          </button>
-                       </form>
-                    </div>
-                )}
-             </div>
-          )}
-
-          {currentView !== 'chat' && (
-             <nav className="fixed top-0 left-0 w-full z-40 bg-card/90 backdrop-blur-md border-b border-theme shadow-sm">
-               <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                 <div className="flex items-center gap-3 md:gap-4">
-                    <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 text-main relative">
-                       <IconMenu className="w-6 h-6" />
-                       {(userChat?.status === 'Dijawab') && <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-orange-500 rounded-full border border-black animate-pulse"></span>}
-                    </button>
-                    {(currentView !== 'home' || selectedGame) && (
-                        <button onClick={handleBack} className="p-2 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme flex items-center justify-center hidden md:flex">
-                           <IconChevronLeft className="w-5 h-5" />
-                        </button>
-                    )}
-                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
-                      <IconZap className="text-orange-500 w-6 h-6" />
-                      <span className="text-lg font-black tracking-widest text-main hidden sm:block">
-                          {(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}
-                          <span className="text-orange-500">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span>
-                      </span>
-                    </div>
-                 </div>
-
-                 <div className="hidden md:flex items-center gap-1 bg-gray-100 dark:bg-white/[0.02] p-1 rounded-xl border border-theme shadow-inner">
-                    <button onClick={()=>navigateTo('home')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase ${currentView === 'home' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>Beranda</button>
-                    <button onClick={()=>navigateTo('history')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase ${currentView === 'history' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>Riwayat</button>
-                    <button onClick={()=>navigateTo('chat')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'chat' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>
-                       Bantuan {(userChat?.status === 'Dijawab') && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>}
-                    </button>
-                    {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-500 text-white' : 'text-red-500'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0 || unreadFeedbacksCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>}</button>}
-                 </div>
-
-                 <div className="flex items-center gap-3 relative">
-                    {!isPwaMode && (
-                        <button onClick={handleInstallPwa} className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md hover:scale-105 transition">
-                            <IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi
-                        </button>
-                    )}
-                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hidden sm:block">
-                        {isDarkMode ? <IconSun className="w-5 h-5"/> : <IconMoon className="w-5 h-5"/>}
-                    </button>
-                    <div className="text-right mr-2 flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20">
-                       <span className="hidden sm:inline text-[10px] font-black uppercase text-orange-500">Cashback</span>
-                       <IconWallet className="w-4 h-4 text-orange-600 dark:text-orange-400 sm:hidden"/>
-                       <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
-                    </div>
-                    <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-theme shadow-sm text-main overflow-hidden bg-gray-200 dark:bg-black flex items-center justify-center shrink-0">
-                       {currentUserData?.avatar ? ( <img src={currentUserData.avatar} className="w-full h-full object-cover" /> ) : ( <span className="font-black text-sm text-sub-theme">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span> )}
-                    </button>
-                    {profileDropdownOpen && (
-                       <div className="absolute right-0 top-12 mt-2 w-56 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
-                          <div className="px-4 py-3 border-b border-theme mb-2 bg-gray-50 dark:bg-navy-900">
-                             <p className="text-sm font-black text-main truncate">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</p>
-                             <p className="text-[10px] text-sub-theme font-mono truncate mt-0.5">{authUser.email}</p>
-                          </div>
-                          {!isPwaMode && <button onClick={() => {handleInstallPwa(); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-orange-500 flex items-center gap-3 sm:hidden border-b border-theme"><IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi PWA</button>}
-                          <button onClick={() => {setIsDarkMode(!isDarkMode); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3 sm:hidden"><IconSun className="w-4 h-4"/> Mode {isDarkMode ? 'Terang' : 'Gelap'}</button>
-                          <button onClick={() => navigateTo('profile')} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3"><IconUser className="w-4 h-4"/> Profil & Keamanan</button>
-                          <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 flex items-center gap-3"><IconLogOut className="w-4 h-4"/> Keluar Sesi</button>
-                       </div>
-                    )}
-                 </div>
-               </div>
-             </nav>
-          )}
-
-          {currentView !== 'chat' && (
-             <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 border-b border-white/10">
-                <div className="marquee-container py-1.5">
-                   <div className="animate-marquee text-[10px] font-black uppercase tracking-widest text-white flex gap-8">
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m1-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m2-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m3-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                   </div>
-                </div>
-             </div>
-          )}
-
-          {mobileMenuOpen && (
-             <div className="fixed inset-0 z-[9999] md:hidden">
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={()=>setMobileMenuOpen(false)}></div>
-                <div className="w-[85%] max-w-sm bg-card h-full shadow-2xl relative z-10 flex flex-col animate-slide-down border-r border-theme">
-                   <div className="p-6 border-b border-theme bg-gray-100 dark:bg-navy-900 relative overflow-hidden">
-                       <button onClick={()=>setMobileMenuOpen(false)} className="absolute top-4 right-4 p-2 bg-black/5 dark:bg-white/10 rounded-full"><IconX className="w-4 h-4"/></button>
-                       <div className="w-16 h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg text-white font-black text-2xl mb-4">
-                         {currentUserData?.avatar ? <img src={currentUserData.avatar} className="w-full h-full object-cover rounded-full" /> : (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : (authUser.email || '').charAt(0).toUpperCase() || 'U')}
-                       </div>
-                       <h3 className="font-black text-lg text-main flex items-center gap-2">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'User'}</h3>
-                       <p className="text-xs text-sub-theme font-mono mt-1">{authUser.email}</p>
-                       <div className="mt-3 inline-block bg-white/10 border border-theme rounded-md px-2 py-1 text-[10px] font-bold text-orange-600 dark:text-orange-400 uppercase">{userVipData.level} Member</div>
-                   </div>
-                   
-                   <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
-                       {!isPwaMode && (
-                          <button onClick={()=>{setMobileMenuOpen(false); handleInstallPwa();}} className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg mb-4">
-                              <IconDownloadCloud className="w-5 h-5"/> Instal Vipercell App
-                          </button>
-                       )}
-                       <button onClick={()=>navigateTo('home')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'home' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconHome className="w-5 h-5"/> Beranda</button>
-                       <button onClick={()=>navigateTo('history')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'history' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconHistory className="w-5 h-5"/> Riwayat Pesanan</button>
-                       <button onClick={()=>navigateTo('chat')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold relative ${currentView === 'chat' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}>
-                          <IconMessageSquare className="w-5 h-5"/> Pusat Bantuan & Saran {(userChat?.status === 'Dijawab') && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>}
-                       </button>
-                       <button onClick={()=>navigateTo('profile')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'profile' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconUser className="w-5 h-5"/> Akun & Profil</button>
-                       {isAdmin && ( <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold mt-4 ${currentView === 'admin' ? 'bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/50' : 'text-red-600'}`}> <IconShieldAlert className="w-5 h-5"/> Admin Panel {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>} </button> )}
-                   </div>
-                   
-                   <div className="p-4 border-t border-theme">
-                      <button onClick={() => signOut(auth)} className="w-full flex items-center justify-center gap-3 py-4 bg-gray-100 dark:bg-white/5 text-sub-theme rounded-2xl font-black text-xs uppercase"><IconLogOut className="w-4 h-4"/> Keluar Aplikasi</button>
-                   </div>
-                </div>
-             </div>
-          )}
-
+          {/* DEDUPLICATED RENDER BLOCK: MAIN CONTENT AREAS */}
+          
           <main className={`flex-1 transition-all w-full flex flex-col relative z-10 ${currentView === 'chat' ? 'hidden' : ''}`}>
             <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-4 md:mt-8 pb-10">
             
             {/* BERANDA */}
-            <div className={currentView === 'home' ? 'animate-slide-down' : 'hidden'}>
-                <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
-                    <div>
-                        <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
-                        <h2 className="text-xl md:text-3xl font-black text-orange-600 dark:text-orange-500 mt-1 drop-shadow-sm">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
-                    </div>
-                    {/* Install App Banner (ONLY IN WEB MODE) */}
-                    {!isPwaMode && (
-                        <div onClick={handleInstallPwa} className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 p-3 rounded-2xl flex items-center gap-3 cursor-pointer hover:from-orange-500/20 hover:to-red-500/20 transition group shrink-0">
-                           <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0 shadow-lg"><IconDownloadCloud className="w-4 h-4 text-white"/></div>
-                           <div>
-                              <div className="text-xs font-black uppercase tracking-widest">Instal App PWA</div>
-                              <div className="text-[9px] font-medium opacity-80 mt-0.5">Akses lebih cepat dari layar utama.</div>
-                           </div>
-                           <IconChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition"/>
+            {currentView === 'home' && (
+                <div className="animate-slide-down">
+                    <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
+                        <div>
+                            <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
+                            <h2 className="text-xl md:text-3xl font-black text-orange-600 dark:text-orange-500 mt-1 drop-shadow-sm">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
                         </div>
+                    </div>
+
+                    {!selectedGame && <BannerSlider items={banners} />}
+                    
+                    {flashSalePromos?.length > 0 && !selectedGame && (
+                       <div className="mb-12 animate-slide-down relative z-20">
+                          <div className="flex items-center gap-2 mb-4 pl-1">
+                             <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
+                             <h2 className="text-xl font-black uppercase tracking-widest text-main">Flash Sale Aktif!</h2>
+                          </div>
+                          <div className="flex overflow-x-auto gap-4 pb-4 custom-scrollbar snap-x">
+                             {flashSalePromos.map(promo => {
+                                const timeLeft = Math.max(0, new Date(promo.endTime) - new Date());
+                                const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                                if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
+
+                                return (
+                                <div key={promo.id} className="snap-center min-w-[300px] bg-gradient-to-br from-orange-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-orange-400/30">
+                                   <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
+                                   <div className="relative z-10 flex flex-col h-full justify-between">
+                                      <div>
+                                         <div className="text-[10px] font-black uppercase tracking-widest bg-black/20 px-3 py-1.5 rounded-lg inline-block mb-3 border border-white/10">Waktu Terbatas</div>
+                                         <div className="text-2xl font-black tracking-wider drop-shadow-md mb-1">{promo.type === 'percentage' ? `Diskon ${promo.discount}%` : `Potongan ${formatRupiah(promo.discount)}`}</div>
+                                         <div className="text-xs font-bold opacity-90 flex items-center gap-1.5"><IconGift className="w-4 h-4"/> Spesial Produk Pilihan</div>
+                                      </div>
+                                      <div className="mt-5">
+                                         <div className="flex justify-between items-end mb-1">
+                                            <span className="text-[9px] font-bold opacity-80 uppercase tracking-widest">Sisa Waktu</span>
+                                            <span className="font-mono text-sm font-black bg-black/30 px-2 py-1 rounded-md border border-white/10">{hours.toString().padStart(2, '0')}:{mins.toString().padStart(2, '0')}:{secs.toString().padStart(2, '0')}</span>
+                                         </div>
+                                         <div className="w-full bg-black/30 rounded-full h-1.5 overflow-hidden mt-3"><div className="bg-white h-full rounded-full transition-all duration-1000" style={{width: `${((promo.stock-(promo.usedBy?.length||0))/promo.stock)*100}%`}}></div></div>
+                                         <div className="text-[9px] mt-1.5 font-bold opacity-80 uppercase tracking-widest text-right">Tersisa {(promo.stock - (promo.usedBy?.length || 0))} Stok</div>
+                                      </div>
+                                   </div>
+                                </div>
+                                )})}
+                          </div>
+                       </div>
+                    )}
+
+                    <div className="relative z-20 mb-12">
+                       {!selectedGame && (
+                           <div className="flex items-center gap-3 mb-6 pl-2">
+                               <div className="bg-gray-200 dark:bg-white/10 p-2.5 rounded-xl border border-theme"><IconGamepad className="w-5 h-5 text-main"/></div>
+                               <div><h2 className="text-xl md:text-2xl font-black leading-tight text-main">Katalog Top Up</h2></div>
+                           </div>
+                       )}
+                       
+                       <div className={selectedGame ? "hidden" : "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-5 relative z-30"}>
+                          {(games||[]).map(game => {
+                             const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
+                             return (
+                             <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white dark:bg-white/[0.02] border border-theme flex flex-col h-full z-30 shadow-sm">
+                                {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse">PROMO</div>}
+                                <div className="aspect-square bg-gray-100 dark:bg-black p-1.5 md:p-2 relative overflow-hidden">
+                                   <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl"/>
+                                </div>
+                                <div className="p-3 md:p-4 text-center flex-grow flex flex-col justify-center">
+                                   <h3 className="font-black text-[11px] md:text-sm leading-tight mb-1 line-clamp-1 text-main">{game.name}</h3>
+                                   <p className="text-[8px] md:text-[10px] font-bold text-sub-theme uppercase tracking-widest truncate">ID: {game.id}</p>
+                                </div>
+                             </div>
+                          )})}
+                          {(!games || games.length === 0) && <div className="col-span-full py-12 text-center text-sub-theme text-sm font-bold bg-card rounded-[2rem] border border-dashed border-theme">Katalog game masih kosong.</div>}
+                       </div>
+                    </div>
+
+                    {selectedGame && (
+                       <div className="animate-slide-down relative">
+                          <div className="flex items-center gap-4 mb-6 bg-card p-4 md:p-5 rounded-3xl border border-theme shadow-sm">
+                             <button onClick={() => setSelectedGame(null)} className="p-3 bg-gray-100 dark:bg-black border border-theme rounded-xl text-main"><IconChevronLeft className="w-5 h-5"/></button>
+                             <img src={selectedGame.image} className="w-14 h-14 rounded-2xl object-cover border border-theme" />
+                             <div>
+                                <h2 className="text-xl md:text-2xl font-black text-main leading-tight">{selectedGame.name}</h2>
+                                <p className="text-xs text-orange-600 dark:text-orange-500 font-bold mt-1 uppercase tracking-widest">ID: {selectedGame.id}</p>
+                             </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                             <div className="lg:col-span-7 space-y-6">
+                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
+                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
+                                   <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
+                                      <div className="flex-1 relative group">
+                                         <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                         <input type="text" value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
+                                      </div>
+                                      {selectedGame?.inputType === 'id_zone' && (
+                                         <div className="w-full sm:w-1/3 relative group">
+                                            <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
+                                         </div>
+                                      )}
+                                      {selectedGame?.inputType === 'riot_id' && (
+                                         <div className="w-full sm:w-1/3 relative group">
+                                            <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                            <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
+                                         </div>
+                                      )}
+                                   </div>
+                                   <div className="relative group z-10">
+                                       <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                                       <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Masukkan Nickname (Opsional)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold text-sm focus:border-orange-500" />
+                                   </div>
+                                   <p className="text-[10px] text-sub-theme mt-3 font-medium">Kesalahan penulisan ID bukan tanggung jawab sistem.</p>
+                                </div>
+
+                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
+                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk</h3>
+                                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 relative z-10">
+                                      {(items||[]).filter(i => i.gameId === selectedGame?.id).sort((a,b)=>a.price-b.price).map(item => {
+                                         const itemPromos = getActivePromosForItem(item.id);
+                                         const bestAutoPromo = itemPromos.length > 0 ? itemPromos.reduce((prev, current) => {
+                                             const prevD = prev.type === 'percentage' ? (item.price * prev.discount / 100) : prev.discount;
+                                             const currD = current.type === 'percentage' ? (item.price * current.discount / 100) : current.discount;
+                                             return (currD > prevD) ? current : prev;
+                                         }) : null;
+                                         const finalP = calculateFinalPrice(item.price, item.id);
+                                         const hasPromo = bestAutoPromo !== null;
+                                         const pCashback = globalConfig?.cashbackPercent ? (finalP * (globalConfig.cashbackPercent / 100)) : 0;
+
+                                         return (
+                                         <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 text-center relative overflow-hidden flex flex-col justify-center min-h-[100px] ${selectedNominal?.id === item.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
+                                            {hasPromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10">{bestAutoPromo.category === 'flash' ? '⚡ FLASH' : '🔥 PROMO'}</div>}
+                                            {selectedNominal?.id === item.id && <div className="absolute top-2 left-2 z-10"><IconCheckCircle className="w-4 h-4 text-orange-500"/></div>}
+                                            
+                                            <div className="font-bold text-xs md:text-sm text-main mb-2 mt-2">{item.name}</div>
+                                            <div className={`text-[10px] md:text-xs font-mono font-black mt-auto ${hasPromo ? 'text-orange-600 dark:text-orange-400' : 'text-sub-theme'}`}>
+                                                {hasPromo ? (<div className="flex flex-col items-center"><span className="line-through text-gray-400 text-[9px] mb-0.5">{formatRupiah(item.price)}</span><span>{formatRupiah(finalP)}</span></div>) : formatRupiah(item.price)}
+                                            </div>
+                                            {pCashback > 0 && <div className="text-[8px] font-bold text-emerald-500 mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block mx-auto">+ {formatRupiah(pCashback)} CB</div>}
+                                         </div>
+                                      )})}
+                                   </div>
+                                   {(!items || items.filter(i => i.gameId === selectedGame?.id).length === 0) && <div className="py-10 text-center text-sub-theme text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border border-dashed border-theme">Produk belum tersedia.</div>}
+                                </div>
+                             </div>
+
+                             <div className="lg:col-span-5 space-y-6">
+                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
+                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
+                                   <div className="space-y-3 mb-6 relative z-10">
+                                      {PAYMENTS.map(pay => (
+                                         <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
+                                            <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pay.color} flex items-center justify-center text-white shadow-lg shrink-0`}>{pay.id === 'qris' ? <IconQrcode className="w-8 h-8"/> : <IconWallet className="w-8 h-8"/>}</div>
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2"><div className="text-sm font-black text-main">{pay.name}</div><span className="text-[8px] bg-black/10 dark:bg-white/20 text-main px-2 py-0.5 rounded font-black">{pay.badge}</span></div>
+                                                <div className="text-[10px] text-sub-theme font-bold mt-1">{pay.type}</div>
+                                            </div>
+                                            {selectedPayment?.id === pay.id && <IconCheckCircle className="w-6 h-6 text-orange-500 shrink-0"/>}
+                                         </div>
+                                      ))}
+                                   </div>
+                                   
+                                   {currentUserData?.saldoCashback > 0 && (
+                                       <div className="relative z-10 py-4 mb-2 border-t border-b border-theme flex items-center justify-between">
+                                          <div>
+                                              <label className="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5"><IconWallet className="w-4 h-4"/> Pakai Saldo Cashback</label>
+                                              <p className="text-[10px] text-sub-theme mt-0.5">Saldo: {formatRupiah(currentUserData.saldoCashback)}</p>
+                                          </div>
+                                          <label className="relative inline-flex items-center cursor-pointer">
+                                             <input type="checkbox" className="sr-only peer" checked={useCashback} onChange={(e) => setUseCashback(e.target.checked)} />
+                                             <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 peer-checked:bg-emerald-500"></div>
+                                          </label>
+                                       </div>
+                                   )}
+
+                                   <div className="relative z-10 pt-4">
+                                      <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
+                                      <div className="flex gap-2 bg-gray-100 dark:bg-black p-1.5 rounded-2xl border border-theme shadow-inner">
+                                         <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
+                                         {activePromo ? (
+                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase">Hapus</button>
+                                         ) : (
+                                             <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm">Pakai</button>
+                                         )}
+                                      </div>
+                                   </div>
+                                </div>
+
+                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-emerald-500 relative overflow-hidden mt-6">
+                                   <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
+                                       <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
+                                       <span className="text-2xl md:text-3xl font-black text-orange-600 dark:text-orange-500 font-mono">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
+                                   </div>
+                                   {estimatedCashback > 0 && (
+                                       <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between">
+                                           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Estimasi Cashback Diterima:</span>
+                                           <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
+                                       </div>
+                                   )}
+                                   <button onClick={triggerCheckout} disabled={isProcessing} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                      {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
+                                   </button>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                    )}
+                    
+                    {!selectedGame && (
+                       <div className="mt-16 pt-12 border-t border-theme text-center relative z-10">
+                          <div className="inline-flex items-center justify-center p-4 bg-orange-500/10 rounded-2xl mb-6"><IconShield className="w-8 h-8 text-orange-600 dark:text-orange-500"/></div>
+                          <h2 className="text-2xl md:text-3xl font-black text-main mb-4">Top Up Aman & Terpercaya</h2>
+                          <p className="text-sm text-sub-theme max-w-2xl mx-auto leading-relaxed">{globalConfig?.appName || 'Vipercell'} memproses transaksi secara otomatis setiap harinya. Kami menjamin keamanan akun Anda dengan sistem enkripsi dan integrasi langsung ke server game. Kepuasan Anda adalah prioritas utama kami.</p>
+                          
+                          {(galleryData||[]).length > 0 && (
+                             <div className="mt-12 bg-card p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner text-left">
+                                <h3 className="text-sm font-black text-sub-theme uppercase tracking-widest mb-6 flex items-center gap-2 pl-2"><IconImage className="w-5 h-5 text-orange-500"/> Bukti Transaksi Real-time</h3>
+                                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+                                   {galleryData.map((img, i) => (
+                                      <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-theme relative bg-gray-100 dark:bg-black">
+                                         <img src={img} className="w-full h-full object-cover" />
+                                      </div>
+                                   ))}
+                                </div>
+                             </div>
+                          )}
+                       </div>
                     )}
                 </div>
-
-                {!selectedGame && <BannerSlider items={banners} />}
-                
-                {flashSalePromos?.length > 0 && !selectedGame && (
-                   <div className="mb-12 animate-slide-down relative z-20">
-                      <div className="flex items-center gap-2 mb-4 pl-1">
-                         <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
-                         <h2 className="text-xl font-black uppercase tracking-widest text-main">Flash Sale Aktif!</h2>
-                      </div>
-                      <div className="flex overflow-x-auto gap-4 pb-4 custom-scrollbar snap-x">
-                         {flashSalePromos.map(promo => {
-                            const timeLeft = Math.max(0, new Date(promo.endTime) - new Date());
-                            const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                            if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
-
-                            return (
-                            <div key={promo.id} className="snap-center min-w-[300px] bg-gradient-to-br from-orange-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-orange-400/30">
-                               <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
-                               <div className="relative z-10 flex flex-col h-full justify-between">
-                                  <div>
-                                     <div className="text-[10px] font-black uppercase tracking-widest bg-black/20 px-3 py-1.5 rounded-lg inline-block mb-3 border border-white/10">Waktu Terbatas</div>
-                                     <div className="text-2xl font-black tracking-wider drop-shadow-md mb-1">{promo.type === 'percentage' ? `Diskon ${promo.discount}%` : `Potongan ${formatRupiah(promo.discount)}`}</div>
-                                     <div className="text-xs font-bold opacity-90 flex items-center gap-1.5"><IconGift className="w-4 h-4"/> Spesial Produk Pilihan</div>
-                                  </div>
-                                  <div className="mt-5">
-                                     <div className="flex justify-between items-end mb-1">
-                                        <span className="text-[9px] font-bold opacity-80 uppercase tracking-widest">Sisa Waktu</span>
-                                        <span className="font-mono text-sm font-black bg-black/30 px-2 py-1 rounded-md border border-white/10">{hours.toString().padStart(2, '0')}:{mins.toString().padStart(2, '0')}:{secs.toString().padStart(2, '0')}</span>
-                                     </div>
-                                     <div className="w-full bg-black/30 rounded-full h-1.5 overflow-hidden mt-3"><div className="bg-white h-full rounded-full transition-all duration-1000" style={{width: `${((promo.stock-(promo.usedBy?.length||0))/promo.stock)*100}%`}}></div></div>
-                                     <div className="text-[9px] mt-1.5 font-bold opacity-80 uppercase tracking-widest text-right">Tersisa {(promo.stock - (promo.usedBy?.length || 0))} Stok</div>
-                                  </div>
-                               </div>
-                            </div>
-                            )})}
-                      </div>
-                   </div>
-                )}
-
-                <div className="relative z-20 mb-12">
-                   {!selectedGame && (
-                       <div className="flex items-center gap-3 mb-6 pl-2">
-                           <div className="bg-gray-200 dark:bg-white/10 p-2.5 rounded-xl border border-theme"><IconGamepad className="w-5 h-5 text-main"/></div>
-                           <div><h2 className="text-xl md:text-2xl font-black leading-tight text-main">Katalog Top Up</h2></div>
-                       </div>
-                   )}
-                   
-                   <div className={selectedGame ? "hidden" : "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-5 relative z-30"}>
-                      {(games||[]).map(game => {
-                         const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
-                         return (
-                         <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white dark:bg-white/[0.02] border border-theme flex flex-col h-full z-30 shadow-sm">
-                            {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse">PROMO</div>}
-                            <div className="aspect-square bg-gray-100 dark:bg-black p-1.5 md:p-2 relative overflow-hidden">
-                               <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl"/>
-                            </div>
-                            <div className="p-3 md:p-4 text-center flex-grow flex flex-col justify-center">
-                               <h3 className="font-black text-[11px] md:text-sm leading-tight mb-1 line-clamp-1 text-main">{game.name}</h3>
-                               <p className="text-[8px] md:text-[10px] font-bold text-sub-theme uppercase tracking-widest truncate">ID: {game.id}</p>
-                            </div>
-                         </div>
-                      )})}
-                      {(!games || games.length === 0) && <div className="col-span-full py-12 text-center text-sub-theme text-sm font-bold bg-card rounded-[2rem] border border-dashed border-theme">Katalog game masih kosong.</div>}
-                   </div>
-                </div>
-
-                {selectedGame && (
-                   <div className="animate-slide-down relative">
-                      <div className="flex items-center gap-4 mb-6 bg-card p-4 md:p-5 rounded-3xl border border-theme shadow-sm">
-                         <button onClick={() => setSelectedGame(null)} className="p-3 bg-gray-100 dark:bg-black border border-theme rounded-xl text-main"><IconChevronLeft className="w-5 h-5"/></button>
-                         <img src={selectedGame.image} className="w-14 h-14 rounded-2xl object-cover border border-theme" />
-                         <div>
-                            <h2 className="text-xl md:text-2xl font-black text-main leading-tight">{selectedGame.name}</h2>
-                            <p className="text-xs text-orange-600 dark:text-orange-500 font-bold mt-1 uppercase tracking-widest">ID: {selectedGame.id}</p>
-                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                         <div className="lg:col-span-7 space-y-6">
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                               <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
-                               <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
-                                  <div className="flex-1 relative group">
-                                     <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                     <input type="text" value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                  </div>
-                                  {selectedGame?.inputType === 'id_zone' && (
-                                     <div className="w-full sm:w-1/3 relative group">
-                                        <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                     </div>
-                                  )}
-                                  {selectedGame?.inputType === 'riot_id' && (
-                                     <div className="w-full sm:w-1/3 relative group">
-                                        <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                        <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                     </div>
-                                  )}
-                               </div>
-                               <div className="relative group z-10">
-                                   <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                   <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Masukkan Nickname (Opsional)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold text-sm focus:border-orange-500" />
-                               </div>
-                               <p className="text-[10px] text-sub-theme mt-3 font-medium">Kesalahan penulisan ID bukan tanggung jawab sistem.</p>
-                            </div>
-
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                               <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk</h3>
-                               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 relative z-10">
-                                  {(items||[]).filter(i => i.gameId === selectedGame?.id).sort((a,b)=>a.price-b.price).map(item => {
-                                     const itemPromos = getActivePromosForItem(item.id);
-                                     const bestAutoPromo = itemPromos.length > 0 ? itemPromos.reduce((prev, current) => {
-                                         const prevD = prev.type === 'percentage' ? (item.price * prev.discount / 100) : prev.discount;
-                                         const currD = current.type === 'percentage' ? (item.price * current.discount / 100) : current.discount;
-                                         return (currD > prevD) ? current : prev;
-                                     }) : null;
-                                     const finalP = calculateFinalPrice(item.price, item.id);
-                                     const hasPromo = bestAutoPromo !== null;
-                                     const pCashback = globalConfig?.cashbackPercent ? (finalP * (globalConfig.cashbackPercent / 100)) : 0;
-
-                                     return (
-                                     <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 text-center relative overflow-hidden flex flex-col justify-center min-h-[100px] ${selectedNominal?.id === item.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
-                                        {hasPromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10">{bestAutoPromo.category === 'flash' ? '⚡ FLASH' : '🔥 PROMO'}</div>}
-                                        {selectedNominal?.id === item.id && <div className="absolute top-2 left-2 z-10"><IconCheckCircle className="w-4 h-4 text-orange-500"/></div>}
-                                        
-                                        <div className="font-bold text-xs md:text-sm text-main mb-2 mt-2">{item.name}</div>
-                                        <div className={`text-[10px] md:text-xs font-mono font-black mt-auto ${hasPromo ? 'text-orange-600 dark:text-orange-400' : 'text-sub-theme'}`}>
-                                            {hasPromo ? (<div className="flex flex-col items-center"><span className="line-through text-gray-400 text-[9px] mb-0.5">{formatRupiah(item.price)}</span><span>{formatRupiah(finalP)}</span></div>) : formatRupiah(item.price)}
-                                        </div>
-                                        {pCashback > 0 && <div className="text-[8px] font-bold text-emerald-500 mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block mx-auto">+ {formatRupiah(pCashback)} CB</div>}
-                                     </div>
-                                  )})}
-                               </div>
-                               {(!items || items.filter(i => i.gameId === selectedGame?.id).length === 0) && <div className="py-10 text-center text-sub-theme text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border border-dashed border-theme">Produk belum tersedia.</div>}
-                            </div>
-                         </div>
-
-                         <div className="lg:col-span-5 space-y-6">
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                               <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
-                               <div className="space-y-3 mb-6 relative z-10">
-                                  {PAYMENTS.map(pay => (
-                                     <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
-                                        <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pay.color} flex items-center justify-center text-white shadow-lg shrink-0`}>{pay.id === 'qris' ? <IconQrcode className="w-8 h-8"/> : <IconWallet className="w-8 h-8"/>}</div>
-                                        <div className="flex-1">
-                                            <div className="flex items-center gap-2"><div className="text-sm font-black text-main">{pay.name}</div><span className="text-[8px] bg-black/10 dark:bg-white/20 text-main px-2 py-0.5 rounded font-black">{pay.badge}</span></div>
-                                            <div className="text-[10px] text-sub-theme font-bold mt-1">{pay.type}</div>
-                                        </div>
-                                        {selectedPayment?.id === pay.id && <IconCheckCircle className="w-6 h-6 text-orange-500 shrink-0"/>}
-                                     </div>
-                                  ))}
-                               </div>
-                               
-                               {currentUserData?.saldoCashback > 0 && (
-                                   <div className="relative z-10 py-4 mb-2 border-t border-b border-theme flex items-center justify-between">
-                                      <div>
-                                          <label className="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5"><IconWallet className="w-4 h-4"/> Pakai Saldo Cashback</label>
-                                          <p className="text-[10px] text-sub-theme mt-0.5">Saldo: {formatRupiah(currentUserData.saldoCashback)}</p>
-                                      </div>
-                                      <label className="relative inline-flex items-center cursor-pointer">
-                                         <input type="checkbox" className="sr-only peer" checked={useCashback} onChange={(e) => setUseCashback(e.target.checked)} />
-                                         <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 peer-checked:bg-emerald-500"></div>
-                                      </label>
-                                   </div>
-                               )}
-
-                               <div className="relative z-10 pt-4">
-                                  <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
-                                  <div className="flex gap-2 bg-gray-100 dark:bg-black p-1.5 rounded-2xl border border-theme shadow-inner">
-                                     <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
-                                     {activePromo ? (
-                                         <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase">Hapus</button>
-                                     ) : (
-                                         <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm">Pakai</button>
-                                     )}
-                                  </div>
-                               </div>
-                            </div>
-
-                            <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-emerald-500 relative overflow-hidden mt-6">
-                               <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
-                                   <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
-                                   <span className="text-2xl md:text-3xl font-black text-orange-600 dark:text-orange-500 font-mono">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
-                               </div>
-                               {estimatedCashback > 0 && (
-                                   <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between">
-                                       <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Estimasi Cashback Diterima:</span>
-                                       <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
-                                   </div>
-                               )}
-                               <button onClick={triggerCheckout} disabled={isProcessing} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
-                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
-                               </button>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                )}
-                
-                {!selectedGame && (
-                   <div className="mt-16 pt-12 border-t border-theme text-center relative z-10">
-                      <div className="inline-flex items-center justify-center p-4 bg-orange-500/10 rounded-2xl mb-6"><IconShield className="w-8 h-8 text-orange-600 dark:text-orange-500"/></div>
-                      <h2 className="text-2xl md:text-3xl font-black text-main mb-4">Top Up Aman & Terpercaya</h2>
-                      <p className="text-sm text-sub-theme max-w-2xl mx-auto leading-relaxed">{globalConfig?.appName || 'Vipercell'} memproses transaksi secara otomatis setiap harinya. Kami menjamin keamanan akun Anda dengan sistem enkripsi dan integrasi langsung ke server game. Kepuasan Anda adalah prioritas utama kami.</p>
-                      
-                      {(galleryData||[]).length > 0 && (
-                         <div className="mt-12 bg-card p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner text-left">
-                            <h3 className="text-sm font-black text-sub-theme uppercase tracking-widest mb-6 flex items-center gap-2 pl-2"><IconImage className="w-5 h-5 text-orange-500"/> Bukti Transaksi Real-time</h3>
-                            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-                               {galleryData.map((img, i) => (
-                                  <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-theme relative bg-gray-100 dark:bg-black">
-                                     <img src={img} className="w-full h-full object-cover" />
-                                  </div>
-                               ))}
-                            </div>
-                         </div>
-                      )}
-                   </div>
-                )}
-            </div>
+            )}
             
             {/* RIWAYAT */}
             {currentView === 'history' && (
@@ -1737,6 +1514,88 @@
                 </div>
             )}
 
+            {/* PROFIL */}
+            {currentView === 'profile' && (
+                <div className="animate-slide-down pb-10 max-w-4xl mx-auto pt-4 w-full relative z-10">
+                   <div className="clean-card rounded-[3rem] p-6 md:p-10 shadow-2xl border-theme">
+                      <div className="flex flex-col md:flex-row items-center gap-8 mb-12 border-b border-theme pb-10">
+                         <div className="relative group">
+                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-950 p-1">
+                               <div className="w-full h-full bg-card rounded-full flex items-center justify-center overflow-hidden relative">
+                                  {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-sub-theme">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}
+                                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"><IconCamera className="w-8 h-8 text-white"/></div>
+                                  <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                               </div>
+                            </div>
+                         </div>
+                         <div className="text-center md:text-left flex-1">
+                            <h2 className="text-3xl md:text-4xl font-black leading-tight text-main">
+                                {currentUserData?.name || 'Member VIP'} 
+                                {isAdmin && <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-md font-bold uppercase ml-3">Admin</span>}
+                            </h2>
+                            <p className="text-sm text-sub-theme font-mono mt-2">{authUser.email}</p>
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-5">
+                               <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20 font-black uppercase flex items-center gap-1.5"><IconCheckCircle className="w-3 h-3"/> Terverifikasi Akun</span>
+                               <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercase flex items-center gap-1.5 ${userVipData.color}`}>{userVipData.badge} {userVipData.level} Member Rank</span>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                         <div className="space-y-6">
+                            <div className="bg-gray-50 dark:bg-black/50 p-8 rounded-[2.5rem] border border-theme shadow-inner">
+                               <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-main"><div className="bg-orange-500/20 p-2 rounded-xl text-orange-600 dark:text-orange-500"><IconUser className="w-5 h-5"/></div> Data Personal</h3>
+                               <form onSubmit={handleUpdateProfile} className="space-y-5">
+                                  <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nama Lengkap" /></div>
+                                  <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="tel" required value={profilePhone} onChange={(e)=> { const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setProfilePhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nomor Handphone Unik" /></div>
+                                  <button type="submit" disabled={!profilePhone || profilePhone.length < 10} className="w-full bg-black text-white dark:bg-white dark:text-black py-4 rounded-2xl font-black text-xs uppercase disabled:opacity-50">Simpan Data</button>
+                               </form>
+                            </div>
+                         </div>
+
+                         <div className="space-y-6">
+                            <div className={`p-8 rounded-[2.5rem] border bg-gradient-to-br from-white to-gray-50 dark:from-black/60 dark:to-black ${userVipData.color.replace('text-', 'border-').replace('bg-', '')}`}>
+                                <h3 className="text-lg font-black mb-2 flex items-center gap-2 text-main"><span className="text-2xl">{userVipData.badge}</span> Level VIP: {userVipData.level}</h3>
+                                <p className="text-xs font-medium text-sub-theme mb-5">Total Transaksi Sukses: <span className="font-black text-main">{userTotalTx}x</span></p>
+                                <div className="bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl p-4 flex justify-between items-center mb-4">
+                                    <div><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Benefit Cashback</p><p className="font-mono text-xl font-black text-orange-600 dark:text-orange-400">{userVipData.cashback * 100}% <span className="text-[10px] text-sub-theme">/ Trx</span></p></div>
+                                    <div className="text-right"><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Saldo Terkumpul</p><p className="font-mono text-xl font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</p></div>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 dark:bg-black/50 p-8 rounded-[2.5rem] border border-theme shadow-inner">
+                               <div className="flex justify-between items-start mb-6">
+                                   <h3 className="text-lg font-black flex items-center gap-3 text-main"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-600 dark:text-purple-500"><IconLock className="w-5 h-5"/></div> Keamanan Akun</h3>
+                               </div>
+
+                               <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
+                                  <div><h4 className="text-sm font-black text-main mb-1">PIN Transaksi</h4><p className="text-[10px] text-sub-theme font-medium">Lindungi proses checkout.</p></div>
+                                  {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
+                               </div>
+
+                               {!showPasswordForm ? (
+                                  <div className="flex flex-col justify-center">
+                                     <h4 className="text-sm font-black text-main mb-2">Ubah Kata Sandi Akun</h4>
+                                     <button onClick={()=>setShowPasswordForm(true)} className="bg-gray-200 dark:bg-white/5 border border-theme text-main py-3.5 px-5 rounded-2xl font-black text-xs uppercase w-full flex items-center justify-center gap-2"><IconEdit className="w-4 h-4"/> Form Ubah Sandi</button>
+                                  </div>
+                                ) : (
+                                  <form onSubmit={handleChangePassword} className="space-y-4 animate-slide-down">
+                                     <div className="relative"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Kata Sandi Saat Ini" /></div>
+                                     <div className="relative"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Kata Sandi Baru (Min. 6)" /></div>
+                                     <div className="relative"><IconCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={confirmNewPassword} onChange={(e)=>setConfirmNewPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Ulangi Kata Sandi Baru" /></div>
+                                     <div className="flex gap-3 pt-2">
+                                        <button type="button" onClick={()=>{setShowPasswordForm(false);}} className="flex-1 bg-gray-200 dark:bg-white/5 text-sub-theme py-3.5 rounded-xl font-bold text-[10px] uppercase">Batal</button>
+                                        <button type="submit" className="flex-[2] bg-red-600 text-white py-3.5 rounded-xl font-black text-[10px] uppercase">Simpan Sandi Baru</button>
+                                     </div>
+                                  </form>
+                               )}
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+            )}
+
             {/* ADMIN PANEL */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-slide-down pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
@@ -1745,7 +1604,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.0 Core</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.0.1 Serverless</span>
                         </div>
                      </div>
 
@@ -2268,7 +2127,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V12.0 */}
+                                 {/* Panel Bluetooth Printer V12.0.1 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
