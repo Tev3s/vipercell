@@ -6,11 +6,7 @@
   <meta name="theme-color" content="#f97316">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Vipercell">
-  
-  <link rel="manifest" href="manifest.json">
-  
-  <title>Vipercell v11.8.5</title>
+  <title>Vipercell v11.9.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -53,7 +49,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.8.5 True PWA</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v11.9.0 Dynamic PWA</p>
     </div>
   </div>
 
@@ -507,7 +503,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.8.0 Stabilized</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v11.9.0 Dynamic</span></div>
             </div>
          </footer>
        )
@@ -573,18 +569,12 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA & Notification Engine v11.8.0 ---
+      // --- PWA & Notification Engine v11.9.0 (Dynamic 1-File Strategy) ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
       const [notificationPermission, setNotificationPermission] = useState('default');
 
       useEffect(() => {
-          if ('serviceWorker' in navigator) {
-              navigator.serviceWorker.register('./sw.js')
-                  .then(reg => console.log('Service Worker Registered!', reg))
-                  .catch(err => console.error('Service Worker Failed!', err));
-          }
-
           const checkPwa = () => {
               const standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
               setIsPwaMode(standalone);
@@ -606,21 +596,54 @@
           }
       }, []);
 
+      // DYNAMIC MANIFEST GENERATOR (Diambil dari Pengaturan Firebase Admin)
+      useEffect(() => {
+          if (!globalConfig) return;
+          
+          const currentUrl = window.location.href.split('?')[0].split('#')[0];
+          const appName = globalConfig.appName || "Vipercell";
+          const defaultIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=";
+          const appIcon = globalConfig.favicon || defaultIcon;
+
+          const manifestData = {
+              name: appName,
+              short_name: appName.substring(0, 12),
+              start_url: currentUrl,
+              display: "standalone",
+              background_color: isDarkMode ? "#050505" : "#ffffff",
+              theme_color: "#f97316",
+              icons: [
+                  { src: appIcon, sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
+                  { src: appIcon, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+              ]
+          };
+          
+          const manifestString = JSON.stringify(manifestData);
+          const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString);
+          
+          let link = document.querySelector('link[rel="manifest"]');
+          if (!link) { 
+              link = document.createElement('link'); 
+              link.rel = 'manifest'; 
+              document.head.appendChild(link); 
+          }
+          link.href = manifestUrl;
+      }, [globalConfig?.appName, globalConfig?.favicon, isDarkMode]);
+
       const handleInstallPwa = () => {
           if(deferredPrompt) {
               deferredPrompt.prompt();
               deferredPrompt.userChoice.then((choiceResult) => {
-                  if (choiceResult.outcome === 'accepted') addToast('Menginstal Vipercell...', 'success');
+                  if (choiceResult.outcome === 'accepted') addToast(`Menginstal ${globalConfig?.appName || 'Vipercell'}...`, 'success');
                   setDeferredPrompt(null);
               });
           } else {
-              // Smart Guided Install Fallback
               addToast('Buka menu browser Anda (ikon titik tiga) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
           }
       }
 
       const requestNotificationPermission = async () => {
-          if (!isPwaMode) return; // Fail-safe: Notif cuma buat app yg udah diinstall
+          if (!isPwaMode) return;
           if (!('Notification' in window)) return addToast('Perangkat tidak mendukung notifikasi.', 'error');
           try {
              const perm = await Notification.requestPermission();
@@ -631,7 +654,6 @@
       };
 
       const triggerPushNotification = useCallback((title, body) => {
-          // Hanya berfungsi kalau lagi buka PWA dan diizinkan
           if (isPwaMode && 'Notification' in window && Notification.permission === 'granted') {
               try { new Notification(title, { body, icon: globalConfig?.favicon || "https://via.placeholder.com/192" }); } catch(e) {}
           }
@@ -1841,7 +1863,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.8.5 PWA</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v11.9.0 Dynamic</span>
                         </div>
                      </div>
 
@@ -2364,7 +2386,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V11.8.5 */}
+                                 {/* Panel Bluetooth Printer V11.9.0 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
@@ -2538,290 +2560,6 @@
                               </div>
                            </div>
                         )}
-
-                        {/* TAB: KATALOG GAME & HARGA */}
-                        {activeAdminTab === 'katalog' && (
-                           <div className="animate-slide-down flex flex-col md:flex-row gap-6 h-full">
-                              
-                              {/* Kolom Kiri: Kelola Game */}
-                              <div className="w-full md:w-1/3 flex flex-col gap-4 border-r border-theme pr-0 md:pr-4">
-                                 <h2 className="text-lg font-black text-main flex items-center gap-2 mb-2"><IconGamepad className="w-5 h-5 text-orange-500"/> Manajemen Game</h2>
-                                 <form onSubmit={handleSaveGame} className="bg-gray-50 dark:bg-black/50 p-5 rounded-3xl border border-theme shadow-inner text-sm space-y-3 shrink-0">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h3 className="font-bold text-main text-xs uppercase tracking-widest">{editingGameId ? 'Edit Data Game' : 'Tambah Game Baru'}</h3>
-                                        {editingGameId && <button type="button" onClick={()=>{setEditingGameId(null); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone');}} className="text-[9px] bg-gray-200 dark:bg-white/10 px-2 py-1 rounded text-main font-bold">Batal Edit</button>}
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">ID Database Unik</label>
-                                        <input type="text" required value={newGameId} onChange={(e)=>setNewGameId(e.target.value.toLowerCase().replace(/\s+/g, ''))} disabled={editingGameId!==null} placeholder="contoh: mlbb" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition disabled:opacity-50"/>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Nama Game</label>
-                                        <input type="text" required value={newGameName} onChange={(e)=>setNewGameName(e.target.value)} placeholder="Mobile Legends" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition"/>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Tipe ID Member</label>
-                                        <select value={newGameInput} onChange={(e)=>setNewGameInput(e.target.value)} className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition appearance-none">
-                                            <option value="id_zone">Butuh User ID & Zone ID</option>
-                                            <option value="id_only">Hanya User ID (UID)</option>
-                                            <option value="riot_id">Riot ID & Tagline (#)</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Cover / Gambar Game</label>
-                                        <div className="relative group">
-                                            <input type="file" accept="image/*" onChange={async (e) => {
-                                               if(e.target.files[0]) {
-                                                  setUploadingGameImg(true); 
-                                                  try { const res = await compressImage(e.target.files[0], 300); setNewGameImg(res); } 
-                                                  catch(err) { addToast('Gagal memproses gambar', 'error'); }
-                                                  setUploadingGameImg(false);
-                                               }
-                                            }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                            <div className="w-full input-theme p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 text-xs text-center flex items-center justify-center gap-2 group-hover:border-orange-500 transition">
-                                                {uploadingGameImg ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> {newGameImg ? 'Ganti Gambar (Klik)' : 'Pilih Gambar (Upload)'}</>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="w-full bg-orange-600 hover:bg-orange-500 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition">Simpan Konfigurasi Game</button>
-                                 </form>
-                                 
-                                 <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-black/40 rounded-3xl p-3 border border-theme custom-scrollbar space-y-2">
-                                    <h3 className="text-[10px] font-black text-sub-theme px-2 py-1 uppercase tracking-widest">Daftar Game Tersimpan</h3>
-                                    {(games||[]).map(g => ( 
-                                        <div key={g.id} onClick={()=>setAdminSelectedGame(g.id)} className={`p-3 rounded-2xl flex justify-between items-center cursor-pointer transition border ${adminSelectedGame===g.id ? 'bg-orange-50 dark:bg-orange-500/10 border-orange-500/50' : 'bg-white dark:bg-white/5 border-transparent hover:border-theme'}`}>
-                                            <div className="flex items-center gap-3">
-                                                <img src={g.image} className="w-10 h-10 rounded-xl object-cover border border-theme"/>
-                                                <div>
-                                                    <div className={`text-xs font-black truncate max-w-[120px] ${adminSelectedGame===g.id ? 'text-orange-600 dark:text-orange-400' : 'text-main'}`}>{g.name}</div>
-                                                    <div className="text-[9px] text-sub-theme font-mono mt-0.5">ID: {g.id}</div>
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-1">
-                                                <button onClick={(e)=>{e.stopPropagation(); handleEditGameClick(g)}} className="text-gray-400 hover:text-main p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
-                                                <button onClick={(e)=>{e.stopPropagation(); handleDeleteGame(g.id)}} className="text-gray-400 hover:text-red-500 p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
-                                            </div>
-                                        </div> 
-                                    ))}
-                                    {(!games || games.length === 0) && <div className="text-center py-10 text-xs font-bold text-sub-theme">Database game kosong.</div>}
-                                 </div>
-                              </div>
-
-                              {/* Kolom Kanan: Kelola Item */}
-                              <div className="w-full md:w-2/3 flex flex-col gap-4">
-                                 <div className="flex items-center justify-between mb-2">
-                                     <h2 className="text-lg font-black text-main flex items-center gap-2"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h2>
-                                     <div className="text-[10px] bg-gray-100 dark:bg-white/10 border border-theme px-3 py-1.5 rounded-lg text-main font-bold flex items-center gap-2">Target Game: <span className="text-orange-600 dark:text-orange-400">{(games||[]).find(g=>g.id===adminSelectedGame)?.name || 'Pilih game di samping'}</span></div>
-                                 </div>
-
-                                 <form onSubmit={handleSaveItem} className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-3xl border border-emerald-500/30 flex flex-col sm:flex-row gap-3 shrink-0 shadow-inner">
-                                    <div className="flex-1 space-y-1">
-                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Nama Produk / Item Top Up</label>
-                                        <input type="text" required value={newItemName} onChange={(e)=>setNewItemName(e.target.value)} placeholder="Contoh: 86 Diamonds" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50"/>
-                                    </div>
-                                    <div className="flex-1 sm:max-w-[200px] space-y-1">
-                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Harga Jual (Rp)</label>
-                                        <input type="number" required value={newItemPrice} onChange={(e)=>setNewItemPrice(e.target.value)} placeholder="25000" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50 font-mono"/>
-                                    </div>
-                                    <div className="flex gap-2 items-end pt-4 sm:pt-0">
-                                        <button type="submit" disabled={!adminSelectedGame} className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 h-[46px]">{editingItemId ? 'Update Data' : 'Tambah Baru'}</button>
-                                        {editingItemId && <button type="button" onClick={()=>{setEditingItemId(null); setNewItemName(''); setNewItemPrice('');}} className="bg-gray-200 dark:bg-white/10 hover:bg-gray-300 dark:hover:bg-white/20 text-main px-4 py-3.5 rounded-xl transition h-[46px]"><IconX className="w-4 h-4"/></button>}
-                                    </div>
-                                 </form>
-                                 
-                                 <div className="flex-1 bg-gray-50 dark:bg-black/40 rounded-3xl p-5 border border-theme overflow-y-auto custom-scrollbar shadow-inner">
-                                    <h3 className="text-[10px] font-black text-sub-theme mb-4 uppercase tracking-widest">Daftar Produk Aktif ({(items||[]).filter(i=>i.gameId===adminSelectedGame).length})</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                       {(items||[]).filter(i=>i.gameId===adminSelectedGame).sort((a,b)=>a.price-b.price).map(i => (
-                                          <div key={i.id} className="bg-white dark:bg-white/5 p-4 rounded-2xl flex flex-col justify-between border border-theme hover:border-emerald-500/50 transition group relative overflow-hidden shadow-sm">
-                                             <div className="mb-4 relative z-10">
-                                                 <div className="text-main font-bold text-sm leading-tight mb-1">{i.name}</div>
-                                                 <div className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-sm">{formatRupiah(i.price)}</div>
-                                             </div>
-                                             <div className="flex justify-end gap-2 relative z-10 pt-2 border-t border-theme mt-auto">
-                                                <button onClick={()=>handleEditItemClick(adminSelectedGame, i)} className="text-gray-400 hover:text-main p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
-                                                <button onClick={()=>handleDeleteItem(i.id)} className="text-gray-400 hover:text-red-500 p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
-                                             </div>
-                                          </div>
-                                       ))}
-                                       {(!items || items.filter(i=>i.gameId===adminSelectedGame).length === 0) && (
-                                          <div className="col-span-full flex flex-col items-center justify-center py-16 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
-                                              <IconBox className="w-12 h-12 mb-3 opacity-30"/>
-                                              <span className="font-bold text-sm">Belum ada produk untuk game ini.</span>
-                                          </div>
-                                       )}
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: PUSAT PROMOSI */}
-                        {activeAdminTab === 'promo' && (
-                           <div className="animate-slide-down flex flex-col h-full w-full space-y-6">
-                               <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
-                                   <div>
-                                       <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconPercent className="w-6 h-6 text-orange-500"/> Pusat Promosi & Event</h2>
-                                       <p className="text-xs text-sub-theme font-medium mt-1">Kelola Diskon Otomatis, Promo Per Game, Flash Sale, Kupon, dan Event Harian.</p>
-                                   </div>
-                               </div>
-
-                               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full pb-6">
-                                   
-                                   {/* Form Buat Promo */}
-                                   <div className="lg:col-span-5 flex flex-col h-full">
-                                      <form onSubmit={handleSavePromo} className="w-full bg-gray-50 dark:bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner h-fit">
-                                         <h3 className="text-lg font-black text-main mb-6">Formulir Terbitkan Promo</h3>
-                                         
-                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
-                                             <button type="button" onClick={()=>setPromoModalType('item')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='item' ? 'bg-orange-50 dark:bg-orange-500/20 border-orange-500/50 text-orange-600 dark:text-orange-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎯 Diskon Item</button>
-                                             <button type="button" onClick={()=>setPromoModalType('game')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='game' ? 'bg-blue-50 dark:bg-blue-500/20 border-blue-500/50 text-blue-600 dark:text-blue-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎮 Promo Game</button>
-                                             <button type="button" onClick={()=>setPromoModalType('flash')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='flash' ? 'bg-red-50 dark:bg-red-500/20 border-red-500/50 text-red-600 dark:text-red-400' : 'bg-transparent border-theme text-sub-theme'}`}>⚡ Flash Sale</button>
-                                             <button type="button" onClick={()=>setPromoModalType('code')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='code' ? 'bg-purple-50 dark:bg-purple-500/20 border-purple-500/50 text-purple-600 dark:text-purple-400' : 'bg-transparent border-theme text-sub-theme'}`}>🔑 Kode Kupon</button>
-                                             <button type="button" onClick={()=>setPromoModalType('day')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='day' ? 'bg-emerald-50 dark:bg-emerald-500/20 border-emerald-500/50 text-emerald-600 dark:text-emerald-400' : 'bg-transparent border-theme text-sub-theme'}`}>📅 Hari Spesial</button>
-                                         </div>
-                                         
-                                         <div className="space-y-4">
-                                             <div className="flex gap-3">
-                                                 <div className="flex-1 space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Jenis Potongan</label>
-                                                     <select value={promoForm.type} onChange={(e)=>setPromoForm({...promoForm, type: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
-                                                         <option value="percentage">Persen (%)</option>
-                                                         <option value="fixed">Nominal Harga (Rp)</option>
-                                                     </select>
-                                                 </div>
-                                                 <div className="flex-1 space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Besaran Nilai</label>
-                                                     <input type="number" required value={promoForm.discount} onChange={(e)=>setPromoForm({...promoForm, discount: e.target.value})} placeholder="Contoh: 10" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 font-mono" />
-                                                 </div>
-                                             </div>
-
-                                             {/* Conditional Inputs */}
-                                             {(promoModalType==='flash' || promoModalType==='item') && (
-                                                 <div className="space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Target Produk Spesifik</label>
-                                                     <select value={promoTargetItem} onChange={(e)=>setPromoTargetItem(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
-                                                         <option value="">-- Pilih Item dari Katalog --</option>
-                                                         {(items||[]).map(i=><option key={i.id} value={i.id}>{((games||[]).find(g=>g.id===i.gameId)?.name || 'Game')} - {i.name} ({formatRupiah(i.price)})</option>)}
-                                                     </select>
-                                                 </div>
-                                             )}
-
-                                             {promoModalType==='game' && (
-                                                 <div className="space-y-1">
-                                                     <label className="text-[9px] font-black text-blue-500 uppercase tracking-widest ml-1">Terapkan Diskon ke Semua Item Game Ini</label>
-                                                     <select value={promoTargetGame} onChange={(e)=>setPromoTargetGame(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-blue-500 appearance-none">
-                                                         <option value="">-- Pilih Game --</option>
-                                                         {(games||[]).map(g=><option key={g.id} value={g.id}>{g.name}</option>)}
-                                                     </select>
-                                                 </div>
-                                             )}
-
-                                             {promoModalType==='flash' && (
-                                                <div className="space-y-4 pt-2 border-t border-theme">
-                                                   <div className="grid grid-cols-2 gap-3">
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Mulai Berlaku</label>
-                                                           <input type="datetime-local" required value={promoForm.startTime} onChange={(e)=>setPromoForm({...promoForm, startTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
-                                                       </div>
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Berakhir Pada</label>
-                                                           <input type="datetime-local" required value={promoForm.endTime} onChange={(e)=>setPromoForm({...promoForm, endTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
-                                                       </div>
-                                                   </div>
-                                                   <div className="space-y-1">
-                                                       <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Batas Kuota / Stok Promo</label>
-                                                       <input type="number" required value={promoForm.stock} onChange={(e)=>setPromoForm({...promoForm, stock: e.target.value})} placeholder="Contoh: 50 pembeli pertama" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-red-500 font-mono"/>
-                                                   </div>
-                                                </div>
-                                             )}
-
-                                             {promoModalType==='code' && (
-                                                <div className="space-y-4 pt-2 border-t border-theme">
-                                                   <div className="space-y-1">
-                                                       <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Teks Kode Kupon Rahasia</label>
-                                                       <input type="text" required value={promoForm.code} onChange={(e)=>setPromoForm({...promoForm, code: (e.target.value||'').replace(/\s/g, '').toUpperCase()})} placeholder="Ketik Kode (Misal: VIPERPROMO)" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-purple-500 font-mono uppercase font-black"/>
-                                                   </div>
-                                                   <div className="grid grid-cols-2 gap-3">
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Maks. Pengguna</label>
-                                                           <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} placeholder="Contoh: 100" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
-                                                       </div>
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Min. Belanja (Rp)</label>
-                                                           <input type="number" value={promoForm.minPurchase} onChange={(e)=>setPromoForm({...promoForm, minPurchase: e.target.value})} placeholder="Opsional (0)" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
-                                                       </div>
-                                                   </div>
-                                                </div>
-                                             )}
-
-                                             {promoModalType==='day' && (
-                                                <div className="space-y-1 pt-2 border-t border-theme">
-                                                    <label className="text-[9px] font-black text-emerald-500 uppercase tracking-widest ml-1">Pilih Hari Aktif Promo Harian</label>
-                                                    <select value={promoForm.targetDay} onChange={(e)=>setPromoForm({...promoForm, targetDay: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 appearance-none">
-                                                        <option value="1">Senin</option><option value="2">Selasa</option><option value="3">Rabu</option><option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option><option value="0">Minggu</option>
-                                                    </select>
-                                                </div>
-                                             )}
-                                         </div>
-                                         
-                                         <button type="submit" className="w-full bg-black text-white dark:bg-white hover:opacity-80 dark:text-black py-4 rounded-xl font-black text-sm uppercase tracking-widest shadow-xl mt-8 transition transform hover:-translate-y-1">Terbitkan Promo Ke Server</button>
-                                      </form>
-                                   </div>
-
-                                   {/* List Promo Database */}
-                                   <div className="lg:col-span-7 bg-gray-50 dark:bg-black/40 rounded-[2.5rem] p-6 md:p-8 border border-theme shadow-inner flex flex-col h-full">
-                                      <h3 className="text-lg font-black text-main mb-2">Database Promosi Aktif</h3>
-                                      <p className="text-[10px] text-sub-theme mb-6">Daftar semua promo yang sedang atau pernah berjalan di sistem.</p>
-                                      
-                                      <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
-                                         {(promos||[]).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p => (
-                                            <div key={p.id} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all shadow-sm relative overflow-hidden group ${p.category === 'flash' ? 'border-red-500/30 bg-red-50 dark:bg-gradient-to-r from-black to-red-950/30' : p.category === 'code' ? 'border-purple-500/30 bg-purple-50 dark:bg-gradient-to-r from-black to-purple-950/30' : p.category === 'game' ? 'border-blue-500/30 bg-blue-50 dark:bg-gradient-to-r from-black to-blue-950/30' : 'border-theme bg-white dark:bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
-                                                
-                                               <div className="flex-1 min-w-0 z-10 relative">
-                                                  <div className="flex items-center gap-2 mb-2">
-                                                     {p.category === 'flash' && <span className="bg-red-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">⚡ Flash Sale</span>}
-                                                     {p.category === 'code' && <span className="bg-purple-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🔑 Kode Kupon</span>}
-                                                     {p.category === 'item' && <span className="bg-orange-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎯 Diskon Spesifik</span>}
-                                                     {p.category === 'game' && <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎮 Promo Game</span>}
-                                                     {p.category === 'day' && <span className="bg-emerald-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">📅 Event Harian</span>}
-                                                     <div className="text-base font-black font-mono tracking-widest text-main truncate max-w-[150px]">{p.code || (p.id||'').split('_')[0]}</div>
-                                                  </div>
-                                                  
-                                                  <div className="text-sm font-bold text-sub-theme">
-                                                     {p.type === 'percentage' ? <span className="text-orange-600 dark:text-orange-400">Potongan {p.discount}% Off</span> : <span className="text-emerald-600 dark:text-emerald-400">Diskon Tunai {formatRupiah(p.discount)}</span>}
-                                                  </div>
-                                                  
-                                                  <div className="flex flex-wrap gap-2 mt-3">
-                                                     {p.minPurchase > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-theme px-2 py-1 rounded text-main font-mono">Min: {formatRupiah(p.minPurchase)}</span>}
-                                                     {p.targetItems?.length > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-orange-500/30 px-2 py-1 rounded text-orange-600 dark:text-orange-400 font-bold truncate max-w-[150px]">Khusus: {(items||[]).find(i=>i.id===p.targetItems[0])?.name || 'Item Terpilih'}</span>}
-                                                     {p.targetGame && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-blue-500/30 px-2 py-1 rounded text-blue-600 dark:text-blue-400 font-bold truncate max-w-[150px]">Semua Item: {(games||[]).find(g=>g.id===p.targetGame)?.name || 'Game Terpilih'}</span>}
-                                                     {(p.maxUses || p.stock) && <span className={`text-[9px] bg-black/5 dark:bg-black/50 border px-2 py-1 rounded font-mono font-bold ${((p.usedBy||[]).length >= (p.maxUses || p.stock)) ? 'border-red-500/30 text-red-600 dark:text-red-500' : 'border-theme text-main'}`}>Terpakai: {(p.usedBy||[]).length||0} / {p.maxUses || p.stock}</span>}
-                                                  </div>
-                                               </div>
-                                               
-                                               <div className="flex gap-2 w-full sm:w-auto mt-3 sm:mt-0 shrink-0 z-10 relative">
-                                                  <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`w-12 h-10 rounded-xl transition-all flex items-center justify-center border shadow-inner ${p.isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-gray-200 dark:bg-gray-800/50 text-gray-500 border-theme hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-main'}`} title={p.isActive ? 'Nonaktifkan Promo' : 'Aktifkan Kembali'}>
-                                                     {p.isActive ? <IconCheckCircle className="w-5 h-5"/> : <IconBlock className="w-5 h-5"/>}
-                                                  </button>
-                                                  <button onClick={() => handleDeletePromo(p.id)} className="w-12 h-10 bg-gray-100 dark:bg-black/50 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-inner group-hover:border-red-500/50" title="Hapus Permanen">
-                                                     <IconTrash className="w-4 h-4"/>
-                                                  </button>
-                                               </div>
-                                            </div>
-                                         ))}
-                                         {(!promos || promos.length === 0) && (
-                                            <div className="flex flex-col items-center justify-center py-24 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
-                                               <IconPercent className="w-12 h-12 mb-4 opacity-30"/>
-                                               <span className="font-bold text-sm">Database promo kosong. Terbitkan promo pertama Anda.</span>
-                                            </div>
-                                         )}
-                                      </div>
-                                   </div>
-                               </div>
-                           </div>
-                        )}
-
                      </div>
                   </div>
                </div>
