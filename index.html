@@ -11,7 +11,7 @@
   <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   
-  <title>Vipercell v12.1.1</title>
+  <title>Vipercell v12.1.2</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -54,7 +54,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.1.1 Engine</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.1.2 Fixed Engine</p>
     </div>
   </div>
 
@@ -508,7 +508,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.1.1 Premium</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.1.2 Solid</span></div>
             </div>
          </footer>
        )
@@ -574,7 +574,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA Engine v12.1.1 (Notification Removed, Icon Synced) ---
+      // --- PWA Engine v12.1.2 (No Push Notifications to prevent blank) ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -682,7 +682,7 @@
       const [currentUserData, setCurrentUserData] = useState(null); const [showPasswordForm, setShowPasswordForm] = useState(false);
       const [currentPassword, setCurrentPassword] = useState(''); const [newPassword, setNewPassword] = useState(''); const [confirmNewPassword, setConfirmNewPassword] = useState('');
       const [uploadingAvatar, setUploadingAvatar] = useState(false); const [profileName, setProfileName] = useState(''); const [profilePhone, setProfilePhone] = useState(''); const [profileAvatar, setProfileAvatar] = useState('');
-      const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', onSuccess: null }); const [changePinModalOpen, setChangePinModalOpen] = useState(false); const [feedbackText, setFeedbackText] = useState('');
+      const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); const [changePinModalOpen, setChangePinModalOpen] = useState(false); const [feedbackText, setFeedbackText] = useState('');
 
       const [isStoreOpen, setIsStoreOpen] = useState(true); const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); 
       const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]);
@@ -725,6 +725,10 @@
       const [isStandbyMode, setIsStandbyMode] = useState(false);
       const [helpTab, setHelpTab] = useState('chat');
 
+      // STATE BARU: PENYIMPANAN DATA SEMENTARA (PAYLOAD-DRIVEN ARCHITECTURE)
+      const [pendingOrderPayload, setPendingOrderPayload] = useState(null);
+      const [isPinVerified, setIsPinVerified] = useState(false);
+
       useEffect(() => { if (adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen) document.body.classList.add('modal-open'); else document.body.classList.remove('modal-open'); return () => document.body.classList.remove('modal-open'); }, [adminAuthModal, confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal]);
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
       useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
@@ -747,7 +751,7 @@
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
 
       useEffect(() => {
          try {
@@ -1010,7 +1014,7 @@
               setFeedbackText(''); addToast('Saran & Masukan Anda telah dikirim ke Tim.', 'success'); setHelpTab('chat'); 
           } catch(err) { addToast('Gagal mengirim saran', 'error'); } finally { closeSysLoad(); } 
       }
-      const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
+      const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
       
       const getActivePromosForItem = (itemId) => { if(!promos) return []; const now = new Date(); return promos.filter(p => { if(!p.isActive) return false; if(p.category === 'flash') { if(now > new Date(p.endTime) || (p.usedBy||[]).length >= p.stock) return false; if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'game') { if(p.targetGame && p.targetGame !== selectedGame?.id) return false; return true; } if(p.category === 'day') return now.getDay() === parseInt(p.targetDay); return false; }); };
 
@@ -1021,6 +1025,7 @@
       const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0; const userVipData = calculateVIPLevel(userTotalTx);
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
+      // PAYLOAD-DRIVEN CHECKOUT FLOW (v12.1.2) - Solves the blank screen crash!
       const triggerCheckout = () => { 
           if (!currentUserData?.phone) return addToast('❌ Keamanan: Lengkapi Nomor HP Anda di menu Profil sebelum checkout.', 'error');
           if (!userId) return addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); 
@@ -1029,27 +1034,100 @@
           if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) return addToast('❌ Data Akun: ID Game hanya boleh berisi angka.', 'error'); 
           if (!selectedNominal) return addToast('❌ Produk: Pilih produk top up terlebih dahulu.', 'warning'); 
           if (!selectedPayment) return addToast('❌ Pembayaran: Pilih metode pembayaran.', 'warning'); 
+          
           const maxCashback = currentUserData?.saldoCashback || 0; 
           const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); 
-          const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
-          const fPrice = basePrice - usedCashback; 
-          setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: nickname || null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }}); 
+          const usedCb = useCashback ? Math.min(basePrice, maxCashback) : 0; 
+          const fPrice = basePrice - usedCb; 
+          
+          const orderPayload = {
+              gameId: selectedGame.id,
+              gameName: selectedGame.name,
+              gameImage: selectedGame.image,
+              userId: userId,
+              zoneId: zoneId,
+              nickname: nickname || null,
+              itemId: selectedNominal.id,
+              itemName: selectedNominal.name,
+              paymentName: selectedPayment.name,
+              finalPrice: fPrice,
+              usedCashback: usedCb,
+              basePrice: basePrice
+          };
+          
+          setPendingOrderPayload(orderPayload);
+          setCheckoutSummary({ isOpen: true, data: orderPayload }); 
       };
       
-      const executeFinalPayment = () => { setCheckoutSummary({isOpen: false, data: null}); if (currentUserData?.pin) { setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: () => { setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); processCheckout(); }}); } else { processCheckout(); } };
+      const executeFinalPayment = () => { 
+          setCheckoutSummary({ isOpen: false, data: pendingOrderPayload }); 
+          if (currentUserData?.pin) { 
+              setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: null }); 
+          } else { 
+              setIsPinVerified(true);
+          } 
+      };
 
-      const processCheckout = async () => {
-        setIsProcessing(true); triggerSysLoad('Memproses Transaksi Anda...'); let maxCashback = currentUserData?.saldoCashback || 0; let basePrice = calculateFinalPrice(selectedNominal.price + selectedPayment.fee, selectedNominal.id); let usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; let finalPrice = basePrice - usedCashback; const activeAutoPromos = getActivePromosForItem(selectedNominal.id); let usedPromoIds = []; let appliedPromoCode = [];
-        if (activePromo) { try { const pDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id)); if(pDoc.exists()) { let livePromo = pDoc.data(); if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); } else { addToast("Kuota promo habis.", "error"); setActivePromo(null); setIsProcessing(false); closeSysLoad(); return; } } } catch(e){} }
-        const flashPromo = activeAutoPromos.find(p => p.category === 'flash'); if(flashPromo) { usedPromoIds.push(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', flashPromo.id)); appliedPromoCode.push('FLASH_SALE'); }
-        const earnedCashback = globalConfig?.cashbackPercent ? (finalPrice * (globalConfig.cashbackPercent / 100)) : 0;
+      // Watch for PIN success dynamically
+      useEffect(() => {
+          if (pinModalState.isOpen === false && pinModalState.mode === 'verify' && !pinModalState.expectedPin) {
+              // Jika modal ditutup (onSuccess di dalam komponen PinModal telah mengeksekusi ini dan mereset state)
+              setIsPinVerified(true);
+          }
+      }, [pinModalState.isOpen, pinModalState.mode, pinModalState.expectedPin]);
+
+      // Execution of the Order
+      useEffect(() => {
+          if (isPinVerified && pendingOrderPayload) {
+              processRobustCheckout(pendingOrderPayload);
+              setIsPinVerified(false);
+          }
+      }, [isPinVerified, pendingOrderPayload]);
+
+      const processRobustCheckout = async (payload) => {
+        setIsProcessing(true); triggerSysLoad('Memproses Transaksi Anda...'); 
+        
+        let maxCashback = currentUserData?.saldoCashback || 0; 
+        const activeAutoPromos = getActivePromosForItem(payload.itemId); 
+        let usedPromoIds = []; let appliedPromoCode = [];
+        
+        if (activePromo) { 
+            try { 
+                const pDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', activePromo.id)); 
+                if(pDoc.exists()) { 
+                    let livePromo = pDoc.data(); 
+                    if ((livePromo.usedBy || []).length < livePromo.maxUses && !(livePromo.usedBy || []).includes(authUser.email)) { 
+                        usedPromoIds.push(pDoc.ref); appliedPromoCode.push(activePromo.code); 
+                    } else { 
+                        addToast("Kuota promo habis.", "error"); setActivePromo(null); setIsProcessing(false); closeSysLoad(); setPendingOrderPayload(null); return; 
+                    } 
+                } 
+            } catch(e){} 
+        }
+        
+        const flashPromo = activeAutoPromos.find(p => p.category === 'flash'); 
+        if(flashPromo) { usedPromoIds.push(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', flashPromo.id)); appliedPromoCode.push('FLASH_SALE'); }
+        const earnedCashback = globalConfig?.cashbackPercent ? (payload.finalPrice * (globalConfig.cashbackPercent / 100)) : 0;
 
         try {
           const batch = writeBatch(db); const newOrderId = generateOrderID(); const orderRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', newOrderId);
-          batch.set(orderRef, { gameId: selectedGame.id, gameName: selectedGame.name, targetUserId: userId, targetZoneId: selectedGame.inputType !== 'id_only' ? zoneId : '', targetNickname: nickname || '', nominalName: selectedNominal.name, priceTotal: finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: selectedPayment.name, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString(), cashbackEarned: earnedCashback });
-          if(usedCashback > 0) { batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - usedCashback }); }
+          batch.set(orderRef, { gameId: payload.gameId, gameName: payload.gameName, targetUserId: payload.userId, targetZoneId: payload.zoneId || '', targetNickname: payload.nickname || '', nominalName: payload.itemName, priceTotal: payload.finalPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: payload.paymentName, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString(), cashbackEarned: earnedCashback });
+          
+          if(payload.usedCashback > 0) { batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - payload.usedCashback }); }
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
-          await batch.commit(); setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true);
+          
+          await batch.commit(); 
+          setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true);
+          
+          // Reset Form ONLY on Success
+          setPendingOrderPayload(null);
+          setSelectedGame(null);
+          setSelectedNominal(null);
+          setSelectedPayment(null);
+          setUserId('');
+          setZoneId('');
+          setNickname('');
+          
         } catch (error) { addToast("Gagal memproses pesanan sistem.", "error"); } finally { setIsProcessing(false); closeSysLoad(); }
       };
 
@@ -1370,7 +1448,7 @@
                                  ))}
                               </div>
                            )}
-                           <div ref={chatEndRef} className="h-2"/>
+                           <div ref={chatEndRef} className="h-4"/>
                         </div>
                     )}
 
@@ -1742,8 +1820,7 @@
                          <div className="relative group">
                             <div className="w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-950 p-1">
                                <div className="w-full h-full bg-card rounded-full flex items-center justify-center overflow-hidden relative">
-                                  {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-sub-theme">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}
-                                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"><IconCamera className="w-8 h-8 text-white"/></div>
+                                  {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-sub-theme">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}<div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"><IconCamera className="w-8 h-8 text-white"/></div>
                                   <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                                </div>
                             </div>
@@ -1790,7 +1867,7 @@
 
                                <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
                                   <div><h4 className="text-sm font-black text-main mb-1">PIN Transaksi</h4><p className="text-[10px] text-sub-theme font-medium">Lindungi proses checkout.</p></div>
-                                  {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
+                                  {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', expectedPin: '', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
                                </div>
 
                                {!showPasswordForm ? (
@@ -1822,7 +1899,8 @@
                   <div className="w-full lg:w-72 clean-card border-theme p-5 shadow-2xl flex flex-col shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-140px)] z-30">
                      <div className="flex items-center gap-3 mb-8 px-2 pt-2">
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
-                        <div className="min-w-0"><h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
+                        <div className="min-w-0">
+                           <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
                            <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.1.1 Premium</span>
                         </div>
                      </div>
