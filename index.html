@@ -11,7 +11,7 @@
   <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   
-  <title>Vipercell v12.1.0</title>
+  <title>Vipercell v12.1.1</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,7 +22,7 @@
   <style>
     :root { --bg-body: #f0f2f5; --bg-card: #ffffff; --bg-input: #f9fafb; --text-main: #111827; --text-sub: #4b5563; --border-color: #e5e7eb; --chat-admin: #fff; --chat-user: #d9fdd3; --chat-text: #111; }
     .dark { --bg-body: #050505; --bg-card: #0a0a0a; --bg-input: #000000; --text-main: #ffffff; --text-sub: #9ca3af; --border-color: rgba(255,255,255,0.1); --chat-admin: #1a1a1a; --chat-user: #f97316; --chat-text: #fff; }
-    body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Segoe UI', Tahoma, sans-serif; overscroll-behavior-y: none; padding-bottom: constant(safe-area-inset-bottom); padding-bottom: env(safe-area-inset-bottom); }
+    body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Segoe UI', Tahoma, sans-serif; overscroll-behavior-y: none; padding-bottom: env(safe-area-inset-bottom); }
     .bg-main { background-color: var(--bg-body) !important; }
     .clean-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .input-theme { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main); }
@@ -54,7 +54,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.1.0 Fix Engine</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.1.1 Engine</p>
     </div>
   </div>
 
@@ -508,7 +508,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.1.0 Fixed UI</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.1.1 Premium</span></div>
             </div>
          </footer>
        )
@@ -574,7 +574,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA Engine (No Permissions requested as per v12.0) ---
+      // --- PWA Engine v12.1.1 (Notification Removed, Icon Synced) ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -614,19 +614,29 @@
               display: "standalone",
               background_color: isDarkMode ? "#050505" : "#ffffff",
               theme_color: "#f97316",
-              icons: [ { src: appIcon, sizes: "192x192", type: "image/png", purpose: "any maskable" }, { src: appIcon, sizes: "512x512", type: "image/png", purpose: "any maskable" } ]
+              icons: [
+                  { src: appIcon, sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
+                  { src: appIcon, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+              ]
           };
+          
           const manifestString = JSON.stringify(manifestData);
           const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString);
           
           let linkManifest = document.querySelector('link[rel="manifest"]');
-          if (!linkManifest) { linkManifest = document.createElement('link'); linkManifest.rel = 'manifest'; document.head.appendChild(linkManifest); }
+          if (!linkManifest) { 
+              linkManifest = document.createElement('link'); 
+              linkManifest.rel = 'manifest'; 
+              document.head.appendChild(linkManifest); 
+          }
           linkManifest.href = manifestUrl;
 
           let linkAppleIcon = document.getElementById('apple-touch-icon');
           if (linkAppleIcon) linkAppleIcon.href = appIcon;
+
           let linkFavicon = document.getElementById('favicon-link');
           if (linkFavicon) linkFavicon.href = appIcon;
+
       }, [globalConfig?.appName, globalConfig?.favicon, isDarkMode]);
 
       const handleInstallPwa = () => {
@@ -637,7 +647,7 @@
                   setDeferredPrompt(null);
               });
           } else {
-              addToast('Buka menu browser (ikon titik tiga di kanan atas) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
+              addToast('Buka menu browser Anda (ikon titik tiga) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
           }
       }
 
@@ -653,7 +663,6 @@
       const [confirmModal, setConfirmModal] = useState({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' });
       const [dangerModal, setDangerModal] = useState({ isOpen: false, msg: '', action: null });
       
-      // State UI Navigasi (Baru v12.1.0)
       const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
       const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
 
@@ -697,7 +706,7 @@
       const [promoModalType, setPromoModalType] = useState('item'); const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' });
       const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
       const [adminOrderSearch, setAdminOrderSearch] = useState(''); const [adminMemberSearch, setAdminMemberSearch] = useState(''); const [adminChatSearch, setAdminChatSearch] = useState('');
-      const [isScannerOpen, setIsScannerOpen] = useState(false); const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, orderId: null });
+      const [isScannerOpen, setIsScannerOpen] = useState(false); const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, order: null });
       const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
       const [supportTab, setSupportTab] = useState('member'); const [activeChatEmail, setActiveChatEmail] = useState(null); const [adminReplyText, setAdminReplyText] = useState(''); const adminChatEndRef = useRef(null);
       const [chatTemplates, setChatTemplates] = useState(["Sedang diproses ya kak.", "Promo sedang berlangsung hari ini!", "Sistem baru saja diupdate."]);
@@ -738,7 +747,7 @@
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, orderId: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
 
       useEffect(() => {
          try {
@@ -778,6 +787,8 @@
          });
          return () => unsubUser();
       }, [authUser, addToast]);
+
+      const prevUserOrdersRef = useRef([]);
 
       useEffect(() => {
          if (!authUser) return; let unsubs = [];
@@ -824,7 +835,9 @@
                       const isNew = !prevAdminOrdersRef.current.find(p => p.id === order.id);
                       if (isNew && order.status === 'Pending') {
                           addToast(`Pesanan Baru: ${order.gameName} - ${order.id}`, 'info');
-                          if (isStandbyMode && btCharacteristic) setTimeout(() => executeBluetoothPrint(order), 1000);
+                          if (isStandbyMode && btCharacteristic) {
+                             setTimeout(() => executeBluetoothPrint(order), 1000);
+                          }
                       }
                   });
               }
@@ -851,27 +864,68 @@
       }, [isScannerOpen, adminOrders, addToast]);
 
       const getReceiptBytes = (order) => {
-          let text = ""; text += '\x1B' + '@'; text += '\x1B' + 'a' + '\x01'; text += '\x1B' + 'E' + '\x01'; text += `${globalConfig?.appName || 'VIPERCELL'}\n`; text += '\x1B' + 'E' + '\x00'; text += '--------------------------------\n'; text += '\x1B' + 'a' + '\x00'; text += `TRX   : ${order.id}\n`; text += `WAKTU : ${order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID') : '-'}\n`; text += `STATUS: ${order.status.toUpperCase()}\n`; text += '--------------------------------\n'; text += `PRODUK: ${order.gameName} - ${order.nominalName}\n`; text += `TUJUAN: ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`; if(order.targetNickname) text += `NICK  : ${order.targetNickname}\n`; text += `METODE: ${order.paymentMethod}\n`; text += '--------------------------------\n'; text += '\x1B' + 'E' + '\x01'; text += `TOTAL : Rp. ${new Intl.NumberFormat('id-ID').format(order.priceTotal)}\n`; text += '\x1B' + 'E' + '\x00'; text += '--------------------------------\n'; text += '\x1B' + 'a' + '\x01'; text += 'Terima kasih telah topup!\n\n'; return new TextEncoder().encode(text);
+          let text = ""; 
+          text += '\x1B' + '@';
+          text += '\x1B' + 'a' + '\x01'; 
+          text += '\x1B' + 'E' + '\x01'; 
+          text += `${globalConfig?.appName || 'VIPERCELL'}\n`; 
+          text += '\x1B' + 'E' + '\x00'; 
+          text += '--------------------------------\n'; 
+          text += '\x1B' + 'a' + '\x00'; 
+          text += `TRX   : ${order.id}\n`;
+          text += `WAKTU : ${order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID') : '-'}\n`;
+          text += `STATUS: ${order.status.toUpperCase()}\n`; 
+          text += '--------------------------------\n'; 
+          text += `PRODUK: ${order.gameName} - ${order.nominalName}\n`; 
+          text += `TUJUAN: ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`; 
+          if(order.targetNickname) text += `NICK  : ${order.targetNickname}\n`; 
+          text += `METODE: ${order.paymentMethod}\n`; 
+          text += '--------------------------------\n'; 
+          text += '\x1B' + 'E' + '\x01'; 
+          text += `TOTAL : Rp. ${new Intl.NumberFormat('id-ID').format(order.priceTotal)}\n`; 
+          text += '\x1B' + 'E' + '\x00'; 
+          text += '--------------------------------\n'; 
+          text += '\x1B' + 'a' + '\x01'; 
+          text += 'Terima kasih telah topup!\n\n'; 
+          return new TextEncoder().encode(text);
       };
 
       const connectBluetoothPrinter = async () => {
-          try { triggerSysLoad('Mencari Printer Bluetooth...'); const device = await navigator.bluetooth.requestDevice({ filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }], optionalServices: ['0000e7810-0000-1000-8000-00805f9b34fb'] }).catch(err => { return navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2'] }); }); setBluetoothDevice(device); const server = await device.gatt.connect(); const services = await server.getPrimaryServices(); let targetCharacteristic = null; for (const service of services) { const characteristics = await service.getCharacteristics(); for (const char of characteristics) { if (char.properties.write || char.properties.writeWithoutResponse) { targetCharacteristic = char; break; } } if(targetCharacteristic) break; } if (targetCharacteristic) { setBtCharacteristic(targetCharacteristic); setSavedPrinterName(device.name || 'Printer Bluetooth'); localStorage.setItem('savedPrinter', device.name || 'Printer Bluetooth'); addToast('Printer Bluetooth berhasil terhubung!', 'success'); } else throw new Error("Karakteristik Write tidak ditemukan."); } catch (e) { if (e.name === 'NotFoundError') { addToast('Batal mencari printer.', 'warning'); } else { addToast('Gagal terhubung ke printer. Pastikan Bluetooth aktif.', 'error'); } } finally { closeSysLoad(); }
+          try { triggerSysLoad('Mencari Printer Bluetooth...'); const device = await navigator.bluetooth.requestDevice({ filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }], optionalServices: ['0000e7810-0000-1000-8000-00805f9b34fb'] }).catch(err => { return navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2'] }); });
+              setBluetoothDevice(device); const server = await device.gatt.connect(); const services = await server.getPrimaryServices(); let targetCharacteristic = null;
+              for (const service of services) { const characteristics = await service.getCharacteristics(); for (const char of characteristics) { if (char.properties.write || char.properties.writeWithoutResponse) { targetCharacteristic = char; break; } } if(targetCharacteristic) break; }
+              if (targetCharacteristic) { setBtCharacteristic(targetCharacteristic); setSavedPrinterName(device.name || 'Printer Bluetooth'); localStorage.setItem('savedPrinter', device.name || 'Printer Bluetooth'); addToast('Printer Bluetooth berhasil terhubung!', 'success'); } else throw new Error("Karakteristik Write tidak ditemukan.");
+          } catch (e) { if (e.name === 'NotFoundError') { addToast('Batal mencari printer.', 'warning'); } else { addToast('Gagal terhubung ke printer. Pastikan Bluetooth aktif.', 'error'); } } finally { closeSysLoad(); }
       };
 
       const disconnectBluetoothPrinter = () => { if (bluetoothDevice && bluetoothDevice.gatt.connected) bluetoothDevice.gatt.disconnect(); setBluetoothDevice(null); setBtCharacteristic(null); addToast('Printer diputuskan.', 'info'); };
       const testBluetoothPrint = async () => { if (!btCharacteristic) return addToast('Printer belum terhubung!', 'warning'); try { triggerSysLoad('Sedang mencetak test...'); let text = `\x1B@\x1Ba\x01\x1BE\x01${globalConfig?.appName || 'VIPERCELL'}\n\x1BE\x00--------------------------------\n\x1Ba\x01TEST PRINT BERHASIL\n\n`; await btCharacteristic.writeValue(new TextEncoder().encode(text)); addToast('Test print berhasil!', 'success'); } catch (error) { addToast('Gagal print. Coba hubungkan ulang printer.', 'error'); } finally { closeSysLoad(); } };
       const executeBluetoothPrint = async (order) => { if (!order) return; if (!isPrinterConnected || !btCharacteristic) { addToast('Printer belum terhubung! Silakan hubungkan di Pengaturan.', 'warning'); return; } triggerSysLoad('Sedang mencetak struk...'); try { const bytes = getReceiptBytes(order); const CHUNK_SIZE = 256; for (let i = 0; i < bytes.length; i += CHUNK_SIZE) { await btCharacteristic.writeValue(bytes.slice(i, i + CHUNK_SIZE)); await new Promise(r => setTimeout(r, 50)); } addToast('Struk berhasil dicetak', 'success'); } catch (e) { addToast('Gagal print Bluetooth.', 'error'); } finally { closeSysLoad(); } };
 
-      const isPhoneUsed = async (phoneStr, currentUid = null) => { const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('phone', '==', phoneStr)); const snap = await getDocs(q); if(snap.empty) return false; let used = false; snap.forEach(d => { if(d.id !== currentUid) used = true; }); return used; }
+      const isPhoneUsed = async (phoneStr, currentUid = null) => {
+          const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('phone', '==', phoneStr));
+          const snap = await getDocs(q);
+          if(snap.empty) return false;
+          let used = false;
+          snap.forEach(d => { if(d.id !== currentUid) used = true; });
+          return used;
+      }
 
       const handleAuth = async (e) => {
         e.preventDefault(); setAuthLoading(true); triggerSysLoad('Memeriksa Kredensial...');
         try {
           if (authMode === 'register') { 
-              if(!regName) throw new Error('Nama wajib diisi!'); if(!regPhone || !/^\d{10,13}$/.test(regPhone)) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP/WA tidak valid (Harus 10-13 angka).', 'error'); } const used = await isPhoneUsed(regPhone); if(used) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP ini sudah dipakai oleh akun lain!', 'error'); }
-              const cred = await createUserWithEmailAndPassword(auth, email, password); const now = new Date().toISOString(); 
+              if(!regName) throw new Error('Nama wajib diisi!'); 
+              if(!regPhone || !/^\d{10,13}$/.test(regPhone)) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP/WA tidak valid (Harus 10-13 angka).', 'error'); } 
+              
+              const used = await isPhoneUsed(regPhone);
+              if(used) { setAuthLoading(false); closeSysLoad(); return addToast('Nomor HP ini sudah dipakai oleh akun lain!', 'error'); }
+
+              const cred = await createUserWithEmailAndPassword(auth, email, password); 
+              const now = new Date().toISOString(); 
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false }); 
-              await sendEmailVerification(cred.user); await signOut(auth); addToast('Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', 'success'); setAuthMode('login'); 
+              await sendEmailVerification(cred.user); await signOut(auth); 
+              addToast('Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', 'success'); setAuthMode('login'); 
           }
           else if (authMode === 'login') { const cred = await signInWithEmailAndPassword(auth, email, password); if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) { await signOut(auth); throw new Error('email-not-verified'); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); }
           else if (authMode === 'forgot') { if (resetCooldown > 0) return; await sendPasswordResetEmail(auth, email); addToast('Link reset sandi telah dikirim. Tunggu 2 menit sebelum meminta kode baru (Cek SPAM).', 'success'); setResetCooldown(120); const intv = setInterval(() => { setResetCooldown(c => { if(c <= 1) { clearInterval(intv); return 0; } return c-1; }); }, 1000); }
@@ -881,20 +935,47 @@
       const handleGoogleLogin = async () => { 
           setAuthLoading(true); triggerSysLoad('Menghubungkan dengan Google...'); 
           try { 
-              const res = await signInWithPopup(auth, googleProvider); const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); const docSnap = await getDoc(userRef); 
+              const res = await signInWithPopup(auth, googleProvider); 
+              const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); 
+              const docSnap = await getDoc(userRef); 
               if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('blocked'); } 
-              if (!docSnap.exists() || !docSnap.data().phone) { setGoogleSetupModal({ isOpen: true, user: res.user, isNew: !docSnap.exists(), existingData: docSnap.data() || null }); } else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); navigateTo('home'); } 
+              
+              if (!docSnap.exists() || !docSnap.data().phone) { 
+                  setGoogleSetupModal({ isOpen: true, user: res.user, isNew: !docSnap.exists(), existingData: docSnap.data() || null });
+              } else { 
+                  await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); 
+                  navigateTo('home');
+              } 
           } catch (e) { if(e.message === 'blocked') addToast('Akun ini diblokir Admin', 'error'); else addToast('Google Login dibatalkan', 'error'); } finally { setAuthLoading(false); closeSysLoad(); } 
       };
 
       const handleGoogleSetupSubmit = async (e, phone, pass) => {
-          e.preventDefault(); if(!phone || !pass) return addToast('Isi semua form', 'error'); if(phone.length < 10 || phone.length > 13) return addToast('Nomor HP tidak valid', 'error');
+          e.preventDefault();
+          if(!phone || !pass) return addToast('Isi semua form', 'error');
+          if(phone.length < 10 || phone.length > 13) return addToast('Nomor HP tidak valid', 'error');
           try {
-              setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan Data...'); const used = await isPhoneUsed(phone, auth.currentUser?.uid); if(used) throw new Error('Nomor HP sudah terdaftar di akun lain!');
+              setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan Data...');
+              const used = await isPhoneUsed(phone, auth.currentUser?.uid);
+              if(used) throw new Error('Nomor HP sudah terdaftar di akun lain!');
+              
               await updatePassword(auth.currentUser, pass);
-              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), { email: auth.currentUser.email, name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0], avatar: auth.currentUser.photoURL || '', phone: phone, lastLogin: new Date().toISOString(), createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt, saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0, isBlocked: false }, { merge: true });
-              setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null}); navigateTo('home'); addToast('Akun berhasil disiapkan!', 'success');
-          } catch(err) { addToast(err.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); }
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), {
+                  email: auth.currentUser.email,
+                  name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0],
+                  avatar: auth.currentUser.photoURL || '',
+                  phone: phone,
+                  lastLogin: new Date().toISOString(),
+                  createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt,
+                  saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0,
+                  isBlocked: false
+              }, { merge: true });
+              
+              setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null});
+              navigateTo('home');
+              addToast('Akun berhasil disiapkan!', 'success');
+          } catch(err) {
+              addToast(err.message, 'error');
+          } finally { setAuthLoading(false); closeSysLoad(); }
       };
 
       const handleUpdateProfile = async (e) => { 
@@ -914,7 +995,21 @@
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Memproses Avatar...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diperbarui!', 'success'); } catch (error) { addToast('Gagal upload.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Semua field harus diisi!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi baru tidak cocok!', 'error'); if (newPassword.length < 6) return addToast('Sandi minimal 6 karakter!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast(error.code === 'auth/wrong-password' ? 'Sandi saat ini salah!' : 'Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
       
-      const handleSendFeedback = async (e) => { e.preventDefault(); if(!feedbackText.trim()) return; try { triggerSysLoad('Mengirim masukan...'); const fbId = `fb_${Date.now()}`; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', fbId), { senderEmail: authUser.email, senderName: currentUserData?.name || authUser.email, text: feedbackText, createdAt: new Date().toISOString(), status: 'Unread' }); setFeedbackText(''); addToast('Saran & Masukan Anda telah dikirim ke Tim.', 'success'); setHelpTab('chat'); } catch(err) { addToast('Gagal mengirim saran', 'error'); } finally { closeSysLoad(); } }
+      const handleSendFeedback = async (e) => { 
+          e.preventDefault(); if(!feedbackText.trim()) return; 
+          try { 
+              triggerSysLoad('Mengirim masukan...'); 
+              const fbId = `fb_${Date.now()}`;
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', fbId), { 
+                  senderEmail: authUser.email, 
+                  senderName: currentUserData?.name || authUser.email, 
+                  text: feedbackText, 
+                  createdAt: new Date().toISOString(), 
+                  status: 'Unread' 
+              }); 
+              setFeedbackText(''); addToast('Saran & Masukan Anda telah dikirim ke Tim.', 'success'); setHelpTab('chat'); 
+          } catch(err) { addToast('Gagal mengirim saran', 'error'); } finally { closeSysLoad(); } 
+      }
       const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN Transaksi berhasil diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal atur PIN', 'error'); } finally { closeSysLoad() } };
       
       const getActivePromosForItem = (itemId) => { if(!promos) return []; const now = new Date(); return promos.filter(p => { if(!p.isActive) return false; if(p.category === 'flash') { if(now > new Date(p.endTime) || (p.usedBy||[]).length >= p.stock) return false; if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'game') { if(p.targetGame && p.targetGame !== selectedGame?.id) return false; return true; } if(p.category === 'day') return now.getDay() === parseInt(p.targetDay); return false; }); };
@@ -934,7 +1029,10 @@
           if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) return addToast('❌ Data Akun: ID Game hanya boleh berisi angka.', 'error'); 
           if (!selectedNominal) return addToast('❌ Produk: Pilih produk top up terlebih dahulu.', 'warning'); 
           if (!selectedPayment) return addToast('❌ Pembayaran: Pilih metode pembayaran.', 'warning'); 
-          const maxCashback = currentUserData?.saldoCashback || 0; const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; const fPrice = basePrice - usedCashback; 
+          const maxCashback = currentUserData?.saldoCashback || 0; 
+          const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); 
+          const usedCashback = useCashback ? Math.min(basePrice, maxCashback) : 0; 
+          const fPrice = basePrice - usedCashback; 
           setCheckoutSummary({ isOpen: true, data: { gameName: selectedGame.name, gameImage: selectedGame.image, userId, zoneId, nickname: nickname || null, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCashback }}); 
       };
       
@@ -977,7 +1075,7 @@
       const handleRemoveGallery = async (index) => requestConfirm('Yakin ingin menghapus foto bukti ini dari galeri publik?', async () => { const newGallery = [...(galleryData||[])]; newGallery.splice(index, 1); try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: newGallery }, { merge: true }); addToast('Foto berhasil dihapus', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } }, 'Ya, Hapus Foto');
       const toggleStore = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: !isStoreOpen }, { merge: true }); addToast(isStoreOpen ? 'Toko ditutup' : 'Toko dibuka', 'success'); } catch (e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
 
-      const updateOrderStatus = async (orderId, newStatus) => { try { const order = (adminOrders||[]).find(o => o.id === orderId); if (newStatus === 'Sukses' && order?.paymentMethod?.toLowerCase().includes('cash')) { setCashConfirmModal({ isOpen: true, orderId: orderId }); return; } executeStatusUpdate(orderId, newStatus, order); } catch (e) { addToast("Gagal memproses", 'error'); } };
+      const updateOrderStatus = async (orderId, newStatus) => { try { const order = (adminOrders||[]).find(o => o.id === orderId); if (newStatus === 'Sukses' && order?.paymentMethod?.toLowerCase().includes('cash')) { setCashConfirmModal({ isOpen: true, order: order }); return; } executeStatusUpdate(orderId, newStatus, order); } catch (e) { addToast("Gagal memproses", 'error'); } };
       const executeStatusUpdate = async (orderId, newStatus, order) => { try { triggerSysLoad(`Mengubah status pesanan...`); await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const cbe = order.cashbackEarned || 0; if(cbe > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + cbe }, { merge: true }); } } } addToast(`Status diubah ke ${newStatus}`, 'success'); } catch (e) { addToast("Gagal update status", 'error'); } finally { closeSysLoad() } };
       const handleAdminSendChat = async (e, customText = null, isPublic = false) => { if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return; try { const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); setAdminReplyText(''); setTimeout(()=> { adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); } catch(err) { addToast('Gagal membalas', 'error'); } };
       const handleValidateTrxFromChat = async () => { if(!adminTrxModal.order) return; await updateOrderStatus(adminTrxModal.order.id, 'Sukses'); handleAdminSendChat(null, `[Sistem] Pesanan Anda (ID: ${adminTrxModal.order.id}) telah divalidasi dan berstatus SUKSES. Proses pengiriman item membutuhkan waktu 1-3 Menit.`, false); setAdminTrxModal({isOpen: false, order: null}); };
@@ -1003,6 +1101,19 @@
       const currentUsedCashback = useCashback ? Math.min(currentBasePrice, (currentUserData?.saldoCashback || 0)) : 0;
       const displayTotal = currentBasePrice - currentUsedCashback;
       const estimatedCashback = globalConfig?.cashbackPercent ? (displayTotal * (globalConfig.cashbackPercent / 100)) : 0;
+
+      // Logika Ekstraksi ID Pesanan di Chat Admin (Fitur Quick Action)
+      let activeOrderInChat = null;
+      if (isAdmin && activeChatEmail) {
+          const currentChat = (adminChats||[]).find(c => c.id === activeChatEmail);
+          if (currentChat && currentChat.messages) {
+              for (let i = currentChat.messages.length - 1; i >= 0; i--) {
+                  const m = currentChat.messages[i];
+                  const trxMatch = m.text.match(/(?:ID|TRX|Pesanan ID):\s*([a-zA-Z0-9_-]+)/i);
+                  if (trxMatch) { activeOrderInChat = (allGlobalOrders||[]).find(o => o.id === trxMatch[1]); if (activeOrderInChat) break; }
+              }
+          }
+      }
 
       if (isAuthChecking) return null; 
       
@@ -1066,15 +1177,34 @@
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
           
-          {cashConfirmModal.isOpen && (
+          {cashConfirmModal.isOpen && cashConfirmModal.order && (
              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-slide-down">
-                <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl">
+                <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl bg-white dark:bg-[#0a0a0a]">
                    <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/20"><IconWallet className="w-8 h-8" /></div>
                    <h3 className="text-xl font-black mb-2 text-main">Konfirmasi Uang Tunai</h3>
-                   <p className="text-sm text-sub-theme mb-8 font-medium">Apakah Anda yakin pembayaran cash sudah diterima?</p>
+                   <p className="text-sm text-sub-theme mb-4 font-medium">Apakah Anda yakin pembayaran cash sudah diterima?</p>
+                   
+                   <div className="bg-gray-50 dark:bg-white/5 border border-theme rounded-xl p-3 mb-6 text-left space-y-2">
+                       <div className="flex justify-between items-center">
+                           <span className="text-[10px] text-sub-theme font-bold">ID Pesanan</span>
+                           <span className="text-xs font-mono font-black text-main">{cashConfirmModal.order.id}</span>
+                       </div>
+                       <div className="flex justify-between items-center border-t border-theme pt-2">
+                           <span className="text-[10px] text-sub-theme font-bold">Target ID</span>
+                           <div className="flex items-center gap-2">
+                               <span className="text-xs font-mono font-black text-main truncate max-w-[120px]">{cashConfirmModal.order.targetUserId}</span>
+                               <button onClick={()=>{navigator.clipboard.writeText(cashConfirmModal.order.targetUserId); addToast('ID Game disalin!', 'success');}} className="p-1.5 bg-orange-500/10 text-orange-600 rounded-md hover:bg-orange-500 hover:text-white transition tooltip" title="Salin ID Game"><IconCopy className="w-3 h-3"/></button>
+                           </div>
+                       </div>
+                       <div className="flex justify-between items-center border-t border-theme pt-2">
+                           <span className="text-[10px] text-sub-theme font-bold">Total Tagihan</span>
+                           <span className="text-sm font-black text-orange-500">{formatRupiah(cashConfirmModal.order.priceTotal)}</span>
+                       </div>
+                   </div>
+
                    <div className="flex gap-3">
-                      <button onClick={() => setCashConfirmModal({isOpen: false, orderId: null})} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition text-sm">Belum</button>
-                      <button onClick={() => { executeStatusUpdate(cashConfirmModal.orderId, 'Sukses', (adminOrders||[]).find(o=>o.id===cashConfirmModal.orderId)); setCashConfirmModal({isOpen: false, orderId: null}); }} className="flex-1 py-3.5 rounded-xl font-bold bg-emerald-600 text-white text-sm">Ya, Lunas</button>
+                      <button onClick={() => setCashConfirmModal({isOpen: false, order: null})} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 transition text-main text-sm">Batal</button>
+                      <button onClick={() => { executeStatusUpdate(cashConfirmModal.order.id, 'Sukses', cashConfirmModal.order); setCashConfirmModal({isOpen: false, order: null}); }} className="flex-1 py-3.5 rounded-xl font-bold bg-emerald-600 text-white text-sm">Ya, Lunas</button>
                    </div>
                 </div>
              </div>
@@ -1097,185 +1227,181 @@
              </div>
           )}
 
-          {currentView === 'chat' && (
-             <div className={`transition-all ${isChatFullScreen ? 'fixed inset-0 z-[9999] flex flex-col bg-card animate-slide-down' : 'clean-card border-theme rounded-[3rem] flex flex-col h-[75vh] max-h-[800px] mt-4 mb-10 overflow-hidden relative z-20 animate-bounce-up'}`}>
-                <div className="p-4 md:p-5 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20 shadow-sm relative">
-                   <div className="flex items-center gap-3 md:gap-4">
-                       {!isChatFullScreen && <button onClick={handleBack} className="p-2.5 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme flex items-center justify-center shrink-0"><IconChevronLeft className="w-5 h-5"/></button>}
-                       <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shrink-0"><IconMessageSquare className="w-6 h-6 text-white"/></div>
-                       <div className="min-w-0">
-                          <h2 className="text-lg font-black leading-tight text-main truncate">Pusat Bantuan & Saran</h2>
-                          <p className="text-[10px] text-emerald-500 font-bold uppercase flex items-center gap-1.5 mt-0.5"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Online</p>
-                       </div>
-                   </div>
-                   <button onClick={()=>setIsChatFullScreen(!isChatFullScreen)} className="p-2.5 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme">
-                       {isChatFullScreen ? <IconMinimize className="w-5 h-5"/> : <IconExpand className="w-5 h-5"/>}
-                   </button>
-                </div>
-
-                <div className="flex gap-2 bg-gray-100 dark:bg-black p-1 rounded-xl w-[90%] max-w-sm mx-auto mt-4 shrink-0 z-10 shadow-sm border border-theme">
-                     <button onClick={()=>setHelpTab('chat')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='chat'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Live Chat CS</button>
-                     <button onClick={()=>setHelpTab('saran')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='saran'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Kotak Saran</button>
-                </div>
-                
-                {helpTab === 'chat' && (
-                    <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 custom-scrollbar relative z-10 transition-colors duration-500 bg-gray-50 dark:bg-[#0a0a0a]">
-                       <div className="text-center text-[10px] uppercase text-gray-500 font-black bg-white/80 dark:bg-black/40 py-2 px-5 rounded-full w-fit mx-auto border border-theme relative z-10">Percakapan Tersimpan</div>
-                       {loadingChat ? (
-                           <div className="flex flex-col items-center justify-center py-20 relative z-10"><IconLoader className="w-10 h-10 text-orange-500 animate-spin mb-4" /></div>
-                       ) : (
-                          <div className="relative z-10 space-y-4 pb-4 max-w-4xl mx-auto w-full">
-                             {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-3 px-6 rounded-xl text-xs font-bold w-fit mx-auto shadow-sm">✔ Tiket ditutup. Kirim pesan baru untuk bertanya.</div>)}
-                             {(!userChat || !(userChat.messages || []).length) && (
-                                <div className="flex flex-col items-center justify-center py-20 text-gray-500">
-                                   <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6"><IconMessageSquare className="w-10 h-10 opacity-30" /></div>
-                                   <p className="font-bold text-sm text-center">Kirim pesan untuk meminta bantuan CS.</p>
-                                </div>
-                             )}
-                             {(userChat?.messages || []).map((msg, i) => (
-                                <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-slide-down`}>
-                                   <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%] md:max-w-[70%]`}>
-                                      {msg.role && msg.sender === 'admin' && <span className={`text-[9px] font-bold uppercase mb-1.5 ml-1 ${msg.role.includes('Sistem') ? 'text-blue-500' : 'text-emerald-600'}`}>{msg.role}</span>}
-                                      <div className="px-4 py-2 text-sm shadow-sm font-medium leading-relaxed" style={{ backgroundColor: msg.sender === 'user' ? 'var(--chat-user)' : 'var(--chat-admin)', color: msg.sender === 'user' ? (isDarkMode ? '#fff' : '#111') : 'var(--chat-text)', borderRadius: msg.sender === 'user' ? '1rem 0 1rem 1rem' : '0 1rem 1rem 1rem' }}>
-                                         {msg.text}
-                                         <div className={`text-[9px] font-bold mt-1 text-right opacity-70`}>{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</div>
-                                      </div>
-                                   </div>
-                                </div>
-                             ))}
-                          </div>
-                       )}
-                       <div ref={chatEndRef} className="h-4"/>
-                    </div>
-                )}
-
-                {helpTab === 'saran' && (
-                    <div className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar bg-gray-50 dark:bg-[#0a0a0a]">
-                        <div className="bg-blue-50 dark:bg-blue-950/20 p-8 rounded-[2.5rem] border border-blue-500/30 max-w-2xl mx-auto shadow-sm">
-                             <h3 className="text-lg font-black mb-2 flex items-center gap-3 text-main relative z-10"><div className="bg-blue-500/20 p-2 rounded-xl text-blue-600 dark:text-blue-500 border border-blue-500/20"><IconMessageSquare className="w-5 h-5"/></div> Kirim Masukan</h3>
-                             <p className="text-[10px] text-sub-theme font-medium mb-6 relative z-10">Punya saran fitur atau keluhan? Beritahu tim kami.</p>
-                             <form onSubmit={handleSendFeedback} className="flex flex-col gap-3 relative z-10">
-                                 <textarea required value={feedbackText} onChange={(e)=>setFeedbackText(e.target.value)} placeholder="Tulis masukan, kritik, atau saran Anda..." className="w-full input-theme rounded-2xl py-4 px-5 focus:outline-none focus:border-blue-500 min-h-[150px] resize-none text-sm"></textarea>
-                                 <button type="submit" disabled={!feedbackText.trim()} className="w-full bg-blue-600 text-white py-3.5 px-8 rounded-xl font-black text-xs uppercase disabled:opacity-50">Kirim Saran Ke Developer</button>
-                             </form>
-                        </div>
-                    </div>
-                )}
-                
-                {helpTab === 'chat' && (
-                    <div className="p-3 md:p-4 bg-card border-t border-theme z-20 shrink-0 pb-safe">
-                       <form onSubmit={handleSendChatUser} className="flex gap-2 relative max-w-4xl mx-auto">
-                          <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Ketik pesan..." className="flex-1 input-theme rounded-2xl px-4 py-3 md:py-4 text-sm focus:outline-none focus:border-orange-500" />
-                          <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 text-white px-5 md:px-8 rounded-2xl font-black disabled:opacity-50 flex items-center justify-center gap-2">
-                             {loadingChat ? <IconLoader className="w-5 h-5 animate-spin"/> : <><IconSend className="w-5 h-5"/> <span className="hidden sm:inline text-xs">Kirim</span></>}
-                          </button>
-                       </form>
-                    </div>
-                )}
-             </div>
-          )}
-
-          {currentView !== 'chat' && (
-             <nav className="fixed top-0 left-0 w-full z-40 bg-card/90 backdrop-blur-md border-b border-theme shadow-sm">
-               <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                 <div className="flex items-center gap-3 md:gap-4">
-                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
-                      <IconZap className="text-orange-500 w-6 h-6" />
-                      <span className="text-lg font-black tracking-widest text-main">
-                          {(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}
-                          <span className="text-orange-500">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span>
-                      </span>
-                    </div>
+          {/* NAVBAR TOP SELALU TAMPIL (Desktop Titik Tiga di Kiri Atas) */}
+          <nav className="fixed top-0 left-0 w-full z-40 bg-card/95 backdrop-blur-md border-b border-theme shadow-sm">
+            <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+              <div className="flex items-center gap-3 md:gap-4">
+                 
+                 {/* DESKTOP TABS MENU (3-DOT) KIRI ATAS */}
+                 <div className="hidden md:block relative">
+                     <button onClick={() => setDesktopMenuOpen(!desktopMenuOpen)} className="p-2 text-main bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hover:bg-gray-200 dark:hover:bg-white/10 transition relative">
+                         <IconMoreVertical className="w-5 h-5" />
+                         {(userChat?.status === 'Dijawab' || pendingOrdersCount > 0) && <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border border-black animate-pulse"></span>}
+                     </button>
+                     {desktopMenuOpen && (
+                         <div className="absolute left-0 top-12 mt-2 w-48 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
+                             <button onClick={()=>{navigateTo('home'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3"><IconHome className="w-4 h-4"/> Beranda</button>
+                             <button onClick={()=>{navigateTo('history'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3"><IconHistory className="w-4 h-4"/> Riwayat</button>
+                             <button onClick={()=>{navigateTo('chat'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3 relative"><IconMessageSquare className="w-4 h-4"/> Bantuan {(userChat?.status === 'Dijawab') && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full"></span>}</button>
+                             {isAdmin && <button onClick={()=>{navigateTo('admin'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3 relative"><IconShieldAlert className="w-4 h-4"/> Admin {(pendingOrdersCount+openChatsCount+unreadFeedbacksCount) > 0 && <span className="absolute right-4 top-1/2 -translate-y-1/2 bg-red-500 text-white text-[9px] px-1.5 rounded-full">{pendingOrdersCount+openChatsCount+unreadFeedbacksCount}</span>}</button>}
+                         </div>
+                     )}
                  </div>
 
-                 <div className="flex items-center gap-3 relative">
-                    {/* DESKTOP TABS MENU (3-DOT) */}
-                    <div className="hidden md:block relative">
-                        <button onClick={() => setDesktopMenuOpen(!desktopMenuOpen)} className="p-2 text-main bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hover:bg-gray-200 dark:hover:bg-white/10 transition relative">
-                            <IconMoreVertical className="w-5 h-5" />
-                            {(userChat?.status === 'Dijawab' || pendingOrdersCount > 0) && <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border border-black animate-pulse"></span>}
-                        </button>
-                        {desktopMenuOpen && (
-                            <div className="absolute right-0 top-12 mt-2 w-48 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
-                                <button onClick={()=>{navigateTo('home'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3"><IconHome className="w-4 h-4"/> Beranda</button>
-                                <button onClick={()=>{navigateTo('history'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3"><IconHistory className="w-4 h-4"/> Riwayat</button>
-                                <button onClick={()=>{navigateTo('chat'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3 relative"><IconMessageSquare className="w-4 h-4"/> Bantuan {(userChat?.status === 'Dijawab') && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-red-500 rounded-full"></span>}</button>
-                                {isAdmin && <button onClick={()=>{navigateTo('admin'); setDesktopMenuOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 hover:bg-gray-50 dark:hover:bg-white/5 flex items-center gap-3 relative"><IconShieldAlert className="w-4 h-4"/> Admin {(pendingOrdersCount+openChatsCount+unreadFeedbacksCount) > 0 && <span className="absolute right-4 top-1/2 -translate-y-1/2 bg-red-500 text-white text-[9px] px-1.5 rounded-full">{pendingOrdersCount+openChatsCount+unreadFeedbacksCount}</span>}</button>}
-                            </div>
-                        )}
-                    </div>
-
-                    {!isPwaMode && (
-                        <button onClick={handleInstallPwa} className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md hover:scale-105 transition">
-                            <IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi
-                        </button>
-                    )}
-                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hidden sm:block">
-                        {isDarkMode ? <IconSun className="w-5 h-5"/> : <IconMoon className="w-5 h-5"/>}
-                    </button>
-                    <div className="text-right mr-2 flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20">
-                       <span className="hidden sm:inline text-[10px] font-black uppercase text-orange-500">Cashback</span>
-                       <IconWallet className="w-4 h-4 text-orange-600 dark:text-orange-400 sm:hidden"/>
-                       <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
-                    </div>
-                    <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-theme shadow-sm text-main overflow-hidden bg-gray-200 dark:bg-black flex items-center justify-center shrink-0">
-                       {currentUserData?.avatar ? ( <img src={currentUserData.avatar} className="w-full h-full object-cover" /> ) : ( <span className="font-black text-sm text-sub-theme">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span> )}
-                    </button>
-                    {profileDropdownOpen && (
-                       <div className="absolute right-0 top-12 mt-2 w-56 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
-                          <div className="px-4 py-3 border-b border-theme mb-2 bg-gray-50 dark:bg-navy-900">
-                             <p className="text-sm font-black text-main truncate">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</p>
-                             <p className="text-[10px] text-sub-theme font-mono truncate mt-0.5">{authUser.email}</p>
-                          </div>
-                          {!isPwaMode && <button onClick={() => {handleInstallPwa(); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-orange-500 flex items-center gap-3 sm:hidden border-b border-theme"><IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi PWA</button>}
-                          <button onClick={() => {setIsDarkMode(!isDarkMode); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3 sm:hidden"><IconSun className="w-4 h-4"/> Mode {isDarkMode ? 'Terang' : 'Gelap'}</button>
-                          <button onClick={() => {navigateTo('profile'); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3"><IconUser className="w-4 h-4"/> Profil & Keamanan</button>
-                          <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 flex items-center gap-3"><IconLogOut className="w-4 h-4"/> Keluar Sesi</button>
-                       </div>
-                    )}
+                 <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
+                   <IconZap className="text-orange-500 w-6 h-6" />
+                   <span className="text-lg font-black tracking-widest text-main">
+                       {(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}
+                       <span className="text-orange-500">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span>
+                   </span>
                  </div>
-               </div>
-             </nav>
-          )}
+              </div>
 
-          {currentView !== 'chat' && (
-             <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 border-b border-white/10">
-                <div className="marquee-container py-1.5">
-                   <div className="animate-marquee text-[10px] font-black uppercase tracking-widest text-white flex gap-8">
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m1-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m2-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m3-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
-                   </div>
-                </div>
-             </div>
-          )}
-
-          {/* BOTTOM NAVIGATION BAR (KHUSUS MOBILE) */}
-          {currentView !== 'chat' && (
-             <div className="md:hidden fixed bottom-0 left-0 w-full z-40 bg-card border-t border-theme flex justify-around items-center pt-2 px-1 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-safe-bottom">
-                 <button onClick={()=>navigateTo('home')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'home' ? 'text-orange-500' : 'text-sub-theme'}`}>
-                     <IconHome className="w-5 h-5 mb-1" />
-                     <span className="text-[9px] font-black uppercase tracking-wider">Beranda</span>
-                 </button>
-                 <button onClick={()=>navigateTo('history')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'history' ? 'text-orange-500' : 'text-sub-theme'}`}>
-                     <IconHistory className="w-5 h-5 mb-1" />
-                     <span className="text-[9px] font-black uppercase tracking-wider">Riwayat</span>
-                 </button>
-                 <button onClick={()=>navigateTo('chat')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'chat' ? 'text-orange-500' : 'text-sub-theme'}`}>
-                     <IconMessageSquare className="w-5 h-5 mb-1" />
-                     <span className="text-[9px] font-black uppercase tracking-wider">Bantuan</span>
-                     {(userChat?.status === 'Dijawab') && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
-                 </button>
-                 {isAdmin && (
-                     <button onClick={()=>navigateTo('admin')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'admin' ? 'text-red-500' : 'text-sub-theme'}`}>
-                         <IconShieldAlert className="w-5 h-5 mb-1" />
-                         <span className="text-[9px] font-black uppercase tracking-wider">Admin</span>
-                         {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
+              <div className="flex items-center gap-3 relative">
+                 {!isPwaMode && (
+                     <button onClick={handleInstallPwa} className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md hover:scale-105 transition">
+                         <IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi
                      </button>
                  )}
+                 <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hidden sm:block">
+                     {isDarkMode ? <IconSun className="w-5 h-5"/> : <IconMoon className="w-5 h-5"/>}
+                 </button>
+                 <div className="text-right mr-2 flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20">
+                    <span className="hidden sm:inline text-[10px] font-black uppercase text-orange-500">Cashback</span>
+                    <IconWallet className="w-4 h-4 text-orange-600 dark:text-orange-400 sm:hidden"/>
+                    <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
+                 </div>
+                 <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-theme shadow-sm text-main overflow-hidden bg-gray-200 dark:bg-black flex items-center justify-center shrink-0">
+                    {currentUserData?.avatar ? ( <img src={currentUserData.avatar} className="w-full h-full object-cover" /> ) : ( <span className="font-black text-sm text-sub-theme">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span> )}
+                 </button>
+                 {profileDropdownOpen && (
+                    <div className="absolute right-0 top-12 mt-2 w-56 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
+                       <div className="px-4 py-3 border-b border-theme mb-2 bg-gray-50 dark:bg-navy-900">
+                          <p className="text-sm font-black text-main truncate">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</p>
+                          <p className="text-[10px] text-sub-theme font-mono truncate mt-0.5">{authUser.email}</p>
+                       </div>
+                       {!isPwaMode && <button onClick={() => {handleInstallPwa(); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-orange-500 flex items-center gap-3 sm:hidden border-b border-theme"><IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi PWA</button>}
+                       <button onClick={() => {setIsDarkMode(!isDarkMode); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3 sm:hidden"><IconSun className="w-4 h-4"/> Mode {isDarkMode ? 'Terang' : 'Gelap'}</button>
+                       <button onClick={() => {navigateTo('profile'); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3"><IconUser className="w-4 h-4"/> Profil & Keamanan</button>
+                       <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 flex items-center gap-3"><IconLogOut className="w-4 h-4"/> Keluar Sesi</button>
+                    </div>
+                 )}
+              </div>
+            </div>
+          </nav>
+
+          <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 border-b border-white/10">
+             <div className="marquee-container py-1.5">
+                <div className="animate-marquee text-[10px] font-black uppercase tracking-widest text-white flex gap-8">
+                   {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m1-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                   {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m2-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                   {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m3-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                </div>
+             </div>
+          </div>
+
+          {/* BOTTOM NAVIGATION BAR (KHUSUS MOBILE) - ALWAYS VISIBLE */}
+          <div className="md:hidden fixed bottom-0 left-0 w-full z-40 bg-white dark:bg-[#0a0a0a] border-t border-theme flex justify-around items-center pt-2 px-1 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-safe-bottom">
+              <button onClick={()=>navigateTo('home')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'home' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                  <IconHome className="w-5 h-5 mb-1" />
+                  <span className="text-[9px] font-black uppercase tracking-wider">Beranda</span>
+              </button>
+              <button onClick={()=>navigateTo('history')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'history' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                  <IconHistory className="w-5 h-5 mb-1" />
+                  <span className="text-[9px] font-black uppercase tracking-wider">Riwayat</span>
+              </button>
+              <button onClick={()=>navigateTo('chat')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'chat' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                  <IconMessageSquare className="w-5 h-5 mb-1" />
+                  <span className="text-[9px] font-black uppercase tracking-wider">Bantuan</span>
+                  {(userChat?.status === 'Dijawab') && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
+              </button>
+              {isAdmin && (
+                  <button onClick={()=>navigateTo('admin')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'admin' ? 'text-red-500' : 'text-sub-theme'}`}>
+                      <IconShieldAlert className="w-5 h-5 mb-1" />
+                      <span className="text-[9px] font-black uppercase tracking-wider">Admin</span>
+                      {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
+                  </button>
+              )}
+          </div>
+
+          {/* CHAT VIEW - SEKARANG LAYAR PENUH (KECUALI NAVBAR ATAS BAWAH) */}
+          {currentView === 'chat' && (
+             <div className="flex-1 flex flex-col mt-2 mb-20 md:mb-4 px-4 h-[calc(100vh-200px)]">
+                <div className="clean-card border-theme rounded-[2.5rem] flex flex-col h-full overflow-hidden relative z-20 animate-bounce-up w-full max-w-4xl mx-auto shadow-xl">
+                    <div className="p-4 border-b border-theme flex items-center justify-between bg-card shrink-0 z-20">
+                       <div className="flex items-center gap-3">
+                           <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shrink-0"><IconMessageSquare className="w-5 h-5 text-white"/></div>
+                           <div className="min-w-0">
+                              <h2 className="text-base font-black leading-tight text-main truncate">Pusat Bantuan & Saran</h2>
+                              <p className="text-[9px] text-emerald-500 font-bold uppercase flex items-center gap-1.5 mt-0.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Online</p>
+                           </div>
+                       </div>
+                    </div>
+
+                    <div className="flex gap-2 bg-gray-100 dark:bg-black p-1 rounded-xl w-[90%] max-w-sm mx-auto mt-4 shrink-0 z-10 shadow-sm border border-theme">
+                         <button onClick={()=>setHelpTab('chat')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='chat'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Live Chat CS</button>
+                         <button onClick={()=>setHelpTab('saran')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${helpTab==='saran'?'bg-white dark:bg-white/10 text-orange-500 shadow':'text-gray-500 hover:text-main'}`}>Kotak Saran</button>
+                    </div>
+                    
+                    {helpTab === 'chat' && (
+                        <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar relative z-10 bg-gray-50 dark:bg-[#0a0a0a]">
+                           <div className="text-center text-[9px] uppercase text-gray-500 font-black bg-white/80 dark:bg-black/40 py-1.5 px-4 rounded-full w-fit mx-auto border border-theme relative z-10 mb-4">Percakapan Tersimpan</div>
+                           {loadingChat ? (
+                               <div className="flex flex-col items-center justify-center py-10 relative z-10"><IconLoader className="w-8 h-8 text-orange-500 animate-spin mb-3" /></div>
+                           ) : (
+                              <div className="relative z-10 space-y-4 pb-2 w-full">
+                                 {userChat?.status === 'Selesai' && (<div className="text-center bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 py-2 px-4 rounded-lg text-[10px] font-bold w-fit mx-auto border border-emerald-500/20">✔ Tiket ditutup. Kirim pesan baru untuk bertanya.</div>)}
+                                 {(!userChat || !(userChat.messages || []).length) && (
+                                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                                       <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 border border-theme"><IconMessageSquare className="w-8 h-8 opacity-30 text-main" /></div>
+                                       <p className="font-bold text-xs text-center">Kirim pesan untuk meminta bantuan CS.</p>
+                                    </div>
+                                 )}
+                                 {(userChat?.messages || []).map((msg, i) => (
+                                    <div key={i} className={`flex w-full ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-slide-down`}>
+                                       <div className={`flex flex-col ${msg.sender === 'user' ? 'items-end' : 'items-start'} max-w-[85%]`}>
+                                          {msg.role && msg.sender === 'admin' && <span className={`text-[8px] font-bold uppercase tracking-widest mb-1 ml-1 ${msg.role.includes('Sistem') ? 'text-blue-500' : 'text-emerald-600'}`}>{msg.role}</span>}
+                                          <div className="px-4 py-2 text-xs shadow-sm font-medium leading-relaxed" style={{ backgroundColor: msg.sender === 'user' ? 'var(--chat-user)' : 'var(--chat-admin)', color: msg.sender === 'user' ? (isDarkMode ? '#fff' : '#111') : 'var(--chat-text)', borderRadius: msg.sender === 'user' ? '1rem 0 1rem 1rem' : '0 1rem 1rem 1rem' }}>
+                                             {msg.text}
+                                             <div className={`text-[8px] font-bold mt-1 text-right opacity-70`}>{msg.time ? new Date(msg.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 ))}
+                              </div>
+                           )}
+                           <div ref={chatEndRef} className="h-2"/>
+                        </div>
+                    )}
+
+                    {helpTab === 'saran' && (
+                        <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-gray-50 dark:bg-[#0a0a0a]">
+                            <div className="bg-blue-50 dark:bg-blue-950/20 p-6 rounded-[2rem] border border-blue-500/30 max-w-lg mx-auto shadow-sm">
+                                 <h3 className="text-base font-black mb-2 flex items-center gap-2 text-main"><div className="bg-blue-500/20 p-1.5 rounded-lg text-blue-600 dark:text-blue-500"><IconMessageSquare className="w-4 h-4"/></div> Kirim Masukan</h3>
+                                 <p className="text-[10px] text-sub-theme font-medium mb-4">Punya saran fitur atau keluhan? Beritahu tim kami.</p>
+                                 <form onSubmit={handleSendFeedback} className="flex flex-col gap-3">
+                                     <textarea required value={feedbackText} onChange={(e)=>setFeedbackText(e.target.value)} placeholder="Tulis masukan, kritik, atau saran..." className="w-full input-theme rounded-xl py-3 px-4 focus:outline-none focus:border-blue-500 min-h-[120px] resize-none text-xs"></textarea>
+                                     <button type="submit" disabled={!feedbackText.trim()} className="w-full bg-blue-600 text-white py-3 rounded-xl font-black text-xs uppercase disabled:opacity-50">Kirim Ke Developer</button>
+                                 </form>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {helpTab === 'chat' && (
+                        <div className="p-3 border-t border-theme bg-card z-20 shrink-0">
+                           <form onSubmit={handleSendChatUser} className="flex gap-2">
+                              <input type="text" value={chatInput} onChange={(e)=>setChatInput(e.target.value)} placeholder="Ketik pesan..." className="flex-1 input-theme rounded-xl px-4 py-3 text-xs focus:outline-none focus:border-orange-500 shadow-inner" />
+                              <button type="submit" disabled={!chatInput.trim() || loadingChat} className="bg-orange-600 hover:bg-orange-500 text-white px-5 rounded-xl font-black disabled:opacity-50 flex items-center justify-center transition shadow-md">
+                                 {loadingChat ? <IconLoader className="w-4 h-4 animate-spin"/> : <IconSend className="w-4 h-4"/>}
+                              </button>
+                           </form>
+                        </div>
+                    )}
+                </div>
              </div>
           )}
 
+          {/* KONTEN HALAMAN UTAMA */}
           <main className={`flex-1 transition-all w-full flex flex-col relative z-10 ${currentView === 'chat' ? 'hidden' : ''}`}>
             <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-4 md:mt-8 pb-10">
             
@@ -1287,17 +1413,6 @@
                             <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
                             <h2 className="text-xl md:text-3xl font-black text-orange-600 dark:text-orange-500 mt-1 drop-shadow-sm">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
                         </div>
-                        {/* Install App Banner (ONLY IN WEB MODE) */}
-                        {!isPwaMode && (
-                            <div onClick={handleInstallPwa} className="bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 p-3 rounded-2xl flex items-center gap-3 cursor-pointer hover:from-orange-500/20 hover:to-red-500/20 transition group shrink-0">
-                               <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shrink-0 shadow-lg"><IconDownloadCloud className="w-4 h-4 text-white"/></div>
-                               <div>
-                                  <div className="text-xs font-black uppercase tracking-widest">Instal App PWA</div>
-                                  <div className="text-[9px] font-medium opacity-80 mt-0.5">Akses lebih cepat dari layar utama.</div>
-                               </div>
-                               <IconChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition"/>
-                            </div>
-                        )}
                     </div>
 
                     {!selectedGame && <BannerSlider items={banners} />}
@@ -1707,9 +1822,8 @@
                   <div className="w-full lg:w-72 clean-card border-theme p-5 shadow-2xl flex flex-col shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-140px)] z-30">
                      <div className="flex items-center gap-3 mb-8 px-2 pt-2">
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
-                        <div className="min-w-0">
-                           <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.1.0 Stable</span>
+                        <div className="min-w-0"><h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.1.1 Premium</span>
                         </div>
                      </div>
 
@@ -2155,9 +2269,19 @@
                                           {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
                                           )}
+                                          
+                                          {/* QUICK ACTION UNTUK VALIDASI PESANAN (v12.1.1) */}
+                                          {activeOrderInChat && activeOrderInChat.status === 'Pending' && (
+                                              <div className="flex gap-2 mb-3 bg-orange-500/10 p-2 rounded-xl border border-orange-500/30 overflow-x-auto custom-scrollbar">
+                                                  <span className="text-[10px] font-black text-orange-600 flex items-center shrink-0"><IconZap className="w-3 h-3 mr-1"/> Aksi Cepat:</span>
+                                                  <button onClick={(e)=>{e.preventDefault(); executeStatusUpdate(activeOrderInChat.id, 'Sukses', activeOrderInChat); handleAdminSendChat(null, `Pesanan Anda (ID: ${activeOrderInChat.id}) telah SUKSES diproses. Terima kasih!`, false);}} className="px-3 py-1.5 bg-emerald-500 text-white rounded-md text-[9px] font-black whitespace-nowrap shadow-md">✅ Sukses</button>
+                                                  <button onClick={(e)=>{e.preventDefault(); executeStatusUpdate(activeOrderInChat.id, 'Batal', activeOrderInChat); handleAdminSendChat(null, `Pesanan Anda (ID: ${activeOrderInChat.id}) DIBATALKAN. Silakan periksa kembali data Anda.`, false);}} className="px-3 py-1.5 bg-red-500 text-white rounded-md text-[9px] font-black whitespace-nowrap shadow-md">❌ Batal</button>
+                                              </div>
+                                          )}
+
                                           <div className="flex gap-2 mb-3 overflow-x-auto pb-1 custom-scrollbar">
-                                              <button onClick={()=>setAdminReplyText("Pesanan Anda sedang diproses. Mohon tunggu sekitar 3 menit ya.")} className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-blue-500 hover:text-white transition">⏱️ Proses (3 Menit)</button>
-                                              <button onClick={()=>setAdminReplyText("Pesanan gagal diproses. Silakan hubungi admin untuk bantuan lebih lanjut.")} className="px-3 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-red-500 hover:text-white transition">❌ Gagal Proses</button>
+                                              <button onClick={()=>setAdminReplyText("Pesanan sedang diproses. Mohon ditunggu ya.")} className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-blue-500 hover:text-white transition">⏱️ Diproses</button>
+                                              <button onClick={()=>setAdminReplyText("Sistem sibuk membutuhkan 3 menit mohon di tunggu.")} className="px-3 py-1.5 bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-orange-500 hover:text-white transition">⏳ Sistem Sibuk</button>
                                               {(chatTemplates||[]).map((t,i)=><button key={i} onClick={()=>setAdminReplyText(t)} className="px-3 py-1.5 bg-gray-100 dark:bg-white/5 text-sub-theme border border-theme rounded-full text-[10px] font-black whitespace-nowrap hover:bg-gray-200 dark:hover:bg-white/10 transition truncate max-w-[150px]">{t}</button>)}
                                           </div>
                                           <form onSubmit={(e)=>handleAdminSendChat(e, null, false)} className="flex gap-2">
@@ -2232,7 +2356,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V12.1.0 */}
+                                 {/* Panel Bluetooth Printer V12.1.1 */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
