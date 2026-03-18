@@ -8,7 +8,10 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vipercell">
   
-  <title>Vipercell v12.0.1</title>
+  <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
+  <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
+  
+  <title>Vipercell v12.0.5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -19,7 +22,7 @@
   <style>
     :root { --bg-body: #f0f2f5; --bg-card: #ffffff; --bg-input: #f9fafb; --text-main: #111827; --text-sub: #4b5563; --border-color: #e5e7eb; --chat-admin: #fff; --chat-user: #d9fdd3; --chat-text: #111; }
     .dark { --bg-body: #050505; --bg-card: #0a0a0a; --bg-input: #000000; --text-main: #ffffff; --text-sub: #9ca3af; --border-color: rgba(255,255,255,0.1); --chat-admin: #1a1a1a; --chat-user: #f97316; --chat-text: #fff; }
-    body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Segoe UI', Tahoma, sans-serif; overscroll-behavior-y: none; }
+    body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Segoe UI', Tahoma, sans-serif; overscroll-behavior-y: none; padding-bottom: constant(safe-area-inset-bottom); padding-bottom: env(safe-area-inset-bottom); }
     .bg-main { background-color: var(--bg-body) !important; }
     .clean-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .input-theme { background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-main); }
@@ -45,13 +48,13 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
 </head>
-<body id="app-body" class="min-h-screen flex flex-col overflow-x-hidden relative pb-10 selection:bg-orange-500 selection:text-white">
+<body id="app-body" class="min-h-screen flex flex-col overflow-x-hidden relative bg-main selection:bg-orange-500 selection:text-white">
   
   <div id="root" class="flex-grow flex flex-col min-h-screen relative z-10">
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.0.1 Core</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.0.5 UI</p>
     </div>
   </div>
 
@@ -104,6 +107,7 @@
         return { level: 'Bronze', badge: '🥉', color: 'text-orange-400 border-orange-500 bg-orange-500/10', cashback: 0 };
     }
 
+    // --- ICONS ---
     const Ic = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}><path d={d}/></svg>;
     const IconZap = ({className:c}) => <Ic c={c} f="currentColor" s="none" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>;
     const IconChevronLeft = ({className:c}) => <Ic c={c} d="M15 18l-6-6 6-6"/>;
@@ -139,6 +143,8 @@
     const IconSearch = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>;
     const IconCamera = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>;
     const IconMenu = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>;
+    // Menambahkan Ikon Titik Tiga (More Vertical)
+    const IconMoreVertical = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c}><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>;
     const IconUser = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
     const IconPhone = ({className:c}) => <Ic c={c} d="M22 16.92v3a2 2 0 0 1-2-2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>;
     const IconHome = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>;
@@ -504,7 +510,7 @@
                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.0.1 Serverless</span></div>
+               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.0.5 UI</span></div>
             </div>
          </footer>
        )
@@ -570,7 +576,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA Engine v12.0.1 (Notification Removed, Icon Synced) ---
+      // --- PWA Engine v12.0.5 ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -594,10 +600,8 @@
           }
       }, []);
 
-      // DYNAMIC MANIFEST & PWA ICON GENERATOR
       useEffect(() => {
           if (!globalConfig) return;
-          
           const currentUrl = window.location.href.split('?')[0].split('#')[0];
           const appName = globalConfig.appName || "Vipercell";
           const defaultIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=";
@@ -610,30 +614,19 @@
               display: "standalone",
               background_color: isDarkMode ? "#050505" : "#ffffff",
               theme_color: "#f97316",
-              icons: [
-                  { src: appIcon, sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
-                  { src: appIcon, sizes: "512x512", type: "image/png", purpose: "any maskable" }
-              ]
+              icons: [ { src: appIcon, sizes: "192x192", type: "image/png", purpose: "any maskable" }, { src: appIcon, sizes: "512x512", type: "image/png", purpose: "any maskable" } ]
           };
-          
           const manifestString = JSON.stringify(manifestData);
           const manifestUrl = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(manifestString);
           
           let linkManifest = document.querySelector('link[rel="manifest"]');
-          if (!linkManifest) { 
-              linkManifest = document.createElement('link'); 
-              linkManifest.rel = 'manifest'; 
-              document.head.appendChild(linkManifest); 
-          }
+          if (!linkManifest) { linkManifest = document.createElement('link'); linkManifest.rel = 'manifest'; document.head.appendChild(linkManifest); }
           linkManifest.href = manifestUrl;
 
-          // Inject Apple Touch Icon & Favicon dynamically for perfect PWA sync
           let linkAppleIcon = document.getElementById('apple-touch-icon');
           if (linkAppleIcon) linkAppleIcon.href = appIcon;
-
           let linkFavicon = document.getElementById('favicon-link');
           if (linkFavicon) linkFavicon.href = appIcon;
-
       }, [globalConfig?.appName, globalConfig?.favicon, isDarkMode]);
 
       const handleInstallPwa = () => {
@@ -644,7 +637,7 @@
                   setDeferredPrompt(null);
               });
           } else {
-              addToast('Buka menu browser Anda (ikon titik tiga) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
+              addToast('Buka menu browser (ikon titik tiga di kanan atas) lalu pilih "Tambahkan ke Layar Utama" (Add to Homescreen).', 'info');
           }
       }
 
@@ -1155,7 +1148,7 @@
       }
 
       return (
-        <div className="flex-grow flex flex-col relative z-10 min-h-screen bg-main">
+        <div className="flex-grow flex flex-col relative z-10 min-h-screen bg-main pb-24 md:pb-0">
           <GlobalLoadingOverlay active={sysLoading.active} message={sysLoading.msg} />
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
@@ -1180,1420 +1173,160 @@
           <OrderSuccessModal isOpen={orderSuccessModal} onToHistory={() => { setOrderSuccessModal(false); navigateTo('history'); }} onDone={() => { setOrderSuccessModal(false); navigateTo('home'); }} />
           <ScannerResultModal isOpen={scannerResultModal.isOpen} order={scannerResultModal.order} allGlobalOrders={allGlobalOrders} onClose={() => setScannerResultModal({isOpen: false, order: null})} onValidate={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} onCancelOrder={(id, status) => {updateOrderStatus(id, status); setScannerResultModal({isOpen: false, order: null});}} />
 
-          {/* DEDUPLICATED RENDER BLOCK: MAIN CONTENT AREAS */}
-          
-          <main className={`flex-1 transition-all w-full flex flex-col relative z-10 ${currentView === 'chat' ? 'hidden' : ''}`}>
-            <div className="max-w-7xl mx-auto w-full px-4 flex-grow mt-4 md:mt-8 pb-10">
-            
-            {/* BERANDA */}
-            {currentView === 'home' && (
-                <div className="animate-slide-down">
-                    <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
-                        <div>
-                            <h1 className="text-xl md:text-2xl font-black text-main tracking-tight">Selamat {greeting},</h1>
-                            <h2 className="text-xl md:text-3xl font-black text-orange-600 dark:text-orange-500 mt-1 drop-shadow-sm">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
-                        </div>
+          {isScannerOpen && (
+             <div className="fixed inset-0 bg-black z-[9999] flex flex-col animate-slide-down">
+                <div className="flex justify-between items-center p-5 z-10 absolute top-0 w-full bg-gradient-to-b from-black/80 to-transparent">
+                    <p className="text-white font-black text-lg flex items-center gap-2"><IconCamera className="w-6 h-6 text-orange-500"/> Scanner Kasir</p>
+                    <button onClick={()=>setIsScannerOpen(false)} className="text-white bg-red-500 rounded-full p-2.5"><IconX className="w-5 h-5"/></button>
+                </div>
+                <div id="reader" className="w-full h-full flex-1"></div>
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/70 text-xs font-bold z-10 bg-black/60 px-6 py-3 rounded-full backdrop-blur-md flex items-center gap-2 border border-white/10"><IconQrcode className="w-4 h-4"/> Posisikan QR di Tengah</div>
+             </div>
+          )}
+
+          {currentView !== 'chat' && (
+             <nav className="fixed top-0 left-0 w-full z-40 bg-card/90 backdrop-blur-md border-b border-theme shadow-sm">
+               <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                 <div className="flex items-center gap-3 md:gap-4">
+                    <button onClick={() => setMobileMenuOpen(true)} className="md:hidden p-2 text-main relative">
+                       <IconMoreVertical className="w-6 h-6" />
+                       {(userChat?.status === 'Dijawab') && <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-orange-500 rounded-full border border-black animate-pulse"></span>}
+                    </button>
+                    {(currentView !== 'home' || selectedGame) && (
+                        <button onClick={handleBack} className="p-2 bg-gray-100 dark:bg-white/5 rounded-xl border border-theme flex items-center justify-center hidden md:flex">
+                           <IconChevronLeft className="w-5 h-5" />
+                        </button>
+                    )}
+                    <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigateTo('home')}>
+                      <IconZap className="text-orange-500 w-6 h-6" />
+                      <span className="text-lg font-black tracking-widest text-main hidden sm:block">
+                          {(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}
+                          <span className="text-orange-500">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span>
+                      </span>
                     </div>
+                 </div>
 
-                    {!selectedGame && <BannerSlider items={banners} />}
-                    
-                    {flashSalePromos?.length > 0 && !selectedGame && (
-                       <div className="mb-12 animate-slide-down relative z-20">
-                          <div className="flex items-center gap-2 mb-4 pl-1">
-                             <IconZap className="w-6 h-6 text-orange-500 animate-pulse" />
-                             <h2 className="text-xl font-black uppercase tracking-widest text-main">Flash Sale Aktif!</h2>
-                          </div>
-                          <div className="flex overflow-x-auto gap-4 pb-4 custom-scrollbar snap-x">
-                             {flashSalePromos.map(promo => {
-                                const timeLeft = Math.max(0, new Date(promo.endTime) - new Date());
-                                const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
-                                if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
+                 <div className="hidden md:flex items-center gap-1 bg-gray-100 dark:bg-white/[0.02] p-1 rounded-xl border border-theme shadow-inner">
+                    <button onClick={()=>navigateTo('home')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase ${currentView === 'home' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>Beranda</button>
+                    <button onClick={()=>navigateTo('history')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase ${currentView === 'history' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>Riwayat</button>
+                    <button onClick={()=>navigateTo('chat')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'chat' ? 'bg-orange-500 text-white' : 'text-sub-theme'}`}>
+                       Bantuan {(userChat?.status === 'Dijawab') && <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>}
+                    </button>
+                    {isAdmin && <button onClick={()=>navigateTo('admin')} className={`px-4 py-2 rounded-lg text-xs font-bold uppercase flex items-center gap-1 ${currentView === 'admin' ? 'bg-red-500 text-white' : 'text-red-500'}`}>Admin {(pendingOrdersCount>0 || openChatsCount>0 || unreadFeedbacksCount>0) && <span className="bg-red-500 px-1.5 rounded-full text-[9px] text-white">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>}</button>}
+                 </div>
 
-                                return (
-                                <div key={promo.id} className="snap-center min-w-[300px] bg-gradient-to-br from-orange-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-orange-400/30">
-                                   <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
-                                   <div className="relative z-10 flex flex-col h-full justify-between">
-                                      <div>
-                                         <div className="text-[10px] font-black uppercase tracking-widest bg-black/20 px-3 py-1.5 rounded-lg inline-block mb-3 border border-white/10">Waktu Terbatas</div>
-                                         <div className="text-2xl font-black tracking-wider drop-shadow-md mb-1">{promo.type === 'percentage' ? `Diskon ${promo.discount}%` : `Potongan ${formatRupiah(promo.discount)}`}</div>
-                                         <div className="text-xs font-bold opacity-90 flex items-center gap-1.5"><IconGift className="w-4 h-4"/> Spesial Produk Pilihan</div>
-                                      </div>
-                                      <div className="mt-5">
-                                         <div className="flex justify-between items-end mb-1">
-                                            <span className="text-[9px] font-bold opacity-80 uppercase tracking-widest">Sisa Waktu</span>
-                                            <span className="font-mono text-sm font-black bg-black/30 px-2 py-1 rounded-md border border-white/10">{hours.toString().padStart(2, '0')}:{mins.toString().padStart(2, '0')}:{secs.toString().padStart(2, '0')}</span>
-                                         </div>
-                                         <div className="w-full bg-black/30 rounded-full h-1.5 overflow-hidden mt-3"><div className="bg-white h-full rounded-full transition-all duration-1000" style={{width: `${((promo.stock-(promo.usedBy?.length||0))/promo.stock)*100}%`}}></div></div>
-                                         <div className="text-[9px] mt-1.5 font-bold opacity-80 uppercase tracking-widest text-right">Tersisa {(promo.stock - (promo.usedBy?.length || 0))} Stok</div>
-                                      </div>
-                                   </div>
-                                </div>
-                                )})}
-                          </div>
-                       </div>
+                 <div className="flex items-center gap-3 relative">
+                    {!isPwaMode && (
+                        <button onClick={handleInstallPwa} className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-md hover:scale-105 transition">
+                            <IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi
+                        </button>
                     )}
-
-                    <div className="relative z-20 mb-12">
-                       {!selectedGame && (
-                           <div className="flex items-center gap-3 mb-6 pl-2">
-                               <div className="bg-gray-200 dark:bg-white/10 p-2.5 rounded-xl border border-theme"><IconGamepad className="w-5 h-5 text-main"/></div>
-                               <div><h2 className="text-xl md:text-2xl font-black leading-tight text-main">Katalog Top Up</h2></div>
-                           </div>
-                       )}
-                       
-                       <div className={selectedGame ? "hidden" : "grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-5 relative z-30"}>
-                          {(games||[]).map(game => {
-                             const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
-                             return (
-                             <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer rounded-2xl md:rounded-3xl overflow-hidden relative bg-white dark:bg-white/[0.02] border border-theme flex flex-col h-full z-30 shadow-sm">
-                                {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse">PROMO</div>}
-                                <div className="aspect-square bg-gray-100 dark:bg-black p-1.5 md:p-2 relative overflow-hidden">
-                                   <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl"/>
-                                </div>
-                                <div className="p-3 md:p-4 text-center flex-grow flex flex-col justify-center">
-                                   <h3 className="font-black text-[11px] md:text-sm leading-tight mb-1 line-clamp-1 text-main">{game.name}</h3>
-                                   <p className="text-[8px] md:text-[10px] font-bold text-sub-theme uppercase tracking-widest truncate">ID: {game.id}</p>
-                                </div>
-                             </div>
-                          )})}
-                          {(!games || games.length === 0) && <div className="col-span-full py-12 text-center text-sub-theme text-sm font-bold bg-card rounded-[2rem] border border-dashed border-theme">Katalog game masih kosong.</div>}
-                       </div>
+                    <button onClick={() => setIsDarkMode(!isDarkMode)} className="p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hidden sm:block">
+                        {isDarkMode ? <IconSun className="w-5 h-5"/> : <IconMoon className="w-5 h-5"/>}
+                    </button>
+                    <div className="text-right mr-2 flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-xl border border-orange-500/20">
+                       <span className="hidden sm:inline text-[10px] font-black uppercase text-orange-500">Cashback</span>
+                       <IconWallet className="w-4 h-4 text-orange-600 dark:text-orange-400 sm:hidden"/>
+                       <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</span>
                     </div>
-
-                    {selectedGame && (
-                       <div className="animate-slide-down relative">
-                          <div className="flex items-center gap-4 mb-6 bg-card p-4 md:p-5 rounded-3xl border border-theme shadow-sm">
-                             <button onClick={() => setSelectedGame(null)} className="p-3 bg-gray-100 dark:bg-black border border-theme rounded-xl text-main"><IconChevronLeft className="w-5 h-5"/></button>
-                             <img src={selectedGame.image} className="w-14 h-14 rounded-2xl object-cover border border-theme" />
-                             <div>
-                                <h2 className="text-xl md:text-2xl font-black text-main leading-tight">{selectedGame.name}</h2>
-                                <p className="text-xs text-orange-600 dark:text-orange-500 font-bold mt-1 uppercase tracking-widest">ID: {selectedGame.id}</p>
-                             </div>
+                    <button onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} className="w-10 h-10 rounded-full border-2 border-theme shadow-sm text-main overflow-hidden bg-gray-200 dark:bg-black flex items-center justify-center shrink-0">
+                       {currentUserData?.avatar ? ( <img src={currentUserData.avatar} className="w-full h-full object-cover" /> ) : ( <span className="font-black text-sm text-sub-theme">{(currentUserData?.name || authUser?.email || 'U').charAt(0).toUpperCase()}</span> )}
+                    </button>
+                    {profileDropdownOpen && (
+                       <div className="absolute right-0 top-12 mt-2 w-56 bg-card rounded-2xl shadow-2xl border border-theme overflow-hidden py-2 z-50 animate-slide-down">
+                          <div className="px-4 py-3 border-b border-theme mb-2 bg-gray-50 dark:bg-navy-900">
+                             <p className="text-sm font-black text-main truncate">{currentUserData?.name || (authUser.email||'').split('@')[0] || 'User'}</p>
+                             <p className="text-[10px] text-sub-theme font-mono truncate mt-0.5">{authUser.email}</p>
                           </div>
-
-                          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                             <div className="lg:col-span-7 space-y-6">
-                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">1</span> Masukkan Data Tujuan</h3>
-                                   <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
-                                      <div className="flex-1 relative group">
-                                         <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                         <input type="text" value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val)) { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                      </div>
-                                      {selectedGame?.inputType === 'id_zone' && (
-                                         <div className="w-full sm:w-1/3 relative group">
-                                            <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                            <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                         </div>
-                                      )}
-                                      {selectedGame?.inputType === 'riot_id' && (
-                                         <div className="w-full sm:w-1/3 relative group">
-                                            <IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                            <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Tag (#)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm focus:border-orange-500"/>
-                                         </div>
-                                      )}
-                                   </div>
-                                   <div className="relative group z-10">
-                                       <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                                       <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Masukkan Nickname (Opsional)" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold text-sm focus:border-orange-500" />
-                                   </div>
-                                   <p className="text-[10px] text-sub-theme mt-3 font-medium">Kesalahan penulisan ID bukan tanggung jawab sistem.</p>
-                                </div>
-
-                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk</h3>
-                                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 relative z-10">
-                                      {(items||[]).filter(i => i.gameId === selectedGame?.id).sort((a,b)=>a.price-b.price).map(item => {
-                                         const itemPromos = getActivePromosForItem(item.id);
-                                         const bestAutoPromo = itemPromos.length > 0 ? itemPromos.reduce((prev, current) => {
-                                             const prevD = prev.type === 'percentage' ? (item.price * prev.discount / 100) : prev.discount;
-                                             const currD = current.type === 'percentage' ? (item.price * current.discount / 100) : current.discount;
-                                             return (currD > prevD) ? current : prev;
-                                         }) : null;
-                                         const finalP = calculateFinalPrice(item.price, item.id);
-                                         const hasPromo = bestAutoPromo !== null;
-                                         const pCashback = globalConfig?.cashbackPercent ? (finalP * (globalConfig.cashbackPercent / 100)) : 0;
-
-                                         return (
-                                         <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 text-center relative overflow-hidden flex flex-col justify-center min-h-[100px] ${selectedNominal?.id === item.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
-                                            {hasPromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10">{bestAutoPromo.category === 'flash' ? '⚡ FLASH' : '🔥 PROMO'}</div>}
-                                            {selectedNominal?.id === item.id && <div className="absolute top-2 left-2 z-10"><IconCheckCircle className="w-4 h-4 text-orange-500"/></div>}
-                                            
-                                            <div className="font-bold text-xs md:text-sm text-main mb-2 mt-2">{item.name}</div>
-                                            <div className={`text-[10px] md:text-xs font-mono font-black mt-auto ${hasPromo ? 'text-orange-600 dark:text-orange-400' : 'text-sub-theme'}`}>
-                                                {hasPromo ? (<div className="flex flex-col items-center"><span className="line-through text-gray-400 text-[9px] mb-0.5">{formatRupiah(item.price)}</span><span>{formatRupiah(finalP)}</span></div>) : formatRupiah(item.price)}
-                                            </div>
-                                            {pCashback > 0 && <div className="text-[8px] font-bold text-emerald-500 mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block mx-auto">+ {formatRupiah(pCashback)} CB</div>}
-                                         </div>
-                                      )})}
-                                   </div>
-                                   {(!items || items.filter(i => i.gameId === selectedGame?.id).length === 0) && <div className="py-10 text-center text-sub-theme text-sm font-bold bg-gray-100 dark:bg-white/5 rounded-3xl border border-dashed border-theme">Produk belum tersedia.</div>}
-                                </div>
-                             </div>
-
-                             <div className="lg:col-span-5 space-y-6">
-                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-orange-500 relative overflow-hidden">
-                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-orange-500 text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
-                                   <div className="space-y-3 mb-6 relative z-10">
-                                      {PAYMENTS.map(pay => (
-                                         <div key={pay.id} onClick={() => setSelectedPayment(pay)} className={`cursor-pointer rounded-2xl p-4 border-2 flex items-center gap-4 ${selectedPayment?.id === pay.id ? 'border-orange-500 bg-orange-50 dark:bg-orange-500/10' : 'border-theme bg-gray-50 dark:bg-black'}`}>
-                                            <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${pay.color} flex items-center justify-center text-white shadow-lg shrink-0`}>{pay.id === 'qris' ? <IconQrcode className="w-8 h-8"/> : <IconWallet className="w-8 h-8"/>}</div>
-                                            <div className="flex-1">
-                                                <div className="flex items-center gap-2"><div className="text-sm font-black text-main">{pay.name}</div><span className="text-[8px] bg-black/10 dark:bg-white/20 text-main px-2 py-0.5 rounded font-black">{pay.badge}</span></div>
-                                                <div className="text-[10px] text-sub-theme font-bold mt-1">{pay.type}</div>
-                                            </div>
-                                            {selectedPayment?.id === pay.id && <IconCheckCircle className="w-6 h-6 text-orange-500 shrink-0"/>}
-                                         </div>
-                                      ))}
-                                   </div>
-                                   
-                                   {currentUserData?.saldoCashback > 0 && (
-                                       <div className="relative z-10 py-4 mb-2 border-t border-b border-theme flex items-center justify-between">
-                                          <div>
-                                              <label className="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5"><IconWallet className="w-4 h-4"/> Pakai Saldo Cashback</label>
-                                              <p className="text-[10px] text-sub-theme mt-0.5">Saldo: {formatRupiah(currentUserData.saldoCashback)}</p>
-                                          </div>
-                                          <label className="relative inline-flex items-center cursor-pointer">
-                                             <input type="checkbox" className="sr-only peer" checked={useCashback} onChange={(e) => setUseCashback(e.target.checked)} />
-                                             <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 peer-checked:bg-emerald-500"></div>
-                                          </label>
-                                       </div>
-                                   )}
-
-                                   <div className="relative z-10 pt-4">
-                                      <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
-                                      <div className="flex gap-2 bg-gray-100 dark:bg-black p-1.5 rounded-2xl border border-theme shadow-inner">
-                                         <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
-                                         {activePromo ? (
-                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase">Hapus</button>
-                                         ) : (
-                                             <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm">Pakai</button>
-                                         )}
-                                      </div>
-                                   </div>
-                                </div>
-
-                                <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-emerald-500 relative overflow-hidden mt-6">
-                                   <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
-                                       <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
-                                       <span className="text-2xl md:text-3xl font-black text-orange-600 dark:text-orange-500 font-mono">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
-                                   </div>
-                                   {estimatedCashback > 0 && (
-                                       <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between">
-                                           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Estimasi Cashback Diterima:</span>
-                                           <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
-                                       </div>
-                                   )}
-                                   <button onClick={triggerCheckout} disabled={isProcessing} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-lg ${isFormValid ? 'bg-gradient-to-r from-orange-600 to-red-600 text-white' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
-                                      {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
-                                   </button>
-                                </div>
-                             </div>
-                          </div>
+                          {!isPwaMode && <button onClick={() => {handleInstallPwa(); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-orange-500 flex items-center gap-3 sm:hidden border-b border-theme"><IconDownloadCloud className="w-4 h-4"/> Instal Aplikasi PWA</button>}
+                          <button onClick={() => {setIsDarkMode(!isDarkMode); setProfileDropdownOpen(false);}} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3 sm:hidden"><IconSun className="w-4 h-4"/> Mode {isDarkMode ? 'Terang' : 'Gelap'}</button>
+                          <button onClick={() => navigateTo('profile')} className="w-full text-left px-4 py-2.5 text-sm font-bold text-sub-theme flex items-center gap-3"><IconUser className="w-4 h-4"/> Profil & Keamanan</button>
+                          <button onClick={() => signOut(auth)} className="w-full text-left px-4 py-2.5 text-sm font-bold text-red-500 flex items-center gap-3"><IconLogOut className="w-4 h-4"/> Keluar Sesi</button>
                        </div>
                     )}
-                    
-                    {!selectedGame && (
-                       <div className="mt-16 pt-12 border-t border-theme text-center relative z-10">
-                          <div className="inline-flex items-center justify-center p-4 bg-orange-500/10 rounded-2xl mb-6"><IconShield className="w-8 h-8 text-orange-600 dark:text-orange-500"/></div>
-                          <h2 className="text-2xl md:text-3xl font-black text-main mb-4">Top Up Aman & Terpercaya</h2>
-                          <p className="text-sm text-sub-theme max-w-2xl mx-auto leading-relaxed">{globalConfig?.appName || 'Vipercell'} memproses transaksi secara otomatis setiap harinya. Kami menjamin keamanan akun Anda dengan sistem enkripsi dan integrasi langsung ke server game. Kepuasan Anda adalah prioritas utama kami.</p>
-                          
-                          {(galleryData||[]).length > 0 && (
-                             <div className="mt-12 bg-card p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner text-left">
-                                <h3 className="text-sm font-black text-sub-theme uppercase tracking-widest mb-6 flex items-center gap-2 pl-2"><IconImage className="w-5 h-5 text-orange-500"/> Bukti Transaksi Real-time</h3>
-                                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-                                   {galleryData.map((img, i) => (
-                                      <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-theme relative bg-gray-100 dark:bg-black">
-                                         <img src={img} className="w-full h-full object-cover" />
-                                      </div>
-                                   ))}
-                                </div>
-                             </div>
-                          )}
-                       </div>
-                    )}
-                </div>
-            )}
-            
-            {/* RIWAYAT */}
-            {currentView === 'history' && (
-                <div className="animate-slide-down pb-10 max-w-5xl mx-auto pt-4 w-full relative z-10">
-                   <div className="clean-card border-theme rounded-[3rem] p-6 md:p-10 shadow-2xl">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10 border-b border-theme pb-8">
-                         <div className="flex items-center gap-5">
-                            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl flex items-center justify-center text-white"><IconHistory className="w-8 h-8"/></div>
-                            <div>
-                               <h2 className="text-2xl md:text-3xl font-black leading-tight text-main">Riwayat Transaksi</h2>
-                               <p className="text-xs text-sub-theme font-medium mt-1.5">Pantau status pesanan dan instruksi pembayaran.</p>
-                            </div>
-                         </div>
-                         <div className="bg-gray-100 dark:bg-black/50 px-5 py-3 rounded-2xl text-xs font-bold text-sub-theme border border-theme flex items-center gap-3">
-                            Total Pemesanan: <span className="text-main text-lg font-black font-mono bg-white dark:bg-white/10 px-3 py-0.5 rounded-lg border border-theme">{(userOrders||[]).filter(o => o.status !== 'Dihapus').length || 0}</span>
-                         </div>
-                      </div>
-                      
-                      <div className="space-y-4">
-                         {(userOrders||[]).filter(o => o.status !== 'Dihapus').length > 0 ? userOrders.filter(o => o.status !== 'Dihapus').map(order => {
-                            const isExpanded = expandedHistoryId === order.id;
-                            const gameIcon = (games||[]).find(g => g.id === order.gameId)?.image || 'https://via.placeholder.com/150';
-                            
-                            return (
-                            <div key={order.id} className={`bg-card border rounded-[2rem] overflow-hidden shadow-lg ${isExpanded ? 'border-orange-500/50 ring-1 ring-orange-500/50' : 'border-theme'}`}>
-                               <div onClick={() => setExpandedHistoryId(isExpanded ? null : order.id)} className="p-5 md:p-6 flex flex-col md:flex-row justify-between md:items-center gap-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/[0.02]">
-                                  <div className="flex gap-4 items-center w-full md:w-auto">
-                                     <div className="relative shrink-0">
-                                        <img src={gameIcon} className="w-14 h-14 rounded-2xl object-cover border border-theme"/>
-                                        <div className={`absolute -bottom-1 -right-1 w-6 h-6 rounded-lg flex items-center justify-center border border-theme backdrop-blur-md ${order.status === 'Sukses' ? 'bg-emerald-500/90' : order.status === 'Batal' ? 'bg-red-500/90' : 'bg-orange-500/90'}`}>
-                                            {order.status === 'Sukses' ? <IconCheckCircle className="w-3 h-3 text-white"/> : order.status === 'Batal' ? <IconX className="w-3 h-3 text-white"/> : <IconLoader className="w-3 h-3 text-white animate-spin"/>}
-                                        </div>
-                                     </div>
-                                     <div className="flex-1 min-w-0">
-                                        <div className="font-black text-sm md:text-base text-main mb-0.5 truncate">{order.gameName || 'Game'}</div>
-                                        <div className="text-xs text-sub-theme font-bold mb-2 truncate">{order.nominalName || 'Item'}</div>
-                                        <div className="text-[9px] text-main font-bold px-2 py-0.5 rounded bg-gray-200 dark:bg-white/10 border border-theme inline-flex items-center gap-1 uppercase"><IconQrcode className="w-3 h-3"/> {order.paymentMethod || 'Metode'}</div>
-                                     </div>
-                                  </div>
-                                  
-                                  <div className="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 border-theme pt-4 md:pt-0 md:pl-6 md:border-l w-full md:w-auto shrink-0">
-                                     <div className="flex flex-col text-left md:text-right">
-                                        <span className="text-[9px] font-black text-sub-theme uppercase tracking-widest">Total Tagihan</span>
-                                        <span className="text-lg font-black text-main font-mono">{formatRupiah(order.priceTotal)}</span>
-                                     </div>
-                                     <div className="flex flex-col items-end gap-2">
-                                        <span className={`px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-widest border ${order.status==='Sukses'?'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30':order.status==='Batal'?'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/30':'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30'}`}>{order.status}</span>
-                                        <div className="text-sub-theme bg-gray-100 dark:bg-white/5 rounded-md p-1">{isExpanded ? <IconChevronUp className="w-4 h-4"/> : <IconChevronDown className="w-4 h-4"/>}</div>
-                                     </div>
-                                  </div>
-                               </div>
-
-                               {isExpanded && (
-                                  <div className="p-5 md:p-6 border-t border-theme bg-gray-50 dark:bg-[#0a0a0a] animate-slide-down flex flex-col md:flex-row gap-6 shadow-inner">
-                                     <div className="flex-1 space-y-4">
-                                        <div><p className="text-[9px] font-black text-sub-theme uppercase mb-1">ID Pesanan Invoice</p><p className="font-mono text-xs font-black text-main bg-gray-200 dark:bg-black px-3 py-1.5 rounded-lg inline-block border border-theme">{order.id}</p></div>
-                                        <div><p className="text-[9px] font-black text-sub-theme uppercase mb-1">Target Pengisian</p><p className="font-mono text-sm font-bold text-main bg-white dark:bg-white/5 px-3 py-1.5 rounded-lg inline-block border border-theme">{(order.targetUserId || '')} {(order.targetZoneId || '') && `(${(order.targetZoneId || '')})`}</p></div>
-                                        {order.targetNickname && (<div><p className="text-[9px] font-black text-orange-500 uppercase mb-1">Nickname Game</p><p className="font-bold text-sm text-main">{order.targetNickname}</p></div>)}
-                                        <div><p className="text-[9px] font-black text-sub-theme uppercase mb-1">Waktu Transaksi</p><p className="text-xs font-bold text-main">{order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID', {day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'}) : '-'}</p></div>
-                                        {order.cashbackEarned > 0 && order.status === 'Sukses' && (<div><p className="text-[9px] font-black text-emerald-500 uppercase mb-1">Cashback Diterima</p><p className="font-bold text-sm text-emerald-600 dark:text-emerald-400">+ {formatRupiah(order.cashbackEarned)}</p></div>)}
-                                        <button onClick={(e) => { e.stopPropagation(); handleOrderHelp(order); }} className="mt-4 bg-orange-500/10 text-orange-600 dark:text-orange-500 border border-orange-500/30 font-bold py-2.5 px-5 rounded-xl text-xs flex items-center gap-2">
-                                            <IconHelp className="w-4 h-4"/> Bantuan Transaksi Ini
-                                        </button>
-                                     </div>
-                                     
-                                     {order.status === 'Pending' && (
-                                        <div className="w-full md:w-72 bg-white dark:bg-black p-5 rounded-[2rem] border border-orange-500/40 flex flex-col items-center justify-center shadow-lg shrink-0 relative text-center">
-                                           {(order.paymentMethod || '').includes('QRIS') ? (
-                                              <>
-                                                 <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Scan QRIS Untuk Bayar</p>
-                                                 <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-4"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-40 h-40 object-contain" /></div>
-                                                 <a href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} target="_blank" download="QRIS_Vipercell.jpg" className="bg-gray-100 dark:bg-white/10 text-main text-[9px] font-black px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 border border-theme uppercase w-full"><IconDownload className="w-3.5 h-3.5"/> Simpan QR Code</a>
-                                              </>
-                                           ) : (
-                                              <>
-                                                 <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Tunjukkan QR ke Kasir</p>
-                                                 <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-3"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CASH-VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}&margin=10`} className="w-40 h-40 object-contain" /></div>
-                                                 <div className="text-center w-full bg-gray-50 dark:bg-white/5 p-3 rounded-xl border border-theme"><p className="text-[9px] text-sub-theme font-mono">{order.id}</p><p className="text-sm font-black text-orange-500">{formatRupiah(order.priceTotal)}</p></div>
-                                              </>
-                                           )}
-                                        </div>
-                                     )}
-                                  </div>
-                               )}
-                            </div>
-                            )
-                         }) : (
-                            <div className="text-center py-24 text-sub-theme border border-dashed border-theme rounded-[3rem] bg-gray-50 dark:bg-black/40">
-                               <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6 border border-theme"><IconHistory className="w-10 h-10 opacity-30 text-main"/></div>
-                               <p className="font-black text-xl text-main mb-2">Belum Ada Transaksi</p>
-                               <p className="text-sm font-medium opacity-80 max-w-sm mx-auto">Riwayat pesanan Anda masih kosong.</p>
-                               <button onClick={()=>navigateTo('home')} className="mt-8 bg-black text-white dark:bg-white dark:text-black px-8 py-4 rounded-2xl font-black text-xs uppercase">Mulai Top Up</button>
-                            </div>
-                         )}
-                      </div>
-                   </div>
-                </div>
-            )}
-
-            {/* PROFIL */}
-            {currentView === 'profile' && (
-                <div className="animate-slide-down pb-10 max-w-4xl mx-auto pt-4 w-full relative z-10">
-                   <div className="clean-card rounded-[3rem] p-6 md:p-10 shadow-2xl border-theme">
-                      <div className="flex flex-col md:flex-row items-center gap-8 mb-12 border-b border-theme pb-10">
-                         <div className="relative group">
-                            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-navy-700 dark:to-navy-950 p-1">
-                               <div className="w-full h-full bg-card rounded-full flex items-center justify-center overflow-hidden relative">
-                                  {profileAvatar ? <img src={profileAvatar} className="w-full h-full object-cover" /> : <span className="text-5xl font-black text-sub-theme">{currentUserData?.name?.charAt(0).toUpperCase() || (authUser.email || '').charAt(0).toUpperCase() || 'U'}</span>}
-                                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition cursor-pointer"><IconCamera className="w-8 h-8 text-white"/></div>
-                                  <input type="file" accept="image/*" onChange={handleAvatarUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                               </div>
-                            </div>
-                         </div>
-                         <div className="text-center md:text-left flex-1">
-                            <h2 className="text-3xl md:text-4xl font-black leading-tight text-main">
-                                {currentUserData?.name || 'Member VIP'} 
-                                {isAdmin && <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-md font-bold uppercase ml-3">Admin</span>}
-                            </h2>
-                            <p className="text-sm text-sub-theme font-mono mt-2">{authUser.email}</p>
-                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-5">
-                               <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20 font-black uppercase flex items-center gap-1.5"><IconCheckCircle className="w-3 h-3"/> Terverifikasi Akun</span>
-                               <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercase flex items-center gap-1.5 ${userVipData.color}`}>{userVipData.badge} {userVipData.level} Member Rank</span>
-                            </div>
-                         </div>
-                      </div>
-
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                         <div className="space-y-6">
-                            <div className="bg-gray-50 dark:bg-black/50 p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                               <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-main"><div className="bg-orange-500/20 p-2 rounded-xl text-orange-600 dark:text-orange-500"><IconUser className="w-5 h-5"/></div> Data Personal</h3>
-                               <form onSubmit={handleUpdateProfile} className="space-y-5">
-                                  <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nama Lengkap" /></div>
-                                  <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="tel" required value={profilePhone} onChange={(e)=> { const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setProfilePhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-orange-500 text-sm" placeholder="Nomor Handphone Unik" /></div>
-                                  <button type="submit" disabled={!profilePhone || profilePhone.length < 10} className="w-full bg-black text-white dark:bg-white dark:text-black py-4 rounded-2xl font-black text-xs uppercase disabled:opacity-50">Simpan Data</button>
-                               </form>
-                            </div>
-                         </div>
-
-                         <div className="space-y-6">
-                            <div className={`p-8 rounded-[2.5rem] border bg-gradient-to-br from-white to-gray-50 dark:from-black/60 dark:to-black ${userVipData.color.replace('text-', 'border-').replace('bg-', '')}`}>
-                                <h3 className="text-lg font-black mb-2 flex items-center gap-2 text-main"><span className="text-2xl">{userVipData.badge}</span> Level VIP: {userVipData.level}</h3>
-                                <p className="text-xs font-medium text-sub-theme mb-5">Total Transaksi Sukses: <span className="font-black text-main">{userTotalTx}x</span></p>
-                                <div className="bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl p-4 flex justify-between items-center mb-4">
-                                    <div><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Benefit Cashback</p><p className="font-mono text-xl font-black text-orange-600 dark:text-orange-400">{userVipData.cashback * 100}% <span className="text-[10px] text-sub-theme">/ Trx</span></p></div>
-                                    <div className="text-right"><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Saldo Terkumpul</p><p className="font-mono text-xl font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</p></div>
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-50 dark:bg-black/50 p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                               <div className="flex justify-between items-start mb-6">
-                                   <h3 className="text-lg font-black flex items-center gap-3 text-main"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-600 dark:text-purple-500"><IconLock className="w-5 h-5"/></div> Keamanan Akun</h3>
-                               </div>
-
-                               <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
-                                  <div><h4 className="text-sm font-black text-main mb-1">PIN Transaksi</h4><p className="text-[10px] text-sub-theme font-medium">Lindungi proses checkout.</p></div>
-                                  {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
-                               </div>
-
-                               {!showPasswordForm ? (
-                                  <div className="flex flex-col justify-center">
-                                     <h4 className="text-sm font-black text-main mb-2">Ubah Kata Sandi Akun</h4>
-                                     <button onClick={()=>setShowPasswordForm(true)} className="bg-gray-200 dark:bg-white/5 border border-theme text-main py-3.5 px-5 rounded-2xl font-black text-xs uppercase w-full flex items-center justify-center gap-2"><IconEdit className="w-4 h-4"/> Form Ubah Sandi</button>
-                                  </div>
-                                ) : (
-                                  <form onSubmit={handleChangePassword} className="space-y-4 animate-slide-down">
-                                     <div className="relative"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={currentPassword} onChange={(e)=>setCurrentPassword(e.target.value)} className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Kata Sandi Saat Ini" /></div>
-                                     <div className="relative"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={newPassword} onChange={(e)=>setNewPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Kata Sandi Baru (Min. 6)" /></div>
-                                     <div className="relative"><IconCheck className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-sub-theme" /><input type="password" required value={confirmNewPassword} onChange={(e)=>setConfirmNewPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-xl py-3 pl-11 pr-4 text-sm focus:outline-none focus:border-red-500" placeholder="Ulangi Kata Sandi Baru" /></div>
-                                     <div className="flex gap-3 pt-2">
-                                        <button type="button" onClick={()=>{setShowPasswordForm(false);}} className="flex-1 bg-gray-200 dark:bg-white/5 text-sub-theme py-3.5 rounded-xl font-bold text-[10px] uppercase">Batal</button>
-                                        <button type="submit" className="flex-[2] bg-red-600 text-white py-3.5 rounded-xl font-black text-[10px] uppercase">Simpan Sandi Baru</button>
-                                     </div>
-                                  </form>
-                               )}
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-            )}
-
-            {/* ADMIN PANEL */}
-            {currentView === 'admin' && isAdmin && (
-               <div className="animate-slide-down pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
-                  <div className="w-full lg:w-72 clean-card border-theme p-5 shadow-2xl flex flex-col shrink-0 lg:sticky lg:top-24 lg:h-[calc(100vh-140px)] z-30">
-                     <div className="flex items-center gap-3 mb-8 px-2 pt-2">
-                        <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
-                        <div className="min-w-0">
-                           <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.0.1 Serverless</span>
-                        </div>
-                     </div>
-
-                     <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 custom-scrollbar flex-1">
-                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'members', label: 'Data Member', icon: IconUsers }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
-                           const TabIcon = tab.icon;
-                           return (
-                           <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-auto lg:w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-bold transition-all whitespace-nowrap shrink-0 border ${activeAdminTab === tab.id ? 'bg-red-600 text-white border-red-500' : 'bg-transparent text-sub-theme border-transparent hover:bg-gray-100 dark:hover:bg-white/5'}`}>
-                              <TabIcon className={`w-5 h-5 ${activeAdminTab === tab.id ? 'text-white' : ''}`} />
-                              <span className="text-sm tracking-wide">{tab.label}</span>
-                              {tab.notif > 0 && <span className="ml-2 lg:ml-auto bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-black">{tab.notif}</span>}
-                           </button>
-                        )})}
-                     </div>
-                  </div>
-
-                  <div className="flex-1 clean-card border-theme shadow-2xl overflow-hidden flex flex-col relative w-full h-[75vh] lg:h-[calc(100vh-140px)] z-20">
-                     <div className={`flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar relative z-10 w-full ${activeAdminTab === 'support' ? 'p-0 md:p-0 flex flex-col' : ''}`}>
-                        
-                        {/* TAB: DASHBOARD */}
-                        {activeAdminTab === 'dashboard' && (
-                           <div className="animate-slide-down">
-                              <h2 className="text-2xl font-black mb-6 text-main px-2 flex items-center gap-2"><IconTrendingUp className="w-6 h-6 text-red-500"/> Ringkasan Sistem Server</h2>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 rounded-[2rem] p-6 text-white shadow-lg border border-theme">
-                                    <IconList className="w-8 h-8 mb-4 text-white opacity-90" />
-                                    <p className="text-[10px] font-black uppercase opacity-80 mb-1">Total Pesanan Masuk</p>
-                                    <p className="text-4xl font-black font-mono">{(allGlobalOrders||[]).length}</p>
-                                 </div>
-                                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 rounded-[2rem] p-6 text-white shadow-lg border border-theme">
-                                    <IconCheckCircle className="w-8 h-8 mb-4 text-white opacity-90" />
-                                    <p className="text-[10px] font-black uppercase opacity-80 mb-1">Pesanan Berhasil (Sukses)</p>
-                                    <p className="text-4xl font-black font-mono">{(allGlobalOrders||[]).filter(o => o.status === 'Sukses').length}</p>
-                                 </div>
-                                 <div className="bg-gradient-to-br from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 rounded-[2rem] p-6 text-white shadow-lg border border-theme">
-                                    <IconUsers className="w-8 h-8 mb-4 text-white opacity-90" />
-                                    <p className="text-[10px] font-black uppercase opacity-80 mb-1">Member Terdaftar</p>
-                                    <p className="text-4xl font-black font-mono">{(memberList||[]).length}</p>
-                                 </div>
-                              </div>
-
-                              <div className="mt-8 bg-gray-50 dark:bg-black/50 rounded-[2rem] p-5 md:p-6 border border-theme shadow-inner">
-                                 <h3 className="text-sm font-black uppercase tracking-widest text-sub-theme mb-5 flex items-center gap-2"><IconHistory className="w-4 h-4"/> Aktivitas Transaksi Terkini</h3>
-                                 <div className="space-y-3">
-                                    {(allGlobalOrders||[]).slice(0,5).map(o => (
-                                       <div key={o.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center bg-card p-4 rounded-2xl border border-theme shadow-sm gap-3">
-                                          <div className="flex items-center gap-4 min-w-0">
-                                             <div className={`w-3 h-3 rounded-full shrink-0 shadow-sm ${o.status==='Pending'?'bg-orange-500 animate-pulse':o.status==='Sukses'?'bg-emerald-500':'bg-red-500'}`}></div>
-                                             <div className="min-w-0 flex-1">
-                                                <div className="text-sm font-bold text-main truncate">{(o.userEmail || '').split('@')[0]} <span className="text-xs text-sub-theme font-medium">membeli</span> {o.gameName}</div>
-                                                <div className="text-[10px] font-mono text-sub-theme mt-1 truncate">{o.id}</div>
-                                             </div>
-                                          </div>
-                                          <div className="text-left sm:text-right pl-7 sm:pl-0 border-t sm:border-t-0 border-theme pt-3 sm:pt-0 shrink-0">
-                                             <div className="text-sm font-black font-mono text-emerald-600 dark:text-emerald-400">{formatRupiah(o.priceTotal)}</div>
-                                             <div className="text-[9px] text-sub-theme uppercase tracking-widest mt-1 font-bold">{o.createdAt ? new Date(o.createdAt).toLocaleTimeString('id-ID') : '-'}</div>
-                                          </div>
-                                       </div>
-                                    ))}
-                                    {(!allGlobalOrders || allGlobalOrders.length === 0) && <p className="text-sm text-sub-theme text-center py-8 font-bold border border-dashed border-theme rounded-2xl">Belum ada aktivitas transaksi.</p>}
-                                 </div>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: DAFTAR PESANAN */}
-                        {activeAdminTab === 'orders' && (
-                           <div className="animate-slide-down flex flex-col h-full w-full">
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                                 <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconList className="w-6 h-6 text-red-500"/> Manajemen Pesanan</h2>
-                                 <div className="flex items-center gap-3 w-full sm:w-auto">
-                                    <div className="flex items-center gap-2 bg-gray-100 dark:bg-white/5 px-4 py-2.5 rounded-xl border border-theme">
-                                       <span className="text-[10px] font-bold text-main uppercase tracking-widest">Auto Print BT</span>
-                                       <label className="relative inline-flex items-center cursor-pointer">
-                                          <input type="checkbox" className="sr-only peer" checked={isStandbyMode} onChange={(e) => setIsStandbyMode(e.target.checked)} />
-                                          <div className="w-9 h-5 bg-gray-300 dark:bg-gray-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:bg-emerald-500"></div>
-                                       </label>
-                                    </div>
-                                    <button onClick={() => setIsScannerOpen(true)} className="flex-1 bg-black text-white dark:bg-white dark:text-black px-4 py-2.5 rounded-xl font-black text-[10px] uppercase flex items-center justify-center gap-2"><IconCamera className="w-4 h-4"/> Scan Kasir</button>
-                                 </div>
-                              </div>
-
-                              <div className="relative mb-6 flex gap-3">
-                                 <div className="relative flex-1">
-                                    <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                                    <input type="text" placeholder="Cari ID Transaksi / Email..." value={adminOrderSearch} onChange={(e) => setAdminOrderSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500" />
-                                 </div>
-                                 {selectedOrdersForDelete.length > 0 && (
-                                     <button onClick={handleBulkDeleteOrders} className="bg-red-600 text-white px-4 rounded-xl font-black text-[10px] uppercase flex items-center gap-2 whitespace-nowrap">
-                                        <IconTrash className="w-4 h-4"/> Hapus ({selectedOrdersForDelete.length})
-                                     </button>
-                                 )}
-                              </div>
-
-                              <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-gray-50 dark:bg-black/50 rounded-[2rem] border border-theme shadow-inner">
-                                 <table className="w-full text-left text-sm text-main min-w-[900px]">
-                                    <thead className="text-[10px] text-sub-theme uppercase bg-gray-100 dark:bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-theme">
-                                       <tr>
-                                          <th className="px-5 py-4 w-10 text-center"><IconCheckCircle className="w-4 h-4 mx-auto opacity-50"/></th>
-                                          <th className="px-5 py-4 font-black">Pelanggan & ID</th>
-                                          <th className="px-5 py-4 font-black">Game & Produk</th>
-                                          <th className="px-5 py-4 font-black">Data Tujuan</th>
-                                          <th className="px-5 py-4 font-black">Nominal Tagihan</th>
-                                          <th className="px-5 py-4 font-black">Status</th>
-                                          <th className="px-5 py-4 text-center font-black">Aksi Tindakan</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-theme">
-                                    {(adminOrders || []).filter(o => ((o?.id || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()) || (o?.userEmail || '').toLowerCase().includes((adminOrderSearch||'').toLowerCase()))).map(order => (
-                                       <tr key={order.id} className={`${selectedOrdersForDelete.includes(order.id) ? 'bg-red-500/10' : 'hover:bg-gray-100 dark:hover:bg-white/[0.03]'}`}>
-                                          <td className="px-5 py-4 text-center">
-                                              <input type="checkbox" checked={selectedOrdersForDelete.includes(order.id)} onChange={() => handleSelectOrder(order.id)} className="w-4 h-4 text-orange-500 rounded border-gray-300" />
-                                          </td>
-                                          <td className="px-5 py-4">
-                                             <div className="font-bold text-main truncate max-w-[150px]">{(order?.userEmail || 'Guest').split('@')[0]}</div>
-                                             <div className="text-[9px] text-sub-theme font-mono mt-1 truncate max-w-[150px] bg-gray-200 dark:bg-black px-2 py-0.5 rounded border border-theme inline-block">{order?.id}</div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                             <div className="text-orange-600 dark:text-orange-400 font-bold truncate max-w-[180px]">{order?.gameName || '-'}</div>
-                                             <div className="text-xs text-sub-theme mt-1 truncate max-w-[180px]">{order?.nominalName || '-'}</div>
-                                          </td><td className="px-5 py-4">
-                                             <div className="font-mono font-bold bg-white dark:bg-white/5 rounded-lg inline-flex flex-col gap-1 px-3 py-2 border border-theme shadow-sm text-main max-w-[220px] overflow-hidden overflow-ellipsis text-xs">
-                                                <div className="flex justify-between items-center w-full">
-                                                   <span className="truncate">{order?.targetUserId} {order?.targetZoneId ? `(${order.targetZoneId})` : ''}</span>
-                                                   <button onClick={()=>{navigator.clipboard.writeText(order?.targetUserId); addToast('ID Game disalin', 'success');}} className="p-1 text-gray-400 hover:text-main transition shrink-0 tooltip" title="Salin ID Game"><IconCopy className="w-3.5 h-3.5"/></button>
-                                                </div>
-                                                {order?.targetNickname && <div className="text-[10px] text-orange-500 font-bold border-t border-theme pt-1 mt-1 truncate">{order.targetNickname}</div>}
-                                             </div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                             <div className="font-black text-main text-sm">{formatRupiah(order?.priceTotal)}</div>
-                                             <div className="flex flex-wrap gap-1.5 mt-2">
-                                                <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded font-bold uppercase tracking-wider">{order?.paymentMethod}</span>
-                                                {order?.promoUsed && <span className="text-[8px] bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider flex items-center border border-emerald-500/20"><IconTag className="w-2.5 h-2.5 mr-0.5"/> {order.promoUsed}</span>}
-                                             </div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                             <span className={`px-3 py-1.5 rounded-lg text-[9px] font-black border uppercase tracking-widest shadow-sm ${order?.status === 'Sukses' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30' : order?.status === 'Batal' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/30' : 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30'}`}>{order?.status}</span>
-                                             <div className="text-[8px] text-sub-theme mt-2 font-bold">{order?.createdAt ? new Date(order.createdAt).toLocaleDateString('id-ID') : '-'}</div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                             <div className="flex items-center justify-center gap-2">
-                                                <button onClick={() => executeBluetoothPrint(order)} className="p-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition tooltip shadow-sm" title="Cetak Struk BT"><IconPrinter className="w-4 h-4" /></button>
-                                                {order?.status === 'Pending' && (
-                                                   <>
-                                                      <button onClick={() => updateOrderStatus(order.id, 'Sukses')} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm" title="Tandai Lunas / Sukses"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
-                                                      <button onClick={() => updateOrderStatus(order.id, 'Batal')} className="p-2.5 bg-orange-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
-                                                   </>
-                                                )}
-                                             </div>
-                                          </td>
-                                       </tr>
-                                    ))}
-                                    {(!adminOrders || adminOrders.filter(o => o.status !== 'Dihapus').length === 0) && (<tr><td colSpan="7" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Tidak ada pesanan yang sesuai dalam database.</td></tr>)}
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: DATA MEMBER */}
-                        {activeAdminTab === 'members' && (
-                           <div className="animate-slide-down flex flex-col h-full w-full">
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                                 <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconUsers className="w-6 h-6 text-red-500"/> Manajemen Member</h2>
-                              </div>
-
-                              <div className="relative mb-6">
-                                 <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5" />
-                                 <input type="text" placeholder="Cari Nama atau Email Member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-red-500 font-medium transition shadow-inner" />
-                              </div>
-
-                              <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-gray-50 dark:bg-black/50 rounded-[2rem] border border-theme shadow-inner">
-                                 <table className="w-full text-left text-sm text-main min-w-[900px]">
-                                    <thead className="text-[10px] text-sub-theme uppercase tracking-widest bg-gray-100 dark:bg-white/5 sticky top-0 backdrop-blur-md z-10 border-b border-theme">
-                                       <tr>
-                                          <th className="px-5 py-4 font-black">Informasi Pengguna</th>
-                                          <th className="px-5 py-4 font-black">Kontak Akun</th>
-                                          <th className="px-5 py-4 font-black text-orange-500">Saldo Cashback</th>
-                                          <th className="px-5 py-4 font-black">Status Akun</th>
-                                          <th className="px-5 py-4 font-black">Bergabung Pada</th>
-                                          <th className="px-5 py-4 text-center font-black">Aksi Cepat</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-theme">
-                                    {(memberList||[]).filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
-                                       <tr key={m.id} className={`transition ${m.isBlocked ? 'opacity-50 bg-red-500/5' : 'hover:bg-gray-100 dark:hover:bg-white/[0.03]'}`}>
-                                          <td className="px-5 py-4">
-                                             <div className="flex items-center gap-3">
-                                                 <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-xs text-main overflow-hidden border border-theme shrink-0">
-                                                     {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : (m.name||'U').charAt(0).toUpperCase()}
-                                                 </div>
-                                                 <div className="min-w-0">
-                                                     <div className="font-bold text-main truncate max-w-[150px]">{m.name}</div>
-                                                     <div className="text-[9px] text-sub-theme font-mono mt-0.5 truncate max-w-[150px]">{m.email}</div>
-                                                 </div>
-                                             </div>
-                                          </td>
-                                          <td className="px-5 py-4 font-mono text-sub-theme text-xs bg-white dark:bg-black/50 px-2 py-1 rounded inline-block mt-3 border border-theme">{m.phone || 'Belum diisi'}</td>
-                                          <td className="px-5 py-4">
-                                              <div className="font-mono text-sm font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(m.saldoCashback || 0)}</div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                              {m.isBlocked ? <span className="px-3 py-1.5 rounded-lg text-[9px] font-black bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 uppercase tracking-widest">Diblokir</span> : <span className="px-3 py-1.5 rounded-lg text-[9px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 uppercase tracking-widest">Aktif</span>}
-                                          </td>
-                                          <td className="px-5 py-4 text-xs font-bold text-sub-theme">{m.createdAt ? new Date(m.createdAt).toLocaleDateString('id-ID') : '-'}</td>
-                                          <td className="px-5 py-4">
-                                             <div className="flex items-center justify-center gap-2">
-                                                {m.phone && (
-                                                    <button onClick={()=>window.open(`https://wa.me/${m.phone.replace(/^0/,'62')}?text=Halo%20${m.name},%20kami%20dari%20Vipercell.%20Kami%20ingin%20menginformasikan%20sesuatu%20tentang%20akun%20Anda.`, '_blank')} className="p-2 bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition tooltip shadow-sm" title="Chat WhatsApp">
-                                                        <IconWhatsapp className="w-4 h-4"/>
-                                                    </button>
-                                                )}
-                                                <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/30 hover:bg-orange-500 hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
-                                                    <IconBlock className="w-4 h-4"/>
-                                                </button>
-                                                <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm" title="Hapus Permanen">
-                                                    <IconTrash className="w-4 h-4"/>
-                                                </button>
-                                             </div>
-                                          </td>
-                                       </tr>
-                                    ))}
-                                    {(!memberList || memberList.length === 0) && (<tr><td colSpan="6" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card">Belum ada member terdaftar.</td></tr>)}
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: PUSAT BANTUAN (TICKET, BROADCAST & FEEDBACK) */}
-                        {activeAdminTab === 'support' && (
-                           <div className="animate-slide-down flex flex-col lg:flex-row h-full border border-theme rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-black shadow-inner relative">
-                              
-                              {/* Left Sidebar */}
-                              <div className={`w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-theme flex flex-col h-[50vh] lg:h-full bg-white dark:bg-white/[0.02] ${activeChatEmail ? 'hidden lg:flex' : 'flex'}`}>
-                                 
-                                 <div className="flex bg-gray-100 dark:bg-black p-2 border-b border-theme shrink-0 overflow-x-auto custom-scrollbar">
-                                     <button onClick={()=>setSupportTab('member')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='member' ? 'bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30' : 'text-sub-theme hover:text-main'}`}>Live Chat</button>
-                                     <button onClick={()=>setSupportTab('broadcast')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='broadcast' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30' : 'text-sub-theme hover:text-main'}`}>Siaran</button>
-                                     <button onClick={()=>setSupportTab('feedback')} className={`flex-1 min-w-fit px-3 py-2 text-[9px] font-black uppercase tracking-widest rounded-lg transition ${supportTab==='feedback' ? 'bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30' : 'text-sub-theme hover:text-main'}`}>Saran {unreadFeedbacksCount > 0 && <span className="bg-emerald-500 text-white px-1.5 py-0.5 rounded-full ml-1">{unreadFeedbacksCount}</span>}</button>
-                                 </div>
-
-                                 {/* Panel Live Chat */}
-                                 {supportTab === 'member' && (
-                                     <div className="flex-1 flex flex-col overflow-hidden relative">
-                                        <div className="p-3 bg-blue-600/10 font-bold text-xs text-blue-600 dark:text-blue-400 flex items-center justify-between shrink-0 border-b border-blue-500/20">
-                                            <span><IconMessageSquare className="w-4 h-4 inline mr-1"/> Tiket Masuk</span>
-                                            <span className="bg-blue-500 text-white px-2 py-0.5 rounded-full text-[9px]">{(adminChats||[]).filter(c=>c.status==='Open').length} Baru</span>
-                                        </div>
-                                        <div className="p-2 border-b border-theme bg-card shrink-0">
-                                            <div className="relative">
-                                                <IconSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"/>
-                                                <input type="text" placeholder="Cari email member..." value={adminChatSearch} onChange={(e)=>setAdminChatSearch(e.target.value)} className="w-full bg-gray-100 dark:bg-black/50 border border-theme rounded-xl py-2 pl-9 pr-3 text-xs focus:outline-none focus:border-blue-500 transition text-main" />
-                                            </div>
-                                        </div>
-
-                                        {loadingAdminChats && (
-                                            <div className="absolute inset-0 top-[90px] bg-white/80 dark:bg-black/80 backdrop-blur-sm z-20 flex flex-col items-center justify-center">
-                                                <IconLoader className="w-8 h-8 text-blue-500 animate-spin mb-3"/>
-                                                <span className="text-xs font-black uppercase tracking-widest text-sub-theme">Memuat pesan bantuan...</span>
-                                            </div>
-                                        )}
-
-                                        <div className="overflow-y-auto flex-1 custom-scrollbar">
-                                            {(adminChats||[]).filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).sort((a,b)=>(a.status==='Open'?-1:1)).map(c => {
-                                              const memberData = (memberList||[]).find(m => m.email === c.id);
-                                              return (
-                                              <div key={c.id} onClick={()=>setActiveChatEmail(c.id)} className={`p-4 border-b border-theme cursor-pointer transition flex items-center justify-between group ${activeChatEmail===c.id?'bg-blue-50 dark:bg-blue-600/20 border-l-4 border-l-blue-500':'hover:bg-gray-100 dark:hover:bg-white/5 border-l-4 border-l-transparent'}`}>
-                                                 <div className="flex items-center gap-3 min-w-0 pr-2">
-                                                    <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-[10px] text-main overflow-hidden border border-theme shrink-0">
-                                                        {memberData?.avatar ? <img src={memberData.avatar} className="w-full h-full object-cover"/> : (memberData?.name||c.id||'U').charAt(0).toUpperCase()}
-                                                    </div>
-                                                    <div className="min-w-0 flex-1">
-                                                        <div className="text-xs font-black text-main truncate">{memberData?.name || c.id}</div>
-                                                        <div className="text-[10px] text-sub-theme truncate mt-1">{c.messages[c.messages.length-1].text}</div>
-                                                    </div>
-                                                 </div>
-                                                 <div className="flex items-center gap-2 shrink-0">
-                                                    {c.status==='Open' && <span className="w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_5px_red] animate-pulse"></span>}
-                                                    <button onClick={(e) => handleDeleteChat(c.id, e)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-md transition opacity-0 group-hover:opacity-100" title="Hapus Riwayat"><IconTrash className="w-3.5 h-3.5"/></button>
-                                                 </div>
-                                              </div>
-                                            )})}
-                                            {(!adminChats || adminChats.filter(c=>c.messages?.length>0 && (c.id||'').toLowerCase().includes((adminChatSearch||'').toLowerCase())).length===0) && !loadingAdminChats && !adminChatsError && <div className="text-xs text-center text-sub-theme p-8 font-bold">Tidak ada riwayat chat.</div>}
-                                        </div>
-                                     </div>
-                                 )}
-
-                                 {/* Panel Broadcast Pesan */}
-                                 {supportTab === 'broadcast' && (
-                                    <div className="p-4 overflow-y-auto flex-1 custom-scrollbar">
-                                        <h3 className="font-black text-sm text-main mb-2 flex items-center gap-2"><IconSend className="w-4 h-4 text-orange-500"/> Kirim Pesan Siaran</h3>
-                                        <p className="text-[10px] text-sub-theme mb-6">Pesan akan masuk ke Pusat Bantuan Member.</p>
-                                        
-                                        <div className="space-y-4">
-                                            <div>
-                                                <label className="text-[10px] font-bold text-sub-theme mb-1 block">Tujuan Pengiriman</label>
-                                                <select value={broadcastTarget} onChange={(e)=>{setBroadcastTarget(e.target.value); setSelectedBroadcastUsers([]);}} className="w-full input-theme rounded-xl p-3 text-xs">
-                                                    <option value="all">Ke Semua Member ({(memberList||[]).length})</option>
-                                                    <option value="specific">Pilih Member Tertentu ({(selectedBroadcastUsers||[]).length})</option>
-                                                </select>
-                                            </div>
-                                            
-                                            {broadcastTarget === 'specific' && (
-                                                <div className="border border-theme rounded-xl overflow-hidden flex flex-col h-48 bg-white dark:bg-black/50 shadow-inner">
-                                                   <div className="p-2 border-b border-theme bg-gray-100 dark:bg-white/5 flex justify-between items-center shrink-0">
-                                                      <span className="text-[10px] font-bold text-main">Pilih Member:</span>
-                                                      <button type="button" onClick={() => setSelectedBroadcastUsers((memberList||[]).map(m=>m.email))} className="text-[9px] bg-blue-500/10 text-blue-600 dark:text-blue-400 px-2 py-1 rounded font-bold hover:bg-blue-500 hover:text-white transition">Pilih Semua</button>
-                                                   </div>
-                                                   <div className="overflow-y-auto flex-1 custom-scrollbar p-2 space-y-1">
-                                                      {(memberList||[]).map(m => (
-                                                         <label key={m.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg cursor-pointer transition border border-transparent hover:border-theme">
-                                                            <input type="checkbox" checked={selectedBroadcastUsers.includes(m.email)} onChange={() => toggleBroadcastUser(m.email)} className="w-4 h-4 text-orange-500 rounded border-gray-300" />
-                                                            <div className="min-w-0">
-                                                                <div className="text-xs font-bold text-main truncate">{m.name}</div>
-                                                                <div className="text-[9px] text-sub-theme font-mono truncate">{m.email}</div>
-                                                            </div>
-                                                         </label>
-                                                      ))}
-                                                      {(!memberList || memberList.length === 0) && <p className="text-[10px] text-center text-sub-theme py-4">Belum ada member terdaftar.</p>}
-                                                   </div>
-                                                </div>
-                                            )}
-
-                                            <div>
-                                                <label className="text-[10px] font-bold text-sub-theme mb-1 block">Template Cepat (Opsional)</label>
-                                                <select onChange={(e)=>{if(e.target.value) setBroadcastMsg(e.target.value); e.target.value="";}} className="w-full input-theme rounded-xl p-3 text-xs">
-                                                    <option value="">-- Isi otomatis dengan template --</option>
-                                                    {(chatTemplates||[]).map((t,i)=><option key={i} value={t}>{t.substring(0,40)}...</option>)}
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label className="text-[10px] font-bold text-sub-theme mb-1 block">Isi Pesan Broadcast</label>
-                                                <textarea required value={broadcastMsg} onChange={(e)=>setBroadcastMsg(e.target.value)} placeholder="Tulis isi pesan pengumuman..." className="w-full h-32 input-theme rounded-xl p-4 text-xs resize-none"></textarea>
-                                            </div>
-                                            <button onClick={handleBroadcast} disabled={authLoading || !(broadcastMsg||'').trim() || (broadcastTarget === 'specific' && selectedBroadcastUsers.length === 0)} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3 rounded-xl shadow-lg transition text-xs uppercase tracking-widest disabled:opacity-50">Kirim Sekarang</button>
-                                        </div>
-                                    </div>
-                                 )}
-
-                                 {/* Panel Feedback / Saran */}
-                                 {supportTab === 'feedback' && (
-                                    <div className="p-4 overflow-y-auto flex-1 custom-scrollbar space-y-4 bg-emerald-50 dark:bg-[#0a0a0a]">
-                                        <h3 className="font-black text-sm text-emerald-600 dark:text-emerald-500 mb-2 flex items-center gap-2"><IconMessageSquare className="w-4 h-4"/> Kotak Saran Pelanggan</h3>
-                                        <p className="text-[10px] text-sub-theme mb-4">Daftar masukan dan ide dari pengguna.</p>
-                                        
-                                        {(adminFeedbacks||[]).map(f => (
-                                            <div key={f.id} className={`p-4 rounded-2xl border transition-all shadow-sm ${f.status === 'Unread' ? 'bg-white dark:bg-emerald-900/20 border-emerald-500/50 ring-1 ring-emerald-500/30' : 'bg-gray-100 dark:bg-white/5 border-theme'}`}>
-                                                <div className="flex justify-between items-start mb-3">
-                                                    <div className="min-w-0 pr-2">
-                                                        <div className="text-xs font-black text-main truncate">{f.senderName}</div>
-                                                        <div className="text-[9px] text-sub-theme font-mono truncate">{f.senderEmail}</div>
-                                                    </div>
-                                                    <div className="text-right shrink-0">
-                                                        <div className="text-[8px] font-bold text-sub-theme">{new Date(f.createdAt).toLocaleDateString('id-ID')}</div>
-                                                        {f.status === 'Unread' && <span className="bg-emerald-500 text-white text-[8px] font-black px-2 py-0.5 rounded uppercase mt-1 inline-block">Baru</span>}
-                                                    </div>
-                                                </div>
-                                                <p className="text-xs font-medium text-main bg-gray-50 dark:bg-black/50 p-3 rounded-xl border border-theme mb-3 leading-relaxed">{f.text}</p>
-                                                <div className="flex justify-end gap-2 border-t border-theme pt-3">
-                                                    {f.status === 'Unread' && <button onClick={()=>handleMarkFeedbackRead(f.id)} className="text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-3 py-1.5 rounded hover:bg-emerald-500 hover:text-white transition">Tandai Dibaca</button>}
-                                                    <button onClick={()=>handleDeleteFeedback(f.id)} className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition">Hapus</button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                        {(!adminFeedbacks || adminFeedbacks.length === 0) && (
-                                            <div className="text-center py-12 border border-dashed border-theme rounded-2xl bg-white dark:bg-black/20">
-                                                <IconCheckCircle className="w-8 h-8 text-emerald-500/50 mx-auto mb-2"/>
-                                                <p className="text-xs font-bold text-sub-theme">Belum ada saran yang masuk.</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                 )}
-
-                              </div>
-
-                              {/* Right Chat Area (Hanya muncul jika tab Member/Live Chat dipilih & ada activeChatEmail) */}
-                              <div className={`w-full lg:w-2/3 flex flex-col h-[70vh] lg:h-full relative overflow-hidden transition-colors duration-500 ${(supportTab !== 'member' || !activeChatEmail) ? 'hidden lg:flex' : 'flex'}`} style={{ backgroundColor: chatBgColor }}>
-                                 {supportTab === 'member' && activeChatEmail ? (
-                                    <>
-                                       <div className="p-3 md:p-4 bg-card font-black text-sm border-b border-theme flex justify-between items-center shadow-sm z-10 shrink-0">
-                                          <div className="flex items-center gap-3 min-w-0 pr-2">
-                                              <button onClick={()=>setActiveChatEmail(null)} className="lg:hidden p-2 text-sub-theme bg-gray-100 dark:bg-white/5 rounded-xl hover:text-main shrink-0"><IconChevronLeft className="w-4 h-4"/></button>
-                                              <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-[10px] text-main overflow-hidden border border-theme shrink-0">
-                                                 {(() => {
-                                                    const mData = (memberList||[]).find(m => m.email === activeChatEmail);
-                                                    return mData?.avatar ? <img src={mData.avatar} className="w-full h-full object-cover"/> : (mData?.name||activeChatEmail||'U').charAt(0).toUpperCase();
-                                                 })()}
-                                              </div>
-                                              <div className="min-w-0">
-                                                 <span className="text-main block truncate">{(memberList||[]).find(m => m.email === activeChatEmail)?.name || activeChatEmail}</span>
-                                                 <span className="text-[9px] text-sub-theme font-bold uppercase tracking-widest font-mono">{activeChatEmail}</span>
-                                              </div>
-                                          </div>
-                                          <div className="flex items-center gap-2 shrink-0">
-                                              {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status !== 'Selesai' && (
-                                                 <button onClick={()=>handleCloseTicket(activeChatEmail)} className="p-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white rounded-xl transition tooltip border border-emerald-500/30 flex items-center gap-1" title="Tandai Selesai">
-                                                     <IconCheckCircle className="w-4 h-4"/> <span className="hidden sm:inline text-[9px] uppercase tracking-widest font-black">Selesai</span>
-                                                 </button>
-                                              )}
-                                          </div>
-                                       </div>
-
-                                       <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-4 custom-scrollbar relative z-10">
-                                          <div className="text-center text-[9px] uppercase tracking-widest text-sub-theme font-black bg-white/80 dark:bg-black/40 py-1.5 px-4 rounded-full w-fit mx-auto border border-theme mb-4 shadow-sm">Riwayat Obrolan</div>
-                                          
-                                          {((adminChats||[]).find(c=>c.id===activeChatEmail)?.messages||[]).map((m,i) => {
-                                             const trxMatch = m.text.match(/(?:ID|TRX|Pesanan ID):\s*([a-zA-Z0-9_-]+)/i);
-                                             const orderIdFromText = trxMatch ? trxMatch[1] : null;
-                                             let matchedOrder = null;
-                                             if (orderIdFromText) { matchedOrder = (allGlobalOrders||[]).find(o => o.id === orderIdFromText); }
-
-                                             return (
-                                             <div key={i} className={`flex w-full ${m.sender==='admin'?'justify-end':'justify-start'} animate-slide-down`}>
-                                                <div className={`flex flex-col ${m.sender==='admin'?'items-end':'items-start'} max-w-[85%] md:max-w-[70%]`}>
-                                                   {m.role && m.sender === 'user' && <span className="text-[9px] font-bold uppercase tracking-widest mb-1.5 ml-1 text-orange-600 dark:text-orange-500">{m.role}</span>}
-                                                   {m.role && m.sender === 'admin' && <span className="text-[9px] font-bold uppercase tracking-widest mb-1.5 mr-1 text-blue-600 dark:text-blue-400">{m.role}</span>}
-                                                   
-                                                   <div className="px-4 py-2 text-sm shadow-sm font-medium leading-relaxed" 
-                                                        style={{ 
-                                                           backgroundColor: m.sender === 'admin' ? 'var(--chat-user)' : 'var(--chat-admin)', 
-                                                           color: m.sender === 'admin' ? (isDarkMode ? '#fff' : '#111') : 'var(--chat-text)',
-                                                           borderRadius: m.sender === 'admin' ? '1rem 0 1rem 1rem' : '0 1rem 1rem 1rem' 
-                                                        }}>
-                                                      {m.text}
-                                                      <div className={`text-[9px] font-bold mt-1 text-right opacity-70`}>{m.time ? new Date(m.time).toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}) : ''}</div>
-                                                   </div>
-
-                                                   {m.sender === 'user' && matchedOrder && (
-                                                      <button onClick={() => setAdminTrxModal({isOpen:true, order: matchedOrder})} className="mt-2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500 hover:text-white border border-emerald-500/30 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition flex items-center gap-1 shadow-sm">
-                                                         <IconSearch className="w-3 h-3"/> Cek Validasi Transaksi Ini
-                                                      </button>
-                                                   )}
-                                                </div>
-                                             </div>
-                                          )})}
-
-                                          <div ref={adminChatEndRef} className="h-2"/>
-                                       </div>
-
-                                       <div className="p-3 md:p-4 border-t border-theme bg-card z-20 shadow-[0_-10px_20px_rgba(0,0,0,0.05)] shrink-0 pb-safe">
-                                          {(adminChats||[]).find(c=>c.id===activeChatEmail)?.status === 'Selesai' && (
-                                              <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
-                                          )}
-                                          <div className="flex gap-2 mb-3 overflow-x-auto pb-1 custom-scrollbar">
-                                              <button onClick={()=>setAdminReplyText("Pesanan Anda sedang diproses. Mohon tunggu sekitar 3 menit ya.")} className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-blue-500 hover:text-white transition">⏱️ Proses (3 Menit)</button>
-                                              <button onClick={()=>setAdminReplyText("Pesanan gagal diproses. Silakan hubungi admin untuk bantuan lebih lanjut.")} className="px-3 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/20 rounded-full text-[10px] font-black whitespace-nowrap hover:bg-red-500 hover:text-white transition">❌ Gagal Proses</button>
-                                              {(chatTemplates||[]).map((t,i)=><button key={i} onClick={()=>setAdminReplyText(t)} className="px-3 py-1.5 bg-gray-100 dark:bg-white/5 text-sub-theme border border-theme rounded-full text-[10px] font-black whitespace-nowrap hover:bg-gray-200 dark:hover:bg-white/10 transition truncate max-w-[150px]">{t}</button>)}
-                                          </div>
-                                          <form onSubmit={(e)=>handleAdminSendChat(e, null, false)} className="flex gap-2">
-                                             <input type="text" value={adminReplyText} onChange={(e)=>setAdminReplyText(e.target.value)} placeholder="Ketik balasan pesan..." className="flex-1 input-theme rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-orange-500 transition shadow-inner" />
-                                             <button type="submit" disabled={!(adminReplyText||'').trim()} className="bg-orange-600 hover:bg-orange-500 text-white px-5 rounded-xl font-black transition disabled:opacity-50 shadow-lg shadow-orange-500/20"><IconSend className="w-5 h-5"/></button>
-                                          </form>
-                                       </div>
-                                    </>
-                                 ) : (
-                                    <div className="flex flex-col items-center justify-center h-full text-sub-theme text-sm bg-gray-50 dark:bg-[#0a0a0a]">
-                                        <div className="w-24 h-24 bg-gray-200 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 border border-theme"><IconMessageSquare className="w-10 h-10 opacity-30 text-main"/></div>
-                                        <p className="font-bold text-center px-6">Buka tab Member VIP di kiri dan pilih pesan untuk merespons.</p>
-                                    </div>
-                                 )}
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: PENGATURAN WEB */}
-                        {activeAdminTab === 'settings' && (
-                           <div className="animate-slide-down space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
-                              <div className="flex items-center gap-3 mb-2">
-                                 <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconSettings className="w-6 h-6 text-red-500"/> Peraturan & Sistem Web</h2>
-                              </div>
-                              <p className="text-xs text-sub-theme font-medium mb-8">Konfigurasi tampilan antarmuka, operasional toko, dan data vital sistem {globalConfig?.appName || 'Vipercell'}.</p>
-
-                              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                 
-                                 {/* Panel Sistem Utama & Teks */}
-                                 <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner space-y-6">
-                                    <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconShieldAlert className="w-5 h-5 text-emerald-500"/> Konfigurasi Utama</h3>
-                                    
-                                    <div className="flex items-center justify-between bg-white dark:bg-white/5 p-5 rounded-2xl border border-theme shadow-sm">
-                                       <div>
-                                           <span className="text-sm font-bold text-main block mb-1">Status Operasional Toko</span>
-                                           <span className="text-[10px] text-sub-theme">Aktifkan untuk menerima pesanan.</span>
-                                       </div>
-                                       <button onClick={toggleStore} className={`w-14 h-7 rounded-full transition-colors relative shadow-inner ${isStoreOpen ? 'bg-emerald-500' : 'bg-gray-400 dark:bg-gray-600'}`}>
-                                          <span className={`absolute top-1 left-1 bg-white w-5 h-5 rounded-full transition-transform shadow-md ${isStoreOpen ? 'translate-x-7' : ''}`}></span>
-                                       </button>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                       <div>
-                                           <label className="text-xs font-black text-main mb-2 block">Nama Website (Brand)</label>
-                                           <input type="text" value={adminSettingsForm.appName} onChange={(e)=>setAdminSettingsForm({...adminSettingsForm, appName: e.target.value})} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-emerald-500 transition font-black" placeholder="VIPERCELL" />
-                                       </div>
-                                       <div>
-                                           <label className="text-xs font-black text-main mb-2 block">Persentase Cashback (%)</label>
-                                           <input type="number" step="0.1" value={adminSettingsForm.cashbackPercent} onChange={(e)=>setAdminSettingsForm({...adminSettingsForm, cashbackPercent: e.target.value})} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-emerald-500 transition font-mono" placeholder="Contoh: 2" />
-                                       </div>
-                                    </div>
-                                    <p className="text-[9px] text-sub-theme -mt-4">Cashback diberikan saat transaksi di set "Sukses". Default 0 jika tidak ada cashback global.</p>
-                                    
-                                    <div>
-                                       <label className="text-xs font-black text-main mb-2 block">Teks Berjalan (Running Text)</label>
-                                       <p className="text-[10px] text-sub-theme mb-3">Pisahkan dengan baris baru (Enter).</p>
-                                       <textarea value={runningTexts.join('\n')} onChange={(e)=>setRunningTexts(e.target.value.split('\n'))} className="w-full h-28 input-theme rounded-2xl p-4 text-sm focus:border-red-500 transition custom-scrollbar" placeholder="Promo Top Up..."></textarea>
-                                    </div>
-                                    
-                                    <div>
-                                       <label className="text-xs font-black text-main mb-2 flex justify-between items-center"><span className="flex items-center gap-2"><IconImage className="w-4 h-4 text-orange-500"/> Icon Website (Favicon)</span> {globalConfig?.favicon && <button onClick={handleDeleteFavicon} className="text-[9px] bg-red-600/20 text-red-600 dark:text-red-500 hover:bg-red-600 hover:text-white px-2 py-1 rounded transition">Hapus Icon</button>}</label>
-                                       <div className="relative group">
-                                          <input type="file" accept=".ico, .png, .jpg, .svg, image/*" onChange={handleFaviconUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                          <div className="bg-white dark:bg-white/5 border border-dashed border-gray-300 dark:border-white/20 group-hover:border-orange-500 rounded-xl p-4 flex flex-col items-center justify-center gap-2 text-sub-theme text-xs transition relative z-0 shadow-sm text-center">
-                                             <IconUpload className="w-5 h-5"/> Klik untuk memilih file Favicon baru
-                                          </div>
-                                       </div>
-                                       {globalConfig?.favicon && <div className="mt-4 flex items-center gap-3"><img src={globalConfig.favicon} className="w-8 h-8 rounded border border-theme"/><span className="text-[10px] text-sub-theme font-bold">Favicon Saat Ini</span></div>}
-                                    </div>
-                                    
-                                    <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
-                                 </div>
-
-                                 {/* Panel Bluetooth Printer V12.0.1 */}
-                                 <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
-                                     <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
-                                     <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
-                                     
-                                     <div className="bg-white dark:bg-black/40 p-4 rounded-2xl border border-blue-500/20 mb-6 flex items-center justify-between shadow-sm">
-                                         <div className="flex items-center gap-3">
-                                             <div className={`w-3 h-3 rounded-full animate-pulse ${isPrinterConnected ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]'}`}></div>
-                                             <div>
-                                                 <p className="text-xs font-black text-main">{isPrinterConnected ? 'Printer Terhubung' : 'Tidak Ada Printer'}</p>
-                                                 <p className="text-[9px] font-bold text-sub-theme uppercase tracking-widest mt-0.5">{bluetoothDevice ? bluetoothDevice.name || 'Unknown Device' : 'Silakan hubungkan perangkat'}</p>
-                                             </div>
-                                         </div>
-                                     </div>
-
-                                     <div className="grid grid-cols-2 gap-3 mt-auto">
-                                         {!isPrinterConnected ? (
-                                             <button type="button" onClick={connectBluetoothPrinter} className="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-[0_10px_20px_rgba(59,130,246,0.3)] transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                                                 <IconBluetooth className="w-4 h-4"/> Hubungkan Printer {savedPrinterName ? 'Kembali' : ''}
-                                             </button>
-                                         ) : (
-                                             <>
-                                                 <button type="button" onClick={testBluetoothPrint} className="bg-gray-800 hover:bg-black text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Tes Cetak</button>
-                                                 <button type="button" onClick={disconnectBluetoothPrinter} className="bg-red-600 hover:bg-red-500 text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Putuskan Printer</button>
-                                                 <button type="button" onClick={connectBluetoothPrinter} className="col-span-2 bg-blue-600 hover:bg-blue-500 text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition">Ganti Printer</button>
-                                             </>
-                                         )}
-                                     </div>
-                                 </div>
-
-                                 {/* Panel Sosial Media */}
-                                 <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                                    <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconSearch className="w-5 h-5 text-blue-500"/> Link Sosial Media</h3>
-                                    <p className="text-[10px] text-sub-theme mb-6">Tautan yang akan muncul di Footer halaman utama website.</p>
-                                    
-                                    <div className="space-y-4">
-                                        {[
-                                            {id:'wa', label:'WhatsApp', icon:IconWhatsapp, color:'text-green-500'},
-                                            {id:'ig', label:'Instagram', icon:IconInstagram, color:'text-pink-500'},
-                                            {id:'fb', label:'Facebook', icon:IconFacebook, color:'text-blue-600'},
-                                            {id:'tt', label:'TikTok', icon:IconTiktok, color:'text-gray-800 dark:text-white'},
-                                            {id:'tg', label:'Telegram', icon:IconTelegram, color:'text-blue-400'},
-                                            {id:'yt', label:'YouTube', icon:IconYoutube, color:'text-red-600'}
-                                        ].map(soc => (
-                                           <div key={soc.id} className="relative group">
-                                               <soc.icon className={`absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 ${soc.color} opacity-70 group-focus-within:opacity-100 transition-opacity`} />
-                                               <input type="text" value={adminSettingsForm[soc.id]} onChange={(e)=>setAdminSettingsForm({...adminSettingsForm, [soc.id]: e.target.value})} placeholder={`Link ${soc.label} Anda`} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:border-orange-500 transition shadow-sm" />
-                                           </div>
-                                        ))}
-                                    </div>
-                                    
-                                    <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-6">Simpan Tautan Sosmed</button>
-                                 </div>
-
-                              </div>
-
-                              {/* Panel Banner Slider */}
-                              <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                                 <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconImage className="w-5 h-5 text-purple-500"/> Kelola Banner Slider Depan</h3>
-                                 <p className="text-[10px] text-sub-theme mb-6">Banner sekarang mendukung geser manual (swipe) oleh pengguna. Tambahkan TikTok atau YouTube link dengan mudah.</p>
-                                 
-                                 <div className="flex flex-col gap-4 mb-6 bg-white dark:bg-white/5 p-5 rounded-[2rem] border border-theme shadow-sm">
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                       <select value={adminBannerType} onChange={(e)=>setAdminBannerType(e.target.value)} className="w-full sm:w-auto input-theme rounded-xl px-4 py-3 text-sm font-bold focus:border-purple-500 shrink-0 appearance-none">
-                                          <option value="image">🖼️ Format Gambar</option>
-                                          <option value="video">🎬 Format Video</option>
-                                          <option value="youtube">▶️ Format YouTube</option>
-                                          <option value="tiktok">📱 Format TikTok</option>
-                                       </select>
-                                       
-                                       {(adminBannerType === 'youtube' || adminBannerType === 'tiktok') ? (
-                                           <input type="text" value={adminBannerUrl} onChange={(e)=>setAdminBannerUrl(e.target.value)} placeholder={`Masukkan Link ${adminBannerType === 'tiktok' ? 'Video TikTok' : 'YouTube'} (https://...)`} className="flex-1 input-theme rounded-xl px-4 py-3 text-sm focus:border-purple-500 transition shadow-inner" />
-                                       ) : (
-                                           <div className="flex-1 relative group input-theme rounded-xl overflow-hidden flex items-center shadow-inner">
-                                              <input type="file" accept={adminBannerType==='video' ? "video/mp4,video/webm" : "image/png,image/jpeg,image/webp"} onChange={handleBannerUpload} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" disabled={authLoading} />
-                                              <div className="w-full px-4 py-3 text-sm text-sub-theme flex items-center gap-2">
-                                                 {authLoading ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> {adminBannerUrl ? 'File Siap. Upload Ulang?' : 'Upload File dari HP/PC'}</>}
-                                              </div>
-                                           </div>
-                                       )}
-                                    </div>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                       <input type="text" value={adminBannerTitle} onChange={(e)=>setAdminBannerTitle(e.target.value)} placeholder="Judul Promo (Opsional)" className="w-full input-theme rounded-xl px-4 py-3 text-sm focus:border-purple-500 transition shadow-inner" disabled={adminBannerType==='tiktok'}/>
-                                       <input type="text" value={adminBannerDesc} onChange={(e)=>setAdminBannerDesc(e.target.value)} placeholder="Deskripsi Singkat (Opsional)" className="w-full input-theme rounded-xl px-4 py-3 text-sm focus:border-purple-500 transition shadow-inner" disabled={adminBannerType==='tiktok'}/>
-                                    </div>
-                                    <div className="relative">
-                                        <input type="text" value={adminBannerLink} onChange={(e)=>setAdminBannerLink(e.target.value)} placeholder="Link Tujuan Banner saat diklik (Opsional)" className="w-full input-theme rounded-xl px-4 py-3 text-sm focus:border-purple-500 transition shadow-inner" disabled={adminBannerType==='tiktok'}/>
-                                    </div>
-                                    <button onClick={handleAddBanner} disabled={authLoading || !adminBannerUrl} className="w-full bg-purple-600 hover:bg-purple-500 disabled:opacity-50 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg transition mt-2">Tambahkan Banner ke Depan</button>
-                                 </div>
-                                 
-                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {banners.map((b,i) => (
-                                       <div key={i} className="relative bg-black rounded-2xl overflow-hidden border border-theme group shadow-md flex flex-col">
-                                          <div className="aspect-video relative overflow-hidden">
-                                             <button onClick={async ()=>{ triggerSysLoad('Menghapus Banner...'); const nb=[...banners]; nb.splice(i,1); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), {banners:nb}, {merge:true}); addToast('Banner dihapus', 'success'); closeSysLoad(); }} className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-lg p-1.5 z-10 shadow-lg transition opacity-0 group-hover:opacity-100"><IconTrash className="w-3.5 h-3.5"/></button>
-                                             <div className="absolute top-2 left-2 bg-black/60 text-white text-[8px] font-black px-2 py-1 rounded z-10 uppercase backdrop-blur-sm border border-white/10">{b.type}</div>
-                                             {b.type==='image' ? <img src={b.url} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition duration-500"/> : <div className="w-full h-full flex flex-col justify-center items-center text-[9px] text-gray-400 break-all p-4 text-center bg-white/5">{b.type}<br/>{(b.url||'').substring(0,20)}...</div>}
-                                          </div>
-                                          {(b.title || b.desc || b.targetLink) && (
-                                             <div className="p-3 border-t border-theme bg-card flex-1">
-                                                {b.title && <div className="text-xs font-bold text-main line-clamp-1">{b.title}</div>}
-                                                {b.desc && <div className="text-[9px] text-sub-theme line-clamp-2 mt-1 leading-relaxed">{b.desc}</div>}
-                                                {b.targetLink && <div className="text-[9px] text-blue-500 font-bold truncate mt-1">🔗 {b.targetLink}</div>}
-                                             </div>
-                                          )}
-                                       </div>
-                                    ))}
-                                    {banners.length === 0 && <div className="col-span-full py-10 text-center text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card text-sm">Belum ada banner terpasang.</div>}
-                                 </div>
-                              </div>
-
-                              {/* Panel Galeri Transaksi */}
-                              <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                                    <div>
-                                       <h3 className="font-black text-main text-lg flex items-center gap-2 mb-1"><IconImage className="w-5 h-5 text-orange-500"/> Galeri Bukti Transaksi</h3>
-                                       <p className="text-[10px] text-sub-theme">Tampilkan foto bukti transfer/sukses kepada pengunjung web.</p>
-                                    </div>
-                                    <div className="relative overflow-hidden inline-block group">
-                                        <button className="bg-black text-white dark:bg-white dark:text-black hover:opacity-80 px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg flex items-center gap-2 transition pointer-events-none">
-                                           {uploadingGameImg ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> Upload Foto Baru</>}
-                                        </button>
-                                        <input type="file" accept="image/*" onChange={async (e) => {
-                                            setUploadingGameImg(true);
-                                            await handleGalleryUpload(e);
-                                            setUploadingGameImg(false);
-                                        }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" disabled={uploadingGameImg}/>
-                                    </div>
-                                 </div>
-                                 
-                                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
-                                    {galleryData.map((img, i) => (
-                                       <div key={i} className="aspect-square rounded-2xl overflow-hidden border border-theme relative group bg-black shadow-sm">
-                                          <img src={img} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition duration-300" />
-                                          <button onClick={()=>handleRemoveGallery(i)} className="absolute inset-0 bg-red-600/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition backdrop-blur-sm z-10"><IconTrash className="w-6 h-6 text-white"/></button>
-                                       </div>
-                                    ))}
-                                    {galleryData.length === 0 && <div className="col-span-full py-12 text-center text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-card text-sm">Galeri bukti masih kosong.</div>}
-                                 </div>
-                              </div>
-
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                 {/* Panel Chat Template */}
-                                 <div className="bg-gray-50 dark:bg-black/40 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner">
-                                    <h3 className="font-black text-main text-lg flex items-center gap-2 mb-2"><IconMessageSquare className="w-5 h-5 text-blue-500"/> Template Chat Cepat</h3>
-                                    <p className="text-[10px] text-sub-theme mb-6">Teks balasan cepat satu-klik untuk menjawab pesan dari member.</p>
-                                    
-                                    <form onSubmit={(e)=>{e.preventDefault(); const v=e.target.elements[0].value; saveChatTemplate(v); e.target.elements[0].value="";}} className="flex gap-2 mb-4">
-                                       <input type="text" placeholder="Isi pesan template baru..." required className="flex-1 input-theme rounded-xl px-4 py-3 text-xs focus:border-blue-500 shadow-inner transition" />
-                                       <button type="submit" className="bg-blue-600 hover:bg-blue-500 text-white px-5 rounded-xl text-xs font-black shadow-lg transition">Tambah</button>
-                                    </form>
-                                    
-                                    <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar pr-2">
-                                       {chatTemplates.map((t, i) => (
-                                          <div key={i} className="flex justify-between items-center bg-white dark:bg-white/5 p-3 rounded-xl border border-theme shadow-sm group hover:bg-gray-100 dark:hover:bg-white/10 transition">
-                                             <div className="text-[11px] text-main font-medium leading-relaxed pr-4">{t}</div>
-                                             <button onClick={()=>deleteChatTemplate(i)} className="text-gray-400 hover:text-red-500 p-2 shrink-0 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-4 h-4"/></button>
-                                          </div>
-                                       ))}
-                                       {chatTemplates.length === 0 && <p className="text-xs text-sub-theme font-bold text-center py-4 border border-dashed border-theme rounded-xl">Belum ada template chat tersimpan.</p>}
-                                    </div>
-                                 </div>
-
-                                 {/* Panel Danger Zone (Wipe Data) */}
-                                 <div className="bg-red-50 dark:bg-red-950/20 p-6 md:p-8 rounded-[2.5rem] border border-red-500/30 shadow-[0_0_30px_rgba(220,38,38,0.05)] flex flex-col justify-center text-center">
-                                    <div className="w-16 h-16 bg-red-500/10 dark:bg-red-600/20 text-red-600 dark:text-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-red-500/30"><IconShieldAlert className="w-8 h-8"/></div>
-                                    <h3 className="font-black text-red-600 dark:text-red-500 text-lg mb-2">Zona Berbahaya (Reset Sistem)</h3>
-                                    <p className="text-[11px] text-red-500 dark:text-red-400 mb-8 font-medium leading-relaxed px-4">Fitur ini akan <b className="font-black">MENGHAPUS SEMUA</b> riwayat transaksi pesanan dan riwayat chat seluruh member secara permanen. Katalog game dan data member akan tetap aman.</p>
-                                    <button onClick={handleWipeData} className="w-full bg-red-600 hover:bg-red-500 text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest shadow-[0_10px_20px_rgba(220,38,38,0.3)] transition transform hover:-translate-y-1">Eksekusi Hapus Data</button>
-                                 </div>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: KATALOG GAME & HARGA */}
-                        {activeAdminTab === 'katalog' && (
-                           <div className="animate-slide-down flex flex-col md:flex-row gap-6 h-full">
-                              
-                              {/* Kolom Kiri: Kelola Game */}
-                              <div className="w-full md:w-1/3 flex flex-col gap-4 border-r border-theme pr-0 md:pr-4">
-                                 <h2 className="text-lg font-black text-main flex items-center gap-2 mb-2"><IconGamepad className="w-5 h-5 text-orange-500"/> Manajemen Game</h2>
-                                 <form onSubmit={handleSaveGame} className="bg-gray-50 dark:bg-black/50 p-5 rounded-3xl border border-theme shadow-inner text-sm space-y-3 shrink-0">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <h3 className="font-bold text-main text-xs uppercase tracking-widest">{editingGameId ? 'Edit Data Game' : 'Tambah Game Baru'}</h3>
-                                        {editingGameId && <button type="button" onClick={()=>{setEditingGameId(null); setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone');}} className="text-[9px] bg-gray-200 dark:bg-white/10 px-2 py-1 rounded text-main font-bold">Batal Edit</button>}
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">ID Database Unik</label>
-                                        <input type="text" required value={newGameId} onChange={(e)=>setNewGameId(e.target.value.toLowerCase().replace(/\s+/g, ''))} disabled={editingGameId!==null} placeholder="contoh: mlbb" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition disabled:opacity-50"/>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Nama Game</label>
-                                        <input type="text" required value={newGameName} onChange={(e)=>setNewGameName(e.target.value)} placeholder="Mobile Legends" className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition"/>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Tipe ID Member</label>
-                                        <select value={newGameInput} onChange={(e)=>setNewGameInput(e.target.value)} className="w-full input-theme p-3 rounded-xl focus:border-orange-500 transition appearance-none">
-                                            <option value="id_zone">Butuh User ID & Zone ID</option>
-                                            <option value="id_only">Hanya User ID (UID)</option>
-                                            <option value="riot_id">Riot ID & Tagline (#)</option>
-                                        </select>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Cover / Gambar Game</label>
-                                        <div className="relative group">
-                                            <input type="file" accept="image/*" onChange={async (e) => {
-                                               if(e.target.files[0]) {
-                                                  setUploadingGameImg(true); 
-                                                  try { const res = await compressImage(e.target.files[0], 300); setNewGameImg(res); } 
-                                                  catch(err) { addToast('Gagal memproses gambar', 'error'); }
-                                                  setUploadingGameImg(false);
-                                               }
-                                            }} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                                            <div className="w-full input-theme p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 text-xs text-center flex items-center justify-center gap-2 group-hover:border-orange-500 transition">
-                                                {uploadingGameImg ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> {newGameImg ? 'Ganti Gambar (Klik)' : 'Pilih Gambar (Upload)'}</>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="w-full bg-orange-600 hover:bg-orange-500 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition">Simpan Konfigurasi Game</button>
-                                 </form>
-                                 
-                                 <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-black/40 rounded-3xl p-3 border border-theme custom-scrollbar space-y-2">
-                                    <h3 className="text-[10px] font-black text-sub-theme px-2 py-1 uppercase tracking-widest">Daftar Game Tersimpan</h3>
-                                    {(games||[]).map(g => ( 
-                                        <div key={g.id} onClick={()=>setAdminSelectedGame(g.id)} className={`p-3 rounded-2xl flex justify-between items-center cursor-pointer transition border ${adminSelectedGame===g.id ? 'bg-orange-50 dark:bg-orange-500/10 border-orange-500/50' : 'bg-white dark:bg-white/5 border-transparent hover:border-theme'}`}>
-                                            <div className="flex items-center gap-3">
-                                                <img src={g.image} className="w-10 h-10 rounded-xl object-cover border border-theme"/>
-                                                <div>
-                                                    <div className={`text-xs font-black truncate max-w-[120px] ${adminSelectedGame===g.id ? 'text-orange-600 dark:text-orange-400' : 'text-main'}`}>{g.name}</div>
-                                                    <div className="text-[9px] text-sub-theme font-mono mt-0.5">ID: {g.id}</div>
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-1">
-                                                <button onClick={(e)=>{e.stopPropagation(); handleEditGameClick(g)}} className="text-gray-400 hover:text-main p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
-                                                <button onClick={(e)=>{e.stopPropagation(); handleDeleteGame(g.id)}} className="text-gray-400 hover:text-red-500 p-1.5 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
-                                            </div>
-                                        </div> 
-                                    ))}
-                                    {(!games || games.length === 0) && <div className="text-center py-10 text-xs font-bold text-sub-theme">Database game kosong.</div>}
-                                 </div>
-                              </div>
-
-                              {/* Kolom Kanan: Kelola Item */}
-                              <div className="w-full md:w-2/3 flex flex-col gap-4">
-                                 <div className="flex items-center justify-between mb-2">
-                                     <h2 className="text-lg font-black text-main flex items-center gap-2"><IconBox className="w-5 h-5 text-emerald-500"/> Kelola Harga Produk</h2>
-                                     <div className="text-[10px] bg-gray-100 dark:bg-white/10 border border-theme px-3 py-1.5 rounded-lg text-main font-bold flex items-center gap-2">Target Game: <span className="text-orange-600 dark:text-orange-400">{(games||[]).find(g=>g.id===adminSelectedGame)?.name || 'Pilih game di samping'}</span></div>
-                                 </div>
-
-                                 <form onSubmit={handleSaveItem} className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-3xl border border-emerald-500/30 flex flex-col sm:flex-row gap-3 shrink-0 shadow-inner">
-                                    <div className="flex-1 space-y-1">
-                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Nama Produk / Item Top Up</label>
-                                        <input type="text" required value={newItemName} onChange={(e)=>setNewItemName(e.target.value)} placeholder="Contoh: 86 Diamonds" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50"/>
-                                    </div>
-                                    <div className="flex-1 sm:max-w-[200px] space-y-1">
-                                        <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Harga Jual (Rp)</label>
-                                        <input type="number" required value={newItemPrice} onChange={(e)=>setNewItemPrice(e.target.value)} placeholder="25000" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50 font-mono"/>
-                                    </div>
-                                    <div className="flex gap-2 items-end pt-4 sm:pt-0">
-                                        <button type="submit" disabled={!adminSelectedGame} className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 h-[46px]">{editingItemId ? 'Update Data' : 'Tambah Baru'}</button>
-                                        {editingItemId && <button type="button" onClick={()=>{setEditingItemId(null); setNewItemName(''); setNewItemPrice('');}} className="bg-gray-200 dark:bg-white/10 hover:bg-gray-300 dark:hover:bg-white/20 text-main px-4 py-3.5 rounded-xl transition h-[46px]"><IconX className="w-4 h-4"/></button>}
-                                    </div>
-                                 </form>
-                                 
-                                 <div className="flex-1 bg-gray-50 dark:bg-black/40 rounded-3xl p-5 border border-theme overflow-y-auto custom-scrollbar shadow-inner">
-                                    <h3 className="text-[10px] font-black text-sub-theme mb-4 uppercase tracking-widest">Daftar Produk Aktif ({(items||[]).filter(i=>i.gameId===adminSelectedGame).length})</h3>
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                                       {(items||[]).filter(i=>i.gameId===adminSelectedGame).sort((a,b)=>a.price-b.price).map(i => (
-                                          <div key={i.id} className="bg-white dark:bg-white/5 p-4 rounded-2xl flex flex-col justify-between border border-theme hover:border-emerald-500/50 transition group relative overflow-hidden shadow-sm">
-                                             <div className="mb-4 relative z-10">
-                                                 <div className="text-main font-bold text-sm leading-tight mb-1">{i.name}</div>
-                                                 <div className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-sm">{formatRupiah(i.price)}</div>
-                                             </div>
-                                             <div className="flex justify-end gap-2 relative z-10 pt-2 border-t border-theme mt-auto">
-                                                <button onClick={()=>handleEditItemClick(adminSelectedGame, i)} className="text-gray-400 hover:text-main p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconEdit className="w-3.5 h-3.5"/></button>
-                                                <button onClick={()=>handleDeleteItem(i.id)} className="text-gray-400 hover:text-red-500 p-2 bg-gray-100 dark:bg-black/50 rounded-lg transition"><IconTrash className="w-3.5 h-3.5"/></button>
-                                             </div>
-                                          </div>
-                                       ))}
-                                       {(!items || items.filter(i=>i.gameId===adminSelectedGame).length === 0) && (
-                                          <div className="col-span-full flex flex-col items-center justify-center py-16 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
-                                              <IconBox className="w-12 h-12 mb-3 opacity-30"/>
-                                              <span className="font-bold text-sm">Belum ada produk untuk game ini.</span>
-                                          </div>
-                                       )}
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                        )}
-
-                        {/* TAB: PUSAT PROMOSI */}
-                        {activeAdminTab === 'promo' && (
-                           <div className="animate-slide-down flex flex-col h-full w-full space-y-6">
-                               <div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-2">
-                                   <div>
-                                       <h2 className="text-2xl font-black text-main flex items-center gap-2"><IconPercent className="w-6 h-6 text-orange-500"/> Pusat Promosi & Event</h2>
-                                       <p className="text-xs text-sub-theme font-medium mt-1">Kelola Diskon Otomatis, Promo Per Game, Flash Sale, Kupon, dan Event Harian.</p>
-                                   </div>
-                               </div>
-
-                               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full pb-6">
-                                   
-                                   {/* Form Buat Promo */}
-                                   <div className="lg:col-span-5 flex flex-col h-full">
-                                      <form onSubmit={handleSavePromo} className="w-full bg-gray-50 dark:bg-black/60 p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-inner h-fit">
-                                         <h3 className="text-lg font-black text-main mb-6">Formulir Terbitkan Promo</h3>
-                                         
-                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-6">
-                                             <button type="button" onClick={()=>setPromoModalType('item')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='item' ? 'bg-orange-50 dark:bg-orange-500/20 border-orange-500/50 text-orange-600 dark:text-orange-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎯 Diskon Item</button>
-                                             <button type="button" onClick={()=>setPromoModalType('game')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='game' ? 'bg-blue-50 dark:bg-blue-500/20 border-blue-500/50 text-blue-600 dark:text-blue-400' : 'bg-transparent border-theme text-sub-theme'}`}>🎮 Promo Game</button>
-                                             <button type="button" onClick={()=>setPromoModalType('flash')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='flash' ? 'bg-red-50 dark:bg-red-500/20 border-red-500/50 text-red-600 dark:text-red-400' : 'bg-transparent border-theme text-sub-theme'}`}>⚡ Flash Sale</button>
-                                             <button type="button" onClick={()=>setPromoModalType('code')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='code' ? 'bg-purple-50 dark:bg-purple-500/20 border-purple-500/50 text-purple-600 dark:text-purple-400' : 'bg-transparent border-theme text-sub-theme'}`}>🔑 Kode Kupon</button>
-                                             <button type="button" onClick={()=>setPromoModalType('day')} className={`p-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition ${promoModalType==='day' ? 'bg-emerald-50 dark:bg-emerald-500/20 border-emerald-500/50 text-emerald-600 dark:text-emerald-400' : 'bg-transparent border-theme text-sub-theme'}`}>📅 Hari Spesial</button>
-                                         </div>
-                                         
-                                         <div className="space-y-4">
-                                             <div className="flex gap-3">
-                                                 <div className="flex-1 space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Jenis Potongan</label>
-                                                     <select value={promoForm.type} onChange={(e)=>setPromoForm({...promoForm, type: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
-                                                         <option value="percentage">Persen (%)</option>
-                                                         <option value="fixed">Nominal Harga (Rp)</option>
-                                                     </select>
-                                                 </div>
-                                                 <div className="flex-1 space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Besaran Nilai</label>
-                                                     <input type="number" required value={promoForm.discount} onChange={(e)=>setPromoForm({...promoForm, discount: e.target.value})} placeholder="Contoh: 10" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 font-mono" />
-                                                 </div>
-                                             </div>
-
-                                             {/* Conditional Inputs */}
-                                             {(promoModalType==='flash' || promoModalType==='item') && (
-                                                 <div className="space-y-1">
-                                                     <label className="text-[9px] font-black text-sub-theme uppercase tracking-widest ml-1">Target Produk Spesifik</label>
-                                                     <select value={promoTargetItem} onChange={(e)=>setPromoTargetItem(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-orange-500 appearance-none">
-                                                         <option value="">-- Pilih Item dari Katalog --</option>
-                                                         {(items||[]).map(i=><option key={i.id} value={i.id}>{((games||[]).find(g=>g.id===i.gameId)?.name || 'Game')} - {i.name} ({formatRupiah(i.price)})</option>)}
-                                                     </select>
-                                                 </div>
-                                             )}
-
-                                             {promoModalType==='game' && (
-                                                 <div className="space-y-1">
-                                                     <label className="text-[9px] font-black text-blue-500 uppercase tracking-widest ml-1">Terapkan Diskon ke Semua Item Game Ini</label>
-                                                     <select value={promoTargetGame} onChange={(e)=>setPromoTargetGame(e.target.value)} required className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-blue-500 appearance-none">
-                                                         <option value="">-- Pilih Game --</option>
-                                                         {(games||[]).map(g=><option key={g.id} value={g.id}>{g.name}</option>)}
-                                                     </select>
-                                                 </div>
-                                             )}
-
-                                             {promoModalType==='flash' && (
-                                                <div className="space-y-4 pt-2 border-t border-theme">
-                                                   <div className="grid grid-cols-2 gap-3">
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Mulai Berlaku</label>
-                                                           <input type="datetime-local" required value={promoForm.startTime} onChange={(e)=>setPromoForm({...promoForm, startTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
-                                                       </div>
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Berakhir Pada</label>
-                                                           <input type="datetime-local" required value={promoForm.endTime} onChange={(e)=>setPromoForm({...promoForm, endTime: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-red-500"/>
-                                                       </div>
-                                                   </div>
-                                                   <div className="space-y-1">
-                                                       <label className="text-[9px] font-black text-red-500 uppercase tracking-widest ml-1">Batas Kuota / Stok Promo</label>
-                                                       <input type="number" required value={promoForm.stock} onChange={(e)=>setPromoForm({...promoForm, stock: e.target.value})} placeholder="Contoh: 50 pembeli pertama" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-red-500 font-mono"/>
-                                                   </div>
-                                                </div>
-                                             )}
-
-                                             {promoModalType==='code' && (
-                                                <div className="space-y-4 pt-2 border-t border-theme">
-                                                   <div className="space-y-1">
-                                                       <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Teks Kode Kupon Rahasia</label>
-                                                       <input type="text" required value={promoForm.code} onChange={(e)=>setPromoForm({...promoForm, code: (e.target.value||'').replace(/\s/g, '').toUpperCase()})} placeholder="Ketik Kode (Misal: VIPERPROMO)" className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-purple-500 font-mono uppercase font-black"/>
-                                                   </div>
-                                                   <div className="grid grid-cols-2 gap-3">
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Maks. Pengguna</label>
-                                                           <input type="number" required value={promoForm.maxUses} onChange={(e)=>setPromoForm({...promoForm, maxUses: e.target.value})} placeholder="Contoh: 100" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
-                                                       </div>
-                                                       <div className="space-y-1">
-                                                           <label className="text-[9px] font-black text-purple-500 uppercase tracking-widest ml-1">Min. Belanja (Rp)</label>
-                                                           <input type="number" value={promoForm.minPurchase} onChange={(e)=>setPromoForm({...promoForm, minPurchase: e.target.value})} placeholder="Opsional (0)" className="w-full input-theme p-3 rounded-xl text-sm focus:border-purple-500 font-mono"/>
-                                                       </div>
-                                                   </div>
-                                                </div>
-                                             )}
-
-                                             {promoModalType==='day' && (
-                                                <div className="space-y-1 pt-2 border-t border-theme">
-                                                    <label className="text-[9px] font-black text-emerald-500 uppercase tracking-widest ml-1">Pilih Hari Aktif Promo Harian</label>
-                                                    <select value={promoForm.targetDay} onChange={(e)=>setPromoForm({...promoForm, targetDay: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 appearance-none">
-                                                        <option value="1">Senin</option><option value="2">Selasa</option><option value="3">Rabu</option><option value="4">Kamis</option><option value="5">Jumat</option><option value="6">Sabtu</option><option value="0">Minggu</option>
-                                                    </select>
-                                                </div>
-                                             )}
-                                         </div>
-                                         
-                                         <button type="submit" className="w-full bg-black text-white dark:bg-white hover:opacity-80 dark:text-black py-4 rounded-xl font-black text-sm uppercase tracking-widest shadow-xl mt-8 transition transform hover:-translate-y-1">Terbitkan Promo Ke Server</button>
-                                      </form>
-                                   </div>
-
-                                   {/* List Promo Database */}
-                                   <div className="lg:col-span-7 bg-gray-50 dark:bg-black/40 rounded-[2.5rem] p-6 md:p-8 border border-theme shadow-inner flex flex-col h-full">
-                                      <h3 className="text-lg font-black text-main mb-2">Database Promosi Aktif</h3>
-                                      <p className="text-[10px] text-sub-theme mb-6">Daftar semua promo yang sedang atau pernah berjalan di sistem.</p>
-                                      
-                                      <div className="grid grid-cols-1 gap-4 overflow-y-auto custom-scrollbar pr-2 flex-1 pb-6">
-                                         {(promos||[]).sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)).map(p => (
-                                            <div key={p.id} className={`p-5 rounded-2xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border transition-all shadow-sm relative overflow-hidden group ${p.category === 'flash' ? 'border-red-500/30 bg-red-50 dark:bg-gradient-to-r from-black to-red-950/30' : p.category === 'code' ? 'border-purple-500/30 bg-purple-50 dark:bg-gradient-to-r from-black to-purple-950/30' : p.category === 'game' ? 'border-blue-500/30 bg-blue-50 dark:bg-gradient-to-r from-black to-blue-950/30' : 'border-theme bg-white dark:bg-white/5'} ${!p.isActive && 'opacity-40 grayscale'}`}>
-                                                
-                                               <div className="flex-1 min-w-0 z-10 relative">
-                                                  <div className="flex items-center gap-2 mb-2">
-                                                     {p.category === 'flash' && <span className="bg-red-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">⚡ Flash Sale</span>}
-                                                     {p.category === 'code' && <span className="bg-purple-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🔑 Kode Kupon</span>}
-                                                     {p.category === 'item' && <span className="bg-orange-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎯 Diskon Spesifik</span>}
-                                                     {p.category === 'game' && <span className="bg-blue-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">🎮 Promo Game</span>}
-                                                     {p.category === 'day' && <span className="bg-emerald-500 text-white text-[8px] px-2 py-1 rounded font-black uppercase tracking-widest shadow-sm">📅 Event Harian</span>}
-                                                     <div className="text-base font-black font-mono tracking-widest text-main truncate max-w-[150px]">{p.code || (p.id||'').split('_')[0]}</div>
-                                                  </div>
-                                                  
-                                                  <div className="text-sm font-bold text-sub-theme">
-                                                     {p.type === 'percentage' ? <span className="text-orange-600 dark:text-orange-400">Potongan {p.discount}% Off</span> : <span className="text-emerald-600 dark:text-emerald-400">Diskon Tunai {formatRupiah(p.discount)}</span>}
-                                                  </div>
-                                                  
-                                                  <div className="flex flex-wrap gap-2 mt-3">
-                                                     {p.minPurchase > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-theme px-2 py-1 rounded text-main font-mono">Min: {formatRupiah(p.minPurchase)}</span>}
-                                                     {p.targetItems?.length > 0 && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-orange-500/30 px-2 py-1 rounded text-orange-600 dark:text-orange-400 font-bold truncate max-w-[150px]">Khusus: {(items||[]).find(i=>i.id===p.targetItems[0])?.name || 'Item Terpilih'}</span>}
-                                                     {p.targetGame && <span className="text-[9px] bg-black/5 dark:bg-black/50 border border-blue-500/30 px-2 py-1 rounded text-blue-600 dark:text-blue-400 font-bold truncate max-w-[150px]">Semua Item: {(games||[]).find(g=>g.id===p.targetGame)?.name || 'Game Terpilih'}</span>}
-                                                     {(p.maxUses || p.stock) && <span className={`text-[9px] bg-black/5 dark:bg-black/50 border px-2 py-1 rounded font-mono font-bold ${((p.usedBy||[]).length >= (p.maxUses || p.stock)) ? 'border-red-500/30 text-red-600 dark:text-red-500' : 'border-theme text-main'}`}>Terpakai: {(p.usedBy||[]).length||0} / {p.maxUses || p.stock}</span>}
-                                                  </div>
-                                               </div>
-                                               
-                                               <div className="flex gap-2 w-full sm:w-auto mt-3 sm:mt-0 shrink-0 z-10 relative">
-                                                  <button onClick={() => togglePromoStatus(p.id, p.isActive)} className={`w-12 h-10 rounded-xl transition-all flex items-center justify-center border shadow-inner ${p.isActive ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30 hover:bg-emerald-500 hover:text-white' : 'bg-gray-200 dark:bg-gray-800/50 text-gray-500 border-theme hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-main'}`} title={p.isActive ? 'Nonaktifkan Promo' : 'Aktifkan Kembali'}>
-                                                     {p.isActive ? <IconCheckCircle className="w-5 h-5"/> : <IconBlock className="w-5 h-5"/>}
-                                                  </button>
-                                                  <button onClick={() => handleDeletePromo(p.id)} className="w-12 h-10 bg-gray-100 dark:bg-black/50 border border-red-500/20 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-600 hover:text-white transition flex items-center justify-center shadow-inner group-hover:border-red-500/50" title="Hapus Permanen">
-                                                     <IconTrash className="w-4 h-4"/>
-                                                  </button>
-                                               </div>
-                                            </div>
-                                         ))}
-                                         {(!promos || promos.length === 0) && (
-                                            <div className="flex flex-col items-center justify-center py-24 text-sub-theme border border-dashed border-theme rounded-[2rem] bg-card">
-                                               <IconPercent className="w-12 h-12 mb-4 opacity-30"/>
-                                               <span className="font-bold text-sm">Database promo kosong. Terbitkan promo pertama Anda.</span>
-                                            </div>
-                                         )}
-                                      </div>
-                                   </div>
-                               </div>
-                           </div>
-                        )}
-
-                     </div>
-                  </div>
+                 </div>
                </div>
-            )}
+             </nav>
+          )}
 
-            </div>
-          </main>
-          
-          {currentView !== 'chat' && <MainFooter socialLinks={socialLinks} appName={globalConfig?.appName || 'VIPERCELL'} />}
+          {currentView !== 'chat' && (
+             <div className="pt-[65px] z-30 relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 dark:from-navy-800 dark:to-navy-950 border-b border-white/10">
+                <div className="marquee-container py-1.5">
+                   <div className="animate-marquee text-[10px] font-black uppercase tracking-widest text-white flex gap-8">
+                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m1-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m2-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                      {(runningTexts||[]).filter(t => typeof t==='string' && t.trim() !== '').map((text, idx) => ( <span key={`m3-${idx}`} className="flex items-center gap-2"><IconZap className="w-3 h-3 text-yellow-300"/> {text}</span> ))}
+                   </div>
+                </div>
+             </div>
+          )}
+
+          {mobileMenuOpen && (
+             <div className="fixed inset-0 z-[9999] md:hidden">
+                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" onClick={()=>setMobileMenuOpen(false)}></div>
+                <div className="w-[85%] max-w-sm bg-card h-full shadow-2xl relative z-10 flex flex-col animate-slide-down border-r border-theme">
+                   <div className="p-6 border-b border-theme bg-gray-100 dark:bg-navy-900 relative overflow-hidden">
+                       <button onClick={()=>setMobileMenuOpen(false)} className="absolute top-4 right-4 p-2 bg-black/5 dark:bg-white/10 rounded-full"><IconX className="w-4 h-4"/></button>
+                       <div className="w-16 h-16 bg-gradient-to-tr from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg text-white font-black text-2xl mb-4">
+                         {currentUserData?.avatar ? <img src={currentUserData.avatar} className="w-full h-full object-cover rounded-full" /> : (currentUserData?.name ? currentUserData.name.charAt(0).toUpperCase() : (authUser.email || '').charAt(0).toUpperCase() || 'U')}
+                       </div>
+                       <h3 className="font-black text-lg text-main flex items-center gap-2">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'User'}</h3>
+                       <p className="text-xs text-sub-theme font-mono mt-1">{authUser.email}</p>
+                       <div className="mt-3 inline-block bg-white/10 border border-theme rounded-md px-2 py-1 text-[10px] font-bold text-orange-600 dark:text-orange-400 uppercase">{userVipData.level} Member</div>
+                   </div>
+                   
+                   <div className="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
+                       {!isPwaMode && (
+                          <button onClick={()=>{setMobileMenuOpen(false); handleInstallPwa();}} className="w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg mb-4">
+                              <IconDownloadCloud className="w-5 h-5"/> Instal Vipercell App
+                          </button>
+                       )}
+                       <button onClick={()=>navigateTo('home')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'home' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconHome className="w-5 h-5"/> Beranda</button>
+                       <button onClick={()=>navigateTo('history')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'history' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconHistory className="w-5 h-5"/> Riwayat Pesanan</button>
+                       <button onClick={()=>navigateTo('chat')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold relative ${currentView === 'chat' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}>
+                          <IconMessageSquare className="w-5 h-5"/> Pusat Bantuan & Saran {(userChat?.status === 'Dijawab') && <span className="absolute right-4 top-1/2 -translate-y-1/2 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>}
+                       </button>
+                       <button onClick={()=>navigateTo('profile')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold ${currentView === 'profile' ? 'bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/50' : 'text-sub-theme'}`}><IconUser className="w-5 h-5"/> Akun & Profil</button>
+                       {isAdmin && ( <button onClick={()=>navigateTo('admin')} className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl font-bold mt-4 ${currentView === 'admin' ? 'bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/50' : 'text-red-600'}`}> <IconShieldAlert className="w-5 h-5"/> Admin Panel {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="ml-auto bg-red-500 text-white text-[10px] px-2 py-0.5 rounded-full">{pendingOrdersCount + openChatsCount + unreadFeedbacksCount}</span>} </button> )}
+                   </div>
+                   
+                   <div className="p-4 border-t border-theme">
+                      <button onClick={() => signOut(auth)} className="w-full flex items-center justify-center gap-3 py-4 bg-gray-100 dark:bg-white/5 text-sub-theme rounded-2xl font-black text-xs uppercase"><IconLogOut className="w-4 h-4"/> Keluar Aplikasi</button>
+                   </div>
+                </div>
+             </div>
+          )}
+
+          {/* BOTTOM NAVIGATION BAR MOBILE */}
+          {currentView !== 'chat' && (
+             <div className="md:hidden fixed bottom-0 left-0 w-full z-40 bg-card border-t border-theme flex justify-around items-center pb-safe pt-2 px-1 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-1">
+                 <button onClick={()=>navigateTo('home')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'home' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                     <IconHome className="w-5 h-5 mb-1" />
+                     <span className="text-[9px] font-black uppercase tracking-wider">Beranda</span>
+                 </button>
+                 <button onClick={()=>navigateTo('history')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'history' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                     <IconHistory className="w-5 h-5 mb-1" />
+                     <span className="text-[9px] font-black uppercase tracking-wider">Riwayat</span>
+                 </button>
+                 <button onClick={()=>navigateTo('chat')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'chat' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                     <IconMessageSquare className="w-5 h-5 mb-1" />
+                     <span className="text-[9px] font-black uppercase tracking-wider">Bantuan</span>
+                     {(userChat?.status === 'Dijawab') && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
+                 </button>
+                 <button onClick={()=>navigateTo('profile')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'profile' ? 'text-orange-500' : 'text-sub-theme'}`}>
+                     <IconUser className="w-5 h-5 mb-1" />
+                     <span className="text-[9px] font-black uppercase tracking-wider">Profil</span>
+                 </button>
+                 {isAdmin && (
+                     <button onClick={()=>navigateTo('admin')} className={`flex flex-col items-center p-2 relative transition-colors ${currentView === 'admin' ? 'text-red-500' : 'text-sub-theme'}`}>
+                         <IconShieldAlert className="w-5 h-5 mb-1" />
+                         <span className="text-[9px] font-black uppercase tracking-wider">Admin</span>
+                         {(pendingOrdersCount + openChatsCount + unreadFeedbacksCount) > 0 && <span className="absolute top-1 right-2 w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse border border-card"></span>}
+                     </button>
+                 )}
+             </div>
+          )}
+
         </div>
       );
     }
