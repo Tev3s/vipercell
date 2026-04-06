@@ -11,7 +11,7 @@
   <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   
-  <title>Vipercell v12.1.3</title>
+  <title>Vipercell v13.0.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -54,7 +54,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v12.1.3 Bug Fix</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v13.0.0 Face ID Engine</p>
     </div>
   </div>
 
@@ -170,6 +170,7 @@
     const IconBluetooth = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polyline points="6.5 6.5 17.5 17.5 12 23 12 1 17.5 6.5 6.5 17.5"/></svg>;
     const IconDownloadCloud = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>;
     const IconMoreVertical = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c}><circle cx="12" cy="12" r="1.5"/><circle cx="12" cy="5" r="1.5"/><circle cx="12" cy="19" r="1.5"/></svg>;
+    const IconScanFace = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={c}><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>;
 
     const PAYMENTS = [
       { id: 'qris', name: 'QRIS Dinamis', type: 'Scan Barcode Otomatis', fee: 0, color: 'from-blue-500 to-cyan-500', badge: 'QRIS' },
@@ -501,51 +502,51 @@
     }
 
     const MainFooter = ({ socialLinks, appName }) => {
-       return (
-         <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative">
-            <div className="max-w-4xl mx-auto">
-               <div className="flex items-center justify-center gap-2 mb-4">
-                  <IconZap className="w-6 h-6 text-orange-500" />
-                  <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-orange-500">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span>
-               </div>
-               <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.</p>
-               <div className="flex justify-center gap-4 mb-8 flex-wrap">
-                  {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-pink-600 hover:text-white transition"><IconInstagram className="w-5 h-5 text-gray-400"/></a>}
-                  {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-green-500 hover:text-white transition"><IconWhatsapp className="w-5 h-5 text-gray-400"/></a>}
-                  {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-white hover:text-black transition"><IconTiktok className="w-5 h-5 text-gray-400"/></a>}
-                  {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-600 hover:text-white transition"><IconFacebook className="w-5 h-5 text-gray-400"/></a>}
-                  {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
-                  {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
-               </div>
-               <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v12.1.3 Bug Fix</span></div>
-            </div>
-         </footer>
-       )
+        return (
+          <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative">
+             <div className="max-w-4xl mx-auto">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                   <IconZap className="w-6 h-6 text-orange-500" />
+                   <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-orange-500">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span>
+                </div>
+                <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya. Sistem otomatis 24/7.</p>
+                <div className="flex justify-center gap-4 mb-8 flex-wrap">
+                   {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-pink-600 hover:text-white transition"><IconInstagram className="w-5 h-5 text-gray-400"/></a>}
+                   {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-green-500 hover:text-white transition"><IconWhatsapp className="w-5 h-5 text-gray-400"/></a>}
+                   {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-white hover:text-black transition"><IconTiktok className="w-5 h-5 text-gray-400"/></a>}
+                   {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-600 hover:text-white transition"><IconFacebook className="w-5 h-5 text-gray-400"/></a>}
+                   {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
+                   {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
+                </div>
+                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v13.0.0 Fitur Besar</span></div>
+             </div>
+          </footer>
+        )
     }
 
     const BannerSlider = ({ items }) => {
-       const [curr, setCurr] = useState(0); const [isPaused, setIsPaused] = useState(false); const [isMuted, setIsMuted] = useState(true); const [expanded, setExpanded] = useState(false);
-       const playerRef = useRef(null); const videoRef = useRef(null); const [touchStart, setTouchStart] = useState(0); const [touchEnd, setTouchEnd] = useState(0);
+        const [curr, setCurr] = useState(0); const [isPaused, setIsPaused] = useState(false); const [isMuted, setIsMuted] = useState(true); const [expanded, setExpanded] = useState(false);
+        const playerRef = useRef(null); const videoRef = useRef(null); const [touchStart, setTouchStart] = useState(0); const [touchEnd, setTouchEnd] = useState(0);
 
-       useEffect(() => { if((items||[]).length <= 1 || isPaused) return; const t = setInterval(() => { setCurr(c => (c+1)%(items||[]).length); setExpanded(false); }, 6000); return () => clearInterval(t); }, [(items||[]).length, isPaused]);
-       useEffect(() => { if(videoRef.current) { videoRef.current.muted = isMuted; } }, [isMuted, curr]);
+        useEffect(() => { if((items||[]).length <= 1 || isPaused) return; const t = setInterval(() => { setCurr(c => (c+1)%(items||[]).length); setExpanded(false); }, 6000); return () => clearInterval(t); }, [(items||[]).length, isPaused]);
+        useEffect(() => { if(videoRef.current) { videoRef.current.muted = isMuted; } }, [isMuted, curr]);
 
-       useEffect(() => {
-           if (!items || items.length === 0) return;
-           const currentItem = items[curr];
-           if(currentItem?.type === 'youtube') {
-               setIsPaused(true);
-               if(window.YT && window.YT.Player) { try { if(playerRef.current && typeof playerRef.current.destroy === 'function') playerRef.current.destroy(); playerRef.current = new window.YT.Player(`yt-player-${curr}`, { videoId: getYouTubeId(currentItem.url), playerVars: { autoplay: 1, controls: 0, mute: isMuted ? 1 : 0, rel: 0, showinfo: 0, loop: 1, playlist: getYouTubeId(currentItem.url) }, events: { onReady: (e) => { if(!isMuted) e.target.unMute(); }, onStateChange: (e) => { if (e.data === window.YT.PlayerState.ENDED) { setCurr(c => (c+1)%items.length); setIsPaused(false); } } } }); } catch(e) { setIsPaused(false); } } else { setTimeout(()=> { setCurr(c => (c+1)%items.length); setIsPaused(false); }, 10000); }
-           } else if (currentItem?.type === 'video' || ((currentItem?.url||'').match(/\.(mp4|webm)$/i))) {
-               setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } if(videoRef.current) { videoRef.current.muted = isMuted; videoRef.current.play().catch(e => {}); videoRef.current.onended = () => { setCurr(c => (c+1)%items.length); setIsPaused(false); }; }
-           } else if (currentItem?.type === 'tiktok') { setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } } else { setIsPaused(false); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } }
-       }, [curr, items]);
+        useEffect(() => {
+            if (!items || items.length === 0) return;
+            const currentItem = items[curr];
+            if(currentItem?.type === 'youtube') {
+                setIsPaused(true);
+                if(window.YT && window.YT.Player) { try { if(playerRef.current && typeof playerRef.current.destroy === 'function') playerRef.current.destroy(); playerRef.current = new window.YT.Player(`yt-player-${curr}`, { videoId: getYouTubeId(currentItem.url), playerVars: { autoplay: 1, controls: 0, mute: isMuted ? 1 : 0, rel: 0, showinfo: 0, loop: 1, playlist: getYouTubeId(currentItem.url) }, events: { onReady: (e) => { if(!isMuted) e.target.unMute(); }, onStateChange: (e) => { if (e.data === window.YT.PlayerState.ENDED) { setCurr(c => (c+1)%items.length); setIsPaused(false); } } } }); } catch(e) { setIsPaused(false); } } else { setTimeout(()=> { setCurr(c => (c+1)%items.length); setIsPaused(false); }, 10000); }
+            } else if (currentItem?.type === 'video' || ((currentItem?.url||'').match(/\.(mp4|webm)$/i))) {
+                setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } if(videoRef.current) { videoRef.current.muted = isMuted; videoRef.current.play().catch(e => {}); videoRef.current.onended = () => { setCurr(c => (c+1)%items.length); setIsPaused(false); }; }
+            } else if (currentItem?.type === 'tiktok') { setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } } else { setIsPaused(false); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } }
+        }, [curr, items]);
 
-       if (!items || items.length === 0) return null;
+        if (!items || items.length === 0) return null;
 
-       const handleTouchEnd = () => { if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; if (distance > 50) setCurr(c => (c === items.length - 1 ? 0 : c + 1)); if (distance < -50) setCurr(c => (c === 0 ? items.length - 1 : c - 1)); setTouchStart(0); setTouchEnd(0); };
+        const handleTouchEnd = () => { if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; if (distance > 50) setCurr(c => (c === items.length - 1 ? 0 : c + 1)); if (distance < -50) setCurr(c => (c === 0 ? items.length - 1 : c - 1)); setTouchStart(0); setTouchEnd(0); };
 
-       return (
+        return (
           <div className="w-full h-56 md:h-80 rounded-[2.5rem] overflow-hidden mb-10 relative bg-black mt-6 cursor-pointer" onClick={(e) => { if(e.target.tagName !== 'IFRAME') { if (items[curr]?.targetLink) window.open(items[curr].targetLink, '_blank'); else setExpanded(!expanded); } }} onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)} onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)} onTouchEnd={handleTouchEnd}>
              {items.map((b, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
@@ -583,7 +584,7 @@
       const [isDarkMode, setIsDarkMode] = useState(() => localStorage.getItem('theme') !== 'light');
       useEffect(() => { if(isDarkMode) { document.documentElement.classList.add('dark'); localStorage.setItem('theme', 'dark'); } else { document.documentElement.classList.remove('dark'); localStorage.setItem('theme', 'light'); } }, [isDarkMode]);
 
-      // --- PWA Engine v12.1.2 (No Push Notifications to prevent blank) ---
+      // --- PWA Engine & PWA Icon ---
       const [isPwaMode, setIsPwaMode] = useState(false);
       const [deferredPrompt, setDeferredPrompt] = useState(null);
 
@@ -607,10 +608,8 @@
           }
       }, []);
 
-      // DYNAMIC MANIFEST & PWA ICON GENERATOR
       useEffect(() => {
           if (!globalConfig) return;
-          
           const currentUrl = window.location.href.split('?')[0].split('#')[0];
           const appName = globalConfig.appName || "Vipercell";
           const defaultIcon = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=";
@@ -660,7 +659,6 @@
           }
       }
 
-      // --- SISA SISTEM UTAMA ---
       const [sysLoading, setSysLoading] = useState({ active: false, msg: '' });
       const triggerSysLoad = (msg) => setSysLoading({ active: true, msg });
       const closeSysLoad = () => setSysLoading({ active: false, msg: '' });
@@ -734,11 +732,104 @@
       const [isStandbyMode, setIsStandbyMode] = useState(false);
       const [helpTab, setHelpTab] = useState('chat');
 
-      // STATE BARU: PENYIMPANAN DATA SEMENTARA (PAYLOAD-DRIVEN ARCHITECTURE)
       const [pendingOrderPayload, setPendingOrderPayload] = useState(null);
       const [isPinVerified, setIsPinVerified] = useState(false);
 
-      useEffect(() => { if (adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen) document.body.classList.add('modal-open'); else document.body.classList.remove('modal-open'); return () => document.body.classList.remove('modal-open'); }, [adminAuthModal, confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal]);
+      // --- STATE & FUNGSI FACE ID (WEBAUTHN) v13.0.0 ---
+      const [bioSupported, setBioSupported] = useState(false);
+      const [hasBiometric, setHasBiometric] = useState(() => !!localStorage.getItem('vipercell_bio_email'));
+      const [showBioSetup, setShowBioSetup] = useState(false);
+      const [bioPassword, setBioPassword] = useState('');
+
+      useEffect(() => {
+          if (window.PublicKeyCredential) {
+              PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(res => setBioSupported(res));
+          }
+      }, []);
+
+      const handleRegisterFaceId = async (e) => {
+          e.preventDefault();
+          if (!bioPassword || !authUser) return;
+          try {
+              triggerSysLoad('Verifikasi Sandi...');
+              const credential = EmailAuthProvider.credential(authUser.email, bioPassword);
+              await reauthenticateWithCredential(auth.currentUser, credential);
+              closeSysLoad();
+
+              triggerSysLoad('Memanggil Sensor Wajah/Sidik Jari...');
+              const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
+              const publicKey = {
+                  challenge: challenge,
+                  rp: { name: globalConfig?.appName || "Vipercell", id: window.location.hostname },
+                  user: {
+                      id: Uint8Array.from(authUser.uid, c => c.charCodeAt(0)),
+                      name: authUser.email,
+                      displayName: currentUserData?.name || authUser.email
+                  },
+                  pubKeyCredParams: [{alg: -7, type: "public-key"}, {alg: -257, type: "public-key"}],
+                  authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+                  timeout: 60000,
+                  attestation: "none"
+              };
+
+              const bioCred = await navigator.credentials.create({ publicKey });
+              if(bioCred) {
+                  localStorage.setItem('vipercell_bio_email', authUser.email);
+                  localStorage.setItem('vipercell_bio_pwd', btoa(bioPassword));
+                  setHasBiometric(true);
+                  addToast('Face ID / Biometrik Berhasil Didaftarkan!', 'success');
+              }
+          } catch (err) {
+              if(err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') addToast('Kata sandi salah!', 'error');
+              else addToast('Registrasi Biometrik dibatalkan atau tidak didukung.', 'error');
+          } finally {
+              closeSysLoad();
+              setShowBioSetup(false);
+              setBioPassword('');
+          }
+      };
+
+      const handleRemoveFaceId = () => {
+          requestConfirm('Yakin ingin menghapus data Face ID dari perangkat ini?', () => {
+              localStorage.removeItem('vipercell_bio_email');
+              localStorage.removeItem('vipercell_bio_pwd');
+              setHasBiometric(false);
+              addToast('Face ID telah dihapus dari perangkat.', 'success');
+          }, 'Ya, Hapus');
+      };
+
+      const handleFaceIdLogin = async () => {
+          const bioEmail = localStorage.getItem('vipercell_bio_email');
+          const bioPwd = localStorage.getItem('vipercell_bio_pwd');
+          if(!bioEmail || !bioPwd) return addToast('Data biometrik tidak ditemukan. Silakan login manual.', 'error');
+          try {
+              triggerSysLoad('Memindai Face ID...');
+              const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
+              const assertion = await navigator.credentials.get({
+                  publicKey: {
+                      challenge: challenge,
+                      rpId: window.location.hostname,
+                      userVerification: "required"
+                  }
+              });
+              if(assertion) {
+                  triggerSysLoad('Membuka Akses Akun...');
+                  const cred = await signInWithEmailAndPassword(auth, bioEmail, atob(bioPwd));
+                  if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) {
+                      await signOut(auth);
+                      throw new Error('email-not-verified');
+                  }
+                  await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true });
+                  addToast('Login Cepat Berhasil!', 'success');
+              }
+          } catch (err) {
+              if (err.message === 'email-not-verified') addToast('Email belum diverifikasi!', 'error');
+              else addToast('Autentikasi Wajah dibatalkan / gagal.', 'error');
+          } finally { closeSysLoad(); }
+      };
+      // --- END FACE ID STATE ---
+
+      useEffect(() => { if (adminAuthModal.isOpen || confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || showBioSetup) document.body.classList.add('modal-open'); else document.body.classList.remove('modal-open'); return () => document.body.classList.remove('modal-open'); }, [adminAuthModal, confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal, showBioSetup]);
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
       useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
       useEffect(() => { if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) { const chat = (adminChats||[]).find(c => c.id === activeChatEmail); if (chat && chat.status === 'Open') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{}); } }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
@@ -760,7 +851,7 @@
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen || showBioSetup) return; if (adminAuthModal.isOpen) setAdminAuthModal({isOpen: false, action: null, title: '', message: '', btnText: ''}); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [adminAuthModal, checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal, showBioSetup]);
 
       useEffect(() => {
          try {
@@ -1034,7 +1125,6 @@
       const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0; const userVipData = calculateVIPLevel(userTotalTx);
       const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
-      // PAYLOAD-DRIVEN CHECKOUT FLOW (v12.1.3 Bug Fix)
       const triggerCheckout = () => { 
           if (!currentUserData?.phone) return addToast('❌ Keamanan: Lengkapi Nomor HP Anda di menu Profil sebelum checkout.', 'error');
           if (!userId) return addToast('❌ Data Akun: ID Tujuan belum diisi!', 'warning'); 
@@ -1085,7 +1175,6 @@
           } 
       };
 
-      // Execution of the Order
       useEffect(() => {
           if (isPinVerified && pendingOrderPayload) {
               processRobustCheckout(pendingOrderPayload);
@@ -1128,7 +1217,6 @@
           await batch.commit(); 
           setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true);
           
-          // Reset Form ONLY on Success
           setPendingOrderPayload(null);
           setSelectedGame(null);
           setSelectedNominal(null);
@@ -1189,7 +1277,6 @@
       const displayTotal = currentBasePrice - currentUsedCashback;
       const estimatedCashback = globalConfig?.cashbackPercent ? (displayTotal * (globalConfig.cashbackPercent / 100)) : 0;
 
-      // Logika Ekstraksi ID Pesanan di Chat Admin (Fitur Quick Action)
       let activeOrderInChat = null;
       if (isAdmin && activeChatEmail) {
           const currentChat = (adminChats||[]).find(c => c.id === activeChatEmail);
@@ -1205,6 +1292,7 @@
       if (isAuthChecking) return null; 
       
       if (!authUser) {
+        const bioEmailCached = localStorage.getItem('vipercell_bio_email');
         return (
           <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-main text-main">
             <div className="absolute top-1/4 left-1/4 w-[30rem] h-[30rem] bg-orange-600/10 rounded-full blur-[100px] animate-pulse pointer-events-none"></div>
@@ -1217,6 +1305,15 @@
                      <h2 className="text-3xl font-black tracking-widest text-main drop-shadow-md flex items-center gap-2 mb-2">{(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}<span className="text-orange-500">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span></h2>
                      <p className="text-xs text-sub-theme font-medium px-4">Akses layanan top up premium Anda.</p>
                   </div>
+                  
+                  {bioSupported && bioEmailCached && authMode === 'login' && (
+                       <div className="mb-4 animate-slide-down">
+                           <button type="button" onClick={handleFaceIdLogin} className="w-full py-4 rounded-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-3 text-sm uppercase tracking-widest border border-blue-400"><IconScanFace className="w-5 h-5"/> Masuk dengan Face ID</button>
+                           <div className="text-center mt-3 text-[10px] text-sub-theme font-bold truncate">Akun Biometrik: {bioEmailCached}</div>
+                           <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-gray-400 dark:text-gray-600 text-[9px] font-black uppercase tracking-widest">ATAU LOGIN MANUAL</span><div className="flex-grow border-t border-theme"></div></div>
+                       </div>
+                  )}
+
                   <form onSubmit={handleAuth} className="space-y-4">
                      {authMode === 'register' && (
                         <div className="animate-slide-down space-y-4">
@@ -1230,7 +1327,7 @@
                   </form>
                   {authMode === 'login' && (
                      <>
-                        <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-gray-500 text-xs font-bold uppercase tracking-widest">ATAU</span><div className="flex-grow border-t border-theme"></div></div>
+                        <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-gray-400 dark:text-gray-600 text-[9px] font-black uppercase tracking-widest">ATAU</span><div className="flex-grow border-t border-theme"></div></div>
                         <button onClick={handleGoogleLogin} disabled={authLoading} className="w-full py-4 rounded-2xl font-bold bg-white text-black hover:bg-gray-200 border border-gray-200 transition flex items-center justify-center gap-3 text-sm mb-4 shadow-xl"><svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Lanjutkan dengan Google</button>
                      </>
                   )}
@@ -1264,6 +1361,26 @@
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
           
+          {showBioSetup && (
+              <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+                  <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl border-blue-500/30">
+                      <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-blue-500/20"><IconScanFace className="w-8 h-8" /></div>
+                      <h3 className="text-xl font-black mb-2 text-main">Daftar Face ID</h3>
+                      <p className="text-xs text-sub-theme mb-6 font-medium px-2">Masukkan sandi akun Anda untuk mengaktifkan biometrik di perangkat ini.</p>
+                      <form onSubmit={handleRegisterFaceId} className="relative z-10">
+                          <div className="relative mb-6">
+                              <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                              <input type="password" required value={bioPassword} onChange={(e)=>setBioPassword(e.target.value)} placeholder="Kata Sandi Akun" className="w-full input-theme rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500" />
+                          </div>
+                          <div className="flex gap-3">
+                              <button type="button" onClick={()=>{setShowBioSetup(false); setBioPassword('');}} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-white/5 text-main text-sm transition">Batal</button>
+                              <button type="submit" disabled={!bioPassword} className="flex-[1.5] py-3.5 rounded-xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-sm shadow-md transition disabled:opacity-50 flex items-center justify-center gap-2"><IconScanFace className="w-4 h-4"/> Aktifkan</button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+          )}
+
           {cashConfirmModal.isOpen && cashConfirmModal.order && (
              <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-slide-down">
                 <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl bg-white dark:bg-[#0a0a0a]">
@@ -1314,12 +1431,11 @@
              </div>
           )}
 
-          {/* NAVBAR TOP SELALU TAMPIL (Desktop Titik Tiga di Kiri Atas) */}
+          {/* NAVBAR TOP */}
           <nav className="fixed top-0 left-0 w-full z-40 bg-card/95 backdrop-blur-md border-b border-theme shadow-sm">
             <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
               <div className="flex items-center gap-3 md:gap-4">
                  
-                 {/* DESKTOP TABS MENU (3-DOT) KIRI ATAS */}
                  <div className="hidden md:block relative">
                      <button onClick={() => setDesktopMenuOpen(!desktopMenuOpen)} className="p-2 text-main bg-gray-100 dark:bg-white/5 rounded-xl border border-theme hover:bg-gray-200 dark:hover:bg-white/10 transition relative">
                          <IconMoreVertical className="w-5 h-5" />
@@ -1387,7 +1503,7 @@
              </div>
           </div>
 
-          {/* BOTTOM NAVIGATION BAR (KHUSUS MOBILE) - ALWAYS VISIBLE */}
+          {/* BOTTOM NAVIGATION BAR */}
           <div className="md:hidden fixed bottom-0 left-0 w-full z-40 bg-white dark:bg-[#0a0a0a] border-t border-theme flex justify-around items-center pt-2 px-1 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] pb-safe-bottom">
               <button onClick={()=>navigateTo('home')} className={`flex flex-col items-center p-2 transition-colors ${currentView === 'home' ? 'text-orange-500' : 'text-sub-theme'}`}>
                   <IconHome className="w-5 h-5 mb-1" />
@@ -1411,7 +1527,7 @@
               )}
           </div>
 
-          {/* CHAT VIEW - SEKARANG LAYAR PENUH (KECUALI NAVBAR ATAS BAWAH) */}
+          {/* CHAT VIEW */}
           {currentView === 'chat' && (
              <div className="flex-1 flex flex-col mt-2 mb-20 md:mb-4 px-4 h-[calc(100vh-200px)]">
                 <div className="clean-card border-theme rounded-[2.5rem] flex flex-col h-full overflow-hidden relative z-20 animate-bounce-up w-full max-w-4xl mx-auto shadow-xl">
@@ -1663,21 +1779,21 @@
                                           <label className="relative inline-flex items-center cursor-pointer">
                                              <input type="checkbox" className="sr-only peer" checked={useCashback} onChange={(e) => setUseCashback(e.target.checked)} />
                                              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 peer-checked:bg-emerald-500"></div>
-                                          </label>
-                                       </div>
-                                   )}
+                                             </label>
+                                          </div>
+                                       )}
 
-                                   <div className="relative z-10 pt-4">
-                                      <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
-                                      <div className="flex gap-2 bg-gray-100 dark:bg-black p-1.5 rounded-2xl border border-theme shadow-inner">
-                                         <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
-                                         {activePromo ? (
-                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase">Hapus</button>
-                                         ) : (
-                                             <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm">Pakai</button>
-                                      )}
-                                      </div>
-                                   </div>
+                                       <div className="relative z-10 pt-4">
+                                          <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-orange-500"/> Kode Kupon Promosi (Opsional)</label>
+                                          <div className="flex gap-2 bg-gray-100 dark:bg-black p-1.5 rounded-2xl border border-theme shadow-inner">
+                                             <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
+                                             {activePromo ? (
+                                                 <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase">Hapus</button>
+                                             ) : (
+                                                 <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm">Pakai</button>
+                                              )}
+                                          </div>
+                                       </div>
                                 </div>
 
                                 <div className="clean-card p-6 md:p-8 shadow-lg border-t-4 border-emerald-500 relative overflow-hidden mt-6">
@@ -1879,6 +1995,13 @@
                                   {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', expectedPin: '', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
                                </div>
 
+                               {bioSupported && (
+                                   <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
+                                      <div><h4 className="text-sm font-black text-main mb-1">Login Biometrik / Face ID</h4><p className="text-[10px] text-sub-theme font-medium">Masuk cepat dengan perangkat.</p></div>
+                                      {hasBiometric ? ( <button onClick={handleRemoveFaceId} className="bg-red-500/10 text-red-600 dark:text-red-400 px-5 py-2.5 rounded-xl text-xs font-black border border-red-500/30">Hapus</button> ) : ( <button onClick={()=>setShowBioSetup(true)} className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-md border border-blue-400">Aktifkan</button> )}
+                                   </div>
+                               )}
+
                                {!showPasswordForm ? (
                                   <div className="flex flex-col justify-center">
                                      <h4 className="text-sm font-black text-main mb-2">Ubah Kata Sandi Akun</h4>
@@ -1910,7 +2033,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v12.1.3 Premium</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v13.0.0 Premium</span>
                         </div>
                      </div>
 
@@ -2357,7 +2480,7 @@
                                               <div className="text-center text-[10px] font-bold text-emerald-500 bg-emerald-500/10 py-2 rounded-xl mb-3 border border-emerald-500/20">Tiket ini telah diselesaikan. Pesan baru akan membuka ulang tiket.</div>
                                           )}
                                           
-                                          {/* QUICK ACTION UNTUK VALIDASI PESANAN (v12.1.1) */}
+                                          {/* QUICK ACTION UNTUK VALIDASI PESANAN */}
                                           {activeOrderInChat && activeOrderInChat.status === 'Pending' && (
                                               <div className="flex gap-2 mb-3 bg-orange-500/10 p-2 rounded-xl border border-orange-500/30 overflow-x-auto custom-scrollbar">
                                                   <span className="text-[10px] font-black text-orange-600 flex items-center shrink-0"><IconZap className="w-3 h-3 mr-1"/> Aksi Cepat:</span>
@@ -2443,7 +2566,7 @@
                                     <button onClick={saveSettings} className="w-full bg-black text-white dark:bg-white dark:text-black hover:opacity-80 font-black py-4 rounded-2xl text-xs uppercase tracking-widest transition shadow-lg mt-2">Simpan Perubahan Sistem</button>
                                  </div>
 
-                                 {/* Panel Bluetooth Printer V12.1.1 */}
+                                 {/* Panel Bluetooth Printer */}
                                  <div className="bg-blue-50 dark:bg-blue-950/20 p-6 md:p-8 rounded-[2.5rem] border border-blue-500/30 shadow-[0_0_30px_rgba(59,130,246,0.05)] flex flex-col">
                                      <h3 className="font-black text-blue-600 dark:text-blue-500 text-lg mb-2 flex items-center gap-2"><IconBluetooth className="w-6 h-6"/> Pengaturan Printer Bluetooth</h3>
                                      <p className="text-[11px] text-blue-600/70 dark:text-blue-400 mb-6 font-medium leading-relaxed">Hubungkan perangkat kasir Anda dengan printer thermal. Struk cetak otomatis akan keluar saat status pesanan menjadi Pending jika opsi Auto Print diaktifkan. {savedPrinterName && <><br/>Terakhir terhubung ke: <b>{savedPrinterName}</b></>}</p>
