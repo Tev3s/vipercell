@@ -11,7 +11,7 @@
   <link id="favicon-link" rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   <link id="apple-touch-icon" rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiB2aWV3Qm94PSIwIDAgMTkyIDE5MiI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiNmOTczMTYiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iI2ZmZiIgZm9udC1zaXplPSI2NCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSJib2xkIj5WQzwvdGV4dD48L3N2Zz4=">
   
-  <title>Vipercell v13.6.0</title>
+  <title>Vipercell v13.8.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -41,12 +41,12 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     #reader { width: 100%; height: 60vh; border-radius: 1.5rem; overflow: hidden; border: 2px dashed #f97316; background: #000; } 
     
-    /* FACE SCANNER STYLES */
-    .face-scanner-wrapper { position: relative; width: 100%; max-width: 300px; aspect-ratio: 3/4; margin: 0 auto; border-radius: 2rem; overflow: hidden; border: 3px solid #3b82f6; box-shadow: 0 0 30px rgba(59,130,246,0.3); background: #000; }
-    .face-video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
-    .scan-line { position: absolute; width: 100%; height: 3px; background: #3b82f6; box-shadow: 0 0 15px #3b82f6, 0 0 30px #3b82f6; top: 0; animation: scan 2.5s infinite ease-in-out; z-index: 10; }
-    .scan-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(59,130,246,0.1), rgba(59,130,246,0.05)); z-index: 5; pointer-events: none; }
-    @keyframes scan { 0% { top: 0%; } 50% { top: 100%; } 100% { top: 0%; } }
+    /* FACE SCANNER STYLES - Lingkaran Penuh */
+    .face-scanner-wrapper { position: relative; width: 100%; max-width: 250px; aspect-ratio: 1/1; margin: 0 auto; border-radius: 50%; overflow: hidden; border: 4px solid #3b82f6; box-shadow: 0 0 30px rgba(59,130,246,0.4); background: #000; }
+    .face-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: 10; }
+    .scan-line { position: absolute; width: 100%; height: 4px; background: #3b82f6; box-shadow: 0 0 15px #3b82f6, 0 0 30px #3b82f6; top: 0; animation: scan 2.5s infinite ease-in-out; z-index: 20; }
+    .scan-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(59,130,246,0.2), rgba(59,130,246,0.05)); z-index: 15; pointer-events: none; }
+    @keyframes scan { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
   </style>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -54,6 +54,7 @@
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script src="https://unpkg.com/html5-qrcode"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.min.js"></script>
 </head>
 <body id="app-body" class="min-h-screen flex flex-col overflow-x-hidden relative bg-main selection:bg-orange-500 selection:text-white">
   
@@ -61,7 +62,7 @@
     <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:#050505;width:100%;position:absolute;top:0;left:0;z-index:99999;">
       <div class="cyber-loader"><div></div><div></div><div></div></div>
       <h2 style="color:white;margin-top:20px;font-weight:900;letter-spacing:3px;">MEMUAT <span style="color:#f97316;">SISTEM</span></h2>
-      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v13.6.0 Hybrid Face ID</p>
+      <p style="color:#888;font-size:10px;margin-top:5px;letter-spacing:2px;animation:pulse 1.5s infinite;">Vipercell v13.8.0 AI Face ID</p>
     </div>
   </div>
 
@@ -549,7 +550,7 @@
                    {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-blue-400 hover:text-white transition"><IconTelegram className="w-5 h-5 text-gray-400"/></a>}
                    {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-white/5 rounded-2xl hover:bg-red-600 hover:text-white transition"><IconYoutube className="w-5 h-5 text-gray-400"/></a>}
                 </div>
-                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v13.6.0 Hybrid Face ID Fixed</span></div>
+                <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-black/5 dark:bg-white/10 rounded-md font-mono text-[9px] text-orange-500 ml-2">v13.8.0 AI Face ID</span></div>
              </div>
           </footer>
         )
@@ -730,42 +731,51 @@
       const [pendingOrderPayload, setPendingOrderPayload] = useState(null);
       const [isPinVerified, setIsPinVerified] = useState(false);
 
-      // --- STATE & FUNGSI FACE ID HYBRID (Kamera Foto ke Firebase + Passkey Unlock) v13.6.0 ---
-      const [bioSupported, setBioSupported] = useState(false);
-      const [localBioEmail, setLocalBioEmail] = useState(''); // Menyimpan email untuk pengecekan tombol di halaman awal
-      const [hasBiometric, setHasBiometric] = useState(false);
+      // --- STATE & FUNGSI FACE ID HYBRID v13.8.0 (Pure AI Cross-Device) ---
+      const [faceAiLoaded, setFaceAiLoaded] = useState(false);
+      const [loginCountdown, setLoginCountdown] = useState(null);
       
       const [showFaceRegister, setShowFaceRegister] = useState(false);
-      const [faceRegStep, setFaceRegStep] = useState(1); // 1 = Password, 2 = Camera
-      
+      const [faceRegStep, setFaceRegStep] = useState(1);
       const [showFaceLogin, setShowFaceLogin] = useState(false);
+      
       const [faceVideoActive, setFaceVideoActive] = useState(false);
       const faceVideoRef = useRef(null);
       const [bioPassword, setBioPassword] = useState('');
       const [adminViewFaceModal, setAdminViewFaceModal] = useState({ isOpen: false, imageSrc: '', memberName: '' });
 
-      // Cek dukungan dan sinkronisasi local storage
+      // Memuat Model Face API saat aplikasi berjalan
       useEffect(() => {
-          if (window.PublicKeyCredential) {
-              PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable().then(res => setBioSupported(res));
-          }
-          const savedEmail = localStorage.getItem('vipercell_bio_email');
-          if(savedEmail) {
-              setLocalBioEmail(savedEmail);
-              setHasBiometric(true);
-          }
-      }, [authUser]); // Diupdate jika authUser berubah
+          const loadFaceAPI = async () => {
+              try {
+                  const MODEL_URL = 'https://vladmandic.github.io/face-api/model/';
+                  await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+                  await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+                  await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                  setFaceAiLoaded(true);
+              } catch(e) {
+                  console.error('Face API Error:', e);
+              }
+          };
+          
+          const checkFaceApi = setInterval(() => {
+              if (typeof faceapi !== 'undefined') {
+                  clearInterval(checkFaceApi);
+                  loadFaceAPI();
+              }
+          }, 500);
+          return () => clearInterval(checkFaceApi);
+      }, []);
 
       const startFaceCamera = async () => {
           try {
               setFaceVideoActive(false);
-              const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+              const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
               if (faceVideoRef.current) {
                   faceVideoRef.current.srcObject = stream;
-                  setFaceVideoActive(true);
               }
           } catch (err) {
-              addToast('Kamera tidak dapat diakses. Mohon izinkan akses kamera di pengaturan browser.', 'error');
+              addToast('Kamera tidak dapat diakses. Mohon izinkan akses kamera di browser Anda.', 'error');
               setShowFaceRegister(false);
               setShowFaceLogin(false);
               setFaceRegStep(1);
@@ -779,9 +789,9 @@
               faceVideoRef.current.srcObject = null;
           }
           setFaceVideoActive(false);
+          setLoginCountdown(null);
       };
 
-      // Menyalakan kamera hanya saat di step 2 (Pendaftaran) atau saat Login Face ID
       useEffect(() => {
           if ((showFaceRegister && faceRegStep === 2) || showFaceLogin) { 
               startFaceCamera(); 
@@ -791,14 +801,29 @@
           return () => stopFaceCamera();
       }, [showFaceRegister, faceRegStep, showFaceLogin]);
 
+      // Logic Hitung Mundur Auto-Scan
+      useEffect(() => {
+          let timer;
+          if (showFaceLogin && faceVideoActive && loginCountdown === null) {
+              setLoginCountdown(3);
+          }
+          if (loginCountdown !== null && loginCountdown > 0) {
+              timer = setTimeout(() => setLoginCountdown(loginCountdown - 1), 1000);
+          } else if (loginCountdown === 0) {
+              executeAIFaceLogin();
+              setLoginCountdown(null);
+          }
+          return () => clearTimeout(timer);
+      }, [showFaceLogin, faceVideoActive, loginCountdown]);
+
       const captureFaceBase64 = async () => {
           if (!faceVideoRef.current) return null;
           const canvas = document.createElement('canvas');
-          canvas.width = 300; canvas.height = 400; // Ukuran optimal ringan
+          canvas.width = 300; canvas.height = 300;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(faceVideoRef.current, 0, 0, canvas.width, canvas.height);
           const rawBase64 = canvas.toDataURL('image/jpeg', 0.8);
-          return await compressImage(rawBase64, 300); // Kompres agar Firebase ringan
+          return await compressImage(rawBase64, 300); 
       };
 
       const verifyPasswordForFaceId = async (e) => {
@@ -808,93 +833,109 @@
               triggerSysLoad('Memverifikasi Sandi Akun...');
               const credential = EmailAuthProvider.credential(authUser.email, bioPassword);
               await reauthenticateWithCredential(auth.currentUser, credential);
-              setFaceRegStep(2); // Pindah ke tahap kamera
+              setFaceRegStep(2); 
           } catch (err) {
               addToast('Kata sandi akun salah!', 'error');
           } finally { closeSysLoad(); }
       }
 
-      const finalizeHybridFaceId = async () => {
+      const finalizeAIFaceId = async () => {
           try {
-              triggerSysLoad('Menyimpan Data Wajah ke Server...');
+              triggerSysLoad('Memindai Wajah dengan AI...');
+              if (!faceVideoRef.current) throw new Error('Kamera tidak siap');
+              
+              // Deteksi Wajah AI
+              const detection = await faceapi.detectSingleFace(faceVideoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
+              
+              if (!detection) throw new Error('Wajah tidak terdeteksi dengan jelas. Pastikan pencahayaan cukup dan wajah terlihat lurus.');
+              
+              const descriptorArray = Array.from(detection.descriptor);
               const faceImageBase64 = await captureFaceBase64();
-              if(!faceImageBase64) throw new Error('Gagal mengambil foto wajah. Kamera mungkin belum siap.');
-
-              // Simpan foto asli wajah ke Firebase untuk Admin
+              
+              triggerSysLoad('Menyimpan Data Wajah ke Server...');
+              /* Catatan Dev: Penyimpanan faceAuthKey (sandi terenkripsi basic) digunakan khusus untuk memenuhi 
+                 kebutuhan login tanpa email lintas perangkat secara murni di frontend Firebase tanpa backend khusus. */
+                 
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { 
-                  registeredFace: faceImageBase64 
+                  registeredFace: faceImageBase64,
+                  faceDescriptor: descriptorArray,
+                  faceAuthKey: btoa(bioPassword)
               }, { merge: true });
 
-              triggerSysLoad('Mendaftarkan Keamanan Biometrik Perangkat...');
-              const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
-              const publicKey = {
-                  challenge: challenge,
-                  rp: { name: globalConfig?.appName || "Vipercell", id: window.location.hostname },
-                  user: { id: Uint8Array.from(authUser.uid, c => c.charCodeAt(0)), name: authUser.email, displayName: currentUserData?.name || authUser.email },
-                  pubKeyCredParams: [{alg: -7, type: "public-key"}, {alg: -257, type: "public-key"}],
-                  authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-                  timeout: 60000,
-                  attestation: "none"
-              };
-
-              const bioCred = await navigator.credentials.create({ publicKey });
-              if(bioCred) {
-                  localStorage.setItem('vipercell_bio_email', authUser.email);
-                  localStorage.setItem('vipercell_bio_pwd', btoa(bioPassword));
-                  setLocalBioEmail(authUser.email);
-                  setHasBiometric(true);
-                  addToast('Data Wajah & Biometrik Berhasil Disimpan!', 'success');
-              }
+              addToast('Data Wajah Berhasil Disimpan!', 'success');
           } catch (err) {
-              addToast('Registrasi dibatalkan / Gagal memproses wajah.', 'error');
+              addToast(err.message || 'Registrasi dibatalkan.', 'error');
           } finally {
               closeSysLoad(); setShowFaceRegister(false); setBioPassword(''); setFaceRegStep(1); stopFaceCamera();
           }
       };
 
       const handleRemoveFaceId = () => {
-          requestConfirm('Yakin ingin menghapus data Wajah dan Biometrik dari perangkat ini?', async () => {
+          requestConfirm('Yakin ingin menghapus data Wajah dari akun ini?', async () => {
               triggerSysLoad('Menghapus data keamanan...');
               try {
-                  await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { registeredFace: null });
-                  localStorage.removeItem('vipercell_bio_email');
-                  localStorage.removeItem('vipercell_bio_pwd');
-                  setLocalBioEmail('');
-                  setHasBiometric(false);
+                  await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { 
+                      registeredFace: null, 
+                      faceDescriptor: null, 
+                      faceAuthKey: null 
+                  });
                   addToast('Data Face ID berhasil dihapus.', 'success');
               } catch(e) { addToast('Gagal menghapus data di server.', 'error'); }
               finally { closeSysLoad(); }
           }, 'Ya, Hapus');
       };
 
-      const handleHybridFaceIdLogin = async () => {
-          if(!localBioEmail) return addToast('Tidak ada data Face ID tersimpan.', 'error');
-          const bioPwd = localStorage.getItem('vipercell_bio_pwd');
-          
+      const executeAIFaceLogin = async () => {
           try {
-              // Simulasi scan visual untuk estetika & UX (1.5 detik) agar mirip Face ID asli
-              await new Promise(r => setTimeout(r, 1500)); 
+              triggerSysLoad('Menganalisis Biometrik Wajah...');
+              const detection = await faceapi.detectSingleFace(faceVideoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
               
-              const challenge = new Uint8Array(32); crypto.getRandomValues(challenge);
-              const assertion = await navigator.credentials.get({
-                  publicKey: { challenge: challenge, rpId: window.location.hostname, userVerification: "required" }
+              if (!detection) {
+                  addToast('Wajah tidak ditemukan, coba pencahayaan yang lebih baik.', 'error');
+                  setShowFaceLogin(false); stopFaceCamera();
+                  return;
+              }
+              
+              triggerSysLoad('Mencocokkan Identitas...');
+              const membersSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'));
+              
+              let bestMatch = null;
+              let lowestDistance = 0.45; // Ambang batas toleransi kemiripan wajah
+              
+              membersSnap.forEach(docSnap => {
+                  const data = docSnap.data();
+                  if (data.faceDescriptor && data.faceAuthKey) {
+                      const dbDesc = new Float32Array(data.faceDescriptor);
+                      const distance = faceapi.euclideanDistance(detection.descriptor, dbDesc);
+                      if (distance < lowestDistance) {
+                          lowestDistance = distance;
+                          bestMatch = { email: data.email, key: data.faceAuthKey };
+                      }
+                  }
               });
               
-              if(assertion) {
-                  triggerSysLoad('Membuka Akses Akun...');
-                  const cred = await signInWithEmailAndPassword(auth, localBioEmail, atob(bioPwd));
+              if (bestMatch) {
+                  triggerSysLoad('Berhasil Mengidentifikasi, Mengalihkan...');
+                  const pwd = atob(bestMatch.key);
+                  const cred = await signInWithEmailAndPassword(auth, bestMatch.email, pwd);
+                  
                   if (!cred.user.emailVerified && cred.user.email !== ADMIN_EMAIL) {
                       await signOut(auth); throw new Error('email-not-verified');
                   }
+                  
                   await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true });
                   addToast('Login Wajah Berhasil!', 'success');
                   setShowFaceLogin(false); stopFaceCamera();
+              } else {
+                  throw new Error('Wajah tidak dikenali dalam sistem kami. Silakan login manual.');
               }
-          } catch (err) {
-              if (err.message === 'email-not-verified') addToast('Email belum diverifikasi!', 'error');
-              else addToast('Autentikasi Wajah Dibatalkan / Gagal.', 'error');
+          } catch(e) {
+              if (e.message === 'email-not-verified') addToast('Email belum diverifikasi!', 'error');
+              else addToast(e.message, 'error');
               setShowFaceLogin(false); stopFaceCamera();
-          } finally { closeSysLoad(); }
+          } finally { 
+              closeSysLoad(); 
+          }
       };
       // --- END FACE ID STATE ---
 
@@ -1097,7 +1138,7 @@
 
               const cred = await createUserWithEmailAndPassword(auth, email, password); 
               const now = new Date().toISOString(); 
-              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null }); 
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { email: cred.user.email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null, faceDescriptor: null, faceAuthKey: null }); 
               await sendEmailVerification(cred.user); await signOut(auth); 
               addToast('Registrasi berhasil! Cek Inbox/SPAM email untuk verifikasi.', 'success'); setAuthMode('login'); 
           }
@@ -1142,7 +1183,9 @@
                   createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt,
                   saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0,
                   isBlocked: false,
-                  registeredFace: googleSetupModal.existingData?.registeredFace || null
+                  registeredFace: googleSetupModal.existingData?.registeredFace || null,
+                  faceDescriptor: googleSetupModal.existingData?.faceDescriptor || null,
+                  faceAuthKey: googleSetupModal.existingData?.faceAuthKey || null
               }, { merge: true });
               
               setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null});
@@ -1376,10 +1419,12 @@
                      <p className="text-xs text-sub-theme font-medium px-4">Akses layanan top up premium Anda.</p>
                   </div>
                   
-                  {bioSupported && localBioEmail && authMode === 'login' && (
+                  {authMode === 'login' && (
                        <div className="mb-4 animate-slide-down">
-                           <button type="button" onClick={()=>setShowFaceLogin(true)} className="w-full py-4 rounded-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-3 text-sm uppercase tracking-widest border border-blue-400"><IconScanFace className="w-5 h-5"/> Masuk dengan Face ID</button>
-                           <div className="text-center mt-3 text-[10px] text-sub-theme font-bold truncate">Akun Biometrik: {localBioEmail}</div>
+                           <button type="button" onClick={()=>setShowFaceLogin(true)} disabled={!faceAiLoaded} className="w-full py-4 rounded-2xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-3 text-sm uppercase tracking-widest border border-blue-400 disabled:opacity-50 disabled:transform-none">
+                               {faceAiLoaded ? <><IconScanFace className="w-5 h-5"/> Masuk dengan Face ID</> : <><IconLoader className="w-5 h-5 animate-spin"/> Menyiapkan AI Scanner...</>}
+                           </button>
+                           <div className="text-center mt-3 text-[10px] text-sub-theme font-bold truncate px-4">Login instan dari perangkat manapun. Cukup pindai wajah.</div>
                            <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-gray-400 dark:text-gray-600 text-[9px] font-black uppercase tracking-widest">ATAU LOGIN MANUAL</span><div className="flex-grow border-t border-theme"></div></div>
                        </div>
                   )}
@@ -1407,20 +1452,37 @@
                </div>
             </div>
             
+            {/* Modal Scanner Wajah untuk Login */}
             {showFaceLogin && (
                 <div className="fixed inset-0 z-[12000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
                     <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl border-blue-500/50 bg-[#0a0a0a]">
-                        <button onClick={()=>setShowFaceLogin(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white z-20"><IconX className="w-6 h-6"/></button>
-                        <h3 className="text-xl font-black mb-2 text-white">Login Face ID</h3>
-                        <p className="text-[10px] text-sub-theme mb-6 uppercase tracking-widest font-bold">Posisikan Wajah Anda di Area Kamera</p>
+                        <button onClick={()=>{setShowFaceLogin(false); stopFaceCamera();}} className="absolute top-4 right-4 text-gray-500 hover:text-white z-40"><IconX className="w-6 h-6"/></button>
+                        <h3 className="text-xl font-black mb-2 text-white relative z-40">Login Face ID</h3>
+                        <p className="text-[10px] text-sub-theme mb-6 uppercase tracking-widest font-bold relative z-40">Posisikan Wajah Anda di Tengah Lingkaran</p>
                         
-                        <div className="face-scanner-wrapper mb-6 relative">
-                            {faceVideoActive ? <video ref={faceVideoRef} autoPlay playsInline muted className="face-video" /> : <div className="absolute inset-0 flex items-center justify-center"><IconLoader className="w-8 h-8 text-blue-500 animate-spin"/></div>}
+                        <div className="face-scanner-wrapper mb-6 relative z-10">
+                            <video ref={faceVideoRef} autoPlay playsInline muted className={`face-video ${!faceVideoActive ? 'opacity-0' : 'opacity-100'}`} onLoadedMetadata={() => setFaceVideoActive(true)} />
+                            
+                            {!faceVideoActive && (
+                                <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/80 rounded-full">
+                                    <IconLoader className="w-8 h-8 text-blue-500 animate-spin"/>
+                                </div>
+                            )}
+
+                            {/* Efek Countdown */}
+                            {loginCountdown !== null && loginCountdown > 0 && (
+                                <div className="absolute inset-0 flex items-center justify-center z-30 bg-black/50 rounded-full backdrop-blur-sm">
+                                    <span className="text-7xl font-black text-white drop-shadow-[0_0_20px_rgba(59,130,246,1)] animate-ping">{loginCountdown}</span>
+                                </div>
+                            )}
+
                             <div className="scan-overlay"></div>
                             <div className="scan-line"></div>
                         </div>
 
-                        <button onClick={handleHybridFaceIdLogin} disabled={!faceVideoActive} className="w-full py-4 rounded-xl font-black bg-blue-600 hover:bg-blue-500 text-white transition text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(37,99,235,0.5)] flex items-center justify-center gap-2 disabled:opacity-50"><IconScanFace className="w-4 h-4"/> Pindai Wajah Sekarang</button>
+                        <button disabled className="w-full py-4 rounded-xl font-black bg-blue-600/50 text-white transition text-xs uppercase tracking-widest shadow-none flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                            <IconScanFace className="w-4 h-4"/> Otomatis Memindai...
+                        </button>
                     </div>
                 </div>
             )}
@@ -1450,6 +1512,7 @@
           <ConfirmDialog isOpen={confirmModal.isOpen} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           <DangerDialog isOpen={dangerModal.isOpen} message={dangerModal.msg} onConfirm={executeDangerConfirm} onCancel={cancelDangerConfirm} authEmail={authUser?.email} />
           
+          {/* Modal Daftar Scanner Wajah (Di Profile) */}
           {showFaceRegister && (
               <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200">
                   <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl border border-blue-500/30 bg-[#0a0a0a]">
@@ -1457,7 +1520,7 @@
                       
                       {faceRegStep === 1 && (
                           <div className="animate-slide-down">
-                              <h3 className="text-xl font-black mb-2 text-white">Daftar Face ID</h3>
+                              <h3 className="text-xl font-black mb-2 text-white">Setup Face ID AI</h3>
                               <p className="text-[10px] text-sub-theme mb-6 uppercase tracking-widest font-bold px-2">Langkah 1: Masukkan Sandi Akun</p>
                               
                               <div className="w-16 h-16 bg-blue-500/10 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-6"><IconLock className="w-8 h-8" /></div>
@@ -1467,23 +1530,28 @@
                                       <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                                       <input type="password" required value={bioPassword} onChange={(e)=>setBioPassword(e.target.value)} placeholder="Kata Sandi Akun" className="w-full input-theme rounded-xl py-3.5 pl-11 pr-4 text-sm focus:outline-none focus:border-blue-500" />
                                   </div>
-                                  <button type="submit" disabled={!bioPassword} className="w-full py-4 rounded-xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.4)] transition disabled:opacity-50">Verifikasi Sandi</button>
+                                  <button type="submit" disabled={!bioPassword} className="w-full py-4 rounded-xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.4)] transition disabled:opacity-50">Lanjut Pindai Wajah</button>
                               </form>
                           </div>
                       )}
 
                       {faceRegStep === 2 && (
                           <div className="animate-slide-down">
-                              <h3 className="text-xl font-black mb-2 text-white">Pindai Wajah</h3>
-                              <p className="text-[10px] text-sub-theme mb-6 uppercase tracking-widest font-bold px-2">Langkah 2: Posisikan Wajah Anda</p>
+                              <h3 className="text-xl font-black mb-2 text-white">Setup Face ID AI</h3>
+                              <p className="text-[10px] text-sub-theme mb-6 uppercase tracking-widest font-bold px-2">Langkah 2: Posisikan Wajah Anda di Tengah</p>
                               
                               <div className="face-scanner-wrapper mb-6 relative">
-                                  {faceVideoActive ? <video ref={faceVideoRef} autoPlay playsInline muted className="face-video" /> : <div className="absolute inset-0 flex items-center justify-center"><IconLoader className="w-8 h-8 text-blue-500 animate-spin"/></div>}
+                                  <video ref={faceVideoRef} autoPlay playsInline muted className={`face-video ${!faceVideoActive ? 'opacity-0' : 'opacity-100'}`} onLoadedMetadata={() => setFaceVideoActive(true)} />
+                                  {!faceVideoActive && (
+                                      <div className="absolute inset-0 flex items-center justify-center z-20 bg-black/80 rounded-full">
+                                          <IconLoader className="w-8 h-8 text-blue-500 animate-spin"/>
+                                      </div>
+                                  )}
                                   <div className="scan-overlay"></div>
                                   <div className="scan-line"></div>
                               </div>
 
-                              <button onClick={finalizeHybridFaceId} disabled={!faceVideoActive} className="w-full py-4 rounded-xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.4)] transition disabled:opacity-50 flex items-center justify-center gap-2"><IconCamera className="w-4 h-4"/> Ambil Wajah & Aktifkan</button>
+                              <button onClick={finalizeAIFaceId} disabled={!faceVideoActive} className="w-full py-4 rounded-xl font-black bg-gradient-to-r from-blue-500 to-cyan-500 text-white text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(59,130,246,0.4)] transition disabled:opacity-50 flex items-center justify-center gap-2"><IconCamera className="w-4 h-4"/> Ambil Data Wajah</button>
                           </div>
                       )}
                   </div>
@@ -2016,19 +2084,19 @@
                                      
                                      {order.status === 'Pending' && (
                                         <div className="w-full md:w-72 bg-white dark:bg-black p-5 rounded-[2rem] border border-orange-500/40 flex flex-col items-center justify-center shadow-lg shrink-0 relative text-center">
-                                           {(order.paymentMethod || '').includes('QRIS') ? (
-                                              <>
-                                                 <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Scan QRIS Untuk Bayar</p>
-                                                 <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-4"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-40 h-40 object-contain" /></div>
-                                                 <a href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} target="_blank" download="QRIS_Vipercell.jpg" className="bg-gray-100 dark:bg-white/10 text-main text-[9px] font-black px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 border border-theme uppercase w-full"><IconDownload className="w-3.5 h-3.5"/> Simpan QR Code</a>
-                                              </>
-                                           ) : (
-                                              <>
-                                                 <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Tunjukkan QR ke Kasir</p>
-                                                 <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-3"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CASH-VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}&margin=10`} className="w-40 h-40 object-contain" /></div>
-                                                 <div className="text-center w-full bg-gray-50 dark:bg-white/5 p-3 rounded-xl border border-theme"><p className="text-[9px] text-sub-theme font-mono">{order.id}</p><p className="text-sm font-black text-orange-500">{formatRupiah(order.priceTotal)}</p></div>
-                                              </>
-                                           )}
+                                            {(order.paymentMethod || '').includes('QRIS') ? (
+                                               <>
+                                                  <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Scan QRIS Untuk Bayar</p>
+                                                  <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-4"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} className="w-40 h-40 object-contain" /></div>
+                                                  <a href={`https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(generateDynamicQRIS(BASE_QRIS, order.priceTotal))}&margin=10`} target="_blank" download="QRIS_Vipercell.jpg" className="bg-gray-100 dark:bg-white/10 text-main text-[9px] font-black px-5 py-2.5 rounded-xl flex items-center justify-center gap-2 border border-theme uppercase w-full"><IconDownload className="w-3.5 h-3.5"/> Simpan QR Code</a>
+                                               </>
+                                            ) : (
+                                               <>
+                                                  <p className="text-[10px] text-main font-black mb-3 uppercase flex items-center justify-center gap-2"><IconQrcode className="w-4 h-4 text-orange-500"/> Tunjukkan QR ke Kasir</p>
+                                                  <div className="bg-white p-3 rounded-2xl border border-gray-200 mb-3"><img src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=CASH-VPC-${(order.id||'').substring(0,6).toUpperCase()}-${order.priceTotal}&margin=10`} className="w-40 h-40 object-contain" /></div>
+                                                  <div className="text-center w-full bg-gray-50 dark:bg-white/5 p-3 rounded-xl border border-theme"><p className="text-[9px] text-sub-theme font-mono">{order.id}</p><p className="text-sm font-black text-orange-500">{formatRupiah(order.priceTotal)}</p></div>
+                                               </>
+                                            )}
                                         </div>
                                      )}
                                   </div>
@@ -2106,12 +2174,19 @@
                                   {currentUserData?.pin ? ( <button onClick={()=>setChangePinModalOpen(true)} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-5 py-2.5 rounded-xl text-xs font-black border border-orange-500/30">Ganti PIN</button> ) : ( <button onClick={()=>setPinModalState({isOpen:true, mode:'setup', expectedPin: '', onSuccess: handleSetPin})} className="bg-purple-600 text-white px-5 py-2.5 rounded-xl text-xs font-black">Buat PIN</button> )}
                                </div>
 
-                               {bioSupported && (
-                                   <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
-                                      <div><h4 className="text-sm font-black text-main mb-1">Face ID Hybrid</h4><p className="text-[10px] text-sub-theme font-medium">Login cepat menggunakan wajah.</p></div>
-                                      {hasBiometric ? ( <button onClick={handleRemoveFaceId} className="bg-red-500/10 text-red-600 dark:text-red-400 px-5 py-2.5 rounded-xl text-xs font-black border border-red-500/30 shadow-sm">Hapus</button> ) : ( <button onClick={()=>setShowFaceRegister(true)} className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-[0_0_10px_rgba(59,130,246,0.3)] border border-blue-400">Aktifkan</button> )}
-                                   </div>
-                               )}
+                               {/* Opsi Daftar Face ID AI di Profil */}
+                               <div className="mb-6 pb-6 border-b border-theme flex items-center justify-between">
+                                  <div className="pr-2">
+                                      <h4 className="text-sm font-black text-main mb-1">Face ID AI</h4>
+                                      <p className="text-[10px] text-sub-theme font-medium">Login dari semua perangkat.</p>
+                                      {!faceAiLoaded && <p className="text-[8px] text-orange-500 mt-1 animate-pulse">Menyiapkan model AI...</p>}
+                                  </div>
+                                  {currentUserData?.registeredFace ? ( 
+                                      <button onClick={handleRemoveFaceId} disabled={!faceAiLoaded} className="bg-red-500/10 text-red-600 dark:text-red-400 px-5 py-2.5 rounded-xl text-xs font-black border border-red-500/30 shadow-sm disabled:opacity-50">Hapus</button> 
+                                  ) : ( 
+                                      <button onClick={()=>setShowFaceRegister(true)} disabled={!faceAiLoaded} className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-5 py-2.5 rounded-xl text-xs font-black shadow-[0_0_10px_rgba(59,130,246,0.3)] border border-blue-400 disabled:opacity-50">Daftar</button> 
+                                  )}
+                               </div>
 
                                {!showPasswordForm ? (
                                   <div className="flex flex-col justify-center">
@@ -2144,7 +2219,7 @@
                         <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center shrink-0"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v13.6.0 Premium</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme">System v13.8.0 AI Face</span>
                         </div>
                      </div>
 
@@ -2305,7 +2380,7 @@
                            </div>
                         )}
 
-                        {/* TAB: DATA MEMBER (Dengan Tombol Wajah v13.6.0) */}
+                        {/* TAB: DATA MEMBER (Dengan Tombol Wajah AI) */}
                         {activeAdminTab === 'members' && (
                            <div className="animate-slide-down flex flex-col h-full w-full">
                               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
