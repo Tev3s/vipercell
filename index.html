@@ -23,7 +23,7 @@
                 }, 
                 animation: { 
                     'slide-down': 'slideDown 0.4s ease forwards', 
-                    'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards', 
+                    'slide-up': 'slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards', 
                     'bounce-up': 'bounceUp 0.6s ease forwards',
                     'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite'
                 }, 
@@ -58,6 +58,9 @@
     .face-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: 10; }
     .scan-line { position: absolute; width: 100%; height: 3px; background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px var(--color-primary); top: 0; animation: scanLaser 2s infinite; z-index: 25; }
     @keyframes scanLaser { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+    /* BLOG STYLING */
+    .blog-content { line-height: 1.8; font-size: 1.05rem; }
+    .blog-content p { margin-bottom: 1.5em; }
   </style>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -79,17 +82,13 @@
   <script type="text/babel" data-type="module">
     const { useState, useEffect, useRef, useMemo, useCallback } = React;
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion, query, where } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
     const firebaseConfig = { apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc", authDomain: "vipercell-8502b.firebaseapp.com", projectId: "vipercell-8502b", storageBucket: "vipercell-8502b.firebasestorage.app", messagingSenderId: "509296616890", appId: "1:509296616890:web:57e7521494db9c52942983" };
     const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const googleProvider = new GoogleAuthProvider();
     const safeAppId = 'vipercell-app'; const ADMIN_EMAIL = "millerstoreid@gmail.com";
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
-    
-    // --- API SERVER URL ---
-    // Karena kita gabung di hosting, gunakan /api.php (relative path)
-    const API_URL = "/api.php"; 
 
     const generateOrderID = () => 'vpr' + Math.floor(100000 + Math.random() * 900000).toString();
     const getTikTokId = (url) => { if(!url) return null; const m = url.match(/(\d{15,25})/); return m ? m[1] : null; };
@@ -117,7 +116,6 @@
       });
     };
     
-    // Konversi warna hex agar Theme Engine bisa membuat versi hover
     const adjustColor = (color, amount) => {
         return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
     };
@@ -306,7 +304,7 @@
       const requestConfirm = (msg, action, btnText="Ya, Lanjutkan") => setConfirmModal({ isOpen: true, msg, action, btnText }); const executeConfirm = () => { if(confirmModal.action) confirmModal.action(); setConfirmModal({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' }); }; const cancelConfirm = () => setConfirmModal({ isOpen: false, msg: '', action: null, btnText: 'Ya, Lanjutkan' });
       const requestDangerConfirm = (msg, action) => setDangerModal({ isOpen: true, msg, action }); const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); }; const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
 
-      const [authUser, setAuthUser] = useState(null); const [isAuthChecking, setIsAuthChecking] = useState(true); const [authMode, setAuthMode] = useState('login'); // login, register, forgot
+      const [authUser, setAuthUser] = useState(null); const [isAuthChecking, setIsAuthChecking] = useState(true); const [authMode, setAuthMode] = useState('login');
       const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [regName, setRegName] = useState(''); const [regPhone, setRegPhone] = useState(''); const [authLoading, setAuthLoading] = useState(false); const [resetCooldown, setResetCooldown] = useState(0);
       const [googleSetupModal, setGoogleSetupModal] = useState({ isOpen: false, user: null, isNew: false, existingData: null });
       const [currentUserData, setCurrentUserData] = useState(null); const [showPasswordForm, setShowPasswordForm] = useState(false); const [currentPassword, setCurrentPassword] = useState(''); const [newPassword, setNewPassword] = useState(''); const [confirmNewPassword, setConfirmNewPassword] = useState(''); const [uploadingAvatar, setUploadingAvatar] = useState(false); const [profileName, setProfileName] = useState(''); const [profilePhone, setProfilePhone] = useState(''); const [profileAvatar, setProfileAvatar] = useState(''); const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); const [changePinModalOpen, setChangePinModalOpen] = useState(false); const [feedbackText, setFeedbackText] = useState('');
@@ -335,15 +333,11 @@
       const [pendingOrderPayload, setPendingOrderPayload] = useState(null); const [isPinVerified, setIsPinVerified] = useState(false);
       const [faceAiLoaded, setFaceAiLoaded] = useState(false); const [loginCountdown, setLoginCountdown] = useState(null); const [showFaceRegister, setShowFaceRegister] = useState(false); const [faceRegStep, setFaceRegStep] = useState(1); const [showFaceLogin, setShowFaceLogin] = useState(false); const [faceVideoActive, setFaceVideoActive] = useState(false); const faceVideoRef = useRef(null); const [bioPassword, setBioPassword] = useState(''); const [adminViewFaceModal, setAdminViewFaceModal] = useState({ isOpen: false, imageSrc: '', memberName: '' });
 
-      // State baru untuk Smart Checkout
       const [isIdValid, setIsIdValid] = useState(false);
       const [bypassValidation, setBypassValidation] = useState(false);
 
       const logToDbConsole = (msg, type = 'info') => {
-          setDbLogs(prev => {
-              const newLogs = [...prev, { time: new Date().toLocaleTimeString(), msg, type }];
-              return newLogs.slice(-20);
-          });
+          setDbLogs(prev => { const newLogs = [...prev, { time: new Date().toLocaleTimeString(), msg, type }]; return newLogs.slice(-20); });
       };
 
       // THEME ENGINE INJECTION
@@ -351,7 +345,7 @@
           const primaryColor = globalConfig?.primaryColor || '#3b82f6';
           document.documentElement.style.setProperty('--color-primary', primaryColor);
           document.documentElement.style.setProperty('--color-primary-hover', adjustColor(primaryColor, -20));
-          document.documentElement.style.setProperty('--color-primary-light', primaryColor + '20'); // 20% opacity hex
+          document.documentElement.style.setProperty('--color-primary-light', primaryColor + '20'); 
       }, [globalConfig?.primaryColor]);
 
       useEffect(() => { let isMounted = true; const loadFaceAPI = async () => { try { const MODEL_URL = 'https://vladmandic.github.io/face-api/model/'; await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL); await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL); await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL); if(isMounted) setFaceAiLoaded(true); } catch(e) {} }; const timer = setTimeout(() => { const checkFaceApi = setInterval(() => { if (typeof faceapi !== 'undefined') { clearInterval(checkFaceApi); loadFaceAPI(); } }, 500); }, 2000); return () => { isMounted = false; clearTimeout(timer); }; }, []);
@@ -360,46 +354,63 @@
       useEffect(() => { if ((showFaceRegister && faceRegStep === 2) || showFaceLogin) startFaceCamera(); else stopFaceCamera(); return () => stopFaceCamera(); }, [showFaceRegister, faceRegStep, showFaceLogin]);
       useEffect(() => { let timer; if (showFaceLogin && faceVideoActive && loginCountdown === null) setLoginCountdown(3); if (loginCountdown !== null && loginCountdown > 0) timer = setTimeout(() => setLoginCountdown(loginCountdown - 1), 1000); else if (loginCountdown === 0) { executeAIFaceLogin(); setLoginCountdown(null); } return () => clearTimeout(timer); }, [showFaceLogin, faceVideoActive, loginCountdown]);
 
+      // --- AUTO POLLING STATUS DIGIFLAZZ (REAL-TIME UPDATE) ---
+      useEffect(() => {
+          if (!isAdmin || !adminGasUrl || !adminOrders) return;
+          const processingOrders = adminOrders.filter(o => o.status === 'Diproses Server');
+          if (processingOrders.length === 0) return;
+
+          const checkInterval = setInterval(async () => {
+              for (const order of processingOrders) {
+                  try {
+                      // Gunakan webhook fetch yang kebal
+                      const res = await fetch(adminGasUrl, {
+                          method: 'POST',
+                          redirect: 'follow',
+                          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                          body: JSON.stringify({ action: 'topup', sku: 'CHECK', tujuan: 'CHECK', ref_id: String(order.id) }) // Digiflazz transaction dgn ref_id sama = cek status
+                      });
+                      const data = await res.json();
+                      if (data.status && data.data) {
+                          const statusDigi = data.data.status;
+                          if (statusDigi === "Sukses") {
+                              updateOrderStatus(order, 'Sukses');
+                              logToDbConsole(`Auto-Update: Pesanan ${order.id} Sukses!`, 'success');
+                          } else if (statusDigi === "Gagal") {
+                              updateOrderStatus(order, 'Batal');
+                              logToDbConsole(`Auto-Update: Pesanan ${order.id} Gagal dari API!`, 'error');
+                          }
+                      }
+                  } catch (e) { console.error("Auto Check Error:", e); }
+              }
+          }, 15000); // Mengecek ke server setiap 15 detik
+
+          return () => clearInterval(checkInterval);
+      }, [adminOrders, isAdmin, adminGasUrl]);
+
       // --- CEK ID GRATIS OTOMATIS BERDASARKAN SETTINGAN GAME ---
       useEffect(() => {
-          if (!selectedGame || !selectedGame.inquirySku) {
-              setIsIdValid(true); // Langsung valid jika game tidak butuh cek ID
-              return;
-          }
-          if (!userId || userId.length < 3 || !adminGasUrl) {
-              setIsIdValid(false);
-              setNickname('');
-              return;
-          }
+          if (!selectedGame || !selectedGame.inquirySku) { setIsIdValid(true); return; }
+          if (!userId || userId.length < 3 || !adminGasUrl) { setIsIdValid(false); setNickname(''); return; }
           
           setIsIdValid(false);
           const timer = setTimeout(async () => { 
               try { 
-                  // PASTIKAN SKU DAN TUJUAN ADALAH STRING
-                  const payloadStr = JSON.stringify({ 
-                      action: 'cek_id', 
-                      sku: String(selectedGame.inquirySku), 
-                      tujuan: String(userId) + (zoneId ? String(zoneId) : '') 
-                  });
-
+                  const payloadStr = JSON.stringify({ action: 'cek_id', sku: String(selectedGame.inquirySku), tujuan: String(userId) + (zoneId ? String(zoneId) : '') });
                   const res = await fetch(adminGasUrl, { 
                       method: 'POST', 
-                      headers: { 'Content-Type': 'application/json' }, // Tambahkan header ini
+                      redirect: 'follow', // BYPASS GOOGLE REDIRECT
+                      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
                       body: payloadStr
                   }); 
                   
                   const data = await res.json(); 
                   if (data && data.status && data.nickname) { 
-                      setNickname(data.nickname); 
-                      setIsIdValid(true);
-                      addToast('ID Valid: ' + data.nickname, 'success');
+                      setNickname(data.nickname); setIsIdValid(true); addToast('ID Valid: ' + data.nickname, 'success');
                   } else {
-                      setIsIdValid(false);
-                      setNickname('');
+                      setIsIdValid(false); setNickname('');
                   }
-              } catch(e) {
-                  setIsIdValid(false);
-              } 
+              } catch(e) { setIsIdValid(false); } 
           }, 1500);
           return () => clearTimeout(timer);
       }, [userId, zoneId, selectedGame, adminGasUrl]);
@@ -468,8 +479,6 @@
       const unreadFeedbacksCount = ((adminFeedbacks || []).filter(f => f.status === 'Unread').length || 0);
 
       useEffect(() => { if (isAdmin && adminOrders?.length > 0) { if (prevAdminOrdersRef.current?.length > 0) { adminOrders.forEach(order => { const isNew = !prevAdminOrdersRef.current.find(p => p.id === order.id); if (isNew && order.status === 'Pending') { addToast(`Pesanan Baru: ${order.gameName}`, 'info'); if (isStandbyMode && btCharacteristic) setTimeout(() => executeBluetoothPrint(order), 1000); } }); } } prevAdminOrdersRef.current = adminOrders || []; }, [adminOrders, isAdmin, isStandbyMode, btCharacteristic]);
-
-      useEffect(() => { let html5QrCode; if (isScannerOpen) { if (typeof Html5Qrcode !== 'undefined') { html5QrCode = new Html5Qrcode("reader"); html5QrCode.start({ facingMode: "environment" }, { fps: 10, qrbox: { width: 250, height: 250 }, disableFlip: false }, (decodedText) => { let parsedText = decodedText; if((decodedText||'').startsWith('CASH-VPC-')) parsedText = decodedText.replace('CASH-', ''); const matchedOrder = (adminOrders || []).find(o => o.id === parsedText || `VPC-${(o.id||'').substring(0,6).toUpperCase()}-${o.priceTotal}` === parsedText); if (matchedOrder) { html5QrCode.stop().then(() => { setIsScannerOpen(false); setScannerResultModal({ isOpen: true, order: matchedOrder }); }).catch(()=>{}); } else addToast("QR tidak dikenal.", "error"); }, (err) => {} ).catch(err => { html5QrCode.start({ facingMode: "user" }, { fps: 10, qrbox: { width: 250, height: 250 }, disableFlip: false }, (text) => {}, (e)=>{}).catch(()=> { addToast("Kamera error.", "error"); setIsScannerOpen(false); }); }); } else { addToast("Scanner belum siap.", "error"); setIsScannerOpen(false); } } return () => { if (html5QrCode && html5QrCode.isScanning) html5QrCode.stop().catch(e => {}); }; }, [isScannerOpen, adminOrders, addToast]);
 
       const getReceiptBytes = (order) => { let text = ""; text += '\x1B@\x1Ba\x01\x1BE\x01' + `${globalConfig?.appName || 'VIPERCELL'}\n` + '\x1BE\x00--------------------------------\n\x1Ba\x00'; text += `TRX  : ${order.id}\nWAKTU : ${order.createdAt ? new Date(order.createdAt).toLocaleString('id-ID') : '-'}\nSTATUS: ${order.status.toUpperCase()}\n--------------------------------\nPRODUK: ${order.gameName} - ${order.nominalName}\nTUJUAN: ${order.targetUserId} ${order.targetZoneId ? `(${order.targetZoneId})` : ''}\n`; if(order.targetNickname) text += `NICK  : ${order.targetNickname}\n`; text += `METODE: ${order.paymentMethod}\n--------------------------------\n\x1BE\x01TOTAL : Rp. ${new Intl.NumberFormat('id-ID').format(order.priceTotal)}\n\x1BE\x00--------------------------------\n\x1Ba\x01Terima kasih telah topup!\n\n`; return new TextEncoder().encode(text); };
       const connectBluetoothPrinter = async () => { try { triggerSysLoad('Mencari Printer...'); const device = await navigator.bluetooth.requestDevice({ filters: [{ services: ['000018f0-0000-1000-8000-00805f9b34fb'] }], optionalServices: ['0000e7810-0000-1000-8000-00805f9b34fb'] }).catch(err => navigator.bluetooth.requestDevice({ acceptAllDevices: true, optionalServices: ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2'] })); setBluetoothDevice(device); const server = await device.gatt.connect(); const services = await server.getPrimaryServices(); let targetCharacteristic = null; for (const service of services) { const characteristics = await service.getCharacteristics(); for (const char of characteristics) { if (char.properties.write || char.properties.writeWithoutResponse) { targetCharacteristic = char; break; } } if(targetCharacteristic) break; } if (targetCharacteristic) { setBtCharacteristic(targetCharacteristic); setSavedPrinterName(device.name || 'Printer BT'); localStorage.setItem('savedPrinter', device.name || 'Printer BT'); addToast('Terhubung!', 'success'); } else throw new Error("Char Write tidak ditemukan."); } catch (e) { addToast('Gagal terhubung ke printer.', 'error'); } finally { closeSysLoad(); } };
@@ -602,9 +611,11 @@
                   ref_id: String(order.id) 
               });
 
-              const response = await fetch(adminGasUrl, {
+              // BYPASS FETCH: MENGHINDARI CORS REDIRECT GOOGLE SCRIPT
+              const response = await fetch(adminGasUrl, { 
                   method: 'POST', 
-                  headers: { 'Content-Type': 'application/json' },
+                  redirect: 'follow', // BYPASS GOOGLE REDIRECT
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
                   body: payloadStr
               });
               
@@ -636,9 +647,10 @@
       const checkDigiflazzBalance = async () => {
           try {
               triggerSysLoad('Cek Saldo API...');
-              const res = await fetch(adminGasUrl, {
+              const res = await fetch(adminGasUrl, { 
                   method: 'POST', 
-                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                  redirect: 'follow', // BYPASS GOOGLE REDIRECT
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
                   body: JSON.stringify({ action: "cek_saldo" }) 
               });
               const data = await res.json();
@@ -656,9 +668,10 @@
       const fetchSheetDataForPreview = async () => {
           setIsProcessing(true); triggerSysLoad('Menarik data dari Google Sheet...');
           try {
-              const response = await fetch(adminGasUrl, {
+              const response = await fetch(adminGasUrl, { 
                   method: 'POST', 
-                  headers: { 'Content-Type': 'application/json' },
+                  redirect: 'follow', // BYPASS GOOGLE REDIRECT
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
                   body: JSON.stringify({ action: "get_sheet_data" }) 
               });
               const resData = await response.json();
@@ -682,9 +695,10 @@
           setIsSyncingDigiflazz(true); triggerSysLoad('Memerintahkan Server menarik data Digiflazz ke Sheet...');
           logToDbConsole('Mengirim perintah sync ke Digiflazz...', 'info');
           try {
-              const res = await fetch(adminGasUrl, {
+              const res = await fetch(adminGasUrl, { 
                   method: 'POST', 
-                  headers: { 'Content-Type': 'application/json' },
+                  redirect: 'follow', // BYPASS GOOGLE REDIRECT
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
                   body: JSON.stringify({ action: "sync" })
               });
               const data = await res.json();
@@ -976,25 +990,32 @@
 
           <AdminFaceModal isOpen={adminViewFaceModal.isOpen} imageSrc={adminViewFaceModal.imageSrc} memberName={adminViewFaceModal.memberName} onClose={() => setAdminViewFaceModal({isOpen:false, imageSrc:'', memberName:''})} />
 
-          {/* FULL SCREEN BLOG MODAL SOLID BACKGROUND */}
+          {/* FULL SCREEN BLOG MODAL SOLID BACKGROUND - DIPERBARUI */}
           {activeBlog && (
               <div className="fixed inset-0 z-[99999] bg-main animate-slide-up overflow-y-auto custom-scrollbar text-main">
-                  <div className="relative w-full max-w-4xl mx-auto min-h-screen bg-card shadow-2xl flex flex-col">
-                      <button onClick={() => setActiveBlog(null)} className="absolute top-6 right-6 z-50 bg-black/50 text-white p-3 rounded-full backdrop-blur-md hover:bg-black/80 transition"><IconX className="w-6 h-6"/></button>
+                  <div className="relative w-full max-w-3xl mx-auto min-h-screen bg-card shadow-2xl flex flex-col">
+                      <button onClick={() => setActiveBlog(null)} className="fixed top-6 right-6 lg:absolute lg:-right-16 z-50 bg-black/50 text-white p-3 rounded-full backdrop-blur-md hover:bg-black/80 transition shadow-lg"><IconX className="w-6 h-6"/></button>
                       {activeBlog.image && (
-                          <div className="w-full h-72 md:h-96 relative">
+                          <div className="w-full h-80 md:h-[400px] relative">
                               <img src={activeBlog.image} className="w-full h-full object-cover" />
-                              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent"></div>
+                              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent"></div>
                           </div>
                       )}
-                      <div className="p-8 md:p-12 relative z-10 -mt-20">
-                          <div className="flex items-center gap-3 mb-4">
+                      <div className="p-8 md:p-14 relative z-10 bg-card flex-1">
+                          <div className="flex items-center gap-3 mb-6">
                               <span className={`text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded shadow-sm border ${activeBlog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':activeBlog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{activeBlog.category}</span>
-                              <span className="text-xs font-bold text-sub-theme">{new Date(activeBlog.createdAt).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span>
+                              <span className="text-xs font-bold text-sub-theme font-mono">{new Date(activeBlog.createdAt).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'})}</span>
                           </div>
-                          <h1 className="text-3xl md:text-5xl font-black mb-8 leading-tight drop-shadow-sm">{activeBlog.title}</h1>
-                          <div className="prose dark:prose-invert max-w-none font-medium text-main leading-relaxed text-sm md:text-base whitespace-pre-wrap">
+                          <h1 className="text-3xl md:text-5xl font-black mb-8 leading-tight drop-shadow-sm text-main tracking-tight">{activeBlog.title}</h1>
+                          <div className="blog-content font-medium text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                               {activeBlog.content}
+                          </div>
+                          <div className="mt-12 pt-8 border-t border-theme flex items-center gap-4">
+                              <div className="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center text-primary font-black shadow-sm">VP</div>
+                              <div>
+                                  <p className="text-sm font-black text-main">Tim Vipercell</p>
+                                  <p className="text-[10px] text-sub-theme uppercase tracking-widest">Penulis Sistem</p>
+                              </div>
                           </div>
                       </div>
                   </div>
@@ -1358,7 +1379,7 @@
                                       <div className="flex gap-2 bg-gray-100 dark:bg-black/50 p-1.5 rounded-2xl border border-theme shadow-inner">
                                          <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
                                          {activePromo ? (
-                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-500/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
+                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-50/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
                                          ) : (
                                              <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm transition hover:scale-105">Pakai</button>
                                          )}
@@ -1420,7 +1441,7 @@
                                            {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
                                            <div className="p-5 md:p-6 flex-1 flex flex-col">
                                                <div className="flex items-center gap-2 mb-3">
-                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded shadow-sm border ${blog.category==='INFO'?'bg-primary-light text-primary border-primary/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
+                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
                                                    <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
                                                </div>
                                                <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
@@ -1475,7 +1496,7 @@
                                      </div>
                                   </div>
                                   
-                                  <div className="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 border-theme pt-4 md:pt-0 md:pl-6 md:border-l w-full md.w-auto shrink-0">
+                                  <div className="flex items-center justify-between md:justify-end gap-4 border-t md:border-t-0 border-theme pt-4 md:pt-0 md:pl-6 md:border-l w-full md:w-auto shrink-0">
                                          <div className="flex flex-col text-left md:text-right">
                                             <span className="text-[9px] font-black text-sub-theme uppercase tracking-widest">Total Tagihan</span>
                                             <span className="text-lg font-black text-main font-mono">{formatRupiah(order.priceTotal)}</span>
@@ -1794,7 +1815,7 @@
                                                    </>
                                                 )}
                                                 {order?.status === 'Diproses Server' && (
-                                                   <button onClick={() => { addToast('Status Digiflazz Sukses', 'success'); updateOrderStatus(order, 'SuksesManual'); }} disabled={isProcessing} className="p-2.5 bg-purple-500/10 border border-purple-500/30 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-purple-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Cek Status API"><IconRefresh className="w-4 h-4" strokeWidth={3} /></button>
+                                                   <button onClick={() => { addToast('Mengecek Status API...', 'info'); updateOrderStatus(order, 'SuksesManual'); }} disabled={isProcessing} className="p-2.5 bg-purple-500/10 border border-purple-500/30 text-purple-600 dark:text-purple-400 rounded-xl hover:bg-purple-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Cek Status API (Manual)"><IconRefresh className="w-4 h-4" strokeWidth={3} /></button>
                                                 )}
                                              </div>
                                           </td>
