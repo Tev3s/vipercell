@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+          <!DOCTYPE html>
 <html lang="id" class="dark">
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vipercell">
-  <title>Vipercell v16.0 Ultimate</title>
+  <title>Vipercell v16.1 Ultimate</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -53,13 +53,12 @@
     .cyber-loader div { position: absolute; border: 3px solid transparent; border-radius: 50%; border-top-color: var(--color-primary); border-bottom-color: var(--color-primary); animation: spin 2s linear infinite; }
     .cyber-loader div:nth-child(1) { width: 60px; height: 60px; animation-duration: 2s; } .cyber-loader div:nth-child(2) { width: 45px; height: 45px; top: 7.5px; left: 7.5px; animation-direction: reverse; border-top-color: var(--color-primary-hover); border-bottom-color: var(--color-primary-hover); } .cyber-loader div:nth-child(3) { width: 30px; height: 30px; top: 15px; left: 15px; animation-duration: 1s; border-top-color: var(--color-primary); border-bottom-color: var(--color-primary); }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    #reader { width: 100%; height: 60vh; border-radius: 1.5rem; overflow: hidden; border: 2px dashed var(--color-primary); background: #000; } 
+    #reader { width: 100%; height: 60vh; border-radius: 1.5rem; overflow: hidden; border: 2px dashed var(--color-primary); background: #000; position: relative; display: flex; align-items: center; justify-content: center; } 
     .face-scanner-wrapper { position: relative; width: 100%; max-width: 260px; aspect-ratio: 1/1; margin: 0 auto; border-radius: 2rem; overflow: hidden; background: #000; border: 2px solid var(--border-color); }
     .face-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: 10; }
     .scan-line { position: absolute; width: 100%; height: 3px; background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px var(--color-primary); top: 0; animation: scanLaser 2s infinite; z-index: 25; }
     @keyframes scanLaser { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
     
-    /* BLOG MODAL STYLING - FORMAT MEDIUM */
     .blog-content { line-height: 1.9; font-size: 1.15rem; color: inherit; }
     .blog-content p { margin-bottom: 1.8em; }
     .blog-content h2, .blog-content h3 { margin-top: 2.2em; margin-bottom: 1em; font-weight: 900; font-size: 1.5rem; }
@@ -93,6 +92,7 @@
     const BASE_QRIS = "00020101021126670016COM.NOBUBANK.WWW01189360050300000903200214528469863669210303UMI51440014ID.CO.QRIS.WWW0215ID20253717051660303UMI5204812533033605802ID5912MILLER TEVES6005AMBON61059723262070703A01630416A3";
 
     const generateOrderID = () => 'vpr' + Math.floor(100000 + Math.random() * 900000).toString();
+    const generateReferralCode = () => 'VPC' + Math.random().toString(36).substring(2,7).toUpperCase();
     const getTikTokId = (url) => { if(!url) return null; const m = url.match(/(\d{15,25})/); return m ? m[1] : null; };
     const getYouTubeId = (url) => { if(!url) return null; const m = url.match(/(?:v=|youtu\.be\/)([^"&?\/\s]{11})/); return m ? m[1] : null; };
     const formatRupiah = (angka) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka || 0);
@@ -276,7 +276,7 @@
     };
 
     const MainFooter = ({ socialLinks, appName }) => {
-        return ( <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative"> <div className="max-w-4xl mx-auto"> <div className="flex items-center justify-center gap-2 mb-4"> <IconZap className="w-6 h-6 text-primary" /> <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-primary">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span> </div> <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya.</p> <div className="flex justify-center gap-4 mb-8 flex-wrap"> {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-pink-600 hover:text-white transition shadow-sm hover:scale-110"><IconInstagram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-green-500 hover:text-white transition shadow-sm hover:scale-110"><IconWhatsapp className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition shadow-sm hover:scale-110"><IconTiktok className="w-5 h-5 text-sub-theme group-hover:text-white dark:group-hover:text-black"/></a>} {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-blue-600 hover:text-white transition shadow-sm hover:scale-110"><IconFacebook className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-blue-400 hover:text-white transition shadow-sm hover:scale-110"><IconTelegram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-red-600 hover:text-white transition shadow-sm hover:scale-110"><IconYoutube className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} </div> <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-gray-200 dark:bg-white/10 rounded-md font-mono text-[9px] text-main border border-theme ml-2 shadow-inner">v16.0 Ultimate</span></div> </div> </footer> )
+        return ( <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative"> <div className="max-w-4xl mx-auto"> <div className="flex items-center justify-center gap-2 mb-4"> <IconZap className="w-6 h-6 text-primary" /> <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-primary">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span> </div> <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya.</p> <div className="flex justify-center gap-4 mb-8 flex-wrap"> {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-pink-600 hover:text-white transition shadow-sm hover:scale-110"><IconInstagram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-green-500 hover:text-white transition shadow-sm hover:scale-110"><IconWhatsapp className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition shadow-sm hover:scale-110"><IconTiktok className="w-5 h-5 text-sub-theme group-hover:text-white dark:group-hover:text-black"/></a>} {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-blue-600 hover:text-white transition shadow-sm hover:scale-110"><IconFacebook className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-blue-400 hover:text-white transition shadow-sm hover:scale-110"><IconTelegram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-2xl hover:bg-red-600 hover:text-white transition shadow-sm hover:scale-110"><IconYoutube className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} </div> <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-gray-200 dark:bg-white/10 rounded-md font-mono text-[9px] text-main border border-theme ml-2 shadow-inner">v16.1 Ultimate</span></div> </div> </footer> )
     }
 
     const BannerSlider = ({ items }) => {
@@ -307,24 +307,26 @@
       const requestDangerConfirm = (msg, action) => setDangerModal({ isOpen: true, msg, action }); const executeDangerConfirm = () => { if(dangerModal.action) dangerModal.action(); setDangerModal({ isOpen: false, msg: '', action: null }); }; const cancelDangerConfirm = () => setDangerModal({ isOpen: false, msg: '', action: null });
 
       const [authUser, setAuthUser] = useState(null); const [isAuthChecking, setIsAuthChecking] = useState(true); const [authMode, setAuthMode] = useState('login');
-      const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [regName, setRegName] = useState(''); const [regPhone, setRegPhone] = useState(''); const [authLoading, setAuthLoading] = useState(false); const [resetCooldown, setResetCooldown] = useState(0);
+      const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [regName, setRegName] = useState(''); const [regPhone, setRegPhone] = useState(''); const [regReferral, setRegReferral] = useState(''); const [authLoading, setAuthLoading] = useState(false); const [resetCooldown, setResetCooldown] = useState(0);
       const [googleSetupModal, setGoogleSetupModal] = useState({ isOpen: false, user: null, isNew: false, existingData: null });
       const [currentUserData, setCurrentUserData] = useState(null); const [showPasswordForm, setShowPasswordForm] = useState(false); const [currentPassword, setCurrentPassword] = useState(''); const [newPassword, setNewPassword] = useState(''); const [confirmNewPassword, setConfirmNewPassword] = useState(''); const [uploadingAvatar, setUploadingAvatar] = useState(false); const [profileName, setProfileName] = useState(''); const [profilePhone, setProfilePhone] = useState(''); const [profileAvatar, setProfileAvatar] = useState(''); const [pinModalState, setPinModalState] = useState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); const [changePinModalOpen, setChangePinModalOpen] = useState(false); const [feedbackText, setFeedbackText] = useState('');
 
-      const [isStoreOpen, setIsStoreOpen] = useState(true); const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]); const [blogs, setBlogs] = useState([]); const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' }); const [globalConfig, setGlobalConfig] = useState({ appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6' });
+      const [resellerStoreName, setResellerStoreName] = useState(''); const [resellerPhone, setResellerPhone] = useState('');
+      
+      const [isStoreOpen, setIsStoreOpen] = useState(true); const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]); const [blogs, setBlogs] = useState([]); const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' }); const [globalConfig, setGlobalConfig] = useState({ appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000 });
       const [adminList, setAdminList] = useState([]); const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); const [adminChats, setAdminChats] = useState([]); const [loadingAdminChats, setLoadingAdminChats] = useState(true); const [adminFeedbacks, setAdminFeedbacks] = useState([]);
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL; const isAdmin = isSuperAdmin || (adminList || []).includes(authUser?.email);
 
       const [currentView, setCurrentView] = useState('home'); const [viewHistory, setViewHistory] = useState(['home']);
       const [activeAdminTab, setActiveAdminTab] = useState('dashboard'); const [adminSelectedGame, setAdminSelectedGame] = useState('');
-      const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState('');
+      const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState(''); const [newResellerPrice, setNewResellerPrice] = useState('');
       const [editingGameId, setEditingGameId] = useState(null); const [newGameId, setNewGameId] = useState(''); const [newGameName, setNewGameName] = useState(''); const [newGameDev, setNewGameDev] = useState(''); const [newGameImg, setNewGameImg] = useState(''); const [newGameInput, setNewGameInput] = useState('id_zone'); const [newGameCategory, setNewGameCategory] = useState('game'); const [uploadingGameImg, setUploadingGameImg] = useState(false); const [newGameInquirySku, setNewGameInquirySku] = useState('');
       
-      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: 0 }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]); const [googleSheetData, setGoogleSheetData] = useState([]); const [isMigrating, setIsMigrating] = useState(false); const [miniSheetTab, setMiniSheetTab] = useState('config');
+      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]); const [googleSheetData, setGoogleSheetData] = useState([]); const [isMigrating, setIsMigrating] = useState(false); const [miniSheetTab, setMiniSheetTab] = useState('config');
       const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState(''); const [adminBannerLink, setAdminBannerLink] = useState('');
-      const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6' }); const [adminApiKey, setAdminApiKey] = useState(''); 
+      const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6', referralReward: 2000 }); const [adminApiKey, setAdminApiKey] = useState(''); 
       const [promoModalType, setPromoModalType] = useState('item'); const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' }); const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
-      const [adminOrderSearch, setAdminOrderSearch] = useState(''); const [adminMemberSearch, setAdminMemberSearch] = useState(''); const [adminChatSearch, setAdminChatSearch] = useState('');
+      const [adminOrderSearch, setAdminOrderSearch] = useState(''); const [adminMemberSearch, setAdminMemberSearch] = useState(''); const [adminChatSearch, setAdminChatSearch] = useState(''); const [adminMemberTab, setAdminMemberTab] = useState('all');
       const [isScannerOpen, setIsScannerOpen] = useState(false); const [scannerResultModal, setScannerResultModal] = useState({ isOpen: false, order: null }); const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, order: null }); const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
       const [supportTab, setSupportTab] = useState('member'); const [activeChatEmail, setActiveChatEmail] = useState(null); const [adminReplyText, setAdminReplyText] = useState(''); const adminChatEndRef = useRef(null); const [chatTemplates, setChatTemplates] = useState(["Pesanan diproses kak.", "Sistem baru diupdate."]); const [adminTrxModal, setAdminTrxModal] = useState({ isOpen: false, order: null }); const [broadcastMsg, setBroadcastMsg] = useState(''); const [selectedBroadcastUsers, setSelectedBroadcastUsers] = useState([]); const [broadcastTarget, setBroadcastTarget] = useState('all');
       
@@ -337,12 +339,14 @@
 
       const [isIdValid, setIsIdValid] = useState(false);
       const [bypassValidation, setBypassValidation] = useState(false);
+      const [postpaidData, setPostpaidData] = useState(null); const [isCheckingPostpaid, setIsCheckingPostpaid] = useState(false);
 
       const logToDbConsole = (msg, type = 'info') => {
           setDbLogs(prev => { const newLogs = [...prev, { time: new Date().toLocaleTimeString(), msg, type }]; return newLogs.slice(-20); });
       };
 
-      // THEME ENGINE INJECTION
+      const getDisplayPrice = (item) => currentUserData?.isReseller && item.resellerPrice ? item.resellerPrice : item.price;
+
       useEffect(() => {
           const primaryColor = globalConfig?.primaryColor || '#3b82f6';
           document.documentElement.style.setProperty('--color-primary', primaryColor);
@@ -356,7 +360,33 @@
       useEffect(() => { if ((showFaceRegister && faceRegStep === 2) || showFaceLogin) startFaceCamera(); else stopFaceCamera(); return () => stopFaceCamera(); }, [showFaceRegister, faceRegStep, showFaceLogin]);
       useEffect(() => { let timer; if (showFaceLogin && faceVideoActive && loginCountdown === null) setLoginCountdown(3); if (loginCountdown !== null && loginCountdown > 0) timer = setTimeout(() => setLoginCountdown(loginCountdown - 1), 1000); else if (loginCountdown === 0) { executeAIFaceLogin(); setLoginCountdown(null); } return () => clearTimeout(timer); }, [showFaceLogin, faceVideoActive, loginCountdown]);
 
-      // --- AUTO POLLING STATUS DIGIFLAZZ (REAL-TIME UPDATE) ---
+      useEffect(() => {
+          let scanner;
+          if (isScannerOpen) {
+              scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: { width: 250, height: 250 } });
+              scanner.render((text) => {
+                  if (text.startsWith('CASH-VPC-')) {
+                      scanner.clear();
+                      setIsScannerOpen(false);
+                      const parts = text.split('-'); // CASH, VPC, [ID_SHORT], [PRICE]
+                      const orderShortId = parts[2].toLowerCase();
+                      const order = allGlobalOrders.find(o => o.id.toLowerCase().includes(orderShortId));
+                      if (order) {
+                          addToast('Scan Kasir Valid! Memproses API...', 'success');
+                          updateOrderStatus(order, 'Sukses'); // This automatically calls executeDigiflazzProcess
+                      } else {
+                          addToast('Pesanan tidak ditemukan', 'error');
+                      }
+                  } else {
+                      scanner.clear();
+                      setIsScannerOpen(false);
+                      addToast('Format QR tidak dikenali sistem.', 'warning');
+                  }
+              }, (err) => {});
+          }
+          return () => { if(scanner) scanner.clear().catch(e=>{}); }
+      }, [isScannerOpen, allGlobalOrders]);
+
       useEffect(() => {
           if (!isAdmin || !adminGasUrl || !adminOrders) return;
           const processingOrders = adminOrders.filter(o => o.status === 'Diproses Server');
@@ -384,53 +414,23 @@
                       }
                   } catch (e) { console.error("Auto Check Error:", e); }
               }
-          }, 15000); // Cek tiap 15 detik
+          }, 15000);
 
           return () => clearInterval(checkInterval);
       }, [adminOrders, isAdmin, adminGasUrl]);
 
-      // --- CEK ID MANUAL (DENGAN TOMBOL) ---
       const handleManualCekId = async () => {
           if (!selectedGame || !selectedGame.inquirySku) return;
-          if (!userId || userId.length < 3 || !adminGasUrl) {
-              addToast('Masukkan ID Game dengan benar.', 'warning');
-              return;
-          }
-          
-          setIsProcessing(true);
-          setNickname('Mengecek ID...');
-          setIsIdValid(false);
-          
+          if (!userId || userId.length < 3 || !adminGasUrl) { addToast('Masukkan ID Game dengan benar.', 'warning'); return; }
+          setIsProcessing(true); setNickname('Mengecek ID...'); setIsIdValid(false);
           try { 
-              const payloadStr = JSON.stringify({ 
-                  action: 'cek_id', 
-                  sku: String(selectedGame.inquirySku), 
-                  tujuan: String(userId) + (zoneId ? String(zoneId) : '') 
-              });
-              const res = await fetch(adminGasUrl, { 
-                  method: 'POST', 
-                  redirect: 'follow', 
-                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
-                  body: payloadStr
-              }); 
-              
+              const payloadStr = JSON.stringify({ action: 'cek_id', sku: String(selectedGame.inquirySku), tujuan: String(userId) + (zoneId ? String(zoneId) : '') });
+              const res = await fetch(adminGasUrl, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: payloadStr }); 
               const data = await res.json(); 
-              if (data && data.status && data.nickname) { 
-                  setNickname(data.nickname); 
-                  setIsIdValid(true); 
-                  addToast('ID Valid: ' + data.nickname, 'success');
-              } else {
-                  setIsIdValid(false); 
-                  setNickname('ID Tidak Ditemukan');
-                  addToast(data.message || 'ID tidak ditemukan.', 'error');
-              }
-          } catch(e) { 
-              setIsIdValid(false); 
-              setNickname('Gagal Mengecek');
-              addToast('Gagal terhubung ke server.', 'error');
-          } finally {
-              setIsProcessing(false);
-          }
+              if (data && data.status && data.nickname) { setNickname(data.nickname); setIsIdValid(true); addToast('ID Valid: ' + data.nickname, 'success'); } 
+              else { setIsIdValid(false); setNickname('ID Tidak Ditemukan'); addToast(data.message || 'ID tidak ditemukan.', 'error'); }
+          } catch(e) { setIsIdValid(false); setNickname('Gagal Mengecek'); addToast('Gagal terhubung ke server.', 'error'); } 
+          finally { setIsProcessing(false); }
       };
 
       const captureFaceBase64 = async () => { if (!faceVideoRef.current) return null; const canvas = document.createElement('canvas'); canvas.width = 300; canvas.height = 300; canvas.getContext('2d').drawImage(faceVideoRef.current, 0, 0, canvas.width, canvas.height); return await compressImage(canvas.toDataURL('image/jpeg', 0.8), 300); };
@@ -445,8 +445,8 @@
       useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
       useEffect(() => { if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) { const chat = (adminChats||[]).find(c => c.id === activeChatEmail); if (chat && chat.status === 'Open') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{}); } }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
-      const navigateTo = (view) => { setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; }); setCurrentView(view); setDesktopMenuOpen(false); setProfileDropdownOpen(false); if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); } window.scrollTo({top:0, behavior:'smooth'}); };
-      const handleBack = () => { if (selectedGame) { setSelectedGame(null); return; } if (viewHistory.length > 1) { const newHist = [...viewHistory]; newHist.pop(); setViewHistory(newHist); setCurrentView(newHist[newHist.length - 1]); } else { setCurrentView('home'); } window.scrollTo({top:0, behavior:'smooth'}); }
+      const navigateTo = (view) => { setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; }); setCurrentView(view); setDesktopMenuOpen(false); setProfileDropdownOpen(false); if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setPostpaidData(null); setIsCheckingPostpaid(false); } window.scrollTo({top:0, behavior:'smooth'}); };
+      const handleBack = () => { if (selectedGame) { setSelectedGame(null); setPostpaidData(null); return; } if (viewHistory.length > 1) { const newHist = [...viewHistory]; newHist.pop(); setViewHistory(newHist); setCurrentView(newHist[newHist.length - 1]); } else { setCurrentView('home'); } window.scrollTo({top:0, behavior:'smooth'}); }
 
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
@@ -456,7 +456,7 @@
       useEffect(() => {
          try {
              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
-                if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
+                if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000, ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, referralReward: 2000, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
              });
              const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
              const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
@@ -490,7 +490,7 @@
       }, [authUser, isAdmin]);
 
       useEffect(() => { if (currentView === 'profile' && currentUserData) { setProfileName(currentUserData.name || ''); setProfilePhone(currentUserData.phone || ''); setProfileAvatar(currentUserData.avatar || ''); } }, [currentView, currentUserData]);
-      useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '', appName: globalConfig?.appName || 'VIPERCELL', cashbackPercent: globalConfig?.cashbackPercent || 0, primaryColor: globalConfig?.primaryColor || '#3b82f6' }); } }, [currentView, activeAdminTab, socialLinks, globalConfig]);
+      useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '', appName: globalConfig?.appName || 'VIPERCELL', cashbackPercent: globalConfig?.cashbackPercent || 0, primaryColor: globalConfig?.primaryColor || '#3b82f6', referralReward: globalConfig?.referralReward || 2000 }); } }, [currentView, activeAdminTab, socialLinks, globalConfig]);
 
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0);
@@ -517,10 +517,20 @@
                   } 
                   await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); 
               } else if (authMode === 'register') {
+                  // Cek Referral
+                  let referrerUid = null;
+                  if (regReferral) {
+                      const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('referralCode', '==', regReferral.toUpperCase()));
+                      const snap = await getDocs(q);
+                      if (!snap.empty) referrerUid = snap.docs[0].id;
+                      else throw new Error("Kode Referral tidak valid");
+                  }
+                  
                   const cred = await createUserWithEmailAndPassword(auth, email, password);
                   const now = new Date().toISOString();
                   await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
-                      email: email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null, faceDescriptor: null, faceAuthKey: null 
+                      email: email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null, faceDescriptor: null, faceAuthKey: null,
+                      referralCode: generateReferralCode(), referredBy: referrerUid, hasFirstTransaction: false, isReseller: false, resellerStatus: 'none'
                   });
                   addToast('Pendaftaran Berhasil!', 'success');
               } else if (authMode === 'forgot') { 
@@ -538,15 +548,16 @@
       };
 
       const handleGoogleLogin = async () => { setAuthLoading(true); triggerSysLoad('Google Login...'); try { const res = await signInWithPopup(auth, googleProvider); const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); const docSnap = await getDoc(userRef); if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('Akun diblokir.'); } if (!docSnap.exists()) { setGoogleSetupModal({ isOpen: true, isNew: true, existingData: null }); } else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); navigateTo('home'); } } catch (e) { addToast(e.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
-      const handleGoogleSetupSubmit = async (e, phone, pass) => { e.preventDefault(); try { setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan...'); const used = await isPhoneUsed(phone, auth.currentUser?.uid); if(used) throw new Error('Nomor HP sudah terdaftar!'); await updatePassword(auth.currentUser, pass); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), { email: auth.currentUser.email, name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0], avatar: auth.currentUser.photoURL || '', phone: phone, lastLogin: new Date().toISOString(), createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt, saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0, isBlocked: false, registeredFace: googleSetupModal.existingData?.registeredFace || null, faceDescriptor: googleSetupModal.existingData?.faceDescriptor || null, faceAuthKey: googleSetupModal.existingData?.faceAuthKey || null }, { merge: true }); setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null}); navigateTo('home'); addToast('Disiapkan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
+      const handleGoogleSetupSubmit = async (e, phone, pass) => { e.preventDefault(); try { setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan...'); const used = await isPhoneUsed(phone, auth.currentUser?.uid); if(used) throw new Error('Nomor HP sudah terdaftar!'); await updatePassword(auth.currentUser, pass); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), { email: auth.currentUser.email, name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0], avatar: auth.currentUser.photoURL || '', phone: phone, lastLogin: new Date().toISOString(), createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt, saldoCashback: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoCashback || 0, isBlocked: false, registeredFace: googleSetupModal.existingData?.registeredFace || null, faceDescriptor: googleSetupModal.existingData?.faceDescriptor || null, faceAuthKey: googleSetupModal.existingData?.faceAuthKey || null, referralCode: googleSetupModal.existingData?.referralCode || generateReferralCode(), referredBy: googleSetupModal.existingData?.referredBy || null, hasFirstTransaction: googleSetupModal.existingData?.hasFirstTransaction || false, isReseller: googleSetupModal.existingData?.isReseller || false, resellerStatus: googleSetupModal.existingData?.resellerStatus || 'none' }, { merge: true }); setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null}); navigateTo('home'); addToast('Disiapkan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
       const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { triggerSysLoad('Menyimpan...'); if (profilePhone && profilePhone !== currentUserData.phone) { if(profilePhone.length < 10) throw new Error('HP tidak valid'); const used = await isPhoneUsed(profilePhone, authUser.uid); if(used) throw new Error('HP sudah dipakai!'); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Disimpan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad() } }
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Upload...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diubah!', 'success'); } catch (error) { addToast('Gagal.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Isi semua field!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi tidak cocok!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast('Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
       const handleSendFeedback = async (e) => { e.preventDefault(); if(!feedbackText.trim()) return; try { triggerSysLoad('Kirim...'); const fbId = `fb_${Date.now()}`; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', fbId), { senderEmail: authUser.email, senderName: currentUserData?.name || authUser.email, text: feedbackText, createdAt: new Date().toISOString(), status: 'Unread' }); setFeedbackText(''); addToast('Saran dikirim.', 'success'); setHelpTab('chat'); } catch(err) { addToast('Gagal', 'error'); } finally { closeSysLoad(); } }
       const handleSetPin = async (newPin) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { pin: window.btoa(newPin) }, { merge: true }); addToast('PIN diatur.', 'success'); setPinModalState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); setChangePinModalOpen(false); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
+      const handleApplyReseller = async (e) => { e.preventDefault(); if(!resellerStoreName || !resellerPhone) return; try { triggerSysLoad('Mengajukan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { resellerStatus: 'pending', resellerStore: resellerStoreName, resellerWa: resellerPhone }, { merge: true }); addToast('Pengajuan Terkirim!', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad(); } }
 
       const getActivePromosForItem = (itemId) => { if(!promos) return []; const now = new Date(); return promos.filter(p => { if(!p.isActive) return false; if(p.category === 'flash') { if(now > new Date(p.endTime) || (p.usedBy||[]).length >= p.stock) return false; if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'item') { if(p.targetItems?.length && !p.targetItems.includes(itemId)) return false; return true; } if(p.category === 'game') { if(p.targetGame && p.targetGame !== selectedGame?.id) return false; return true; } if(p.category === 'day') return now.getDay() === parseInt(p.targetDay); return false; }); };
-      const handleApplyPromoCode = () => { if(!selectedNominal) return addToast('❌ Pilih produk.', 'warning'); const promo = (promos || []).find(p => p.category === 'code' && p.isActive && (p.code || '').toUpperCase() === inputPromo.toUpperCase()); if (!promo) return addToast('❌ Kode tidak valid.', 'error'); if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('❌ Sudah dipakai.', 'error'); if (promo.usedBy && (promo.usedBy.length || 0) >= promo.maxUses) return addToast('❌ Kuota habis.', 'error'); if (promo.minPurchase && selectedNominal.price < promo.minPurchase) return addToast(`❌ Min. beli ${formatRupiah(promo.minPurchase)}.`, 'error'); setActivePromo(promo); addToast('Kupon diterapkan!', 'success'); };
+      const handleApplyPromoCode = () => { if(!selectedNominal) return addToast('❌ Pilih produk.', 'warning'); const promo = (promos || []).find(p => p.category === 'code' && p.isActive && (p.code || '').toUpperCase() === inputPromo.toUpperCase()); if (!promo) return addToast('❌ Kode tidak valid.', 'error'); if (promo.usedBy && promo.usedBy.includes(authUser.email)) return addToast('❌ Sudah dipakai.', 'error'); if (promo.usedBy && (promo.usedBy.length || 0) >= promo.maxUses) return addToast('❌ Kuota habis.', 'error'); if (promo.minPurchase && getDisplayPrice(selectedNominal) < promo.minPurchase) return addToast(`❌ Min. beli ${formatRupiah(promo.minPurchase)}.`, 'error'); setActivePromo(promo); addToast('Kupon diterapkan!', 'success'); };
       const calculateFinalPrice = (basePrice, itemId) => { let price = basePrice; let bestAutoDiscount = 0; getActivePromosForItem(itemId).forEach(p => { let discountAmt = p.type === 'percentage' ? (basePrice * p.discount / 100) : p.discount; if(discountAmt > bestAutoDiscount) bestAutoDiscount = discountAmt; }); price -= bestAutoDiscount; if (activePromo) price -= activePromo.type === 'percentage' ? (price * activePromo.discount / 100) : activePromo.discount; return Math.max(0, price); };
 
       const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0; const userVipData = calculateVIPLevel(userTotalTx);
@@ -557,14 +568,38 @@
           if (!userId) return addToast('❌ ID belum diisi!', 'warning'); 
           if (selectedGame?.inputType === 'id_zone' && !zoneId) return addToast('❌ Server/Zone belum diisi!', 'warning'); 
           if (selectedGame?.inputType === 'riot_id' && !zoneId) return addToast('❌ Tagline (#) Riot belum diisi!', 'warning'); 
-          if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId) && selectedGame?.category !== 'emoney') return addToast('❌ ID Game hanya angka.', 'error'); 
+          if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId) && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pln' && selectedGame?.category !== 'pascabayar') return addToast('❌ ID Game hanya angka.', 'error'); 
           if (selectedGame?.inquirySku && !isIdValid && !bypassValidation) return addToast('❌ Silakan Cek ID terlebih dahulu.', 'warning');
           if (!selectedNominal) return addToast('❌ Pilih produk.', 'warning'); 
           if (!selectedPayment) return addToast('❌ Pilih metode.', 'warning'); 
           
-          const maxCashback = currentUserData?.saldoCashback || 0; const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); const usedCb = useCashback ? Math.min(basePrice, maxCashback) : 0; const fPrice = basePrice - usedCb; 
+          const itemBasePrice = getDisplayPrice(selectedNominal);
+          const maxCashback = currentUserData?.saldoCashback || 0; const basePrice = calculateFinalPrice(itemBasePrice + (selectedPayment?.fee||0), selectedNominal.id); const usedCb = useCashback ? Math.min(basePrice, maxCashback) : 0; const fPrice = basePrice - usedCb; 
           const orderPayload = { gameId: selectedGame.id, gameName: selectedGame.name, gameImage: selectedGame.image, userId: userId, zoneId: zoneId, nickname: nickname || null, itemId: selectedNominal.id, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCb, basePrice: basePrice };
           setPendingOrderPayload(orderPayload); setCheckoutSummary({ isOpen: true, data: orderPayload }); 
+      };
+
+      const triggerPostpaidCheck = async () => {
+         if (!userId) return addToast('Masukkan ID/No Tagihan.', 'warning');
+         if (!selectedNominal) return addToast('Pilih jenis layanan pascabayar.', 'warning');
+         setIsCheckingPostpaid(true); triggerSysLoad('Cek Tagihan...');
+         try {
+             const payloadStr = JSON.stringify({ action: 'cek_tagihan', sku: String(selectedNominal.sku), tujuan: String(userId) });
+             const res = await fetch(adminGasUrl, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: payloadStr }); 
+             const data = await res.json();
+             if(data && data.status && data.data) {
+                 setPostpaidData(data.data);
+                 setNickname(data.data.customer_name || 'Pelanggan Pascabayar');
+                 setIsIdValid(true);
+                 addToast('Tagihan Ditemukan', 'success');
+             } else {
+                 throw new Error(data.message || 'Tagihan tidak ditemukan');
+             }
+         } catch(e) {
+             addToast(e.message, 'error');
+         } finally {
+             setIsCheckingPostpaid(false); closeSysLoad();
+         }
       };
       
       const executeFinalPayment = () => { setCheckoutSummary({ isOpen: false, data: pendingOrderPayload }); if (currentUserData?.pin) { setPinModalState({ isOpen: true, mode: 'verify', expectedPin: currentUserData.pin, onSuccess: () => { setPinModalState({ isOpen: false, mode: 'setup', expectedPin: '', onSuccess: null }); setIsPinVerified(true); } }); } else setIsPinVerified(true); };
@@ -582,7 +617,7 @@
           batch.set(orderRef, { gameId: payload.gameId, gameName: payload.gameName, targetUserId: payload.userId, targetZoneId: payload.zoneId || '', targetNickname: payload.nickname || '', nominalName: payload.itemName, priceTotal: finalPayPrice, promoUsed: appliedPromoCode.join(', '), paymentMethod: payload.paymentName, status: "Pending", userEmail: authUser.email, createdAt: new Date().toISOString(), cashbackEarned: earnedCashback, itemId: payload.itemId });
           if(payload.usedCashback > 0) batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoCashback: maxCashback - payload.usedCashback });
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
-          await batch.commit(); setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true); setPendingOrderPayload(null); setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setUserId(''); setZoneId(''); setNickname(''); setIsIdValid(false); setBypassValidation(false);
+          await batch.commit(); setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true); setPendingOrderPayload(null); setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setUserId(''); setZoneId(''); setNickname(''); setIsIdValid(false); setBypassValidation(false); setPostpaidData(null);
         } catch (error) { addToast("Gagal memproses pesanan.", "error"); } finally { setIsProcessing(false); closeSysLoad(); }
       };
 
@@ -599,7 +634,7 @@
 
       const handleAddBanner = async () => { if(!adminBannerUrl) return; let fixedUrl = adminBannerUrl; if(adminBannerType === 'youtube' && !fixedUrl.includes('youtube') && !fixedUrl.includes('youtu.be')) fixedUrl = `https://www.youtube.com/watch?v=${fixedUrl}`; let safeTargetLink = adminBannerLink; if(safeTargetLink && !safeTargetLink.startsWith('http')) safeTargetLink = 'https://' + safeTargetLink; const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl, title: adminBannerTitle, desc: adminBannerDesc, targetLink: safeTargetLink }]; try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); triggerSysLoad('Mengunggah...'); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('Siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses', 'error'); } finally { setAuthLoading(false); closeSysLoad() } } };
-      const saveSettings = async () => { try { triggerSysLoad('Menyimpan Pengaturan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts, gasUrl: adminGasUrl, appName: adminSettingsForm.appName || 'VIPERCELL', cashbackPercent: Number(adminSettingsForm.cashbackPercent) || 0, primaryColor: adminSettingsForm.primaryColor || '#3b82f6' }, { merge: true }); addToast('Tersimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
+      const saveSettings = async () => { try { triggerSysLoad('Menyimpan Pengaturan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts, gasUrl: adminGasUrl, appName: adminSettingsForm.appName || 'VIPERCELL', cashbackPercent: Number(adminSettingsForm.cashbackPercent) || 0, primaryColor: adminSettingsForm.primaryColor || '#3b82f6', referralReward: Number(adminSettingsForm.referralReward) || 2000 }, { merge: true }); addToast('Tersimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
       const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const base64 = await compressImage(file, 128); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon diperbarui.', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } } };
       const handleDeleteFavicon = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } } };
@@ -658,7 +693,25 @@
           setIsProcessing(true); addToast(`Memproses ${newStatus}...`, 'process'); 
           try { 
               await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
-              if(newStatus === 'Sukses' && order && order.userEmail) { const member = (memberList||[]).find(m => m.email === order.userEmail); if(member) { const cbe = order.cashbackEarned || 0; if(cbe > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + cbe }, { merge: true }); } } } 
+              
+              if(newStatus === 'Sukses' && order && order.userEmail) { 
+                  const member = (memberList||[]).find(m => m.email === order.userEmail); 
+                  if(member) { 
+                      const cbe = order.cashbackEarned || 0; 
+                      if(cbe > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + cbe }, { merge: true }); } 
+                      
+                      // CHECK REFERRAL REWARD (ON FIRST SUCCESS TRANSACTION)
+                      if (!member.hasFirstTransaction && member.referredBy) {
+                          const referrer = (memberList||[]).find(m => m.id === member.referredBy);
+                          if(referrer) {
+                              const refReward = globalConfig?.referralReward || 2000;
+                              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', referrer.id), { saldoCashback: (referrer.saldoCashback || 0) + refReward }, { merge: true });
+                              logToDbConsole(`Bonus Referral diberikan ke ${referrer.email} sebesar ${refReward}`);
+                          }
+                          await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { hasFirstTransaction: true }, { merge: true });
+                      }
+                  } 
+              } 
               addToast(`Pesanan ${newStatus}`, 'success'); 
           } catch (e) { addToast("Gagal", 'error'); } finally { setIsProcessing(false); } 
       };
@@ -744,16 +797,19 @@
                   const batchOperations = []; let currentBatch = writeBatch(db); let opCount = 0;
                   const flushBatch = () => { batchOperations.push(currentBatch.commit()); currentBatch = writeBatch(db); opCount = 0; };
 
-                  // 1. Hapus HANYA produk lama (Jangan hapus game agar cover tidak hilang)
-                  const oldItems = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'));
-                  oldItems.forEach(docSnap => { currentBatch.delete(docSnap.ref); opCount++; if (opCount >= 450) flushBatch(); });
+                  // Hapus produk lama
+                  const oldItemsSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'));
+                  let existingItemsMap = {};
+                  oldItemsSnap.forEach(docSnap => { 
+                      existingItemsMap[docSnap.data().sku.toLowerCase()] = docSnap.data();
+                      currentBatch.delete(docSnap.ref); opCount++; if (opCount >= 450) flushBatch(); 
+                  });
 
-                  // 2. Ambil data Game lama agar bisa digabung (merge)
+                  // Ambil data Game lama agar bisa digabung (merge)
                   const oldGamesSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'));
                   let existingGamesMap = {};
                   oldGamesSnap.forEach(docSnap => { existingGamesMap[docSnap.id] = docSnap.data(); });
 
-                  // 3. Tulis data baru dari Sheet
                   let importedCount = 0;
                   const rows = googleSheetData;
                   for(let i=1; i<rows.length; i++) { 
@@ -763,17 +819,31 @@
                       
                       const modal = parseInt(hargaModalStr) || 0; 
                       const gameId = (brand||'').toLowerCase().replace(/[^a-z0-9]/g, '');
+                      
                       const hJualCalc = markupForm.type === 'fixed' ? modal + Number(markupForm.value) : modal + (modal * Number(markupForm.value) / 100);
+                      const resMarkup = Number(markupForm.resellerValue) || 0;
+                      const hResellerCalc = markupForm.type === 'fixed' ? modal + resMarkup : modal + (modal * resMarkup / 100);
 
                       const itemRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', sku.toLowerCase());
-                      currentBatch.set(itemRef, { name: nama, sku: sku, modalPrice: modal, price: hJualCalc, gameId: gameId, status: status === 'Tersedia' ? 'Tersedia' : 'Gangguan', isVisible: true });
+                      
+                      // PERSISTENCE HIDE ITEM
+                      const oldItem = existingItemsMap[sku.toLowerCase()];
+                      const isVis = oldItem && oldItem.isVisible !== undefined ? oldItem.isVisible : true;
+
+                      currentBatch.set(itemRef, { name: nama, sku: sku, modalPrice: modal, price: hJualCalc, resellerPrice: hResellerCalc, gameId: gameId, status: status === 'Tersedia' ? 'Tersedia' : 'Gangguan', isVisible: isVis });
                       opCount++; if (opCount >= 450) flushBatch();
                       
-                      // HANYA buat game baru jika belum ada. Jika sudah ada, biarkan utuh agar gambar/sku inquiry tidak hilang.
                       if (!existingGamesMap[gameId]) {
                           const gameRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId);
-                          currentBatch.set(gameRef, { name: brand, category: (kategori||'').toLowerCase().includes('game') ? 'game' : ((kategori||'').toLowerCase().includes('pulsa') ? 'pulsa' : 'emoney'), isVisible: true, inquirySku: '' });
-                          existingGamesMap[gameId] = true; // Tandai sudah dibuat di memori
+                          const cleanCat = (kategori||'').toLowerCase();
+                          let finalCat = 'game';
+                          if(cleanCat.includes('pulsa')||cleanCat.includes('data')) finalCat = 'pulsa';
+                          else if(cleanCat.includes('pln')) finalCat = 'pln';
+                          else if(cleanCat.includes('pdam')||cleanCat.includes('bpjs')) finalCat = 'pascabayar';
+                          else if(cleanCat.includes('emoney')||cleanCat.includes('dana')||cleanCat.includes('gopay')) finalCat = 'emoney';
+
+                          currentBatch.set(gameRef, { name: brand, category: finalCat, isVisible: true, inquirySku: '' });
+                          existingGamesMap[gameId] = true;
                           opCount++; if (opCount >= 450) flushBatch(); 
                       }
                       importedCount++;
@@ -796,7 +866,7 @@
 
       const handleBulkMarkup = async (e) => {
           e.preventDefault();
-          if(!adminSelectedGame || !bulkMarkupForm.value) return;
+          if(!adminSelectedGame || (!bulkMarkupForm.value && !bulkMarkupForm.resellerValue)) return;
           requestConfirm('Terapkan markup massal ke semua produk di game ini?', async () => {
               triggerSysLoad('Menerapkan Markup Massal...');
               try {
@@ -805,13 +875,16 @@
                   gameItems.forEach(item => {
                       const modal = item.modalPrice || item.price;
                       const val = Number(bulkMarkupForm.value);
-                      const hJualCalc = bulkMarkupForm.type === 'fixed' ? modal + val : modal + (modal * val / 100);
+                      const resVal = Number(bulkMarkupForm.resellerValue);
                       const itemRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', item.id);
-                      batch.update(itemRef, { price: hJualCalc });
+                      let updateData = {};
+                      if(val) updateData.price = bulkMarkupForm.type === 'fixed' ? modal + val : modal + (modal * val / 100);
+                      if(resVal) updateData.resellerPrice = bulkMarkupForm.type === 'fixed' ? modal + resVal : modal + (modal * resVal / 100);
+                      batch.update(itemRef, updateData);
                   });
                   await batch.commit();
                   addToast('Markup Massal Berhasil diterapkan!', 'success');
-                  setBulkMarkupForm({ type: 'fixed', value: '' });
+                  setBulkMarkupForm({ type: 'fixed', value: '', resellerValue: '' });
               } catch(e) {
                   addToast('Gagal memproses markup massal', 'error');
               } finally { closeSysLoad(); }
@@ -841,16 +914,16 @@
 
       const handleDownloadCSV = () => {
           if(!userOrders || userOrders.length === 0) return addToast('Riwayat kosong.', 'warning');
-          let csvContent = "data:text/csv;charset=utf-8,ID Pesanan,Tanggal,Game,Item,Target,Harga,Status\n";
+          let csvContent = "\uFEFFID Pesanan;Tanggal;Game;Item;Target;Harga;Status\n"; // \uFEFF for BOM (Excel UTF-8 support)
           userOrders.forEach(o => {
               const date = o.createdAt ? new Date(o.createdAt).toLocaleString('id-ID') : '-';
               const target = `${o.targetUserId} ${o.targetZoneId ? `(${o.targetZoneId})` : ''}`.trim();
-              const row = `"${o.id}","${date}","${o.gameName}","${o.nominalName}","${target}","${o.priceTotal}","${o.status}"`;
-              csvContent += row + "\n";
+              csvContent += `"${o.id}";"${date}";"${o.gameName}";"${o.nominalName}";"${target}";"${o.priceTotal}";"${o.status}"\n`;
           });
-          const encodedUri = encodeURI(csvContent);
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
           const link = document.createElement("a");
-          link.setAttribute("href", encodedUri);
+          link.setAttribute("href", url);
           link.setAttribute("download", `Riwayat_Transaksi_Vipercell_${authUser?.email}.csv`);
           document.body.appendChild(link);
           link.click();
@@ -860,6 +933,7 @@
       const handleAdminSendChat = async (e, customText = null) => { if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return; try { const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); setAdminReplyText(''); setTimeout(()=> { adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); } catch(err) { addToast('Gagal membalas', 'error'); } };
       const handleBlockMember = async (uid, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), { isBlocked: !currentStatus }, { merge: true }); addToast(currentStatus ? 'Blokir dibuka' : 'Akun diblokir', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleDeleteMember = async (memberId) => requestConfirm('Hapus permanen?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', memberId)); addToast('Dihapus.', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Hapus Member');
+      const handleResellerAction = async (uid, action) => { try { triggerSysLoad(); let updateData = {}; if(action === 'approve') updateData = { isReseller: true, resellerStatus: 'approved' }; else if(action === 'reject' || action === 'revoke') updateData = { isReseller: false, resellerStatus: 'rejected' }; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', uid), updateData, { merge: true }); addToast('Aksi berhasil', 'success'); } catch(e) { addToast('Gagal memproses aksi', 'error'); } finally { closeSysLoad(); } };
 
       const handleBroadcast = async (e) => { e.preventDefault(); if(!(broadcastMsg||'').trim()) return; let targets = []; if(broadcastTarget === 'all') targets = (memberList||[]).map(m=>m.email); else targets = selectedBroadcastUsers; if (targets.length === 0) return addToast('Pilih min. 1 member!', 'warning'); setAuthLoading(true); triggerSysLoad(`Mengirim ke ${targets.length} member...`); try { for (const email of targets) { const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', email); const newMsg = { sender: 'admin', text: broadcastMsg, time: new Date().toISOString(), role: 'Sistem Informasi' }; await setDoc(chatRef, { messages: arrayUnion(newMsg), status: 'Dijawab', updatedAt: new Date().toISOString() }, {merge: true}); } addToast(`Sukses terkirim`, 'success'); setBroadcastMsg(''); setSelectedBroadcastUsers([]); } catch(err) { addToast('Gagal', 'error'); } setAuthLoading(false); closeSysLoad(); };
       
@@ -892,15 +966,16 @@
               triggerSysLoad('Menyinkronkan Produk...'); 
               const hModal = Number(newItemPrice); 
               const hJual = markupForm.type === 'fixed' ? hModal + Number(markupForm.value) : hModal + (hModal * Number(markupForm.value) / 100); 
+              const hReseller = markupForm.type === 'fixed' ? hModal + Number(markupForm.resellerValue||0) : hModal + (hModal * Number(markupForm.resellerValue||0) / 100);
               const itemId = editingItemId || `item_${Date.now()}`;
-              const itemData = { id: itemId, name: newItemName, price: hJual, modalPrice: hModal, gameId: adminSelectedGame, status: 'Tersedia', isVisible: true, sku: `SKU-${Math.floor(Math.random()*1000)}` };
+              const itemData = { id: itemId, name: newItemName, price: hJual, resellerPrice: hReseller, modalPrice: hModal, gameId: adminSelectedGame, status: 'Tersedia', isVisible: true, sku: `SKU-${Math.floor(Math.random()*1000)}` };
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId), itemData, { merge: true }); 
-              setNewItemName(''); setNewItemPrice(''); setEditingItemId(null); 
+              setNewItemName(''); setNewItemPrice(''); setNewResellerPrice(''); setEditingItemId(null); 
               addToast('Produk Tersimpan!', 'success'); 
           } catch (e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } 
       };
 
-      const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.modalPrice || item.price); };
+      const handleEditItemClick = (gameId, item) => { setAdminSelectedGame(gameId); setEditingItemId(item.id); setNewItemName(item.name); setNewItemPrice(item.modalPrice || item.price); setNewResellerPrice(item.resellerPrice || item.price); };
       const handleDeleteItem = async (itemId) => requestConfirm('Hapus produk ini?', async () => { 
           try { 
               triggerSysLoad('Menghapus Item...'); 
@@ -932,13 +1007,13 @@
               const data = await res.json();
               if (data.error) throw new Error(data.error.message);
               const now = new Date().toISOString();
-              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', data.localId), { email: newMemberEmail, name: newMemberName, phone: newMemberPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null, faceDescriptor: null, faceAuthKey: null }); 
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', data.localId), { email: newMemberEmail, name: newMemberName, phone: newMemberPhone, lastLogin: now, createdAt: now, avatar: '', saldoCashback: 0, isBlocked: false, registeredFace: null, faceDescriptor: null, faceAuthKey: null, referralCode: generateReferralCode(), referredBy: null, hasFirstTransaction: false, isReseller: false, resellerStatus: 'none' }); 
               addToast('Member berhasil ditambahkan dengan Sandi Kustom.', 'success'); setNewMemberEmail(''); setNewMemberName(''); setNewMemberPhone(''); setNewMemberPassword('');
           } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad(); }
       }
 
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
-      const currentBasePrice = selectedNominal ? calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id) : 0;
+      const currentBasePrice = selectedNominal ? calculateFinalPrice(getDisplayPrice(selectedNominal) + (selectedPayment?.fee||0), selectedNominal.id) : 0;
       const currentUsedCashback = useCashback ? Math.min(currentBasePrice, (currentUserData?.saldoCashback || 0)) : 0;
       const displayTotal = currentBasePrice - currentUsedCashback;
       const estimatedCashback = globalConfig?.cashbackPercent ? (displayTotal * (globalConfig.cashbackPercent / 100)) : 0;
@@ -977,6 +1052,7 @@
                          <>
                          <div className="relative group animate-slide-down"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nama Lengkap" /></div>
                          <div className="relative group animate-slide-down"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nomor Handphone Aktif" /></div>
+                         <div className="relative group animate-slide-down"><IconTag className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="text" value={regReferral} onChange={(e)=>setRegReferral(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-mono shadow-sm uppercase" placeholder="Kode Referral (Opsional)" /></div>
                          </>
                      )}
 
@@ -1075,7 +1151,7 @@
 
           <AdminFaceModal isOpen={adminViewFaceModal.isOpen} imageSrc={adminViewFaceModal.imageSrc} memberName={adminViewFaceModal.memberName} onClose={() => setAdminViewFaceModal({isOpen:false, imageSrc:'', memberName:''})} />
 
-          {/* FULL SCREEN BLOG MODAL SOLID BACKGROUND - DIPERBARUI */}
+          {/* FULL SCREEN BLOG MODAL SOLID BACKGROUND */}
           {activeBlog && (
               <div className="fixed inset-0 z-[99999] bg-white dark:bg-navy-900 animate-slide-up overflow-y-auto custom-scrollbar text-main">
                   <div className="relative w-full max-w-3xl mx-auto min-h-screen bg-white dark:bg-navy-900 shadow-2xl flex flex-col">
@@ -1230,7 +1306,7 @@
                     <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                         <div>
                             <h1 className="text-xl md:text-2xl font-black text-main tracking-tight drop-shadow-sm">Selamat {greeting},</h1>
-                            <h2 className="text-xl md:text-3xl font-black text-primary mt-1 drop-shadow-sm flex items-center">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'}</h2>
+                            <h2 className="text-xl md:text-3xl font-black text-primary mt-1 drop-shadow-sm flex items-center">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'} {currentUserData?.isReseller && <span className="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full ml-2 shadow-sm font-black tracking-widest uppercase">Reseller</span>}</h2>
                         </div>
                     </div>
 
@@ -1250,7 +1326,7 @@
                                     const gamesInCategory = groupedGames[category].filter(g => (items||[]).some(i => i.gameId === g.id && (i.status === 'Tersedia' || !i.status) && (i.isVisible ?? true) && !(i.sku||'').startsWith('CEK')));
                                     return [...topGames, ...gamesInCategory];
                                 }, []).slice(0, 5).map((game) => (
-                                    <div key={`top-${game.id}`} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setIsIdValid(false); setBypassValidation(false); window.scrollTo({top:0, behavior:'smooth'})}} className="snap-center shrink-0 w-32 md:w-40 cursor-pointer clean-card overflow-hidden relative flex flex-col h-full z-30 hover:-translate-y-1 transition-transform group">
+                                    <div key={`top-${game.id}`} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setIsIdValid(false); setBypassValidation(false); setPostpaidData(null); window.scrollTo({top:0, behavior:'smooth'})}} className="snap-center shrink-0 w-32 md:w-40 cursor-pointer clean-card overflow-hidden relative flex flex-col h-full z-30 hover:-translate-y-1 transition-transform group">
                                         <div className="aspect-square bg-gray-100/50 dark:bg-black/50 p-2 relative overflow-hidden">
                                             <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl group-hover:scale-105 transition-transform duration-500"/>
                                         </div>
@@ -1281,13 +1357,13 @@
                                       return (
                                       <div key={category} className="space-y-4">
                                           <h3 className="font-black text-lg uppercase tracking-widest text-sub-theme border-b border-theme pb-2">
-                                              {category === 'game' ? '🎮 Top Up Game' : category === 'pulsa' ? '📱 Pulsa & Data' : category === 'emoney' ? '💸 E-Money' : '⚡ Token PLN'}
+                                              {category === 'game' ? '🎮 Top Up Game' : category === 'pulsa' ? '📱 Pulsa & Data' : category === 'emoney' ? '💸 E-Money' : '⚡ Tagihan & PLN'}
                                           </h3>
                                           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 md:gap-5">
                                               {categoryGames.map(game => {
                                                  const hasGamePromo = promos.some(p => p.isActive && p.category === 'game' && p.targetGame === game.id);
                                                  return (
-                                                 <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setIsIdValid(false); setBypassValidation(false); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer clean-card overflow-hidden relative flex flex-col h-full z-30 hover:-translate-y-1 transition-transform group">
+                                                 <div key={game.id} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setIsIdValid(false); setBypassValidation(false); setPostpaidData(null); window.scrollTo({top:0, behavior:'smooth'})}} className="cursor-pointer clean-card overflow-hidden relative flex flex-col h-full z-30 hover:-translate-y-1 transition-transform group">
                                                     {hasGamePromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10 animate-pulse-fast">PROMO</div>}
                                                     <div className="aspect-square bg-gray-100/50 dark:bg-black/50 p-1.5 md:p-2 relative overflow-hidden">
                                                        <img src={game.image} alt={game.name} className="w-full h-full object-cover rounded-xl md:rounded-2xl group-hover:scale-105 transition-transform duration-500"/>
@@ -1314,7 +1390,7 @@
                                       <div className="flex flex-col gap-4 pb-4 custom-scrollbar">
                                          {flashSalePromos.map(promo => {
                                             const timeLeft = Math.max(0, new Date(promo.endTime) - new Date());
-                                            const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                                            const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / 1000);
                                             if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
 
                                             return (
@@ -1349,11 +1425,11 @@
                     {selectedGame && (
                        <div className="animate-slide-down relative z-20">
                           <div className="flex items-center gap-4 mb-6 clean-card p-4 md:p-5 border-t-4 border-primary">
-                             <button onClick={() =>setSelectedGame(null)} className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-xl text-main hover:bg-gray-200 dark:hover:bg-white/10 transition"><IconChevronLeft className="w-5 h-5"/></button>
+                             <button onClick={() => {setSelectedGame(null); setPostpaidData(null);}} className="p-3 bg-gray-100 dark:bg-white/5 border border-theme rounded-xl text-main hover:bg-gray-200 dark:hover:bg-white/10 transition"><IconChevronLeft className="w-5 h-5"/></button>
                              <img src={selectedGame.image} className="w-14 h-14 rounded-2xl object-cover border border-theme shadow-sm" />
                              <div>
                                 <h2 className="text-xl md:text-2xl font-black text-main leading-tight drop-shadow-sm">{selectedGame.name}</h2>
-                                <p className="text-xs text-primary font-bold mt-1 uppercase tracking-widest">Kategori: {selectedGame.category === 'game' ? 'Game' : selectedGame.category === 'pulsa' ? 'Pulsa/Data' : 'E-Money/PLN'}</p>
+                                <p className="text-xs text-primary font-bold mt-1 uppercase tracking-widest">Kategori: {selectedGame.category === 'game' ? 'Game' : selectedGame.category === 'pulsa' ? 'Pulsa/Data' : selectedGame.category === 'pln' ? 'Token PLN' : selectedGame.category === 'pascabayar' ? 'Pascabayar / Tagihan' : 'E-Money'}</p>
                              </div>
                           </div>
 
@@ -1364,9 +1440,9 @@
                                    <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
                                       <div className="flex-1 relative group">
                                          <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
-                                         <input type={(selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'tel' : 'text'} value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val) && selectedGame?.category !== 'emoney') { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : (selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'Nomor HP Tujuan (08xx)' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
+                                         <input type={(selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'tel' : 'text'} value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val) && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pln' && selectedGame?.category !== 'pascabayar') { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : (selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'Nomor HP Tujuan (08xx)' : selectedGame?.category === 'pln' ? 'Nomor Meter / ID Pel' : selectedGame?.category === 'pascabayar' ? 'Nomor Tagihan / Pelanggan' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
                                       </div>
-                                      {selectedGame?.inputType === 'id_zone' && selectedGame?.category !== 'pulsa' && selectedGame?.category !== 'emoney' && (
+                                      {selectedGame?.inputType === 'id_zone' && selectedGame?.category !== 'pulsa' && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pln' && selectedGame?.category !== 'pascabayar' && (
                                          <div className="w-full sm:w-1/3 relative group">
                                             <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
@@ -1407,29 +1483,36 @@
                                 </div>
 
                                 <div className="clean-card p-6 md:p-8 relative overflow-hidden">
-                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-primary text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk {selectedGame.category === 'pulsa' ? 'Pulsa' : ''}</h3>
+                                   <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-primary text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">2</span> Pilih Produk {selectedGame.category === 'pulsa' ? 'Pulsa' : selectedGame.category === 'pln' ? 'PLN' : ''}</h3>
                                    
                                    <div className={`grid grid-cols-2 sm:grid-cols-3 gap-3 md:gap-4 relative z-10 transition-all duration-500 ${selectedGame.inquirySku && !isIdValid && !bypassValidation ? 'opacity-30 pointer-events-none filter grayscale-[50%]' : ''}`}>
                                       {(items||[]).filter(i => i.gameId === selectedGame?.id && i.status === 'Tersedia' && (i.isVisible ?? true) && !(i.sku||'').startsWith('CEK')).sort((a,b)=>a.price-b.price).map(item => {
                                          const itemPromos = getActivePromosForItem(item.id);
+                                         const itemBasePrice = getDisplayPrice(item);
                                          const bestAutoPromo = itemPromos.length > 0 ? itemPromos.reduce((prev, current) => {
-                                             const prevD = prev.type === 'percentage' ? (item.price * prev.discount / 100) : prev.discount;
-                                             const currD = current.type === 'percentage' ? (item.price * current.discount / 100) : current.discount;
+                                             const prevD = prev.type === 'percentage' ? (itemBasePrice * prev.discount / 100) : prev.discount;
+                                             const currD = current.type === 'percentage' ? (itemBasePrice * current.discount / 100) : current.discount;
                                              return (currD > prevD) ? current : prev;
                                          }) : null;
-                                         const finalP = calculateFinalPrice(item.price, item.id);
+                                         const finalP = calculateFinalPrice(itemBasePrice, item.id);
                                          const hasPromo = bestAutoPromo !== null;
                                          const pCashback = globalConfig?.cashbackPercent ? (finalP * (globalConfig.cashbackPercent / 100)) : 0;
 
                                          return (
-                                         <div key={item.id} onClick={() => setSelectedNominal(item)} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 text-center relative overflow-hidden flex flex-col justify-center min-h-[100px] transition-all bg-card ${selectedNominal?.id === item.id ? 'border-primary bg-primary-light scale-[1.02] shadow-md' : 'border-theme hover:border-primary/50'}`}>
+                                         <div key={item.id} onClick={() => { setSelectedNominal(item); setPostpaidData(null); setIsIdValid(false); }} className={`cursor-pointer rounded-[1.5rem] p-4 border-2 text-center relative overflow-hidden flex flex-col justify-center min-h-[100px] transition-all bg-card ${selectedNominal?.id === item.id ? 'border-primary bg-primary-light scale-[1.02] shadow-md' : 'border-theme hover:border-primary/50'}`}>
                                             {hasPromo && <div className="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black px-2 py-1 rounded-bl-xl shadow-sm z-10">{bestAutoPromo.category === 'flash' ? '⚡ FLASH' : '🔥 PROMO'}</div>}
                                             {selectedNominal?.id === item.id && <div className="absolute top-2 left-2 z-10"><IconCheckCircle className="w-4 h-4 text-primary"/></div>}
                                             <div className="font-bold text-xs md:text-sm text-main mb-2 mt-2">{item.name}</div>
-                                            <div className={`text-[10px] md:text-xs font-mono font-black mt-auto ${hasPromo ? 'text-primary' : 'text-sub-theme'}`}>
-                                                {hasPromo ? (<div className="flex flex-col items-center"><span className="line-through text-gray-400 text-[9px] mb-0.5">{formatRupiah(item.price)}</span><span>{formatRupiah(finalP)}</span></div>) : formatRupiah(item.price)}
-                                            </div>
-                                            {pCashback > 0 && <div className="text-[8px] font-bold text-emerald-500 mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block mx-auto border border-emerald-500/20">+ {formatRupiah(pCashback)} CB</div>}
+                                            
+                                            {selectedGame.category !== 'pascabayar' ? (
+                                                <div className={`text-[10px] md:text-xs font-mono font-black mt-auto ${hasPromo ? 'text-primary' : 'text-sub-theme'}`}>
+                                                    {hasPromo ? (<div className="flex flex-col items-center"><span className="line-through text-gray-400 text-[9px] mb-0.5">{formatRupiah(itemBasePrice)}</span><span>{formatRupiah(finalP)}</span></div>) : formatRupiah(itemBasePrice)}
+                                                </div>
+                                            ) : (
+                                                <div className="text-[9px] md:text-[10px] font-bold text-primary mt-auto uppercase tracking-widest bg-primary-light px-2 py-1 rounded">Cek Tagihan Dulu</div>
+                                            )}
+
+                                            {pCashback > 0 && selectedGame.category !== 'pascabayar' && <div className="text-[8px] font-bold text-emerald-500 mt-1 bg-emerald-500/10 px-2 py-0.5 rounded-full inline-block mx-auto border border-emerald-500/20">+ {formatRupiah(pCashback)} CB</div>}
                                          </div>
                                       )})}
                                    </div>
@@ -1438,7 +1521,7 @@
                              </div>
 
                              <div className="lg:col-span-5 space-y-6">
-                                <div className="clean-card p-6 md:p-8 relative overflow-hidden">
+                                <div className={`clean-card p-6 md:p-8 relative overflow-hidden transition-all duration-500 ${(selectedGame.category === 'pascabayar' && !postpaidData) ? 'opacity-30 pointer-events-none' : ''}`}>
                                    <h3 className="text-lg font-black text-main mb-5 flex items-center gap-3 relative z-10"><span className="bg-primary text-white w-8 h-8 rounded-xl flex items-center justify-center text-sm font-black shadow-sm">3</span> Metode Pembayaran</h3>
                                    <div className="space-y-3 mb-6 relative z-10">
                                       {PAYMENTS.map(pay => (
@@ -1453,7 +1536,7 @@
                                       ))}
                                    </div>
                                    
-                                   {currentUserData?.saldoCashback > 0 && (
+                                   {currentUserData?.saldoCashback > 0 && selectedGame.category !== 'pascabayar' && (
                                        <div className="relative z-10 py-4 mb-2 border-t border-b border-theme flex items-center justify-between">
                                           <div>
                                               <label className="text-xs font-black text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5"><IconWallet className="w-4 h-4"/> Pakai Saldo Cashback</label>
@@ -1466,33 +1549,66 @@
                                        </div>
                                    )}
 
-                                   <div className="relative z-10 pt-4">
-                                      <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-primary"/> Kode Kupon Promosi</label>
-                                      <div className="flex gap-2 bg-gray-100 dark:bg-black/50 p-1.5 rounded-2xl border border-theme shadow-inner">
-                                         <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
-                                         {activePromo ? (
-                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-500/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
-                                         ) : (
-                                             <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm transition hover:scale-105">Pakai</button>
-                                         )}
-                                      </div>
-                                   </div>
+                                   {selectedGame.category !== 'pascabayar' && (
+                                       <div className="relative z-10 pt-4">
+                                          <label className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-2 flex items-center gap-1.5"><IconKey className="w-3 h-3 text-primary"/> Kode Kupon Promosi</label>
+                                          <div className="flex gap-2 bg-gray-100 dark:bg-black/50 p-1.5 rounded-2xl border border-theme shadow-inner">
+                                             <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
+                                             {activePromo ? (
+                                                 <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-500/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
+                                             ) : (
+                                                 <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm transition hover:scale-105">Pakai</button>
+                                             )}
+                                          </div>
+                                       </div>
+                                   )}
                                 </div>
 
                                 <div className="clean-card p-6 md:p-8 relative overflow-hidden mt-6">
-                                   <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
-                                       <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
-                                       <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
-                                   </div>
-                                   {estimatedCashback > 0 && (
-                                       <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between shadow-sm">
-                                           <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Cashback Diterima (Setelah Lunas):</span>
-                                           <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
-                                       </div>
+                                   {selectedGame.category === 'pascabayar' ? (
+                                       <>
+                                           {postpaidData && (
+                                               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl border border-theme mb-5 text-sm space-y-2 shadow-inner">
+                                                   <div className="flex justify-between items-center border-b border-theme pb-2"><span className="text-sub-theme text-xs">Nama Pelanggan</span><span className="font-bold text-main">{postpaidData.customer_name}</span></div>
+                                                   <div className="flex justify-between items-center border-b border-theme pb-2"><span className="text-sub-theme text-xs">Periode</span><span className="font-bold text-main">{postpaidData.desc?.detail?.[0]?.periode || '-'}</span></div>
+                                                   <div className="flex justify-between items-center pt-1"><span className="text-sub-theme text-xs">Tagihan (Inc. Admin Web)</span><span className="font-black text-primary text-lg">{formatRupiah(postpaidData.price)}</span></div>
+                                               </div>
+                                           )}
+                                           <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
+                                               <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
+                                               <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{postpaidData ? formatRupiah(postpaidData.price) : 'Rp 0'}</span>
+                                           </div>
+                                           {!postpaidData ? (
+                                               <button onClick={triggerPostpaidCheck} disabled={isCheckingPostpaid || !userId || !selectedNominal} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${userId && selectedNominal ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                                  {isCheckingPostpaid ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconSearch className={`w-5 h-5 ${userId && selectedNominal ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> Cek Data Tagihan</>}
+                                               </button>
+                                           ) : (
+                                               <button onClick={() => {
+                                                   if(!selectedPayment) return addToast('Pilih metode pembayaran.', 'warning');
+                                                   const orderPayload = { gameId: selectedGame.id, gameName: selectedGame.name, gameImage: selectedGame.image, userId: userId, zoneId: zoneId, nickname: postpaidData.customer_name, itemId: selectedNominal.id, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: postpaidData.price, usedCashback: 0, basePrice: postpaidData.price };
+                                                   setPendingOrderPayload(orderPayload); setCheckoutSummary({ isOpen: true, data: orderPayload }); 
+                                               }} disabled={isProcessing || !selectedPayment} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${selectedPayment ? 'bg-emerald-600 text-white hover:bg-emerald-500 hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                                  {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${selectedPayment ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> Bayar Tagihan</>}
+                                               </button>
+                                           )}
+                                       </>
+                                   ) : (
+                                       <>
+                                           <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
+                                               <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
+                                               <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
+                                           </div>
+                                           {estimatedCashback > 0 && (
+                                               <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between shadow-sm">
+                                                   <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Cashback Diterima (Setelah Lunas):</span>
+                                                   <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
+                                               </div>
+                                           )}
+                                           <button onClick={triggerCheckout} disabled={isProcessing || (selectedGame.inquirySku && !isIdValid && !bypassValidation)} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                              {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
+                                           </button>
+                                       </>
                                    )}
-                                   <button onClick={triggerCheckout} disabled={isProcessing || (selectedGame.inquirySku && !isIdValid && !bypassValidation)} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
-                                      {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
-                                   </button>
                                 </div>
                              </div>
                           </div>
@@ -1533,7 +1649,7 @@
                                            {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
                                            <div className="p-5 md:p-6 flex-1 flex flex-col">
                                                <div className="flex items-center gap-2 mb-3">
-                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
+                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
                                                    <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
                                                </div>
                                                <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
@@ -1668,6 +1784,7 @@
                             <h2 className="text-3xl md:text-4xl font-black leading-tight text-main drop-shadow-sm">
                                 {currentUserData?.name || 'Member VIP'} 
                                 {isAdmin && <span className="text-xs bg-red-500 text-white px-2 py-1 rounded-md font-bold uppercase ml-3 shadow-sm border border-red-400">Admin</span>}
+                                {currentUserData?.isReseller && <span className="text-xs bg-primary text-white px-2 py-1 rounded-md font-bold uppercase ml-2 shadow-sm border border-primary/50">Reseller Aktif</span>}
                             </h2>
                             <p className="text-sm text-sub-theme font-mono mt-2 drop-shadow-sm">{authUser.email}</p>
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-5">
@@ -1687,6 +1804,15 @@
                                   <button type="submit" disabled={!profilePhone || profilePhone.length < 10} className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:hover:scale-100">Simpan Data</button>
                                </form>
                             </div>
+                            
+                            <div className="bg-purple-50 dark:bg-purple-950/20 p-8 rounded-[2.5rem] border border-purple-500/30 shadow-inner">
+                               <h3 className="text-lg font-black mb-2 flex items-center gap-3 text-purple-700 dark:text-purple-400"><div className="bg-purple-500/20 p-2 rounded-xl text-purple-600 dark:text-purple-400 shadow-sm border border-purple-500/30"><IconGift className="w-5 h-5"/></div> Undang Teman</h3>
+                               <p className="text-[10px] font-bold text-sub-theme mb-4 leading-relaxed">Bagikan kode referral Anda. Jika teman Anda mendaftar dan berhasil melakukan transaksi pertama, Anda akan mendapatkan bonus Saldo Cashback <span className="text-primary">{formatRupiah(globalConfig?.referralReward || 2000)}</span>!</p>
+                               <div className="flex bg-white dark:bg-black/50 border border-purple-500/30 p-2 rounded-2xl shadow-sm items-center justify-between">
+                                   <span className="font-mono font-black text-purple-700 dark:text-purple-400 text-lg tracking-widest pl-4">{currentUserData?.referralCode || 'VIPERCELL'}</span>
+                                   <button onClick={()=>{navigator.clipboard.writeText(currentUserData?.referralCode || 'VIPERCELL'); addToast('Kode Referral Disalin!', 'success')}} className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition">Salin Kode</button>
+                               </div>
+                            </div>
                          </div>
 
                          <div className="space-y-6">
@@ -1697,6 +1823,40 @@
                                     <div><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Benefit Cashback</p><p className="font-mono text-xl font-black text-primary">{userVipData.cashback * 100}% <span className="text-[10px] text-sub-theme">/ Trx</span></p></div>
                                     <div className="text-right"><p className="text-[9px] font-black uppercase text-sub-theme mb-1">Saldo Terkumpul</p><p className="font-mono text-xl font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(currentUserData?.saldoCashback || 0)}</p></div>
                                 </div>
+                            </div>
+                            
+                            {/* PENGATURAN RESELLER DI PROFIL USER */}
+                            <div className="bg-orange-50 dark:bg-orange-950/20 p-8 rounded-[2.5rem] border border-orange-500/30 shadow-inner">
+                               <h3 className="text-lg font-black mb-2 flex items-center gap-3 text-orange-700 dark:text-orange-500"><div className="bg-orange-500/20 p-2 rounded-xl text-orange-600 dark:text-orange-500 shadow-sm border border-orange-500/30"><IconTrendingUp className="w-5 h-5"/></div> Kemitraan Reseller</h3>
+                               
+                               {currentUserData?.isReseller ? (
+                                   <div className="text-center bg-white dark:bg-black/50 border border-orange-500/30 p-5 rounded-2xl shadow-sm mt-4">
+                                       <IconCheckCircle className="w-10 h-10 text-emerald-500 mx-auto mb-2"/>
+                                       <p className="text-sm font-black text-main mb-1">Anda adalah Reseller VIP</p>
+                                       <p className="text-[10px] font-medium text-sub-theme leading-relaxed">Nikmati harga khusus modal reseller untuk setiap transaksi di platform ini.</p>
+                                   </div>
+                               ) : currentUserData?.resellerStatus === 'pending' ? (
+                                   <div className="text-center bg-white dark:bg-black/50 border border-orange-500/30 p-5 rounded-2xl shadow-sm mt-4">
+                                       <IconLoader className="w-10 h-10 text-orange-500 mx-auto mb-2 animate-spin"/>
+                                       <p className="text-sm font-black text-main mb-1">Pengajuan Sedang Diproses</p>
+                                       <p className="text-[10px] font-medium text-sub-theme leading-relaxed">Admin kami sedang meninjau pengajuan toko Anda. Mohon ditunggu.</p>
+                                   </div>
+                               ) : (
+                                   <>
+                                       <p className="text-[10px] font-bold text-sub-theme mb-5 leading-relaxed">Dapatkan akses harga super murah khusus untuk konter atau pelaku usaha. Ajukan toko Anda sekarang!</p>
+                                       <form onSubmit={handleApplyReseller} className="space-y-4 bg-white dark:bg-black/40 p-5 rounded-2xl border border-orange-500/30 shadow-sm">
+                                           <div className="space-y-1">
+                                               <label className="text-[9px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-widest ml-1">Nama Toko / Konter</label>
+                                               <input type="text" required value={resellerStoreName} onChange={(e)=>setResellerStoreName(e.target.value)} className="w-full input-theme rounded-xl py-3 px-4 focus:border-orange-500 text-sm shadow-inner" placeholder="Contoh: Teves Cell" />
+                                           </div>
+                                           <div className="space-y-1">
+                                               <label className="text-[9px] font-black text-orange-600 dark:text-orange-500 uppercase tracking-widest ml-1">Nomor WA Pemilik</label>
+                                               <input type="tel" required value={resellerPhone} onChange={(e)=>setResellerPhone(e.target.value)} className="w-full input-theme rounded-xl py-3 px-4 focus:border-orange-500 text-sm shadow-inner" placeholder="08xx" />
+                                           </div>
+                                           <button type="submit" disabled={sysLoading.active} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-md transition hover:scale-[1.02]">Ajukan Kemitraan</button>
+                                       </form>
+                                   </>
+                               )}
                             </div>
 
                             <div className="bg-gray-50 dark:bg-black/50 p-8 rounded-[2.5rem] border border-theme shadow-inner">
@@ -1745,7 +1905,7 @@
                 </div>
             )}
 
-            {/* ADMIN PANEL HYBRID VIPERCELL v16.0 */}
+            {/* ADMIN PANEL HYBRID VIPERCELL v16.1 */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-slide-down pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
                   
@@ -1755,18 +1915,18 @@
                         <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate drop-shadow-sm">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme shadow-inner">System v16.0 Ultimate</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-white/10 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme shadow-inner">System v16.1 Ultimate</span>
                         </div>
                      </div>
 
                      <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 custom-scrollbar flex-1">
-                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'blog', label: 'Kelola Berita', icon: IconFileText }, { id: 'members', label: 'Data Member', icon: IconUsers }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'database', label: 'Database Google', icon: IconDatabase }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
+                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'blog', label: 'Kelola Berita', icon: IconFileText }, { id: 'members', label: 'Data Member & Reseller', icon: IconUsers, notif: (memberList||[]).filter(m=>m.resellerStatus==='pending').length }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'database', label: 'Database Google', icon: IconDatabase }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
                            const TabIcon = tab.icon;
                            return (
                            <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-auto lg:w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-bold transition-all whitespace-nowrap shrink-0 border ${activeAdminTab === tab.id ? 'bg-primary text-white border-primary shadow-lg' : 'bg-transparent text-sub-theme border-transparent hover:bg-gray-100 dark:hover:bg-white/5 hover:border-theme'}`}>
                               <TabIcon className={`w-5 h-5 ${activeAdminTab === tab.id ? 'text-white' : ''}`} />
                               <span className="text-sm tracking-wide">{tab.label}</span>
-                              {tab.notif > 0 && <span className="ml-2 lg:ml-auto bg-white/20 dark:bg-black/50 text-white px-2 py-0.5 rounded-full text-[10px] font-black border border-white/30">{tab.notif}</span>}
+                              {tab.notif > 0 && <span className="ml-2 lg:ml-auto bg-red-500 text-white px-2 py-0.5 rounded-full text-[10px] font-black shadow-sm">{tab.notif}</span>}
                            </button>
                         )})}
                      </div>
@@ -1775,7 +1935,7 @@
                   {/* KONTEN UTAMA ADMIN */}
                   <div className="flex-1 clean-card shadow-2xl overflow-hidden flex flex-col relative w-full h-[75vh] lg:h-[calc(100vh-140px)] z-20">
                      
-                     <div className={`flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar relative z-10 w-full ${activeAdminTab === 'support' || activeAdminTab === 'database' ? 'p-0 md:p-0 flex flex-col' : ''}`}>
+                     <div className={`flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar relative z-10 w-full ${activeAdminTab === 'support' || activeAdminTab === 'database' || activeAdminTab === 'members' ? 'p-0 md:p-0 flex flex-col' : ''}`}>
                         
                         {/* TAB: DASHBOARD */}
                         {activeAdminTab === 'dashboard' && (
@@ -1909,7 +2069,7 @@
                                                       {order?.paymentMethod?.toLowerCase().includes('cash') ? (
                                                           <button onClick={() => setIsScannerOpen(true)} className="p-2.5 bg-orange-500/10 border border-orange-500/30 text-orange-600 dark:text-orange-400 rounded-xl hover:bg-orange-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Scan QR Pembeli untuk Validasi Kasir"><IconCamera className="w-4 h-4" strokeWidth={3} /></button>
                                                       ) : (
-                                                          <button onClick={() => updateOrderStatus(order, 'Sukses')} disabled={isProcessing} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Tandai Lunas & Proses API"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
+                                                          <button onClick={() => updateOrderStatus(order, 'Sukses')} disabled={isProcessing} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-50 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Tandai Lunas & Proses API"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
                                                       )}
                                                       <button onClick={() => updateOrderStatus(order, 'Batal')} disabled={isProcessing} className="p-2.5 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
@@ -1928,87 +2088,152 @@
                            </div>
                         )}
 
-                        {/* TAB: DATA MEMBER & TAMBAH MEMBER */}
+                        {/* TAB: DATA MEMBER & KELOLA RESELLER */}
                         {activeAdminTab === 'members' && (
-                           <div className="animate-slide-down flex flex-col h-full w-full">
-                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 px-2">
-                                 <h2 className="text-2xl font-black text-main flex items-center gap-2 drop-shadow-sm"><IconUsers className="w-6 h-6 text-primary"/> Manajemen Member</h2>
+                           <div className="animate-slide-down flex flex-col h-full w-full p-2 md:p-6 bg-gray-50 dark:bg-black/20 rounded-[2.5rem] border border-theme shadow-inner">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                                 <h2 className="text-2xl font-black text-main flex items-center gap-2 drop-shadow-sm"><IconUsers className="w-6 h-6 text-primary"/> Manajemen Pengguna</h2>
+                                 <div className="flex bg-card border border-theme p-1 rounded-xl shadow-sm">
+                                     <button onClick={()=>setAdminMemberTab('all')} className={`px-4 py-2 text-xs font-bold rounded-lg transition ${adminMemberTab==='all' ? 'bg-primary text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>Daftar Member</button>
+                                     <button onClick={()=>setAdminMemberTab('reseller')} className={`px-4 py-2 text-xs font-bold rounded-lg transition relative ${adminMemberTab==='reseller' ? 'bg-orange-500 text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>
+                                         Kelola Reseller
+                                         {(memberList||[]).filter(m=>m.resellerStatus==='pending').length > 0 && <span className="absolute -top-1 -right-1 flex h-3 w-3"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>}
+                                     </button>
+                                 </div>
                               </div>
 
-                              <form onSubmit={handleAdminAddMember} className="bg-card p-5 rounded-2xl border border-theme shadow-sm mb-6 flex flex-wrap gap-3 items-end">
-                                 <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Email Baru</label><input type="email" required value={newMemberEmail} onChange={(e)=>setNewMemberEmail(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="email@gmail.com"/></div>
-                                 <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Sandi Akun</label><input type="text" required minLength="6" value={newMemberPassword} onChange={(e)=>setNewMemberPassword(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="Min. 6 Karakter"/></div>
-                                 <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Nama Lengkap</label><input type="text" required value={newMemberName} onChange={(e)=>setNewMemberName(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="Nama Member"/></div>
-                                 <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">No Handphone</label><input type="tel" required value={newMemberPhone} onChange={(e)=>setNewMemberPhone(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="08xx"/></div>
-                                 <button type="submit" disabled={authLoading || !adminApiKey} className="bg-primary hover:bg-primary-hover text-white font-black px-6 py-3 rounded-xl shadow-md transition disabled:opacity-50">Daftarkan</button>
-                                 {!adminApiKey && <p className="text-[10px] text-red-500 w-full mt-1">⚠️ Fitur ini butuh 'API Key Web' Firebase (Simpan di Pengaturan Web).</p>}
-                              </form>
+                              {adminMemberTab === 'all' && (
+                                  <>
+                                      <form onSubmit={handleAdminAddMember} className="bg-card p-5 rounded-2xl border border-theme shadow-sm mb-6 flex flex-wrap gap-3 items-end">
+                                         <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Email Baru</label><input type="email" required value={newMemberEmail} onChange={(e)=>setNewMemberEmail(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="email@gmail.com"/></div>
+                                         <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Sandi Akun</label><input type="text" required minLength="6" value={newMemberPassword} onChange={(e)=>setNewMemberPassword(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="Min. 6 Karakter"/></div>
+                                         <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">Nama Lengkap</label><input type="text" required value={newMemberName} onChange={(e)=>setNewMemberName(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="Nama Member"/></div>
+                                         <div className="flex-1 min-w-[180px]"><label className="text-[10px] font-black text-sub-theme uppercase mb-1 block">No Handphone</label><input type="tel" required value={newMemberPhone} onChange={(e)=>setNewMemberPhone(e.target.value)} className="w-full input-theme p-3 rounded-xl text-xs" placeholder="08xx"/></div>
+                                         <button type="submit" disabled={authLoading || !adminApiKey} className="bg-primary hover:bg-primary-hover text-white font-black px-6 py-3 rounded-xl shadow-md transition disabled:opacity-50">Daftarkan</button>
+                                         {!adminApiKey && <p className="text-[10px] text-red-500 w-full mt-1">⚠️ Fitur ini butuh 'API Key Web' Firebase (Simpan di Pengaturan Web).</p>}
+                                      </form>
 
-                              <div className="relative mb-6">
-                                 <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-sub-theme w-5 h-5" />
-                                 <input type="text" placeholder="Cari Nama atau Email Member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-primary font-medium transition shadow-sm" />
-                              </div>
+                                      <div className="relative mb-6">
+                                         <IconSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-sub-theme w-5 h-5" />
+                                         <input type="text" placeholder="Cari Nama atau Email Member..." value={adminMemberSearch} onChange={(e) => setAdminMemberSearch(e.target.value)} className="w-full input-theme rounded-xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-primary font-medium transition shadow-sm" />
+                                      </div>
 
-                              <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-gray-50 dark:bg-black/50 rounded-[2rem] border border-theme shadow-inner render-optimized">
-                                 <table className="w-full text-left text-sm text-main min-w-[900px]">
-                                    <thead className="text-[10px] text-sub-theme uppercase tracking-widest bg-gray-100 dark:bg-white/5 sticky top-0 z-10 border-b border-theme shadow-sm">
-                                       <tr>
-                                          <th className="px-5 py-4 font-black">Informasi Pengguna</th>
-                                          <th className="px-5 py-4 font-black">Kontak Akun</th>
-                                          <th className="px-5 py-4 font-black text-primary">Saldo Cashback</th>
-                                          <th className="px-5 py-4 font-black">Keamanan</th>
-                                          <th className="px-5 py-4 font-black">Bergabung Pada</th>
-                                          <th className="px-5 py-4 text-center font-black">Aksi Cepat</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-theme">
-                                    {(memberList||[]).filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
-                                       <tr key={m.id} className={`transition-colors ${m.isBlocked ? 'opacity-50 bg-red-500/5' : 'hover:bg-white dark:hover:bg-white/[0.03]'}`}>
-                                          <td className="px-5 py-4">
-                                             <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-xs text-main overflow-hidden border border-theme shrink-0 shadow-sm">
-                                                   {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : (m.name||'U').charAt(0).toUpperCase()}
-                                                </div>
-                                                <div className="min-w-0">
-                                                   <div className="font-bold text-main truncate max-w-[150px]">{m.name}</div>
-                                                   <div className="text-[9px] text-sub-theme font-mono mt-0.5 truncate max-w-[150px]">{m.email}</div>
-                                                </div>
-                                             </div>
-                                          </td>
-                                          <td className="px-5 py-4 font-mono text-sub-theme text-xs bg-white dark:bg-black/50 px-2 py-1 rounded inline-block mt-3 border border-theme shadow-sm">{m.phone || 'Belum diisi'}</td>
-                                          <td className="px-5 py-4">
-                                              <div className="font-mono text-sm font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(m.saldoCashback || 0)}</div>
-                                          </td>
-                                          <td className="px-5 py-4">
-                                              <div className="flex flex-col gap-1.5 items-start">
-                                                 {m.isBlocked ? <span className="px-2 py-1 rounded-md text-[8px] font-black bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 uppercase tracking-widest shadow-sm">Diblokir</span> : <span className="px-2 py-1 rounded-md text-[8px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 uppercase tracking-widest shadow-sm">Aktif</span>}
-                                                 {m.registeredFace && (
-                                                     <button onClick={() => setAdminViewFaceModal({isOpen:true, imageSrc: m.registeredFace, memberName: m.name})} className="px-2 py-1 rounded-md text-[8px] font-black bg-primary-light text-primary border border-primary/30 uppercase tracking-widest hover:bg-primary hover:text-white transition flex items-center gap-1 shadow-sm"><IconScanFace className="w-3 h-3"/> Lihat Wajah</button>
-                                                 )}
-                                              </div>
-                                          </td>
-                                          <td className="px-5 py-4 text-xs font-bold text-sub-theme">{m.createdAt ? new Date(m.createdAt).toLocaleDateString('id-ID') : '-'}</td>
-                                          <td className="px-5 py-4">
-                                             <div className="flex items-center justify-center gap-2">
-                                                {m.phone && (
-                                                    <button onClick={()=>window.open(`https://wa.me/${m.phone.replace(/^0/,'62')}?text=Halo%20${m.name},%20kami%20dari%20Vipercell.%20Kami%20ingin%20menginformasikan%20sesuatu%20tentang%20akun%20Anda.`, '_blank')} className="p-2 bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Chat WhatsApp">
-                                                        <IconWhatsapp className="w-4 h-4"/>
-                                                    </button>
-                                                )}
-                                                <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border hover:scale-105 ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-primary-light text-primary border-primary/30 hover:bg-primary hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
-                                                    <IconBlock className="w-4 h-4"/>
-                                                </button>
-                                                <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Hapus Permanen">
-                                                    <IconTrash className="w-4 h-4"/>
-                                                </button>
-                                             </div>
-                                          </td>
-                                       </tr>
-                                    ))}
-                                    {(!memberList || memberList.length === 0) && (<tr><td colSpan="6" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-white/50 dark:bg-white/5">Belum ada member terdaftar.</td></tr>)}
-                                    </tbody>
-                                 </table>
-                              </div>
+                                      <div className="flex-1 w-full max-w-full overflow-x-auto custom-scrollbar bg-white dark:bg-black/50 rounded-[2rem] border border-theme shadow-inner render-optimized">
+                                         <table className="w-full text-left text-sm text-main min-w-[900px]">
+                                            <thead className="text-[10px] text-sub-theme uppercase tracking-widest bg-gray-100 dark:bg-white/5 sticky top-0 z-10 border-b border-theme shadow-sm">
+                                               <tr>
+                                                  <th className="px-5 py-4 font-black">Informasi Pengguna</th>
+                                                  <th className="px-5 py-4 font-black">Kontak Akun</th>
+                                                  <th className="px-5 py-4 font-black text-primary">Saldo Cashback</th>
+                                                  <th className="px-5 py-4 font-black">Keamanan & Tipe</th>
+                                                  <th className="px-5 py-4 font-black">Bergabung Pada</th>
+                                                  <th className="px-5 py-4 text-center font-black">Aksi Cepat</th>
+                                               </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-theme">
+                                            {(memberList||[]).filter(m => (m?.email||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase()) || (m?.name||'').toLowerCase().includes((adminMemberSearch||'').toLowerCase())).map(m => (
+                                               <tr key={m.id} className={`transition-colors ${m.isBlocked ? 'opacity-50 bg-red-500/5' : 'hover:bg-gray-50 dark:hover:bg-white/[0.03]'}`}>
+                                                  <td className="px-5 py-4">
+                                                     <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-white/10 flex items-center justify-center font-black text-xs text-main overflow-hidden border border-theme shrink-0 shadow-sm">
+                                                           {m.avatar ? <img src={m.avatar} className="w-full h-full object-cover"/> : (m.name||'U').charAt(0).toUpperCase()}
+                                                        </div>
+                                                        <div className="min-w-0">
+                                                           <div className="font-bold text-main truncate max-w-[150px]">{m.name}</div>
+                                                           <div className="text-[9px] text-sub-theme font-mono mt-0.5 truncate max-w-[150px]">{m.email}</div>
+                                                        </div>
+                                                     </div>
+                                                  </td>
+                                                  <td className="px-5 py-4 font-mono text-sub-theme text-xs bg-gray-100 dark:bg-black/50 px-2 py-1 rounded inline-block mt-3 border border-theme shadow-sm">{m.phone || 'Belum diisi'}</td>
+                                                  <td className="px-5 py-4">
+                                                      <div className="font-mono text-sm font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(m.saldoCashback || 0)}</div>
+                                                  </td>
+                                                  <td className="px-5 py-4">
+                                                      <div className="flex flex-col gap-1.5 items-start">
+                                                         {m.isBlocked ? <span className="px-2 py-1 rounded-md text-[8px] font-black bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30 uppercase tracking-widest shadow-sm">Diblokir</span> : <span className="px-2 py-1 rounded-md text-[8px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 uppercase tracking-widest shadow-sm">Aktif</span>}
+                                                         {m.isReseller && <span className="px-2 py-1 rounded-md text-[8px] font-black bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/30 uppercase tracking-widest shadow-sm flex items-center gap-1"><IconTrendingUp className="w-2.5 h-2.5"/> Reseller</span>}
+                                                         {m.registeredFace && (
+                                                             <button onClick={() => setAdminViewFaceModal({isOpen:true, imageSrc: m.registeredFace, memberName: m.name})} className="px-2 py-1 rounded-md text-[8px] font-black bg-primary-light text-primary border border-primary/30 uppercase tracking-widest hover:bg-primary hover:text-white transition flex items-center gap-1 shadow-sm"><IconScanFace className="w-3 h-3"/> Lihat Wajah</button>
+                                                         )}
+                                                      </div>
+                                                  </td>
+                                                  <td className="px-5 py-4 text-xs font-bold text-sub-theme">{m.createdAt ? new Date(m.createdAt).toLocaleDateString('id-ID') : '-'}</td>
+                                                  <td className="px-5 py-4">
+                                                     <div className="flex items-center justify-center gap-2">
+                                                        {m.phone && (
+                                                            <button onClick={()=>window.open(`https://wa.me/${m.phone.replace(/^0/,'62')}?text=Halo%20${m.name},%20kami%20dari%20Vipercell.%20Kami%20ingin%20menginformasikan%20sesuatu%20tentang%20akun%20Anda.`, '_blank')} className="p-2 bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-500 rounded-xl hover:bg-green-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Chat WhatsApp">
+                                                                <IconWhatsapp className="w-4 h-4"/>
+                                                            </button>
+                                                        )}
+                                                        <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border hover:scale-105 ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-primary-light text-primary border-primary/30 hover:bg-primary hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
+                                                            <IconBlock className="w-4 h-4"/>
+                                                        </button>
+                                                        <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Hapus Permanen">
+                                                            <IconTrash className="w-4 h-4"/>
+                                                        </button>
+                                                     </div>
+                                                  </td>
+                                               </tr>
+                                            ))}
+                                            {(!memberList || memberList.length === 0) && (<tr><td colSpan="6" className="text-center py-20 text-sub-theme font-bold border border-dashed border-theme rounded-2xl bg-white/50 dark:bg-white/5">Belum ada member terdaftar.</td></tr>)}
+                                            </tbody>
+                                         </table>
+                                      </div>
+                                  </>
+                              )}
+
+                              {adminMemberTab === 'reseller' && (
+                                  <div className="grid grid-cols-1 gap-6 h-full pb-4 render-optimized overflow-y-auto custom-scrollbar">
+                                      <div className="bg-orange-50 dark:bg-orange-950/10 p-6 rounded-[2rem] border border-orange-500/30 shadow-inner">
+                                          <h3 className="text-lg font-black text-orange-600 dark:text-orange-500 mb-2 flex items-center gap-2"><IconTrendingUp className="w-5 h-5"/> Pengajuan Menunggu Persetujuan</h3>
+                                          <p className="text-xs text-sub-theme mb-4">Validasi toko atau counter yang ingin bergabung menjadi Reseller VIP.</p>
+                                          
+                                          <div className="space-y-3">
+                                              {(memberList||[]).filter(m => m.resellerStatus === 'pending').map(m => (
+                                                  <div key={m.id} className="bg-white dark:bg-card p-4 rounded-2xl border border-theme shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4 transition-transform hover:scale-[1.01]">
+                                                      <div className="flex gap-4 items-center">
+                                                          <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center text-orange-500 shrink-0"><IconBox className="w-6 h-6"/></div>
+                                                          <div>
+                                                              <div className="font-black text-main text-base">{m.resellerStore || 'Nama Toko Tidak Diisi'}</div>
+                                                              <div className="text-[10px] text-sub-theme font-mono mt-0.5">Pemilik: {m.name} | {m.email}</div>
+                                                              <div className="text-xs font-bold text-primary mt-1">WA: {m.resellerWa || m.phone || '-'}</div>
+                                                          </div>
+                                                      </div>
+                                                      <div className="flex items-center gap-2 w-full md:w-auto">
+                                                          <button onClick={() => handleResellerAction(m.id, 'reject')} className="flex-1 md:flex-none px-4 py-2.5 bg-red-500/10 text-red-600 border border-red-500/30 rounded-xl text-[10px] font-black uppercase hover:bg-red-500 hover:text-white transition shadow-sm">Tolak</button>
+                                                          <button onClick={() => handleResellerAction(m.id, 'approve')} className="flex-1 md:flex-none px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-white rounded-xl text-[10px] font-black uppercase shadow-md transition transform hover:scale-105 flex items-center justify-center gap-1"><IconCheckCircle className="w-3.5 h-3.5"/> Terima Reseller</button>
+                                                      </div>
+                                                  </div>
+                                              ))}
+                                              {(memberList||[]).filter(m => m.resellerStatus === 'pending').length === 0 && (
+                                                  <div className="text-center py-8 text-sub-theme text-sm font-bold border border-dashed border-orange-500/30 rounded-2xl bg-white/50 dark:bg-black/20">Tidak ada pengajuan reseller baru.</div>
+                                              )}
+                                          </div>
+                                      </div>
+
+                                      <div className="bg-card p-6 rounded-[2rem] border border-theme shadow-sm">
+                                          <h3 className="text-lg font-black text-main mb-2 flex items-center gap-2"><IconCheckCircle className="w-5 h-5 text-emerald-500"/> Reseller VIP Aktif</h3>
+                                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                                              {(memberList||[]).filter(m => m.isReseller === true).map(m => (
+                                                  <div key={m.id} className="p-4 rounded-2xl border border-primary/30 bg-primary-light shadow-sm flex flex-col justify-between">
+                                                      <div className="mb-3">
+                                                          <div className="font-black text-primary text-lg mb-1 truncate">{m.resellerStore || 'Toko Reseller'}</div>
+                                                          <div className="text-xs font-bold text-main">{m.name}</div>
+                                                          <div className="text-[10px] text-sub-theme font-mono">{m.email}</div>
+                                                      </div>
+                                                      <div className="flex justify-between items-end border-t border-primary/20 pt-3">
+                                                          <span className="text-[9px] font-black uppercase bg-emerald-500 text-white px-2 py-0.5 rounded shadow-sm">Aktif</span>
+                                                          <button onClick={() => requestConfirm('Cabut status reseller dari pengguna ini? Harga akan kembali normal.', () => handleResellerAction(m.id, 'revoke'), 'Cabut Status')} className="text-[9px] text-red-600 bg-red-500/10 px-2 py-1 rounded font-bold hover:bg-red-500 hover:text-white transition">Berhentikan</button>
+                                                      </div>
+                                                  </div>
+                                              ))}
+                                              {(memberList||[]).filter(m => m.isReseller === true).length === 0 && (
+                                                  <div className="col-span-full text-center py-8 text-sub-theme text-sm font-bold border border-dashed border-theme rounded-2xl bg-gray-50 dark:bg-white/5">Belum ada reseller yang aktif.</div>
+                                              )}
+                                          </div>
+                                      </div>
+                                  </div>
+                              )}
                            </div>
                         )}
 
@@ -2510,9 +2735,15 @@
                                     </div>
                                     <p className="text-[9px] text-sub-theme -mt-4">Cashback diberikan saat transaksi di set "Sukses". Default 0 jika tidak ada cashback global.</p>
                                     
-                                    <div>
-                                       <label className="text-xs font-black text-main mb-2 block">API Key Web Firebase (Untuk Tambah Member)</label>
-                                       <input type="text" value={adminApiKey} onChange={(e)=>setAdminApiKey(e.target.value)} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-primary transition font-mono shadow-sm" placeholder="AIzaSy..." />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                       <div>
+                                          <label className="text-xs font-black text-main mb-2 block">API Key Web Firebase</label>
+                                          <input type="text" value={adminApiKey} onChange={(e)=>setAdminApiKey(e.target.value)} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-primary transition font-mono shadow-sm" placeholder="AIzaSy..." />
+                                       </div>
+                                       <div>
+                                          <label className="text-xs font-black text-main mb-2 block">Bonus Referral (Rp)</label>
+                                          <input type="number" value={adminSettingsForm.referralReward} onChange={(e)=>setAdminSettingsForm({...adminSettingsForm, referralReward: e.target.value})} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-primary transition font-mono shadow-sm" placeholder="Contoh: 2000" />
+                                       </div>
                                     </div>
 
                                     <div>
@@ -2716,6 +2947,7 @@
                                             <option value="pulsa">📱 Pulsa & Data</option>
                                             <option value="emoney">💸 E-Money / Saldo</option>
                                             <option value="pln">⚡ Token PLN</option>
+                                            <option value="pascabayar">🧾 Tagihan Pascabayar</option>
                                         </select>
                                     </div>
                                     <div className="space-y-1">
@@ -2735,9 +2967,9 @@
                                         </select>
                                     </div>
                                     <div className="space-y-1 border-t border-theme pt-3 mt-1">
-                                        <label className="text-[9px] text-primary font-black uppercase tracking-widest">Kode SKU Digiflazz Cek ID (Inquiry)</label>
-                                        <input type="text" value={newGameInquirySku} onChange={(e)=>setNewGameInquirySku(e.target.value)} placeholder="Contoh: CEKML (Opsional)" className="w-full input-theme p-3 rounded-xl focus:border-primary transition shadow-sm font-mono"/>
-                                        <p className="text-[8px] text-sub-theme mt-1 leading-tight">Biarkan kosong jika tidak ada. Jika diisi, web otomatis menarik nickname saat user input ID.</p>
+                                        <label className="text-[9px] text-primary font-black uppercase tracking-widest">Kode SKU Digiflazz Cek ID / Pascabayar</label>
+                                        <input type="text" value={newGameInquirySku} onChange={(e)=>setNewGameInquirySku(e.target.value)} placeholder="Contoh: CEKML / PLN" className="w-full input-theme p-3 rounded-xl focus:border-primary transition shadow-sm font-mono"/>
+                                        <p className="text-[8px] text-sub-theme mt-1 leading-tight">Wajib diisi untuk Cek Nickname Otomatis atau Layanan Cek Tagihan Pascabayar.</p>
                                     </div>
                                     <div className="space-y-1 mt-2">
                                         <label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Cover / Logo Provider</label>
@@ -2798,15 +3030,23 @@
                                      </div>
                                      <form onSubmit={handleBulkMarkup} className="flex flex-col sm:flex-row gap-3">
                                          <div className="flex-1 space-y-1">
+                                              <label className="text-[9px] text-orange-600 font-bold uppercase ml-1">Tipe Markup</label>
                                               <select value={bulkMarkupForm.type} onChange={(e)=>setBulkMarkupForm({...bulkMarkupForm, type: e.target.value})} className="w-full input-theme p-3.5 rounded-xl text-xs appearance-none border border-orange-500/30">
                                                   <option value="fixed">Tambah Nominal (Rp)</option>
                                                   <option value="percent">Tambah Persentase (%)</option>
                                               </select>
                                          </div>
                                          <div className="flex-1 space-y-1">
+                                              <label className="text-[9px] text-orange-600 font-bold uppercase ml-1">Untung User Biasa</label>
                                               <input type="number" required value={bulkMarkupForm.value} onChange={(e)=>setBulkMarkupForm({...bulkMarkupForm, value: e.target.value})} placeholder="Contoh: 1500" className="w-full input-theme p-3.5 rounded-xl text-xs font-mono border border-orange-500/30"/>
                                          </div>
-                                         <button type="submit" disabled={!adminSelectedGame} className="bg-orange-600 hover:bg-orange-500 text-white px-6 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg disabled:opacity-50">Terapkan Massal</button>
+                                         <div className="flex-1 space-y-1">
+                                              <label className="text-[9px] text-orange-600 font-bold uppercase ml-1">Untung Reseller VIP</label>
+                                              <input type="number" value={bulkMarkupForm.resellerValue} onChange={(e)=>setBulkMarkupForm({...bulkMarkupForm, resellerValue: e.target.value})} placeholder="Opsional (500)" className="w-full input-theme p-3.5 rounded-xl text-xs font-mono border border-orange-500/30"/>
+                                         </div>
+                                         <div className="flex items-end">
+                                            <button type="submit" disabled={!adminSelectedGame} className="bg-orange-600 hover:bg-orange-500 text-white px-6 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg disabled:opacity-50">Terapkan Massal</button>
+                                         </div>
                                      </form>
                                  </div>
 
@@ -2814,33 +3054,37 @@
                                  <form onSubmit={handleSaveItem} className="bg-emerald-50 dark:bg-emerald-950/20 p-5 rounded-3xl border border-emerald-500/40 flex flex-col gap-4 shrink-0 shadow-inner mt-2">
                                     <div className="flex items-center gap-2 border-b border-emerald-500/20 pb-3">
                                         <IconPercent className="w-4 h-4 text-emerald-600"/>
-                                        <h3 className="text-xs font-black text-emerald-700 dark:text-emerald-500 uppercase tracking-widest">Penambahan Manual Produk</h3>
+                                        <h3 className="text-xs font-black text-emerald-700 dark:text-emerald-500 uppercase tracking-widest">Penambahan/Edit Manual Produk</h3>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-3">
-                                        <div className="flex-1 space-y-1">
+                                        <div className="flex-[2] space-y-1">
                                             <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Nama Produk</label>
                                             <input type="text" required value={newItemName} onChange={(e)=>setNewItemName(e.target.value)} placeholder="Contoh: ML 86 Diamond" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50 shadow-sm"/>
                                         </div>
-                                        <div className="flex-1 sm:max-w-[200px] space-y-1">
+                                        <div className="flex-1 space-y-1">
                                             <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Harga Modal (Rp)</label>
                                             <input type="number" required value={newItemPrice} onChange={(e)=>setNewItemPrice(e.target.value)} placeholder="20000" disabled={!adminSelectedGame} className="w-full input-theme p-3.5 rounded-xl text-sm focus:border-emerald-500 transition disabled:opacity-50 font-mono shadow-sm"/>
                                         </div>
                                     </div>
                                     <div className="flex flex-col sm:flex-row gap-3 bg-white dark:bg-black/40 p-3 rounded-2xl border border-emerald-500/30">
                                         <div className="flex-1 space-y-1">
-                                            <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Tipe Markup Keuntungan</label>
+                                            <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Tipe Markup Manual</label>
                                             <select value={markupForm.type} onChange={(e)=>setMarkupForm({...markupForm, type: e.target.value})} className="w-full input-theme p-3 rounded-xl text-xs focus:border-emerald-500 transition appearance-none shadow-sm border border-emerald-500/30">
                                                 <option value="fixed">Tambah Nominal Tetap (Rp)</option>
                                                 <option value="percent">Tambah Persentase (%)</option>
                                             </select>
                                         </div>
                                         <div className="flex-1 space-y-1">
-                                            <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Nilai Keuntungan</label>
+                                            <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Keuntungan Web (User)</label>
                                             <input type="number" value={markupForm.value} onChange={(e)=>setMarkupForm({...markupForm, value: e.target.value})} placeholder="Contoh: 1500" className="w-full input-theme p-3 rounded-xl text-xs focus:border-emerald-500 transition font-mono shadow-sm border border-emerald-500/30"/>
                                         </div>
-                                        <div className="flex items-end sm:w-1/3">
-                                            <button type="submit" disabled={!adminSelectedGame} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/30 transition disabled:opacity-50 hover:scale-[1.02]">{editingItemId ? 'Update Web' : 'Publish Web'}</button>
-                                            {editingItemId && <button type="button" onClick={()=>{setEditingItemId(null); setNewItemName(''); setNewItemPrice('');}} className="ml-2 bg-red-500/10 text-red-500 px-3 py-3 rounded-xl hover:bg-red-500 hover:text-white transition"><IconX className="w-4 h-4"/></button>}
+                                        <div className="flex-1 space-y-1">
+                                            <label className="text-[9px] text-emerald-600 dark:text-emerald-500 font-black uppercase tracking-widest ml-1">Keuntungan Reseller VIP</label>
+                                            <input type="number" value={markupForm.resellerValue} onChange={(e)=>setMarkupForm({...markupForm, resellerValue: e.target.value})} placeholder="Contoh: 500" className="w-full input-theme p-3 rounded-xl text-xs focus:border-emerald-500 transition font-mono shadow-sm border border-emerald-500/30"/>
+                                        </div>
+                                        <div className="flex items-end sm:w-[120px]">
+                                            <button type="submit" disabled={!adminSelectedGame} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-emerald-500/30 transition disabled:opacity-50 hover:scale-[1.02]">{editingItemId ? 'Update' : 'Publish'}</button>
+                                            {editingItemId && <button type="button" onClick={()=>{setEditingItemId(null); setNewItemName(''); setNewItemPrice(''); setNewResellerPrice('');}} className="ml-2 bg-red-500/10 text-red-500 px-3 py-3 rounded-xl hover:bg-red-500 hover:text-white transition"><IconX className="w-4 h-4"/></button>}
                                         </div>
                                     </div>
                                     <p className="text-[10px] text-emerald-700/80 dark:text-emerald-500/80 -mt-2"><b>Note:</b> Produk baru akan otomatis digenerate SKU acak. Tarik data dari Database Google jika ingin SKU Digiflazz asli.</p>
@@ -2857,15 +3101,19 @@
                                               {((i.sku || '').startsWith('CEK') || (i.name || '').startsWith('CEK')) && <div className="absolute top-0 right-0 bg-yellow-500 text-white text-[8px] font-black px-2 py-1 rounded-bl-xl z-10">🔍 SKU CEK ID</div>}
                                               <div className="mb-4 relative z-10">
                                                  <div className="text-main font-bold text-sm leading-tight mb-1 pr-10">{i.name}</div>
-                                                 <div className="text-[9px] font-mono text-sub-theme bg-gray-100 dark:bg-black px-2 py-0.5 rounded border border-theme w-fit">SKU: {i.sku || '-'}</div>
-                                                 <div className="flex items-center justify-between mt-2">
-                                                     <div>
-                                                         <div className="text-[9px] text-sub-theme font-black uppercase tracking-widest">Modal Server</div>
-                                                         <div className="text-sub-theme font-mono font-bold text-xs">{formatRupiah(i.modalPrice || i.price)}</div>
+                                                 <div className="text-[9px] font-mono text-sub-theme bg-gray-100 dark:bg-black px-2 py-0.5 rounded border border-theme w-fit mb-3">SKU: {i.sku || '-'}</div>
+                                                 <div className="space-y-1">
+                                                     <div className="flex justify-between text-[9px] border-b border-theme pb-1">
+                                                         <span className="text-sub-theme font-black uppercase">Modal Asli</span>
+                                                         <span className="font-mono font-bold text-main">{formatRupiah(i.modalPrice || i.price)}</span>
                                                      </div>
-                                                     <div className="text-right">
-                                                         <div className="text-[9px] text-emerald-500 font-black uppercase tracking-widest">Harga Jual Web</div>
-                                                         <div className="text-emerald-600 dark:text-emerald-400 font-mono font-black text-sm">{formatRupiah(i.price)}</div>
+                                                     <div className="flex justify-between text-[9px] border-b border-theme pb-1">
+                                                         <span className="text-orange-500 font-black uppercase">Harga Reseller</span>
+                                                         <span className="font-mono font-bold text-orange-600 dark:text-orange-400">{formatRupiah(i.resellerPrice || i.price)}</span>
+                                                     </div>
+                                                     <div className="flex justify-between text-[10px] pt-1">
+                                                         <span className="text-emerald-500 font-black uppercase">Harga Web</span>
+                                                         <span className="font-mono font-black text-emerald-600 dark:text-emerald-400">{formatRupiah(i.price)}</span>
                                                      </div>
                                                  </div>
                                               </div>
