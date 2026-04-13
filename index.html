@@ -58,9 +58,11 @@
     .face-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); z-index: 10; }
     .scan-line { position: absolute; width: 100%; height: 3px; background: #fff; box-shadow: 0 0 10px #fff, 0 0 20px var(--color-primary); top: 0; animation: scanLaser 2s infinite; z-index: 25; }
     @keyframes scanLaser { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
-    /* BLOG STYLING */
+    
+    /* NEW BLOG MODAL STYLING */
     .blog-content { line-height: 1.8; font-size: 1.05rem; }
     .blog-content p { margin-bottom: 1.5em; }
+    .blog-content h2, .blog-content h3 { margin-top: 2em; margin-bottom: 0.8em; font-weight: 900; }
   </style>
 
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -363,12 +365,11 @@
           const checkInterval = setInterval(async () => {
               for (const order of processingOrders) {
                   try {
-                      // Gunakan webhook fetch yang kebal
                       const res = await fetch(adminGasUrl, {
                           method: 'POST',
                           redirect: 'follow',
                           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                          body: JSON.stringify({ action: 'topup', sku: 'CHECK', tujuan: 'CHECK', ref_id: String(order.id) }) // Digiflazz transaction dgn ref_id sama = cek status
+                          body: JSON.stringify({ action: 'topup', sku: 'CHECK', tujuan: 'CHECK', ref_id: String(order.id) }) 
                       });
                       const data = await res.json();
                       if (data.status && data.data) {
@@ -383,37 +384,54 @@
                       }
                   } catch (e) { console.error("Auto Check Error:", e); }
               }
-          }, 15000); // Mengecek ke server setiap 15 detik
+          }, 15000); // Cek tiap 15 detik
 
           return () => clearInterval(checkInterval);
       }, [adminOrders, isAdmin, adminGasUrl]);
 
-      // --- CEK ID GRATIS OTOMATIS BERDASARKAN SETTINGAN GAME ---
-      useEffect(() => {
-          if (!selectedGame || !selectedGame.inquirySku) { setIsIdValid(true); return; }
-          if (!userId || userId.length < 3 || !adminGasUrl) { setIsIdValid(false); setNickname(''); return; }
+      // --- CEK ID MANUAL (DENGAN TOMBOL) ---
+      const handleManualCekId = async () => {
+          if (!selectedGame || !selectedGame.inquirySku) return;
+          if (!userId || userId.length < 3 || !adminGasUrl) {
+              addToast('Masukkan ID Game dengan benar.', 'warning');
+              return;
+          }
           
+          setIsProcessing(true);
+          setNickname('Mengecek ID...');
           setIsIdValid(false);
-          const timer = setTimeout(async () => { 
-              try { 
-                  const payloadStr = JSON.stringify({ action: 'cek_id', sku: String(selectedGame.inquirySku), tujuan: String(userId) + (zoneId ? String(zoneId) : '') });
-                  const res = await fetch(adminGasUrl, { 
-                      method: 'POST', 
-                      redirect: 'follow', // BYPASS GOOGLE REDIRECT
-                      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // BYPASS CORS PREFLIGHT
-                      body: payloadStr
-                  }); 
-                  
-                  const data = await res.json(); 
-                  if (data && data.status && data.nickname) { 
-                      setNickname(data.nickname); setIsIdValid(true); addToast('ID Valid: ' + data.nickname, 'success');
-                  } else {
-                      setIsIdValid(false); setNickname('');
-                  }
-              } catch(e) { setIsIdValid(false); } 
-          }, 1500);
-          return () => clearTimeout(timer);
-      }, [userId, zoneId, selectedGame, adminGasUrl]);
+          
+          try { 
+              const payloadStr = JSON.stringify({ 
+                  action: 'cek_id', 
+                  sku: String(selectedGame.inquirySku), 
+                  tujuan: String(userId) + (zoneId ? String(zoneId) : '') 
+              });
+              const res = await fetch(adminGasUrl, { 
+                  method: 'POST', 
+                  redirect: 'follow', 
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+                  body: payloadStr
+              }); 
+              
+              const data = await res.json(); 
+              if (data && data.status && data.nickname) { 
+                  setNickname(data.nickname); 
+                  setIsIdValid(true); 
+                  addToast('ID Valid: ' + data.nickname, 'success');
+              } else {
+                  setIsIdValid(false); 
+                  setNickname('ID Tidak Ditemukan');
+                  addToast(data.message || 'ID tidak ditemukan.', 'error');
+              }
+          } catch(e) { 
+              setIsIdValid(false); 
+              setNickname('Gagal Mengecek');
+              addToast('Gagal terhubung ke server.', 'error');
+          } finally {
+              setIsProcessing(false);
+          }
+      };
 
       const captureFaceBase64 = async () => { if (!faceVideoRef.current) return null; const canvas = document.createElement('canvas'); canvas.width = 300; canvas.height = 300; canvas.getContext('2d').drawImage(faceVideoRef.current, 0, 0, canvas.width, canvas.height); return await compressImage(canvas.toDataURL('image/jpeg', 0.8), 300); };
       const verifyPasswordForFaceId = async (e) => { e.preventDefault(); if (!bioPassword || !authUser) return; try { triggerSysLoad('Memverifikasi Sandi...'); const credential = EmailAuthProvider.credential(authUser.email, bioPassword); await reauthenticateWithCredential(auth.currentUser, credential); setFaceRegStep(2); } catch (err) { addToast('Sandi salah!', 'error'); } finally { closeSysLoad(); } }
@@ -532,7 +550,7 @@
       const calculateFinalPrice = (basePrice, itemId) => { let price = basePrice; let bestAutoDiscount = 0; getActivePromosForItem(itemId).forEach(p => { let discountAmt = p.type === 'percentage' ? (basePrice * p.discount / 100) : p.discount; if(discountAmt > bestAutoDiscount) bestAutoDiscount = discountAmt; }); price -= bestAutoDiscount; if (activePromo) price -= activePromo.type === 'percentage' ? (price * activePromo.discount / 100) : activePromo.discount; return Math.max(0, price); };
 
       const userTotalTx = (userOrders||[]).filter(o => o.status === 'Sukses').length || 0; const userVipData = calculateVIPLevel(userTotalTx);
-      const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
+      const isFormValid = userId.length >= 2 && selectedNominal && selectedPayment && (selectedGame?.inquirySku ? (isIdValid || bypassValidation) : true) && (selectedGame?.inputType === 'id_only' ? true : zoneId.length > 0);
 
       const triggerCheckout = () => { 
           if (!currentUserData?.phone) return addToast('❌ Lengkapi No HP di Profil.', 'error');
@@ -540,8 +558,10 @@
           if (selectedGame?.inputType === 'id_zone' && !zoneId) return addToast('❌ Server/Zone belum diisi!', 'warning'); 
           if (selectedGame?.inputType === 'riot_id' && !zoneId) return addToast('❌ Tagline (#) Riot belum diisi!', 'warning'); 
           if (selectedGame?.inputType !== 'riot_id' && userId && !/^\d+$/.test(userId)) return addToast('❌ ID Game hanya angka.', 'error'); 
+          if (selectedGame?.inquirySku && !isIdValid && !bypassValidation) return addToast('❌ Silakan Cek ID terlebih dahulu.', 'warning');
           if (!selectedNominal) return addToast('❌ Pilih produk.', 'warning'); 
           if (!selectedPayment) return addToast('❌ Pilih metode.', 'warning'); 
+          
           const maxCashback = currentUserData?.saldoCashback || 0; const basePrice = calculateFinalPrice(selectedNominal.price + (selectedPayment?.fee||0), selectedNominal.id); const usedCb = useCashback ? Math.min(basePrice, maxCashback) : 0; const fPrice = basePrice - usedCb; 
           const orderPayload = { gameId: selectedGame.id, gameName: selectedGame.name, gameImage: selectedGame.image, userId: userId, zoneId: zoneId, nickname: nickname || null, itemId: selectedNominal.id, itemName: selectedNominal.name, paymentName: selectedPayment.name, finalPrice: fPrice, usedCashback: usedCb, basePrice: basePrice };
           setPendingOrderPayload(orderPayload); setCheckoutSummary({ isOpen: true, data: orderPayload }); 
@@ -721,24 +741,26 @@
       const migrateSheetToFirebase = async () => {
           if(!googleSheetData || googleSheetData.length <= 1) return addToast('Tarik preview Sheet terlebih dahulu!', 'warning');
           
-          requestConfirm('Perhatian! Ini akan menghapus SEMUA produk di Web saat ini dan menggantinya dengan data dari Sheet. Lanjutkan?', async () => {
+          requestConfirm('Perhatian! Ini akan mengganti produk di Web dengan data dari Sheet. Data Game lama akan DIPERTAHANKAN jika id-nya sama. Lanjutkan?', async () => {
               setIsMigrating(true); triggerSysLoad('Migrasi Database Permanen...');
               logToDbConsole('Memulai migrasi massal ke Firebase...', 'info');
               try {
                   const batchOperations = []; let currentBatch = writeBatch(db); let opCount = 0;
                   const flushBatch = () => { batchOperations.push(currentBatch.commit()); currentBatch = writeBatch(db); opCount = 0; };
 
-                  // 1. Hapus produk dan game lama
+                  // 1. Hapus HANYA produk lama (Jangan hapus game agar cover tidak hilang)
                   const oldItems = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'));
                   oldItems.forEach(docSnap => { currentBatch.delete(docSnap.ref); opCount++; if (opCount >= 450) flushBatch(); });
-                  
-                  const oldGames = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'));
-                  oldGames.forEach(docSnap => { currentBatch.delete(docSnap.ref); opCount++; if (opCount >= 450) flushBatch(); });
 
-                  // 2. Tulis data baru dari Sheet
+                  // 2. Ambil data Game lama agar bisa digabung (merge)
+                  const oldGamesSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'));
+                  let existingGamesMap = {};
+                  oldGamesSnap.forEach(docSnap => { existingGamesMap[docSnap.id] = docSnap.data(); });
+
+                  // 3. Tulis data baru dari Sheet
                   let importedCount = 0;
                   const rows = googleSheetData;
-                  for(let i=1; i<rows.length; i++) { // Mulai dari 1 untuk melewati header
+                  for(let i=1; i<rows.length; i++) { 
                       if(rows[i].length < 5) continue;
                       const [kategori, brand, nama, sku, hargaModalStr, status] = rows[i];
                       if (!sku || sku === '-' || !nama) continue;
@@ -751,9 +773,13 @@
                       currentBatch.set(itemRef, { name: nama, sku: sku, modalPrice: modal, price: hJualCalc, gameId: gameId, status: status === 'Tersedia' ? 'Tersedia' : 'Gangguan', isVisible: true });
                       opCount++; if (opCount >= 450) flushBatch();
                       
-                      const gameRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId);
-                      currentBatch.set(gameRef, { name: brand, category: (kategori||'').toLowerCase().includes('game') ? 'game' : ((kategori||'').toLowerCase().includes('pulsa') ? 'pulsa' : 'emoney'), isVisible: true, inquirySku: '' }, {merge: true});
-                      opCount++; if (opCount >= 450) flushBatch(); 
+                      // HANYA buat game baru jika belum ada. Jika sudah ada, biarkan utuh agar gambar/sku inquiry tidak hilang.
+                      if (!existingGamesMap[gameId]) {
+                          const gameRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId);
+                          currentBatch.set(gameRef, { name: brand, category: (kategori||'').toLowerCase().includes('game') ? 'game' : ((kategori||'').toLowerCase().includes('pulsa') ? 'pulsa' : 'emoney'), isVisible: true, inquirySku: '' });
+                          existingGamesMap[gameId] = true; // Tandai sudah dibuat di memori
+                          opCount++; if (opCount >= 450) flushBatch(); 
+                      }
                       importedCount++;
                   }
 
@@ -769,7 +795,7 @@
               } finally {
                   setIsMigrating(false); closeSysLoad();
               }
-          }, 'Hapus & Ganti Database');
+          }, 'Update Produk Web');
       };
 
       const handleAdminSendChat = async (e, customText = null) => { if(e) e.preventDefault(); const textToSend = customText || adminReplyText; if (!(textToSend||'').trim() || !activeChatEmail) return; try { const chatRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail); const activeChat = (adminChats||[]).find(c => c.id === activeChatEmail); const newMessages = [...(activeChat?.messages || []), { sender: 'admin', text: textToSend, time: new Date().toISOString(), role: isSuperAdmin?'Super Admin':'Admin' }]; await setDoc(chatRef, { messages: newMessages, status: 'Dijawab', updatedAt: new Date().toISOString() }, { merge: true }); setAdminReplyText(''); setTimeout(()=> { adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, 100); } catch(err) { addToast('Gagal membalas', 'error'); } };
@@ -1297,8 +1323,15 @@
                                    
                                    {selectedGame.inquirySku && (
                                       <div className="relative group z-10 mb-4 animate-slide-down">
-                                          <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
-                                          <input type="text" readOnly value={nickname} placeholder={isIdValid ? nickname : "Menunggu ID yang valid..."} className={`w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold text-sm shadow-inner ${isIdValid ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'opacity-70'}`} />
+                                          <div className="flex flex-col sm:flex-row gap-3">
+                                             <div className="flex-1 relative">
+                                                <IconEdit className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
+                                                <input type="text" readOnly value={nickname} placeholder={isIdValid ? nickname : "Klik Cek Nickname..."} className={`w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-bold text-sm shadow-inner ${isIdValid ? 'border-emerald-500 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-700 dark:text-emerald-400' : 'opacity-70'}`} />
+                                             </div>
+                                             <button onClick={handleManualCekId} disabled={isProcessing || !userId || (selectedGame.inputType === 'id_zone' && !zoneId)} className="bg-blue-600 hover:bg-blue-500 text-white font-black px-6 py-4 rounded-2xl shadow-md transition disabled:opacity-50 shrink-0 text-xs uppercase tracking-widest flex items-center justify-center gap-2">
+                                                 {isProcessing ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconSearch className="w-4 h-4"/> Cek Nickname</>}
+                                             </button>
+                                          </div>
                                       </div>
                                    )}
 
@@ -1379,7 +1412,7 @@
                                       <div className="flex gap-2 bg-gray-100 dark:bg-black/50 p-1.5 rounded-2xl border border-theme shadow-inner">
                                          <input type="text" value={inputPromo} onChange={(e)=>setInputPromo(e.target.value.toUpperCase().replace(/\s/g, ''))} placeholder="KODE DISKON..." disabled={activePromo !== null} className="flex-1 bg-transparent py-3 px-4 text-xs font-mono font-black text-main focus:outline-none uppercase disabled:opacity-50" />
                                          {activePromo ? (
-                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-50/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
+                                             <button onClick={()=>{setActivePromo(null); setInputPromo('');}} className="bg-red-500/20 text-red-600 dark:text-red-500 px-5 rounded-xl text-xs font-black uppercase border border-red-500/30 transition hover:bg-red-500 hover:text-white shadow-sm">Hapus</button>
                                          ) : (
                                              <button onClick={handleApplyPromoCode} className="bg-black text-white dark:bg-white dark:text-black px-5 rounded-xl text-xs font-black uppercase shadow-sm transition hover:scale-105">Pakai</button>
                                          )}
@@ -1398,7 +1431,7 @@
                                            <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
                                        </div>
                                    )}
-                                   <button onClick={triggerCheckout} disabled={isProcessing} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                   <button onClick={triggerCheckout} disabled={isProcessing || (selectedGame.inquirySku && !isIdValid && !bypassValidation)} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
                                       {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
                                    </button>
                                 </div>
@@ -1810,7 +1843,7 @@
                                                 <button onClick={() => executeBluetoothPrint(order)} className="p-2.5 bg-blue-500/10 border border-blue-500/30 text-blue-600 dark:text-blue-400 rounded-xl hover:bg-blue-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Cetak Struk BT"><IconPrinter className="w-4 h-4" /></button>
                                                 {order?.status === 'Pending' && (
                                                    <>
-                                                      <button onClick={() => updateOrderStatus(order, 'Sukses')} disabled={isProcessing} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Tandai Lunas & Proses API"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
+                                                      <button onClick={() => updateOrderStatus(order, 'Sukses')} disabled={isProcessing} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-50 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Tandai Lunas & Proses API"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
                                                       <button onClick={() => updateOrderStatus(order, 'Batal')} disabled={isProcessing} className="p-2.5 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
                                                 )}
@@ -2144,7 +2177,7 @@
                            </div>
                         )}
 
-                        {/* TAB: DATABASE GOOGLE */}
+                        {/* TAB: DATABASE GOOGLE DENGAN PEMISAHAN PRABAYAR/PASCABAYAR */}
                         {activeAdminTab === 'database' && (
                             <div className="animate-slide-down flex flex-col h-full w-full p-2 lg:p-6 bg-gray-50 dark:bg-black/20 rounded-[2.5rem] border border-theme shadow-inner">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
@@ -2173,7 +2206,15 @@
                                         <div className="bg-card p-6 rounded-[2.5rem] border border-theme shadow-sm flex flex-col items-center justify-center text-center group hover:border-primary transition">
                                             <IconRefresh className={`w-12 h-12 mb-4 ${isSyncingDigiflazz ? 'text-primary animate-spin' : 'text-gray-400 group-hover:text-primary transition-colors'}`} />
                                             <h3 className="font-black text-main mb-2">Tarik Data Digiflazz ke Sheet</h3>
-                                            <p className="text-xs text-sub-theme mb-6">Minta Google Script menarik harga modal terbaru dari database Digiflazz dan simpan ke Spreadsheet sementara.</p>
+                                            <p className="text-xs text-sub-theme mb-4">Minta Google Script menarik harga modal terbaru dari database Digiflazz dan simpan ke Spreadsheet sementara.</p>
+                                            
+                                            <div className="flex items-center gap-3 mb-6 w-full max-w-xs">
+                                                <select className="w-full input-theme p-3 rounded-xl text-xs appearance-none border border-theme shadow-sm font-bold">
+                                                    <option value="prepaid">Tipe: Produk Prabayar</option>
+                                                    <option value="postpaid">Tipe: Produk Pascabayar</option>
+                                                </select>
+                                            </div>
+
                                             <button onClick={triggerDigiflazzToSheet} disabled={isSyncingDigiflazz} className="bg-primary-light text-primary border border-primary/30 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition shadow-sm hover:bg-primary hover:text-white disabled:opacity-50">
                                                 {isSyncingDigiflazz ? 'Memproses ke Server...' : 'Mulai Tarik Data'}
                                             </button>
@@ -2555,7 +2596,7 @@
                                    
                                    <div className="flex-1 bg-gray-50 dark:bg-black/40 rounded-[2.5rem] p-5 border border-theme overflow-y-auto custom-scrollbar shadow-inner render-optimized space-y-4">
                                        {(blogs||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(blog => (
-                                           <div key={blog.id} className="bg-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 border border-theme shadow-sm relative overflow-hidden group">
+                                           <div key={blog.id} onClick={() => setActiveBlog(blog)} className="bg-card p-5 rounded-2xl flex flex-col sm:flex-row gap-4 border border-theme shadow-sm relative overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform">
                                                {blog.image && <img src={blog.image} className="w-full sm:w-32 h-32 rounded-xl object-cover border border-theme shadow-sm shrink-0"/>}
                                                <div className="flex-1 min-w-0">
                                                    <div className="flex items-center gap-2 mb-2">
@@ -2565,7 +2606,7 @@
                                                    <h3 className="text-sm font-black text-main mb-1 line-clamp-1">{blog.title}</h3>
                                                    <p className="text-[10px] text-sub-theme line-clamp-2 leading-relaxed">{blog.content}</p>
                                                </div>
-                                               <button onClick={()=>handleDeleteBlog(blog.id)} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 p-2 bg-gray-100 dark:bg-black/50 border border-theme rounded-lg transition shadow-sm opacity-0 group-hover:opacity-100"><IconTrash className="w-4 h-4"/></button>
+                                               <button onClick={(e)=>{e.stopPropagation(); handleDeleteBlog(blog.id)}} className="absolute top-4 right-4 text-gray-400 hover:text-red-500 p-2 bg-gray-100 dark:bg-black/50 border border-theme rounded-lg transition shadow-sm opacity-0 group-hover:opacity-100"><IconTrash className="w-4 h-4"/></button>
                                            </div>
                                        ))}
                                        {(!blogs || blogs.length === 0) && (
