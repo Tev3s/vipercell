@@ -638,7 +638,7 @@
               triggerSysLoad('Cek Saldo API...');
               const res = await fetch(adminGasUrl, {
                   method: 'POST', 
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                   body: JSON.stringify({ action: "cek_saldo" }) 
               });
               const data = await res.json();
