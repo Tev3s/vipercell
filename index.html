@@ -602,7 +602,7 @@
                   ref_id: String(order.id) 
               });
 
-              const response = await fetch(API_URL, { 
+              const response = await fetch(adminGasUrl, {
                   method: 'POST', 
                   headers: { 'Content-Type': 'application/json' },
                   body: payloadStr
@@ -636,7 +636,7 @@
       const checkDigiflazzBalance = async () => {
           try {
               triggerSysLoad('Cek Saldo API...');
-              const res = await fetch(API_URL, { 
+              const res = await fetch(adminGasUrl, {
                   method: 'POST', 
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ action: "cek_saldo" }) 
@@ -656,7 +656,7 @@
       const fetchSheetDataForPreview = async () => {
           setIsProcessing(true); triggerSysLoad('Menarik data dari Google Sheet...');
           try {
-              const response = await fetch(API_URL, { 
+              const response = await fetch(adminGasUrl, {
                   method: 'POST', 
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ action: "get_sheet_data" }) 
@@ -682,7 +682,7 @@
           setIsSyncingDigiflazz(true); triggerSysLoad('Memerintahkan Server menarik data Digiflazz ke Sheet...');
           logToDbConsole('Mengirim perintah sync ke Digiflazz...', 'info');
           try {
-              const res = await fetch(API_URL, { 
+              const res = await fetch(adminGasUrl, {
                   method: 'POST', 
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ action: "sync" })
