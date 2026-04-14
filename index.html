@@ -94,7 +94,6 @@
     import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion, query, where, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-    // ⚠️ GANTI KONFIGURASI FIREBASE INI DENGAN MILIKMU
     const firebaseConfig = { apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc", authDomain: "vipercell-8502b.firebaseapp.com", projectId: "vipercell-8502b", storageBucket: "vipercell-8502b.firebasestorage.app", messagingSenderId: "509296616890", appId: "1:509296616890:web:57e7521494db9c52942983" };
     const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const googleProvider = new GoogleAuthProvider();
     const safeAppId = 'vipercell-app'; const ADMIN_EMAIL = "millerstoreid@gmail.com";
@@ -138,7 +137,6 @@
         return { level: 'Bronze', badge: '🥉', color: 'text-primary border-primary bg-primary-light', cashback: 0 };
     }
 
-    // ICON COMPONENTS
     const SvgIcon = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}><path d={d}/></svg>;
     const IconZap = ({className:c}) => <SvgIcon c={c} f="currentColor" s="none" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>;
     const IconChevronLeft = ({className:c}) => <SvgIcon c={c} d="M15 18l-6-6 6-6"/>;
@@ -185,9 +183,8 @@
     const IconKey = ({className:c}) => <SvgIcon c={c} d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>;
     const IconDownload = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
     const IconHelp = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
-    const IconVolumeX = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></svg>;
-const IconVolume2 = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>;
-const IconBlock = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>;
+    const IconVolumeX = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></svg>;
+    const IconBlock = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>;
     const IconEye = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
     const IconEyeOff = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>;
     const IconCopy = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>;
@@ -339,9 +336,7 @@ const IconBlock = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" str
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState(''); const [newResellerPrice, setNewResellerPrice] = useState('');
       const [editingGameId, setEditingGameId] = useState(null); const [newGameId, setNewGameId] = useState(''); const [newGameName, setNewGameName] = useState(''); const [newGameDev, setNewGameDev] = useState(''); const [newGameImg, setNewGameImg] = useState(''); const [newGameInput, setNewGameInput] = useState('id_zone'); const [newGameCategory, setNewGameCategory] = useState('game'); const [uploadingGameImg, setUploadingGameImg] = useState(false); const [newGameInquirySku, setNewGameInquirySku] = useState('');
       
-      // PERUBAHAN DISINI (tambahkan miniSheetTab)
       const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]); const [googleSheetData, setGoogleSheetData] = useState([]); const [isMigrating, setIsMigrating] = useState(false); const [previewType, setPreviewType] = useState('prepaid'); const [miniSheetTab, setMiniSheetTab] = useState('config');
-      
       const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState(''); const [adminBannerLink, setAdminBannerLink] = useState('');
       const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6', referralReward: 2000 }); const [adminApiKey, setAdminApiKey] = useState(''); 
       const [promoModalType, setPromoModalType] = useState('item'); const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' }); const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
@@ -465,22 +460,10 @@ const IconBlock = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" str
       const handleRemoveFaceId = () => { requestConfirm('Hapus data Wajah?', async () => { triggerSysLoad('Menghapus data...'); try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { registeredFace: null, faceDescriptor: null, faceAuthKey: null }); addToast('Dihapus.', 'success'); } catch(e) { addToast('Gagal.', 'error'); } finally { closeSysLoad(); } }, 'Hapus'); };
       const executeAIFaceLogin = async () => { try { triggerSysLoad('Menganalisis Biometrik...'); const detection = await faceapi.detectSingleFace(faceVideoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor(); if (!detection) { addToast('Wajah tidak ditemukan.', 'error'); setShowFaceLogin(false); stopFaceCamera(); return; } triggerSysLoad('Mencocokkan...'); const membersSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members')); let bestMatch = null; let lowestDistance = 0.45; membersSnap.forEach(docSnap => { const data = docSnap.data(); if (data.faceDescriptor && data.faceAuthKey) { const distance = faceapi.euclideanDistance(detection.descriptor, new Float32Array(data.faceDescriptor)); if (distance < lowestDistance) { lowestDistance = distance; bestMatch = { email: data.email, key: data.faceAuthKey }; } } }); if (bestMatch) { triggerSysLoad('Berhasil...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', (await signInWithEmailAndPassword(auth, bestMatch.email, atob(bestMatch.key))).user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); addToast('Login Berhasil!', 'success'); setShowFaceLogin(false); stopFaceCamera(); } else { throw new Error('Wajah tidak dikenali.'); } } catch(e) { addToast(e.message, 'error'); setShowFaceLogin(false); stopFaceCamera(); } finally { closeSysLoad(); } };
 
-      useEffect(() => {
-if (confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || showFaceRegister || showFaceLogin || adminViewFaceModal.isOpen || activeBlog || postpaidModal.isOpen) {
-document.body.style.overflow = 'hidden';
-} else {
-document.body.style.overflow = 'auto';
-}
-return () => { document.body.style.overflow = 'auto'; };
-}, [
-confirmModal.isOpen, dangerModal.isOpen, pinModalState.isOpen, changePinModalOpen,
-checkoutSummary.isOpen, orderSuccessModal, isScannerOpen, scannerResultModal.isOpen,
-adminTrxModal.isOpen, cashConfirmModal.isOpen, sysLoading.active, googleSetupModal.isOpen,
-showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaidModal.isOpen
-]);
+      useEffect(() => { if (confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || showFaceRegister || showFaceLogin || adminViewFaceModal.isOpen || activeBlog || postpaidModal.isOpen) document.body.style.overflow = 'hidden'; else document.body.style.overflow = 'auto'; return () => document.body.style.overflow = 'auto'; }, [confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal, showFaceRegister, showFaceLogin, adminViewFaceModal, activeBlog, postpaidModal]);
       
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
-      useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTaab]);
+      useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
       useEffect(() => { if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) { const chat = (adminChats||[]).find(c => c.id === activeChatEmail); if (chat && chat.status === 'Open') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{}); } }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
       const navigateTo = (view) => { setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; }); setCurrentView(view); setDesktopMenuOpen(false); setProfileDropdownOpen(false); if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setPostpaidData(null); setIsCheckingPostpaid(false); } window.scrollTo({top:0, behavior:'smooth'}); };
@@ -492,16 +475,16 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
       useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen || showFaceRegister || showFaceLogin || sysLoading.active) return; if(postpaidModal.isOpen) setPostpaidModal({isOpen:false, data:null, payload:null}); else if(activeBlog) setActiveBlog(null); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else if(adminViewFaceModal.isOpen) setAdminViewFaceModal({isOpen:false}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal, showFaceRegister, showFaceLogin, adminViewFaceModal, sysLoading.active, activeBlog, postpaidModal]);
 
       useEffect(() => {
-          try {
-              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
-                 if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000, ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, referralReward: 2000, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
-              });
-              const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
-              const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
-              const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); });
-              const unsubBlogs = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'blogs'), (snap) => { const b = []; snap.forEach(doc => b.push({id: doc.id, ...doc.data()})); setBlogs(b); });
-              return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); unsubBlogs(); };
-          } catch(e) {}
+         try {
+             const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
+                if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000, ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, referralReward: 2000, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
+             });
+             const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
+             const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
+             const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); });
+             const unsubBlogs = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'blogs'), (snap) => { const b = []; snap.forEach(doc => b.push({id: doc.id, ...doc.data()})); setBlogs(b); });
+             return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); unsubBlogs(); };
+         } catch(e) {}
       }, [isSuperAdmin]);
 
       useEffect(() => {
@@ -784,7 +767,7 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
       };
 
       const fetchSheetDataForPreview = async () => {
-          setIsProcessing(true); triggerSysLoad(`Menarik data ${previewType === 'prepaid' ? 'Prabayar' : 'Pascabayar'} dari API...`);
+          setIsProcessing(true); triggerSysLoad(`Menarik data ${previewType === 'prepaid' ? 'Prabayar' : 'Pascabayar'} dari Google Sheet...`);
           try {
               const response = await fetch(adminGasUrl, { 
                   method: 'POST', 
@@ -802,21 +785,21 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
                   }
                   
                   setGoogleSheetData(filteredData);
-                  logToDbConsole(`Berhasil menarik ${(filteredData.length - 1)} baris dari API.`, 'success');
-                  addToast('Data berhasil ditarik', 'success');
+                  logToDbConsole(`Berhasil menarik ${(filteredData.length - 1)} baris dari Sheet.`, 'success');
+                  addToast('Data Sheet berhasil ditarik', 'success');
               } else {
                   throw new Error(resData.message || "Gagal menarik data");
               }
           } catch(e) {
-              logToDbConsole(`Error Fetch API: ${e.message}`, 'error');
-              addToast('Gagal menarik preview API', 'error');
+              logToDbConsole(`Error Fetch Sheet: ${e.message}`, 'error');
+              addToast('Gagal menarik preview Sheet', 'error');
           } finally {
               closeSysLoad(); setIsProcessing(false);
           }
       };
 
       const triggerDigiflazzToSheet = async (tipeSync) => {
-          setIsSyncingDigiflazz(true); addToast(`Menarik data ${tipeSync}...`, 'process');
+          setIsSyncingDigiflazz(true); addToast(`Memerintahkan Server menarik data ${tipeSync}...`, 'process');
           logToDbConsole(`Mengirim perintah sync ${tipeSync} ke Digiflazz...`, 'info');
           try {
               const res = await fetch(adminGasUrl, { 
@@ -828,7 +811,7 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
               const data = await res.json();
               if(data.status) {
                   logToDbConsole(data.message, 'success');
-                  addToast(`Berhasil menarik data dari Digiflazz (${tipeSync})`, 'success');
+                  addToast(`Berhasil update Sheet dari Digiflazz (${tipeSync})`, 'success');
                   if (previewType === tipeSync) fetchSheetDataForPreview(); 
               } else {
                   throw new Error(data.message);
@@ -842,9 +825,9 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
       };
 
       const migrateSheetToFirebase = async () => {
-          if(!googleSheetData || googleSheetData.length <= 1) return addToast('Tarik preview Data terlebih dahulu!', 'warning');
+          if(!googleSheetData || googleSheetData.length <= 1) return addToast('Tarik preview Sheet terlebih dahulu!', 'warning');
           
-          requestConfirm(`Perhatian! Ini akan mengganti produk ${previewType === 'prepaid' ? 'Prabayar (Game/Pulsa)' : 'Pascabayar (PPOB)'} di Web. Lanjutkan?`, async () => {
+          requestConfirm(`Perhatian! Ini akan mengganti produk ${previewType === 'prepaid' ? 'Prabayar (Game/Pulsa)' : 'Pascabayar (PPOB)'} di Web dengan data dari Sheet. Produk kategori lain TIDAK AKAN DIHAPUS. Lanjutkan?`, async () => {
               setIsMigrating(true); triggerSysLoad('Migrasi Database Permanen...');
               logToDbConsole(`Memulai migrasi massal ${previewType} ke Firebase...`, 'info');
               try {
@@ -1461,8 +1444,8 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
                                             const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
                                             if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
 
-                                           return (
-        <div key={promo.id} className="min-w-[250px] bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-red-400/30 backdrop-blur-md">
+                                            return (
+                                            <div key={promo.id} className="min-w-[250px] bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-red-400/30 backdrop-blur-md">
                                                <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
                                                <div className="relative z-10 flex flex-col h-full justify-between">
                                                   <div>
@@ -1651,7 +1634,7 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
                                                <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{postpaidData ? formatRupiah(postpaidData.price + (selectedPayment?.fee||0)) : 'Rp 0'}</span>
                                            </div>
                                            {!postpaidData ? (
-                                               <button onClick={handleCheckPostpaid} disabled={isCheckingPostpaid || !userId || !selectedNominal} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${userId && selectedNominal ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                               <button onClick={triggerPostpaidCheck} disabled={isCheckingPostpaid || !userId || !selectedNominal} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${userId && selectedNominal ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
                                                   {isCheckingPostpaid ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconSearch className={`w-5 h-5 ${userId && selectedNominal ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> Cek Data Tagihan</>}
                                                </button>
                                            ) : (
@@ -1708,32 +1691,32 @@ showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaid
                                 </div>
                              </div>
                           )}
-                        </div>
+                       </div>
 
-                        {/* PUSAT INFORMASI & BLOG USER SIDE */}
-                        {(blogs||[]).length > 0 && (
-                            <div className="mt-16 relative z-10 render-optimized">
-                                <div className="flex items-center justify-between mb-6 px-2 border-b border-theme pb-4">
-                                    <h2 className="text-xl md:text-2xl font-black text-main flex items-center gap-2"><IconFileText className="w-6 h-6 text-primary"/> Pusat Informasi & Berita</h2>
-                                </div>
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                    {(blogs||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(blog => (
-                                        <div key={blog.id} onClick={() => setActiveBlog(blog)} className="clean-card overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-transform group">
-                                            {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
-                                            <div className="p-5 md:p-6 flex-1 flex flex-col">
-                                                <div className="flex items-center gap-2 mb-3">
-                                                    <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
-                                                    <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
-                                                </div>
-                                                <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
-                                                <p className="text-xs text-sub-theme leading-relaxed line-clamp-3 flex-1">{blog.content}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        </>
+                       {/* PUSAT INFORMASI & BLOG USER SIDE */}
+                       {(blogs||[]).length > 0 && (
+                           <div className="mt-16 relative z-10 render-optimized">
+                               <div className="flex items-center justify-between mb-6 px-2 border-b border-theme pb-4">
+                                   <h2 className="text-xl md:text-2xl font-black text-main flex items-center gap-2"><IconFileText className="w-6 h-6 text-primary"/> Pusat Informasi & Berita</h2>
+                               </div>
+                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                   {(blogs||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(blog => (
+                                       <div key={blog.id} onClick={() => setActiveBlog(blog)} className="clean-card overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-transform group">
+                                           {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
+                                           <div className="p-5 md:p-6 flex-1 flex flex-col">
+                                               <div className="flex items-center gap-2 mb-3">
+                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
+                                                   <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
+                                               </div>
+                                               <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
+                                               <p className="text-xs text-sub-theme leading-relaxed line-clamp-3 flex-1">{blog.content}</p>
+                                           </div>
+                                       </div>
+                                   ))}
+                               </div>
+                           </div>
+                       )}
+                       </>
                     )}
                 </div>
             )}
