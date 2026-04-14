@@ -94,6 +94,7 @@
     import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, getDoc, getDocs, deleteDoc, writeBatch, arrayUnion, query, where, limit } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
     import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut, updatePassword, EmailAuthProvider, reauthenticateWithCredential, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
+    // ⚠️ GANTI KONFIGURASI FIREBASE INI DENGAN MILIKMU
     const firebaseConfig = { apiKey: "AIzaSyAUO92SOCg5WvTTg15xypDDFayqUXWoqUc", authDomain: "vipercell-8502b.firebaseapp.com", projectId: "vipercell-8502b", storageBucket: "vipercell-8502b.firebasestorage.app", messagingSenderId: "509296616890", appId: "1:509296616890:web:57e7521494db9c52942983" };
     const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const googleProvider = new GoogleAuthProvider();
     const safeAppId = 'vipercell-app'; const ADMIN_EMAIL = "millerstoreid@gmail.com";
@@ -137,6 +138,7 @@
         return { level: 'Bronze', badge: '🥉', color: 'text-primary border-primary bg-primary-light', cashback: 0 };
     }
 
+    // ICON COMPONENTS
     const SvgIcon = ({d, c, f="none", s="currentColor", sw="2"}) => <svg viewBox="0 0 24 24" fill={f} stroke={s} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" className={c}><path d={d}/></svg>;
     const IconZap = ({className:c}) => <SvgIcon c={c} f="currentColor" s="none" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>;
     const IconChevronLeft = ({className:c}) => <SvgIcon c={c} d="M15 18l-6-6 6-6"/>;
@@ -183,8 +185,9 @@
     const IconKey = ({className:c}) => <SvgIcon c={c} d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>;
     const IconDownload = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>;
     const IconHelp = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
-    const IconVolumeX = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></svg>;
-    const IconBlock = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>;
+    const IconVolumeX = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="1" x2="1" y2="23"/></svg>;
+const IconVolume2 = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>;
+const IconBlock = ({ className: c }) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>;
     const IconEye = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>;
     const IconEyeOff = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>;
     const IconCopy = ({className:c}) => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={c}><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>;
@@ -251,7 +254,7 @@
         if (!isOpen) return null;
         const handleForgotSubmit = async (e) => { e.preventDefault(); setError(''); try { const credential = EmailAuthProvider.credential(authEmail, passInput); await reauthenticateWithCredential(auth.currentUser, credential); setStep(2); setPinInput(''); setPassInput(''); addToast('Berhasil. Buat PIN baru.', 'success'); } catch(err) { setError('Sandi Salah!'); } };
         const titles = { 1: 'Masukkan PIN Lama', 2: 'Buat PIN Baru', 3: 'Konfirmasi PIN', 4: 'Lupa PIN' };
-        return ( <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"> <div className={`w-full sm:max-w-sm rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative border ${step === 4 ? 'bg-gradient-to-br from-primary to-navy-900 border-primary/30' : 'clean-card border-theme'}`}> <button onClick={onCancel} className={`absolute top-6 right-6 hover:opacity-70 transition z-20 ${step === 4 ? 'text-white' : 'text-sub-theme hover:text-main'}`}><IconX className="w-6 h-6"/></button> <div className="text-center mb-8 mt-2 relative z-10"> <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${step === 4 ? 'bg-white/20 text-white' : 'bg-primary-light text-primary border border-primary/20'}`}><IconLock className="w-8 h-8"/></div> <h3 className={`text-xl font-black ${step === 4 ? 'text-white' : 'text-main'}`}>{titles[step]}</h3> </div> {step === 4 ? ( <form onSubmit={handleForgotSubmit} className="relative z-10"> <div className="relative mb-4"> <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70" /> <input type={showPass?"text":"password"} required value={passInput} onChange={(e)=>setPassInput(e.target.value)} placeholder="Password Akun" className="w-full bg-black/30 rounded-xl py-4 pl-11 pr-12 text-sm text-white placeholder-white/60 focus:outline-none border border-transparent focus:border-primary transition" /> <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">{showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}</button> </div> {error && <p className="text-red-200 text-xs font-black text-center mb-4">{error}</p>} <div className="flex gap-2"> <button type="button" onClick={()=>{setStep(1); setError(''); setShowPass(false);}} className="flex-1 py-3.5 rounded-xl font-bold bg-black/20 text-white text-sm hover:bg-black/30 transition">Batal</button> <button type="submit" className="flex-[2] py-3.5 rounded-xl font-black bg-white text-primary text-sm hover:bg-gray-100 transition shadow-md">Verifikasi</button> </div> </form> ) : ( <div className="relative z-10"> <div className="flex justify-center gap-3 mb-8"> {[0,1,2,3,4,5].map(i => (<div key={i} className={`w-4 h-4 rounded-full border-2 transition-colors ${i < pinInput.length ? 'bg-primary border-primary' : 'border-gray-300 dark:border-gray-600'}`}></div>))} </div> {error && <p className="text-red-500 text-xs font-black text-center mb-4 animate-pulse">{error}</p>} <div className="grid grid-cols-3 gap-3"> {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num.toString())} className="bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-2xl py-4 text-2xl font-black text-main border border-theme transition shadow-sm">{num}</button>))} {step === 1 ? <button onClick={()=>{setStep(4); setError('');}} className="text-[10px] font-bold text-primary hover:text-primary-hover underline">Lupa PIN?</button> : <div></div>} <button onClick={()=>handleKey('0')} className="bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-2xl py-4 text-2xl font-black text-main border border-theme transition shadow-sm">0</button> <button onClick={handleDelete} className="bg-red-500/10 hover:bg-red-50 hover:text-white text-red-500 rounded-2xl py-4 flex items-center justify-center border border-red-500/20 transition shadow-sm"><IconChevronLeft className="w-8 h-8"/></button> </div> </div> )} </div> </div> );
+        return ( <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"> <div className={`w-full sm:max-w-sm rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative border ${step === 4 ? 'bg-gradient-to-br from-primary to-navy-900 border-primary/30' : 'clean-card border-theme'}`}> <button onClick={onCancel} className={`absolute top-6 right-6 hover:opacity-70 transition z-20 ${step === 4 ? 'text-white' : 'text-sub-theme hover:text-main'}`}><IconX className="w-6 h-6"/></button> <div className="text-center mb-8 mt-2 relative z-10"> <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${step === 4 ? 'bg-white/20 text-white' : 'bg-primary-light text-primary border border-primary/20'}`}><IconLock className="w-8 h-8"/></div> <h3 className={`text-xl font-black ${step === 4 ? 'text-white' : 'text-main'}`}>{titles[step]}</h3> </div> {step === 4 ? ( <form onSubmit={handleForgotSubmit} className="relative z-10"> <div className="relative mb-4"> <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/70" /> <input type={showPass?"text":"password"} required value={passInput} onChange={(e)=>setPassInput(e.target.value)} placeholder="Password Akun" className="w-full bg-black/30 rounded-xl py-4 pl-11 pr-12 text-sm text-white placeholder-white/60 focus:outline-none border border-transparent focus:border-primary transition" /> <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/70 hover:text-white">{showPass ? <IconEyeOff className="w-4 h-4"/> : <IconEye className="w-4 h-4"/>}</button> </div> {error && <p className="text-red-200 text-xs font-black text-center mb-4">{error}</p>} <div className="flex gap-2"> <button type="button" onClick={()=>{setStep(1); setError(''); setShowPass(false);}} className="flex-1 py-3.5 rounded-xl font-bold bg-black/20 text-white text-sm hover:bg-black/30 transition">Batal</button> <button type="submit" className="flex-[2] py-3.5 rounded-xl font-black bg-white text-primary text-sm hover:bg-gray-100 transition shadow-md">Verifikasi</button> </div> </form> ) : ( <div className="relative z-10"> <div className="flex justify-center gap-3 mb-8"> {[0,1,2,3,4,5].map(i => (<div key={i} className={`w-4 h-4 rounded-full border-2 transition-colors ${i < pinInput.length ? 'bg-primary border-primary' : 'border-gray-300 dark:border-gray-600'}`}></div>))} </div> {error && <p className="text-red-500 text-xs font-black text-center mb-4 animate-pulse">{error}</p>} <div className="grid grid-cols-3 gap-3"> {[1,2,3,4,5,6,7,8,9].map(num => (<button key={num} onClick={()=>handleKey(num.toString())} className="bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-2xl py-4 text-2xl font-black text-main border border-theme transition shadow-sm">{num}</button>))} {step === 1 ? <button onClick={()=>{setStep(4); setError('');}} className="text-[10px] font-bold text-primary hover:text-primary-hover underline">Lupa PIN?</button> : <div></div>} <button onClick={()=>handleKey('0')} className="bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 rounded-2xl py-4 text-2xl font-black text-main border border-theme transition shadow-sm">0</button> <button onClick={handleDelete} className="bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 rounded-2xl py-4 flex items-center justify-center border border-red-500/20 transition shadow-sm"><IconChevronLeft className="w-8 h-8"/></button> </div> </div> )} </div> </div> );
     }
 
     const PinModal = ({ isOpen, mode, expectedPin, onSuccess, onCancel }) => {
@@ -336,7 +339,9 @@
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState(''); const [newResellerPrice, setNewResellerPrice] = useState('');
       const [editingGameId, setEditingGameId] = useState(null); const [newGameId, setNewGameId] = useState(''); const [newGameName, setNewGameName] = useState(''); const [newGameDev, setNewGameDev] = useState(''); const [newGameImg, setNewGameImg] = useState(''); const [newGameInput, setNewGameInput] = useState('id_zone'); const [newGameCategory, setNewGameCategory] = useState('game'); const [uploadingGameImg, setUploadingGameImg] = useState(false); const [newGameInquirySku, setNewGameInquirySku] = useState('');
       
-      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]); const [googleSheetData, setGoogleSheetData] = useState([]); const [isMigrating, setIsMigrating] = useState(false); const [previewType, setPreviewType] = useState('prepaid');
+      // PERUBAHAN DISINI (tambahkan miniSheetTab)
+      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]); const [googleSheetData, setGoogleSheetData] = useState([]); const [isMigrating, setIsMigrating] = useState(false); const [previewType, setPreviewType] = useState('prepaid'); const [miniSheetTab, setMiniSheetTab] = useState('config');
+      
       const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState(''); const [adminBannerLink, setAdminBannerLink] = useState('');
       const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6', referralReward: 2000 }); const [adminApiKey, setAdminApiKey] = useState(''); 
       const [promoModalType, setPromoModalType] = useState('item'); const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' }); const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
@@ -354,7 +359,6 @@
       const [isIdValid, setIsIdValid] = useState(false);
       const [bypassValidation, setBypassValidation] = useState(false);
       const [postpaidData, setPostpaidData] = useState(null); const [isCheckingPostpaid, setIsCheckingPostpaid] = useState(false); const [postpaidModal, setPostpaidModal] = useState({ isOpen: false, data: null, payload: null });
-      const [miniSheetTab, setMiniSheetTab] = useState('config'); // Fix state declaration position
 
       const logToDbConsole = (msg, type = 'info') => {
           setDbLogs(prev => { const newLogs = [...prev, { time: new Date().toLocaleTimeString(), msg, type }]; return newLogs.slice(-20); });
@@ -461,10 +465,22 @@
       const handleRemoveFaceId = () => { requestConfirm('Hapus data Wajah?', async () => { triggerSysLoad('Menghapus data...'); try { await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { registeredFace: null, faceDescriptor: null, faceAuthKey: null }); addToast('Dihapus.', 'success'); } catch(e) { addToast('Gagal.', 'error'); } finally { closeSysLoad(); } }, 'Hapus'); };
       const executeAIFaceLogin = async () => { try { triggerSysLoad('Menganalisis Biometrik...'); const detection = await faceapi.detectSingleFace(faceVideoRef.current, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor(); if (!detection) { addToast('Wajah tidak ditemukan.', 'error'); setShowFaceLogin(false); stopFaceCamera(); return; } triggerSysLoad('Mencocokkan...'); const membersSnap = await getDocs(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members')); let bestMatch = null; let lowestDistance = 0.45; membersSnap.forEach(docSnap => { const data = docSnap.data(); if (data.faceDescriptor && data.faceAuthKey) { const distance = faceapi.euclideanDistance(detection.descriptor, new Float32Array(data.faceDescriptor)); if (distance < lowestDistance) { lowestDistance = distance; bestMatch = { email: data.email, key: data.faceAuthKey }; } } }); if (bestMatch) { triggerSysLoad('Berhasil...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', (await signInWithEmailAndPassword(auth, bestMatch.email, atob(bestMatch.key))).user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); addToast('Login Berhasil!', 'success'); setShowFaceLogin(false); stopFaceCamera(); } else { throw new Error('Wajah tidak dikenali.'); } } catch(e) { addToast(e.message, 'error'); setShowFaceLogin(false); stopFaceCamera(); } finally { closeSysLoad(); } };
 
-      useEffect(() => { if (confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || showFaceRegister || showFaceLogin || adminViewFaceModal.isOpen || activeBlog || postpaidModal.isOpen) document.body.style.overflow = 'hidden'; else document.body.style.overflow = 'auto'; return () => document.body.style.overflow = 'auto'; }, [confirmModal, dangerModal, pinModalState, changePinModalOpen, checkoutSummary, orderSuccessModal, isScannerOpen, scannerResultModal, adminTrxModal, cashConfirmModal, sysLoading, googleSetupModal, showFaceRegister, showFaceLogin, adminViewFaceModal, activeBlog, postpaidModal]);
+      useEffect(() => {
+if (confirmModal.isOpen || dangerModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || scannerResultModal.isOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || showFaceRegister || showFaceLogin || adminViewFaceModal.isOpen || activeBlog || postpaidModal.isOpen) {
+document.body.style.overflow = 'hidden';
+} else {
+document.body.style.overflow = 'auto';
+}
+return () => { document.body.style.overflow = 'auto'; };
+}, [
+confirmModal.isOpen, dangerModal.isOpen, pinModalState.isOpen, changePinModalOpen,
+checkoutSummary.isOpen, orderSuccessModal, isScannerOpen, scannerResultModal.isOpen,
+adminTrxModal.isOpen, cashConfirmModal.isOpen, sysLoading.active, googleSetupModal.isOpen,
+showFaceRegister, showFaceLogin, adminViewFaceModal.isOpen, activeBlog, postpaidModal.isOpen
+]);
       
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
-      useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
+      useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTaab]);
       useEffect(() => { if (isAdmin && activeAdminTab === 'support' && supportTab === 'member' && activeChatEmail) { const chat = (adminChats||[]).find(c => c.id === activeChatEmail); if (chat && chat.status === 'Open') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', activeChatEmail), { status: 'Sedang Diproses' }, { merge: true }).catch(()=>{}); } }, [activeChatEmail, adminChats, activeAdminTab, supportTab, isAdmin]);
 
       const navigateTo = (view) => { setViewHistory(prev => { const newHist = [...prev, view]; return prev[prev.length-1] === view ? prev : newHist; }); setCurrentView(view); setDesktopMenuOpen(false); setProfileDropdownOpen(false); if (view !== 'home') { setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setActivePromo(null); setInputPromo(''); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setPostpaidData(null); setIsCheckingPostpaid(false); } window.scrollTo({top:0, behavior:'smooth'}); };
@@ -476,16 +492,16 @@
       useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen || showFaceRegister || showFaceLogin || sysLoading.active) return; if(postpaidModal.isOpen) setPostpaidModal({isOpen:false, data:null, payload:null}); else if(activeBlog) setActiveBlog(null); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (scannerResultModal.isOpen) setScannerResultModal({isOpen: false, order: null}); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else if(adminViewFaceModal.isOpen) setAdminViewFaceModal({isOpen:false}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, scannerResultModal, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal, showFaceRegister, showFaceLogin, adminViewFaceModal, sysLoading.active, activeBlog, postpaidModal]);
 
       useEffect(() => {
-         try {
-             const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
-                if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000, ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, referralReward: 2000, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
-             });
-             const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
-             const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
-             const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); });
-             const unsubBlogs = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'blogs'), (snap) => { const b = []; snap.forEach(doc => b.push({id: doc.id, ...doc.data()})); setBlogs(b); });
-             return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); unsubBlogs(); };
-         } catch(e) {}
+          try {
+              const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
+                 if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', referralReward: 2000, ...d}); setIsStoreOpen(d.isOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, referralReward: 2000, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6' }).catch(()=>{});
+              });
+              const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
+              const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
+              const unsubPromos = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'promos'), (snap) => { const p = []; snap.forEach(doc => p.push({id: doc.id, ...doc.data()})); setPromos(p); });
+              const unsubBlogs = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'blogs'), (snap) => { const b = []; snap.forEach(doc => b.push({id: doc.id, ...doc.data()})); setBlogs(b); });
+              return () => { unsubGlobal(); unsubGames(); unsubItems(); unsubPromos(); unsubBlogs(); };
+          } catch(e) {}
       }, [isSuperAdmin]);
 
       useEffect(() => {
@@ -768,7 +784,7 @@
       };
 
       const fetchSheetDataForPreview = async () => {
-          setIsProcessing(true); triggerSysLoad(`Menarik data ${previewType === 'prepaid' ? 'Prabayar' : 'Pascabayar'} dari Google Sheet...`);
+          setIsProcessing(true); triggerSysLoad(`Menarik data ${previewType === 'prepaid' ? 'Prabayar' : 'Pascabayar'} dari API...`);
           try {
               const response = await fetch(adminGasUrl, { 
                   method: 'POST', 
@@ -777,33 +793,30 @@
                   body: JSON.stringify({ action: "get_sheet_data" }) 
               });
               const resData = await response.json();
-              // SAFETY CHECK: Ensure data is an array and has at least one row
-              if(resData.status && Array.isArray(resData.data) && resData.data.length > 0) {
+              if(resData.status && resData.data) {
                   // FILTER BERDASARKAN TIPE TAB YANG AKTIF (Kolom index 6 = Tipe)
                   const filteredData = [resData.data[0]]; // Header
                   for(let i=1; i<resData.data.length; i++) {
-                      if (!Array.isArray(resData.data[i])) continue; // Safety check per row
                       const typeCol = resData.data[i][6] || 'prepaid'; // Default prepaid if old data
                       if(typeCol === previewType) filteredData.push(resData.data[i]);
                   }
                   
                   setGoogleSheetData(filteredData);
-                  logToDbConsole(`Berhasil menarik ${(filteredData.length - 1)} baris dari Sheet.`, 'success');
-                  addToast('Data Sheet berhasil ditarik', 'success');
+                  logToDbConsole(`Berhasil menarik ${(filteredData.length - 1)} baris dari API.`, 'success');
+                  addToast('Data berhasil ditarik', 'success');
               } else {
-                  throw new Error(resData.message || "Data dari Sheet kosong atau format tidak sesuai.");
+                  throw new Error(resData.message || "Gagal menarik data");
               }
           } catch(e) {
-              logToDbConsole(`Error Fetch Sheet: ${e.message}`, 'error');
-              addToast('Gagal menarik preview Sheet', 'error');
-              setGoogleSheetData([]); // Fallback to empty
+              logToDbConsole(`Error Fetch API: ${e.message}`, 'error');
+              addToast('Gagal menarik preview API', 'error');
           } finally {
               closeSysLoad(); setIsProcessing(false);
           }
       };
 
       const triggerDigiflazzToSheet = async (tipeSync) => {
-          setIsSyncingDigiflazz(true); addToast(`Memerintahkan Server menarik data ${tipeSync}...`, 'process');
+          setIsSyncingDigiflazz(true); addToast(`Menarik data ${tipeSync}...`, 'process');
           logToDbConsole(`Mengirim perintah sync ${tipeSync} ke Digiflazz...`, 'info');
           try {
               const res = await fetch(adminGasUrl, { 
@@ -815,7 +828,7 @@
               const data = await res.json();
               if(data.status) {
                   logToDbConsole(data.message, 'success');
-                  addToast(`Berhasil update Sheet dari Digiflazz (${tipeSync})`, 'success');
+                  addToast(`Berhasil menarik data dari Digiflazz (${tipeSync})`, 'success');
                   if (previewType === tipeSync) fetchSheetDataForPreview(); 
               } else {
                   throw new Error(data.message);
@@ -829,9 +842,9 @@
       };
 
       const migrateSheetToFirebase = async () => {
-          if(!Array.isArray(googleSheetData) || googleSheetData.length <= 1) return addToast('Tarik preview Sheet terlebih dahulu!', 'warning');
+          if(!googleSheetData || googleSheetData.length <= 1) return addToast('Tarik preview Data terlebih dahulu!', 'warning');
           
-          requestConfirm(`Perhatian! Ini akan mengganti produk ${previewType === 'prepaid' ? 'Prabayar (Game/Pulsa)' : 'Pascabayar (PPOB)'} di Web dengan data dari Sheet. Produk kategori lain TIDAK AKAN DIHAPUS. Lanjutkan?`, async () => {
+          requestConfirm(`Perhatian! Ini akan mengganti produk ${previewType === 'prepaid' ? 'Prabayar (Game/Pulsa)' : 'Pascabayar (PPOB)'} di Web. Lanjutkan?`, async () => {
               setIsMigrating(true); triggerSysLoad('Migrasi Database Permanen...');
               logToDbConsole(`Memulai migrasi massal ${previewType} ke Firebase...`, 'info');
               try {
@@ -848,7 +861,7 @@
                   let existingItemsMap = {};
                   oldItemsSnap.forEach(docSnap => { 
                       const itemData = docSnap.data();
-                      existingItemsMap[(itemData.sku||'').toLowerCase()] = itemData;
+                      existingItemsMap[itemData.sku.toLowerCase()] = itemData;
                       
                       // FIREWALL DATA: Cek apakah game ini masuk radar penghapusan
                       const parentGame = existingGamesMap[itemData.gameId];
@@ -864,29 +877,29 @@
                   let importedCount = 0;
                   const rows = googleSheetData;
                   for(let i=1; i<rows.length; i++) { 
-                      if(!Array.isArray(rows[i]) || rows[i].length < 5) continue;
+                      if(rows[i].length < 5) continue;
                       const [kategori, brand, nama, sku, hargaModalStr, status, tipeRow] = rows[i];
                       if (!sku || sku === '-' || !nama) continue;
                       
                       const modal = parseInt(hargaModalStr) || 0; 
-                      const gameId = String(brand||'').toLowerCase().replace(/[^a-z0-9]/g, '');
+                      const gameId = (brand||'').toLowerCase().replace(/[^a-z0-9]/g, '');
                       
                       const hJualCalc = markupForm.type === 'fixed' ? modal + Number(markupForm.value) : modal + (modal * Number(markupForm.value) / 100);
                       const resMarkup = Number(markupForm.resellerValue) || 0;
                       const hResellerCalc = markupForm.type === 'fixed' ? modal + resMarkup : modal + (modal * resMarkup / 100);
 
-                      const itemRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', String(sku).toLowerCase());
+                      const itemRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', sku.toLowerCase());
                       
                       // PERSISTENCE HIDE ITEM
-                      const oldItem = existingItemsMap[String(sku).toLowerCase()];
+                      const oldItem = existingItemsMap[sku.toLowerCase()];
                       const isVis = oldItem && oldItem.isVisible !== undefined ? oldItem.isVisible : true;
 
-                      currentBatch.set(itemRef, { name: String(nama), sku: String(sku), modalPrice: modal, price: hJualCalc, resellerPrice: hResellerCalc, gameId: gameId, status: status === 'Tersedia' ? 'Tersedia' : 'Gangguan', isVisible: isVis });
+                      currentBatch.set(itemRef, { name: nama, sku: sku, modalPrice: modal, price: hJualCalc, resellerPrice: hResellerCalc, gameId: gameId, status: status === 'Tersedia' ? 'Tersedia' : 'Gangguan', isVisible: isVis });
                       opCount++; if (opCount >= 450) flushBatch();
                       
                       if (!existingGamesMap[gameId]) {
                           const gameRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', gameId);
-                          const cleanCat = String(kategori||'').toLowerCase();
+                          const cleanCat = (kategori||'').toLowerCase();
                           let finalCat = previewType === 'postpaid' ? 'pascabayar' : 'game';
                           
                           if (previewType === 'prepaid') {
@@ -894,7 +907,7 @@
                               else if(cleanCat.includes('emoney')||cleanCat.includes('dana')||cleanCat.includes('gopay')) finalCat = 'emoney';
                           }
 
-                          currentBatch.set(gameRef, { name: String(brand), category: finalCat, isVisible: true, inquirySku: previewType === 'postpaid' ? String(sku) : '' });
+                          currentBatch.set(gameRef, { name: brand, category: finalCat, isVisible: true, inquirySku: previewType === 'postpaid' ? sku : '' });
                           existingGamesMap[gameId] = { category: finalCat };
                           opCount++; if (opCount >= 450) flushBatch(); 
                       }
@@ -993,7 +1006,7 @@
           e.preventDefault(); if (!newGameId || !newGameName) return; 
           try { 
               triggerSysLoad('Menyinkronkan ke Firebase...'); 
-              const cleanId = editingGameId ? newGameId : String(newGameId||'').toLowerCase().replace(/\s+/g, ''); 
+              const cleanId = editingGameId ? newGameId : (newGameId||'').toLowerCase().replace(/\s+/g, ''); 
               const gameData = { id: cleanId, name: newGameName, developer: newGameDev || 'Unknown', inputType: newGameInput, image: newGameImg || 'https://via.placeholder.com/300', category: newGameCategory, inquirySku: newGameInquirySku, isVisible: true };
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'games', cleanId), gameData, { merge: true }); 
               setNewGameId(''); setNewGameName(''); setNewGameDev(''); setNewGameImg(''); setNewGameInput('id_zone'); setNewGameCategory('game'); setNewGameInquirySku(''); setEditingGameId(null); 
@@ -1020,7 +1033,7 @@
               const hJual = markupForm.type === 'fixed' ? hModal + Number(markupForm.value) : hModal + (hModal * Number(markupForm.value) / 100); 
               const hReseller = markupForm.type === 'fixed' ? hModal + Number(markupForm.resellerValue||0) : hModal + (hModal * Number(markupForm.resellerValue||0) / 100);
               const itemId = editingItemId || `item_${Date.now()}`;
-              const itemData = { id: itemId, name: String(newItemName), price: hJual, resellerPrice: hReseller, modalPrice: hModal, gameId: adminSelectedGame, status: 'Tersedia', isVisible: true, sku: `SKU-${Math.floor(Math.random()*1000)}` };
+              const itemData = { id: itemId, name: newItemName, price: hJual, resellerPrice: hReseller, modalPrice: hModal, gameId: adminSelectedGame, status: 'Tersedia', isVisible: true, sku: `SKU-${Math.floor(Math.random()*1000)}` };
               await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', itemId), itemData, { merge: true }); 
               setNewItemName(''); setNewItemPrice(''); setNewResellerPrice(''); setEditingItemId(null); 
               addToast('Produk Tersimpan!', 'success'); 
@@ -1038,7 +1051,7 @@
 
       const toggleItemVisibility = async (item) => { try { triggerSysLoad('Update...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'items', item.id), { isVisible: !(item.isVisible ?? true) }, { merge: true }); } catch(e) {} finally { closeSysLoad(); } }
 
-      const handleSavePromo = async (e) => { e.preventDefault(); try { triggerSysLoad(); const promoId = promoModalType === 'code' ? String(promoForm.code||'').toUpperCase() : `${promoModalType}_${Date.now()}`; let promoData = { id: promoId, category: promoModalType, type: promoForm.type, discount: Number(promoForm.discount), isActive: true, createdAt: new Date().toISOString() }; if(promoModalType === 'code') { promoData.code = String(promoForm.code||'').toUpperCase(); promoData.maxUses = Number(promoForm.maxUses); promoData.minPurchase = Number(promoForm.minPurchase || 0); promoData.usedBy = []; } else if(promoModalType === 'item') { if(!promoTargetItem) throw new Error('Pilih item target!'); promoData.targetItems = [promoTargetItem]; } else if(promoModalType === 'game') { if(!promoTargetGame) throw new Error('Pilih Game target!'); promoData.targetGame = promoTargetGame; } else if(promoModalType === 'flash') { if(!promoForm.startTime || !promoForm.endTime || !promoForm.stock) throw new Error('Lengkapi data Flash Sale!'); promoData.targetItems = promoTargetItem ? [promoTargetItem] : []; promoData.startTime = promoForm.startTime; promoData.endTime = promoForm.endTime; promoData.stock = Number(promoForm.stock); promoData.usedBy = []; } else if(promoModalType === 'day') { promoData.targetDay = parseInt(promoForm.targetDay); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', promoId), promoData); addToast('Promo diterbitkan!', 'success'); setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5'}); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
+      const handleSavePromo = async (e) => { e.preventDefault(); try { triggerSysLoad(); const promoId = promoModalType === 'code' ? (promoForm.code||'').toUpperCase() : `${promoModalType}_${Date.now()}`; let promoData = { id: promoId, category: promoModalType, type: promoForm.type, discount: Number(promoForm.discount), isActive: true, createdAt: new Date().toISOString() }; if(promoModalType === 'code') { promoData.code = (promoForm.code||'').toUpperCase(); promoData.maxUses = Number(promoForm.maxUses); promoData.minPurchase = Number(promoForm.minPurchase || 0); promoData.usedBy = []; } else if(promoModalType === 'item') { if(!promoTargetItem) throw new Error('Pilih item target!'); promoData.targetItems = [promoTargetItem]; } else if(promoModalType === 'game') { if(!promoTargetGame) throw new Error('Pilih Game target!'); promoData.targetGame = promoTargetGame; } else if(promoModalType === 'flash') { if(!promoForm.startTime || !promoForm.endTime || !promoForm.stock) throw new Error('Lengkapi data Flash Sale!'); promoData.targetItems = promoTargetItem ? [promoTargetItem] : []; promoData.startTime = promoForm.startTime; promoData.endTime = promoForm.endTime; promoData.stock = Number(promoForm.stock); promoData.usedBy = []; } else if(promoModalType === 'day') { promoData.targetDay = parseInt(promoForm.targetDay); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', promoId), promoData); addToast('Promo diterbitkan!', 'success'); setPromoForm({code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5'}); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
       const handleDeletePromo = (id) => requestConfirm('Hapus permanen promo ini?', async () => { try { triggerSysLoad(); await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id)); addToast('Dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } }, 'Hapus Promo');
       const togglePromoStatus = async (id, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
 
@@ -1358,8 +1371,7 @@
                 <div className="animate-slide-down">
                     <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4 pl-2">
                         <div>
-                            <h1 className="text-xl md:text-2xl font-black text-main tracking-tight drop-shadow-sm">Selamat {greeting},</h1>
-                            <h2 className="text-xl md:text-3xl font-black text-primary mt-1 drop-shadow-sm flex items-center">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'} {currentUserData?.isReseller && <span className="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full ml-2 shadow-sm font-black tracking-widest uppercase">Reseller</span>}</h2>
+                            <h1 className="text-xl md:text-2xl font-black text-main tracking-tight drop-shadow-sm">Selamat {greeting},</h1><h2 className="text-xl md:text-3xl font-black text-primary mt-1 drop-shadow-sm flex items-center">{currentUserData?.name || (authUser.email || '').split('@')[0] || 'Guest'} {currentUserData?.isReseller && <span className="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full ml-2 shadow-sm font-black tracking-widest uppercase">Reseller</span>}</h2>
                         </div>
                     </div>
 
@@ -1376,7 +1388,7 @@
                             </div>
                             <div className="flex overflow-x-auto gap-4 pb-4 custom-scrollbar snap-x">
                                 {Object.keys(groupedGames).reduce((topGames, category) => {
-                                    const gamesInCategory = groupedGames[category].filter(g => (items||[]).some(i => i.gameId === g.id && (i.status ==='Tersedia' || !i.status) && (i.isVisible ?? true) && !(i.sku||'').startsWith('CEK')));
+                                    const gamesInCategory = groupedGames[category].filter(g => (items||[]).some(i => i.gameId === g.id && (i.status === 'Tersedia' || !i.status) && (i.isVisible ?? true) && !(i.sku||'').startsWith('CEK')));
                                     return [...topGames, ...gamesInCategory];
                                 }, []).slice(0, 6).map((game) => (
                                     <div key={`top-${game.id}`} onClick={() => {setSelectedGame(game); setSelectedNominal(null); setUserId(''); setZoneId(''); setNickname(''); setUseCashback(false); setIsIdValid(false); setBypassValidation(false); setPostpaidData(null); window.scrollTo({top:0, behavior:'smooth'})}} className="snap-center shrink-0 w-32 md:w-40 cursor-pointer clean-card overflow-hidden relative flex flex-col h-full z-30 hover:-translate-y-1 transition-transform group">
@@ -1449,8 +1461,8 @@
                                             const hours = Math.floor(timeLeft / (1000 * 60 * 60)); const mins = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((timeLeft % (1000 * 60)) / 1000);
                                             if(timeLeft === 0 || (promo.usedBy||[]).length >= promo.stock) return null;
 
-                                            return (
-                                            <div key={promo.id} className="min-w-[250px] bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-red-400/30 backdrop-blur-md">
+                                           return (
+        <div key={promo.id} className="min-w-[250px] bg-gradient-to-br from-red-500 to-red-600 p-6 rounded-[2rem] text-white shadow-lg relative overflow-hidden flex-shrink-0 border border-red-400/30 backdrop-blur-md">
                                                <div className="absolute -top-10 -right-10 w-24 h-24 bg-white/20 rounded-full blur-2xl"></div>
                                                <div className="relative z-10 flex flex-col h-full justify-between">
                                                   <div>
@@ -1485,7 +1497,7 @@
                              <img src={selectedGame.image} className="w-14 h-14 rounded-2xl object-cover border border-theme shadow-sm" />
                              <div>
                                 <h2 className="text-xl md:text-2xl font-black text-main leading-tight drop-shadow-sm">{selectedGame.name}</h2>
-                                <p className="text-xs text-primary font-bold mt-1 uppercase tracking-widest">Kategori: {selectedGame.category === 'game' ? 'Game' : selectedGame.category === 'pulsa' ? 'Pulsa/Data' : selectedGame.category === 'pln' ? 'Token PLN' : selectedGame.category === 'pascabayar' ? 'Pascabayar / PPOB' : 'E-Money'}</p>
+                                <p className="text-xs text-primary font-bold mt-1 uppercase tracking-widest">Kategori: {selectedGame.category === 'game' ? 'Game' : selectedGame.category === 'pulsa' ? 'Pulsa/Data' : selectedGame.category === 'pascabayar' ? 'Pascabayar / PPOB' : 'E-Money'}</p>
                              </div>
                           </div>
 
@@ -1496,9 +1508,9 @@
                                    <div className="flex flex-col sm:flex-row gap-4 relative z-10 mb-4">
                                       <div className="flex-1 relative group">
                                          <IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
-                                         <input type={(selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'tel' : 'text'} value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val) && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pln' && selectedGame?.category !== 'pascabayar') { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : (selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'Nomor HP Tujuan (08xx)' : selectedGame?.category === 'pln' ? 'Nomor Meter / ID Pel' : selectedGame?.category === 'pascabayar' ? 'Nomor Tagihan / Pelanggan' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
+                                         <input type={(selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'tel' : 'text'} value={userId} onChange={(e) => { const val = e.target.value; if (selectedGame?.inputType !== 'riot_id' && val && !/^\d+$/.test(val) && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pascabayar') { addToast('ID hanya angka.', 'warning'); return; } setUserId(val); }} placeholder={selectedGame?.inputType === 'riot_id' ? 'Masukkan Riot ID' : (selectedGame?.category === 'pulsa' || selectedGame?.category === 'emoney') ? 'Nomor HP Tujuan (08xx)' : selectedGame?.category === 'pascabayar' ? 'Nomor Tagihan / Meter / Pelanggan' : 'Masukkan User ID (Angka)'} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
                                       </div>
-                                      {selectedGame?.inputType === 'id_zone' && selectedGame?.category !== 'pulsa' && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pln' && selectedGame?.category !== 'pascabayar' && (
+                                      {selectedGame?.inputType === 'id_zone' && selectedGame?.category !== 'pulsa' && selectedGame?.category !== 'emoney' && selectedGame?.category !== 'pascabayar' && (
                                          <div className="w-full sm:w-1/3 relative group">
                                             <IconShield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
                                             <input type="text" value={zoneId} onChange={(e) => setZoneId(e.target.value)} placeholder="Zone ID" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 font-mono font-bold text-sm shadow-inner"/>
@@ -1639,7 +1651,7 @@
                                                <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{postpaidData ? formatRupiah(postpaidData.price + (selectedPayment?.fee||0)) : 'Rp 0'}</span>
                                            </div>
                                            {!postpaidData ? (
-                                               <button onClick={triggerPostpaidCheck} disabled={isCheckingPostpaid || !userId || !selectedNominal} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${userId && selectedNominal ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                               <button onClick={handleCheckPostpaid} disabled={isCheckingPostpaid || !userId || !selectedNominal} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${userId && selectedNominal ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-white/10 text-gray-500 dark:text-gray-400 border border-theme'}`}>
                                                   {isCheckingPostpaid ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconSearch className={`w-5 h-5 ${userId && selectedNominal ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> Cek Data Tagihan</>}
                                                </button>
                                            ) : (
@@ -1696,32 +1708,32 @@
                                 </div>
                              </div>
                           )}
-                       </div>
+                        </div>
 
-                       {/* PUSAT INFORMASI & BLOG USER SIDE */}
-                       {(blogs||[]).length > 0 && (
-                           <div className="mt-16 relative z-10 render-optimized">
-                               <div className="flex items-center justify-between mb-6 px-2 border-b border-theme pb-4">
-                                   <h2 className="text-xl md:text-2xl font-black text-main flex items-center gap-2"><IconFileText className="w-6 h-6 text-primary"/> Pusat Informasi & Berita</h2>
-                               </div>
-                               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                   {(blogs||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(blog => (
-                                       <div key={blog.id} onClick={() => setActiveBlog(blog)} className="clean-card overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-transform group">
-                                           {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
-                                           <div className="p-5 md:p-6 flex-1 flex flex-col">
-                                               <div className="flex items-center gap-2 mb-3">
-                                                   <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
-                                                   <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
-                                               </div>
-                                               <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
-                                               <p className="text-xs text-sub-theme leading-relaxed line-clamp-3 flex-1">{blog.content}</p>
-                                           </div>
-                                       </div>
-                                   ))}
-                               </div>
-                           </div>
-                       )}
-                       </>
+                        {/* PUSAT INFORMASI & BLOG USER SIDE */}
+                        {(blogs||[]).length > 0 && (
+                            <div className="mt-16 relative z-10 render-optimized">
+                                <div className="flex items-center justify-between mb-6 px-2 border-b border-theme pb-4">
+                                    <h2 className="text-xl md:text-2xl font-black text-main flex items-center gap-2"><IconFileText className="w-6 h-6 text-primary"/> Pusat Informasi & Berita</h2>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {(blogs||[]).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(blog => (
+                                        <div key={blog.id} onClick={() => setActiveBlog(blog)} className="clean-card overflow-hidden flex flex-col cursor-pointer hover:-translate-y-1 transition-transform group">
+                                            {blog.image && <div className="h-40 overflow-hidden"><img src={blog.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"/></div>}
+                                            <div className="p-5 md:p-6 flex-1 flex flex-col">
+                                                <div className="flex items-center gap-2 mb-3">
+                                                    <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded shadow-sm border ${blog.category==='INFO'?'bg-blue-500/10 text-blue-600 border-blue-500/30':blog.category==='EVENT'?'bg-primary-light text-primary border-primary/30':'bg-red-500/10 text-red-600 border-red-500/30'}`}>{blog.category}</span>
+                                                    <span className="text-[10px] font-bold text-sub-theme">{new Date(blog.createdAt).toLocaleDateString('id-ID')}</span>
+                                                </div>
+                                                <h3 className="font-black text-main text-lg mb-2 leading-tight">{blog.title}</h3>
+                                                <p className="text-xs text-sub-theme leading-relaxed line-clamp-3 flex-1">{blog.content}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        </>
                     )}
                 </div>
             )}
@@ -1996,7 +2008,7 @@
                      </div>
 
                      <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto pb-4 lg:pb-0 custom-scrollbar flex-1">
-                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'blog', label: 'Kelola Berita', icon: IconFileText }, { id: 'members', label: 'Data Member & Reseller', icon: IconUsers, notif: (memberList||[]).filter(m=>m.resellerStatus==='pending').length }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'database', label: 'Integrasi API Key', icon: IconDatabase }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
+                        {[ { id: 'dashboard', label: 'Statistik Sistem', icon: IconTrendingUp }, { id: 'orders', label: 'Daftar Pesanan', icon: IconList, notif: pendingOrdersCount }, { id: 'katalog', label: 'Katalog & Harga', icon: IconGamepad }, { id: 'promo', label: 'Pusat Promosi', icon: IconPercent }, { id: 'blog', label: 'Kelola Berita', icon: IconFileText }, { id: 'members', label: 'Data Member & Reseller', icon: IconUsers, notif: (memberList||[]).filter(m=>m.resellerStatus==='pending').length }, { id: 'support', label: 'Pusat Bantuan', icon: IconMessageSquare, notif: openChatsCount + unreadFeedbacksCount }, { id: 'database', label: 'Integrasi API KEY', icon: IconDatabase }, { id: 'settings', label: 'Pengaturan Web', icon: IconSettings } ].map(tab => {
                            const TabIcon = tab.icon;
                            return (
                            <button key={tab.id} onClick={() => setActiveAdminTab(tab.id)} className={`w-auto lg:w-full flex items-center gap-3 px-4 py-4 rounded-2xl font-bold transition-all whitespace-nowrap shrink-0 border ${activeAdminTab === tab.id ? 'bg-primary text-white border-primary shadow-lg' : 'bg-transparent text-sub-theme border-transparent hover:bg-gray-100 dark:hover:bg-white/5 hover:border-theme'}`}>
@@ -2148,7 +2160,7 @@
                                                       ) : (
                                                           <button onClick={() => updateOrderStatus(order, 'Sukses')} disabled={isProcessing} className="p-2.5 bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 rounded-xl hover:bg-emerald-50 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Tandai Lunas & Proses API"><IconCheck className="w-4 h-4" strokeWidth={3} /></button>
                                                       )}
-                                                      <button onClick={() => updateOrderStatus(order, 'Batal')} disabled={isProcessing} className="p-2.5 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-50 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
+                                                      <button onClick={() => updateOrderStatus(order, 'Batal')} disabled={isProcessing} className="p-2.5 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105 disabled:opacity-50" title="Batalkan Pesanan"><IconX className="w-4 h-4" strokeWidth={3} /></button>
                                                    </>
                                                 )}
                                                 {order?.status === 'Diproses Server' && (
@@ -2245,7 +2257,7 @@
                                                         <button onClick={()=>handleBlockMember(m.id, m.isBlocked)} className={`p-2 rounded-xl transition tooltip shadow-sm border hover:scale-105 ${m.isBlocked ? 'bg-gray-200 dark:bg-white/10 text-main border-theme hover:bg-gray-300 dark:hover:bg-white/20' : 'bg-primary-light text-primary border-primary/30 hover:bg-primary hover:text-white'}`} title={m.isBlocked ? 'Buka Blokir Akun' : 'Blokir Akun'}>
                                                             <IconBlock className="w-4 h-4"/>
                                                         </button>
-                                                        <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-50 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Hapus Permanen">
+                                                        <button onClick={()=>handleDeleteMember(m.id)} className="p-2 bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 rounded-xl hover:bg-red-500 hover:text-white transition tooltip shadow-sm hover:scale-105" title="Hapus Permanen">
                                                             <IconTrash className="w-4 h-4"/>
                                                         </button>
                                                      </div>
@@ -2300,7 +2312,7 @@
                                                       </div>
                                                       <div className="flex justify-between items-end border-t border-primary/20 pt-3">
                                                           <span className="text-[9px] font-black uppercase bg-emerald-500 text-white px-2 py-0.5 rounded shadow-sm">Aktif</span>
-                                                          <button onClick={() => requestConfirm('Cabut status reseller dari pengguna ini? Harga akan kembali normal.', () => handleResellerAction(m.id, 'revoke'), 'Cabut Status')} className="text-[9px] text-red-600 bg-red-500/10 px-2 py-1 rounded font-bold hover:bg-red-50 hover:text-white transition">Berhentikan</button>
+                                                          <button onClick={() => requestConfirm('Cabut status reseller dari pengguna ini? Harga akan kembali normal.', () => handleResellerAction(m.id, 'revoke'), 'Cabut Status')} className="text-[9px] text-red-600 bg-red-500/10 px-2 py-1 rounded font-bold hover:bg-red-500 hover:text-white transition">Berhentikan</button>
                                                       </div>
                                                   </div>
                                               ))}
@@ -2442,7 +2454,7 @@
                                                 <p className="text-xs font-medium text-main bg-gray-50 dark:bg-black/50 p-3 rounded-xl border border-theme mb-3 leading-relaxed shadow-inner">{f.text}</p>
                                                 <div className="flex justify-end gap-2 border-t border-theme pt-3">
                                                     {f.status === 'Unread' && <button onClick={()=>handleMarkFeedbackRead(f.id)} className="text-[9px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold px-3 py-1.5 rounded hover:bg-emerald-500 hover:text-white transition shadow-sm border border-emerald-500/20">Tandai Dibaca</button>}
-                                                    <button onClick={()=>handleDeleteFeedback(f.id)} className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded hover:bg-red-50 hover:text-white transition shadow-sm border border-red-500/20">Hapus</button>
+                                                    <button onClick={()=>handleDeleteFeedback(f.id)} className="text-[9px] bg-red-500/10 text-red-600 dark:text-red-400 font-bold px-3 py-1.5 rounded hover:bg-red-500 hover:text-white transition shadow-sm border border-red-500/20">Hapus</button>
                                                 </div>
                                             </div>
                                         ))}
@@ -2546,11 +2558,11 @@
                            </div>
                         )}
 
-                        {/* TAB: DATABASE GOOGLE -> DIGANTI NAMA "INTEGRASI API KEY" */}
+                        {/* TAB: INTEGRASI API KEY (Sebelumnya Database Google) */}
                         {activeAdminTab === 'database' && (
                             <div className="animate-slide-down flex flex-col h-full w-full p-2 lg:p-6 bg-gray-50 dark:bg-black/20 rounded-[2.5rem] border border-theme shadow-inner">
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                                    <h2 className="text-2xl font-black text-main flex items-center gap-2 drop-shadow-sm"><IconDatabase className="w-6 h-6 text-primary"/> Integrasi API Key & Webhook</h2>
+                                    <h2 className="text-2xl font-black text-main flex items-center gap-2 drop-shadow-sm"><IconDatabase className="w-6 h-6 text-primary"/> Integrasi API KEY</h2>
                                     <div className="flex bg-card border border-theme p-1 rounded-xl shadow-sm">
                                         <button onClick={()=>setMiniSheetTab('config')} className={`px-4 py-2 text-xs font-bold rounded-lg transition ${miniSheetTab==='config' ? 'bg-primary text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>Konfigurasi API</button>
                                         <button onClick={()=>setMiniSheetTab('preview')} className={`px-4 py-2 text-xs font-bold rounded-lg transition ${miniSheetTab==='preview' ? 'bg-primary text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>Preview Sheet Data</button>
@@ -2566,7 +2578,7 @@
                                             <div className="space-y-4 relative z-10">
                                                 <div>
                                                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-2">Google Apps Script URL (Webhook)</label>
-                                                    <input type="text" value={adminGasUrl} onChange={(e)=>setAdminGasUrl(e.target.value)} className="w-full bg-black/50 border border-gray-700 text-white rounded-xl p-3 text-xs font-mono focus:border-primary outline-none transition" placeholder="https://script.google.com/macros/s/..." />
+                                                    <input type="text" value={adminGasUrl || ''} onChange={(e)=>setAdminGasUrl(e.target.value)} className="w-full bg-black/50 border border-gray-700 text-white rounded-xl p-3 text-xs font-mono focus:border-primary outline-none transition" placeholder="https://script.google.com/macros/s/..." />
                                                 </div>
                                                 <button onClick={saveSettings} className="bg-primary hover:bg-primary-hover text-white px-5 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition shadow-lg w-full">Simpan Konfigurasi Webhook</button>
                                             </div>
@@ -2600,13 +2612,13 @@
                                         </div>
                                         <div className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2">
                                             <div className="text-gray-500 mb-4">root@vipercell-server:~# connect_webhook_gas</div>
-                                            {dbLogs.map((log, i) => (
+                                            {(dbLogs || []).map((log, i) => (
                                                 <div key={i} className="flex gap-3">
                                                     <span className="text-gray-600 shrink-0">[{log.time}]</span>
                                                     <span className={`${log.type === 'error' ? 'text-red-400' : log.type === 'success' ? 'text-green-400' : 'text-blue-300'}`}>{log.msg}</span>
                                                 </div>
                                             ))}
-                                            {dbLogs.length === 0 && <div className="text-gray-600 animate-pulse">Menunggu aktivitas webhook...</div>}
+                                            {(!dbLogs || dbLogs.length === 0) && <div className="text-gray-600 animate-pulse">Menunggu aktivitas webhook...</div>}
                                         </div>
                                     </div>
                                 </div>
@@ -2619,33 +2631,33 @@
                                             <button onClick={() => { setPreviewType('prepaid'); fetchSheetDataForPreview(); }} disabled={isProcessing} className={`px-4 py-2 text-xs font-bold rounded-lg transition ${previewType==='prepaid' ? 'bg-primary text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>Lihat Prabayar</button>
                                             <button onClick={() => { setPreviewType('postpaid'); fetchSheetDataForPreview(); }} disabled={isProcessing} className={`px-4 py-2 text-xs font-bold rounded-lg transition ${previewType==='postpaid' ? 'bg-purple-600 text-white' : 'text-sub-theme hover:bg-gray-100 dark:hover:bg-white/5'}`}>Lihat Pascabayar</button>
                                         </div>
-                                        <button onClick={migrateSheetToFirebase} disabled={isMigrating || googleSheetData.length === 0} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-5 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-md transition disabled:opacity-50 flex items-center gap-2">
+                                        <button onClick={migrateSheetToFirebase} disabled={isMigrating || !googleSheetData || googleSheetData.length === 0} className="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-5 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-md transition disabled:opacity-50 flex items-center gap-2">
                                             {isMigrating ? <IconLoader className="w-4 h-4 animate-spin"/> : <><IconUpload className="w-4 h-4"/> Publish Permanen ke Website</>}
                                         </button>
                                     </div>
 
                                     <div className="flex-1 bg-white dark:bg-[#0a0a0a] rounded-2xl border border-theme shadow-inner overflow-hidden flex flex-col relative render-optimized">
-                                        {googleSheetData && googleSheetData.length > 0 && Array.isArray(googleSheetData[0]) ? (
+                                        {(googleSheetData || []).length > 0 ? (
                                             <div className="overflow-auto custom-scrollbar flex-1 w-full relative">
                                                 <table className="w-full text-left text-xs whitespace-nowrap min-w-[800px]">
                                                     <thead className="bg-gray-100 dark:bg-gray-900 text-main font-black sticky top-0 shadow-sm z-10 border-b border-theme">
                                                         <tr>
-                                                            {googleSheetData[0].map((header, idx) => (
+                                                            {((googleSheetData || [])[0] || []).map((header, idx) => (
                                                                 <th key={idx} className="px-4 py-3 border-r border-theme last:border-r-0">{header}</th>
                                                             ))}
                                                         </tr>
                                                     </thead>
                                                     <tbody className="divide-y divide-theme text-sub-theme font-medium font-mono">
-                                                        {googleSheetData.slice(1, 100).map((row, rowIndex) => (
+                                                        {(googleSheetData || []).slice(1, 100).map((row, rowIndex) => (
                                                             <tr key={rowIndex} className="hover:bg-gray-50 dark:hover:bg-white/[0.02]">
-                                                                {Array.isArray(row) ? row.map((cell, cellIndex) => (
+                                                                {(row || []).map((cell, cellIndex) => (
                                                                     <td key={cellIndex} className="px-4 py-2 border-r border-theme last:border-r-0 truncate max-w-[200px]">{cell}</td>
-                                                                )) : null}
+                                                                ))}
                                                             </tr>
                                                         ))}
                                                     </tbody>
                                                 </table>
-                                                {googleSheetData.length > 100 && (
+                                                {(googleSheetData || []).length > 100 && (
                                                     <div className="text-center py-3 text-[10px] text-sub-theme font-bold bg-gray-50 dark:bg-gray-900 border-t border-theme sticky bottom-0">
                                                         Menampilkan 100 dari {googleSheetData.length - 1} baris data. Klik 'Publish' untuk memproses semuanya.
                                                     </div>
@@ -2663,7 +2675,7 @@
                                 )}
                             </div>
                         )}
-
+                        
                         {/* TAB: PENGATURAN WEB (Global & Banners & Theme) */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-slide-down space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
