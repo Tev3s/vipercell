@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Vipercell">
-  <title>Vipercell v16.9 Enterprise (Smart Cashier & Cinema)</title>
+  <title>Vipercell v16.9.5 Enterprise (Smart Cashier & Cinema)</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -106,7 +106,7 @@
     .sidebar-overlay.open { opacity: 1; pointer-events: auto; } 
     .sidebar-overlay.closed { opacity: 0; pointer-events: none; }
     
-    /* NEW TICKET CSS (TEAR-OFF STYLE) */
+    /* TICKET CSS */
     .cinema-ticket { display: flex; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); border-radius: 1.5rem; overflow: hidden; background: transparent; margin-bottom: 1rem; cursor: pointer; transition: transform 0.2s; }
     .cinema-ticket:hover { transform: scale(1.02); }
     .cinema-ticket-left { flex: 1; padding: 1.5rem; position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-right: none; border-radius: 1.5rem 0 0 1.5rem; }
@@ -163,6 +163,14 @@
       for (let i = 0; i < qris.length; i++) { crc ^= qris.charCodeAt(i) << 8; for (let j = 0; j < 8; j++) { if ((crc & 0x8000) !== 0) crc = ((crc << 1) ^ 0x1021) & 0xFFFF; else crc = (crc << 1) & 0xFFFF; } }
       return qris + crc.toString(16).toUpperCase().padStart(4, '0');
     };
+    
+    // API QR Server URL
+    const generateDynamicQRISUrl = (baseQRIS, amount) => {
+        if(!baseQRIS) return "";
+        const qrisString = generateDynamicQRIS(baseQRIS, amount);
+        return `https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=${encodeURIComponent(qrisString)}&margin=10`;
+    }
+
     const compressImage = async (fileOrDataUrl, maxWidth = 800) => {
       return new Promise((resolve) => {
         const processImg = (src) => {
@@ -272,9 +280,36 @@
         return ( <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200"> <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center relative overflow-hidden shadow-2xl"> <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 border ${colors.bg} ${colors.text} ${colors.border}`}><TheIcon className="w-8 h-8" /></div> <h3 className="text-xl font-black mb-2 text-main">{title}</h3> <p className="text-sm text-sub-theme mb-8 font-medium">{message}</p> <div className="flex gap-3"> <button onClick={onCancel} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-navy-800 hover:bg-gray-300 dark:hover:bg-navy-700 transition text-main text-sm border border-theme">Batal</button> <button onClick={onConfirm} className={`flex-1 py-3.5 rounded-xl font-black text-white shadow-lg transition text-sm ${colors.btn}`}>{confirmText}</button> </div> </div> </div> ) 
     }
     
+    // WA OTP Modal (New)
+    const OtpModal = ({ isOpen, phone, expectedOtp, onSuccess, onCancel }) => {
+        const [inputOtp, setInputOtp] = useState('');
+        const [error, setError] = useState('');
+        useEffect(() => { setInputOtp(''); setError(''); }, [isOpen]);
+        if (!isOpen) return null;
+        const handleVerify = () => {
+            if(inputOtp === expectedOtp) { onSuccess(); } 
+            else { setError('Kode OTP Salah!'); setTimeout(()=>setError(''), 2000); }
+        };
+        return (
+            <div className="fixed inset-0 z-[11000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200">
+                <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center shadow-2xl">
+                    <div className="w-16 h-16 bg-green-500/10 text-green-500 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/20"><IconWhatsapp className="w-8 h-8" /></div>
+                    <h3 className="text-2xl font-black text-main mb-2">Verifikasi OTP</h3>
+                    <p className="text-xs text-sub-theme mb-6">Kami telah mengirimkan 6 digit kode OTP ke nomor WhatsApp <b>{phone}</b>.</p>
+                    <input type="number" maxLength="6" value={inputOtp} onChange={(e)=>setInputOtp(e.target.value.slice(0,6))} placeholder="Ketik 6 Digit OTP..." className="w-full text-center text-2xl tracking-[0.5em] font-black input-theme rounded-2xl py-4 focus:border-primary shadow-inner mb-2"/>
+                    {error && <p className="text-red-500 text-xs font-black mb-4 animate-pulse">{error}</p>}
+                    <div className="flex gap-3 mt-6">
+                        <button onClick={onCancel} className="flex-1 py-3.5 rounded-xl font-bold bg-gray-200 dark:bg-navy-800 text-main text-xs uppercase border border-theme hover:bg-gray-300 dark:hover:bg-navy-700 transition">Batal</button>
+                        <button onClick={handleVerify} disabled={inputOtp.length < 6} className="flex-[2] py-3.5 rounded-xl font-black bg-primary hover:bg-primary-hover text-white text-xs uppercase shadow-lg disabled:opacity-50 transition">Verifikasi</button>
+                    </div>
+                </div>
+            </div>
+        )
+    };
+
     const GoogleSetupModal = ({ isOpen, isNew, existingData, onSubmit, onCancel, loading }) => { const [phone, setPhone] = useState(''); const [password, setPassword] = useState(''); const [showPass, setShowPass] = useState(false); if(!isOpen) return null; return ( <div className="fixed inset-0 z-[12000] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-200"> <div className="clean-card p-6 md:p-8 max-w-sm w-full relative shadow-2xl border-primary/50"> <div className="w-16 h-16 bg-primary-light text-primary rounded-full flex items-center justify-center mx-auto mb-4 border border-primary/20"> <IconShieldAlert className="w-8 h-8" /> </div> <h3 className="text-xl font-black text-center mb-2 text-main">Pengamanan Akun</h3> <p className="text-xs text-sub-theme text-center mb-6">Demi keamanan dan kelengkapan data, pengguna Google {isNew ? 'baru' : 'lama'} wajib memiliki Nomor HP unik dan Kata Sandi cadangan.</p> <form onSubmit={(e) => onSubmit(e, phone, password)} className="space-y-4"> <div className="relative group"> <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /> <input type="tel" required value={phone} onChange={(e)=>{ const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setPhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm" placeholder="No HP/WA (10-13 Angka)" /> </div> <div className="relative group"> <IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /> <input type={showPass?"text":"password"} required minLength="6" value={password} onChange={(e)=>setPassword(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-12 text-sm" placeholder="Sandi Cadangan (Min. 6)" /> <button type="button" onClick={()=>setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-sub-theme hover:text-main">{showPass ? <IconEyeOff className="w-5 h-5"/>:<IconEye className="w-5 h-5"/>}</button> </div> <div className="flex gap-3 mt-6"> <button type="button" onClick={onCancel} disabled={loading} className="flex-1 py-4 rounded-2xl font-bold bg-gray-200 dark:bg-navy-800 text-main text-xs uppercase border border-theme hover:bg-gray-300 dark:hover:bg-navy-700 transition">Batal</button> <button type="submit" disabled={loading || phone.length < 10 || password.length < 6} className="flex-[1.5] py-4 rounded-2xl font-black bg-primary hover:bg-primary-hover text-white shadow-lg text-xs uppercase disabled:opacity-50 transition">{loading ? <IconLoader className="w-5 h-5 mx-auto animate-spin"/> : 'Simpan Data'}</button> </div> </form> </div> </div> ) }
     
-    // UPDATED: Keyboard Support for PinModal
+    // PinModal Component
     const PinModal = ({ isOpen, mode, expectedPin, onSuccess, onCancel }) => { 
         const [pin, setPin] = useState(''); 
         const [error, setError] = useState(''); 
@@ -320,7 +355,7 @@
     const OrderSummaryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => { if(!isOpen || !data) return null; return ( <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200"> <div className="clean-card w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl"> <div className="bg-gradient-to-r from-primary to-navy-800 p-6 text-center border-b border-primary/30"> <h3 className="font-black text-xl text-white uppercase tracking-widest">Detail Pesanan</h3> </div> <div className="p-6 md:p-8 space-y-6 bg-card"> <div className="flex items-center gap-4 bg-gray-50 dark:bg-navy-800/50 p-4 rounded-2xl border border-theme shadow-inner"> <img src={data.gameImage} className="w-14 h-14 rounded-xl object-cover border border-theme shadow-sm" /> <div><div className="font-black text-base text-main">{data.gameName}</div><div className="text-xs text-primary font-bold">{data.itemName}</div></div> </div> <div className="space-y-3 text-sm"> <div className="flex justify-between items-center"><span className="text-sub-theme text-xs font-bold">Tujuan Pengisian</span><span className="font-mono font-black text-main bg-gray-100 dark:bg-navy-900 px-2 py-1 rounded border border-theme shadow-sm">{data.userId} {data.zoneId ? `(${data.zoneId})` : ''}</span></div> {data.nickname && <div className="flex justify-between items-center bg-primary-light p-2.5 rounded-xl border border-primary/20 shadow-sm"><span className="text-primary font-black uppercase text-xs">Nickname</span><span className="font-black text-main">{data.nickname}</span></div>} <div className="flex justify-between items-center"><span className="text-sub-theme text-xs font-bold">Metode Pembayaran</span><span className="font-black text-primary">{data.paymentName}</span></div> {data.usedCashback > 0 && <div className="flex justify-between items-center text-emerald-600 dark:text-emerald-500"><span className="text-xs font-bold">Cashback Terpakai</span><span className="font-mono font-black">- {formatRupiah(data.usedCashback)}</span></div>} </div> <div className="border-t border-theme pt-5 pb-2 flex justify-between items-end"> <span className="text-sub-theme text-xs font-black uppercase tracking-widest">Total Tagihan</span> <span className="text-2xl font-black text-emerald-600 dark:text-emerald-500 font-mono drop-shadow-sm">{formatRupiah(data.finalPrice)}</span> </div> <div className="flex gap-3 pt-4"> <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-gray-200 dark:bg-navy-800 text-main hover:bg-gray-300 dark:hover:bg-navy-700 transition text-xs uppercase border border-theme shadow-sm">Batal</button> <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white flex justify-center items-center gap-2 text-xs uppercase transition shadow-lg shadow-emerald-500/30 disabled:opacity-50">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Konfirmasi & Bayar'}</button> </div> </div> </div> </div> ) }
     const PostpaidInquiryModal = ({ isOpen, data, onConfirm, onCancel, isProcessing }) => { if(!isOpen || !data) return null; return ( <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200"> <div className="clean-card w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border-t-4 border-t-emerald-500"> <div className="p-6 md:p-8 space-y-6 bg-card"> <div className="text-center mb-6"> <div className="w-16 h-16 bg-emerald-500/10 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4"><IconSearch className="w-8 h-8"/></div> <h3 className="font-black text-2xl text-main">Rincian Tagihan</h3> <p className="text-xs text-sub-theme">Data ditemukan. Pastikan detail di bawah ini sudah benar sebelum membayar.</p> </div> <div className="bg-gray-50 dark:bg-navy-900 border border-theme rounded-2xl p-5 space-y-3 shadow-inner text-sm"> <div className="flex justify-between items-center border-b border-theme pb-2"><span className="text-sub-theme font-bold text-xs">Pelanggan</span><span className="font-black text-main">{data.customer_name}</span></div> <div className="flex justify-between items-center border-b border-theme pb-2"><span className="text-sub-theme font-bold text-xs">Periode</span><span className="font-black text-main">{data.desc?.detail?.[0]?.periode || '-'}</span></div> <div className="flex justify-between items-center pt-2"><span className="text-sub-theme font-bold text-xs">Total Pembayaran</span><span className="font-black text-emerald-600 dark:text-emerald-500 text-xl font-mono">{formatRupiah(data.price)}</span></div> </div> <div className="flex gap-3 pt-2"> <button onClick={onCancel} disabled={isProcessing} className="flex-1 py-4 rounded-xl font-bold bg-gray-200 dark:bg-navy-800 text-main hover:bg-gray-300 dark:hover:bg-navy-700 transition text-xs uppercase border border-theme shadow-sm">Tutup</button> <button onClick={onConfirm} disabled={isProcessing} className="flex-[2] py-4 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white flex items-center justify-center gap-2 text-xs uppercase transition shadow-lg shadow-emerald-500/30 disabled:opacity-50">{isProcessing ? <IconLoader className="w-5 h-5 animate-spin"/> : 'Lanjut Bayar'}</button> </div> </div> </div> </div> ) }
     const OrderSuccessModal = ({ isOpen, onToHistory, onDone }) => { if(!isOpen) return null; return ( <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in zoom-in-95 duration-200"> <div className="clean-card p-6 md:p-8 max-w-sm w-full text-center border-2 border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.2)]"> <div className="w-24 h-24 bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner"><IconCheckCircle className="w-12 h-12"/></div> <h3 className="text-2xl font-black text-main mb-2">Pesanan Berhasil Dibuat</h3> <p className="text-xs text-sub-theme mb-8 font-medium px-4">Segera lakukan pembayaran sesuai instruksi pada tiket tagihan Anda.</p> <div className="flex gap-3"> <button onClick={onDone} className="flex-1 py-4 rounded-xl font-bold bg-gray-100 dark:bg-navy-800 text-main border border-theme hover:bg-gray-200 dark:hover:bg-navy-700 transition text-xs uppercase shadow-sm">Selesai</button> <button onClick={onToHistory} className="flex-[1.5] py-4 rounded-xl font-black bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-lg shadow-emerald-600/30 text-xs uppercase tracking-widest hover:scale-[1.02]">Lihat Tagihan</button> </div> </div> </div> ) }
-    const MainFooter = ({ socialLinks, appName }) => { return ( <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative"> <div className="max-w-4xl mx-auto"> <div className="flex items-center justify-center gap-2 mb-4"> <IconZap className="w-6 h-6 text-primary" /> <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-primary">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span> </div> <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya.</p> <div className="flex justify-center gap-4 mb-8 flex-wrap"> {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-pink-600 hover:text-white transition shadow-sm hover:scale-110"><IconInstagram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-green-500 hover:text-white transition shadow-sm hover:scale-110"><IconWhatsapp className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition shadow-sm hover:scale-110"><IconTiktok className="w-5 h-5 text-sub-theme group-hover:text-white dark:group-hover:text-black"/></a>} {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-blue-600 hover:text-white transition shadow-sm hover:scale-110"><IconFacebook className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-blue-400 hover:text-white transition shadow-sm hover:scale-110"><IconTelegram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-red-600 hover:text-white transition shadow-sm hover:scale-110"><IconYoutube className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} </div> <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-gray-200 dark:bg-navy-800 rounded-md font-mono text-[9px] text-main border border-theme ml-2 shadow-inner">v16.9 Enterprise</span></div> </div> </footer> ) }
+    const MainFooter = ({ socialLinks, appName }) => { return ( <footer className="mt-auto border-t border-theme bg-main pt-12 pb-8 px-6 text-center z-10 relative"> <div className="max-w-4xl mx-auto"> <div className="flex items-center justify-center gap-2 mb-4"> <IconZap className="w-6 h-6 text-primary" /> <span className="text-xl font-black tracking-wider text-main">{(appName||'VIPERCELL').substring(0, Math.floor((appName||'VIPERCELL').length/2))}<span className="text-primary">{(appName||'VIPERCELL').substring(Math.floor((appName||'VIPERCELL').length/2))}</span></span> </div> <p className="text-sub-theme text-sm mb-6 max-w-2xl mx-auto font-medium">Platform penyedia layanan top up game tercepat, termurah, dan terpercaya.</p> <div className="flex justify-center gap-4 mb-8 flex-wrap"> {socialLinks?.ig && <a href={socialLinks.ig} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-pink-600 hover:text-white transition shadow-sm hover:scale-110"><IconInstagram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.wa && <a href={socialLinks.wa} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-green-500 hover:text-white transition shadow-sm hover:scale-110"><IconWhatsapp className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tt && <a href={socialLinks.tt} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black transition shadow-sm hover:scale-110"><IconTiktok className="w-5 h-5 text-sub-theme group-hover:text-white dark:group-hover:text-black"/></a>} {socialLinks?.fb && <a href={socialLinks.fb} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-blue-600 hover:text-white transition shadow-sm hover:scale-110"><IconFacebook className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.tg && <a href={socialLinks.tg} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-blue-400 hover:text-white transition shadow-sm hover:scale-110"><IconTelegram className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} {socialLinks?.yt && <a href={socialLinks.yt} target="_blank" className="p-3 bg-gray-100 dark:bg-navy-800 border border-theme rounded-2xl hover:bg-red-600 hover:text-white transition shadow-sm hover:scale-110"><IconYoutube className="w-5 h-5 text-sub-theme group-hover:text-white"/></a>} </div> <div className="text-xs text-sub-theme font-bold uppercase tracking-widest">&copy; {new Date().getFullYear()} {appName||'Vipercell'}. <span className="px-2 py-0.5 bg-gray-200 dark:bg-navy-800 rounded-md font-mono text-[9px] text-main border border-theme ml-2 shadow-inner">v16.9.5 Enterprise</span></div> </div> </footer> ) }
     const BannerSlider = ({ items }) => { const [curr, setCurr] = useState(0); const [isPaused, setIsPaused] = useState(false); const [isMuted, setIsMuted] = useState(true); const [expanded, setExpanded] = useState(false); const playerRef = useRef(null); const videoRef = useRef(null); const [touchStart, setTouchStart] = useState(0); const [touchEnd, setTouchEnd] = useState(0); useEffect(() => { if((items||[]).length <= 1 || isPaused) return; const t = setInterval(() => { setCurr(c => (c+1)%(items||[]).length); setExpanded(false); }, 6000); return () => clearInterval(t); }, [(items||[]).length, isPaused]); useEffect(() => { if(videoRef.current) { videoRef.current.muted = isMuted; } }, [isMuted, curr]); useEffect(() => { if (!items || items.length === 0) return; const currentItem = items[curr]; if(currentItem?.type === 'youtube') { setIsPaused(true); if(window.YT && window.YT.Player) { try { if(playerRef.current && typeof playerRef.current.destroy === 'function') playerRef.current.destroy(); playerRef.current = new window.YT.Player(`yt-player-${curr}`, { videoId: getYouTubeId(currentItem.url), playerVars: { autoplay: 1, controls: 0, mute: isMuted ? 1 : 0, rel: 0, showinfo: 0, loop: 1, playlist: getYouTubeId(currentItem.url) }, events: { onReady: (e) => { if(!isMuted) e.target.unMute(); }, onStateChange: (e) => { if (e.data === window.YT.PlayerState.ENDED) { setCurr(c => (c+1)%items.length); setIsPaused(false); } } } }); } catch(e) { setIsPaused(false); } } else { setTimeout(()=> { setCurr(c => (c+1)%items.length); setIsPaused(false); }, 10000); } } else if (currentItem?.type === 'video' || ((currentItem?.url||'').match(/\.(mp4|webm)$/i))) { setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } if(videoRef.current) { videoRef.current.muted = isMuted; videoRef.current.play().catch(e => {}); videoRef.current.onended = () => { setCurr(c => (c+1)%items.length); setIsPaused(false); }; } } else if (currentItem?.type === 'tiktok') { setIsPaused(true); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } } else { setIsPaused(false); if(playerRef.current && typeof playerRef.current.destroy === 'function') { playerRef.current.destroy(); playerRef.current = null; } } }, [curr, items]); if (!items || items.length === 0) return null; const handleTouchEnd = () => { if (!touchStart || !touchEnd) return; const distance = touchStart - touchEnd; if (distance > 50) setCurr(c => (c === items.length - 1 ? 0 : c + 1)); if (distance < -50) setCurr(c => (c === 0 ? items.length - 1 : c - 1)); setTouchStart(0); setTouchEnd(0); }; return ( <div className="w-full h-56 md:h-80 rounded-[2.5rem] overflow-hidden relative bg-navy-950 cursor-pointer border border-theme shadow-xl" onClick={(e) => { if(e.target.tagName !== 'IFRAME') { if (items[curr]?.targetLink) window.open(items[curr].targetLink, '_blank'); else setExpanded(!expanded); } }} onTouchStart={(e) => setTouchStart(e.targetTouches[0].clientX)} onTouchMove={(e) => setTouchEnd(e.targetTouches[0].clientX)} onTouchEnd={handleTouchEnd}> {items.map((b, i) => ( <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === curr ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}> {b.type === 'youtube' ? ( <div id={`yt-player-${i}`} className="w-full h-full object-cover pointer-events-none opacity-90 scale-105"></div> ) : b.type === 'tiktok' ? ( <iframe src={`https://www.tiktok.com/embed/v2/${getTikTokId(b.url)}`} className="w-full h-full opacity-95 border-none pointer-events-auto" allow="autoplay; encrypted-media" allowFullScreen></iframe> ) : (b.type === 'video' || ((b.url||'').match(/\.(mp4|webm)$/i))) ? ( <video ref={i === curr ? videoRef : null} src={b.url} className="w-full h-full object-cover opacity-90" playsInline loop autoPlay={i===curr} /> ) : ( <img src={b.url} className="w-full h-full object-cover opacity-90 pointer-events-none" /> )} {(b.title || b.desc) && b.type !== 'tiktok' && ( <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent flex flex-col justify-end p-6 md:p-8 z-20 pointer-events-none"> {b.title && <h3 className={`text-xl md:text-3xl font-black text-white drop-shadow-md transition-all duration-500 ${expanded ? '-translate-y-2' : 'translate-y-4'}`}>{b.title}</h3>} {b.desc && <div className={`overflow-hidden transition-all duration-500 ${expanded ? 'max-h-40 opacity-100 mt-2' : 'max-h-0 opacity-0'}`}><p className="text-xs md:text-sm text-gray-200 drop-shadow-md">{b.desc}</p></div>} {!expanded && !b.targetLink && <div className="text-[9px] text-white/70 animate-pulse mt-4 flex items-center gap-1 font-bold"><IconChevronUp className="w-3 h-3"/> Klik/Usap banner</div>} {b.targetLink && <div className="text-[9px] text-primary-light font-bold uppercase tracking-widest mt-4 flex items-center gap-1 drop-shadow-md"><IconTag className="w-3 h-3"/> Kunjungi Tautan</div>} </div> )} </div> ))} {(items[curr]?.type === 'youtube' || items[curr]?.type === 'video' || ((items[curr]?.url||'').match(/\.(mp4|webm)$/i))) && ( <button onClick={(e) => { e.stopPropagation(); setIsMuted(!isMuted); if (items[curr]?.type === 'youtube' && playerRef.current) { if (!isMuted) playerRef.current.mute(); else playerRef.current.unMute(); } }} className="absolute top-4 right-4 z-30 p-2.5 bg-black/60 rounded-xl text-white backdrop-blur-md border border-white/20 shadow-lg hover:bg-black/80 transition"> {isMuted ? <IconVolumeX className="w-4 h-4"/> : <IconVolume2 className="w-4 h-4"/>} </button> )} {items.length > 1 && ( <div className="absolute bottom-6 right-6 flex gap-2 z-30 bg-black/40 px-3 py-2 rounded-full backdrop-blur-sm border border-white/10"> {items.map((_, i) => ( <div key={i} onClick={(e)=>{e.stopPropagation(); setCurr(i); setExpanded(false);}} className={`h-2 rounded-full cursor-pointer transition-all ${i === curr ? 'w-6 bg-primary' : 'w-2 bg-white/50 hover:bg-white/80'}`}></div> ))} </div> )} </div> ); };
 
     function AppCore() {
@@ -349,12 +384,12 @@
 
       const [resellerStoreName, setResellerStoreName] = useState(''); const [resellerPhone, setResellerPhone] = useState('');
       
-      // VIPERCINEMA STATE (UPDATED SEATS)
+      // VIPERCINEMA STATE (MULTIPLE SEATS)
       const [cinemaMovies, setCinemaMovies] = useState([]);
       const [cinemaPolls, setCinemaPolls] = useState([]);
       const [cinemaBookings, setCinemaBookings] = useState([]);
       const [activeCinemaMovie, setActiveCinemaMovie] = useState(null);
-      const [selectedSeat, setSelectedSeat] = useState(null);
+      const [selectedSeats, setSelectedSeats] = useState([]); // ARRAY OF SEATS
       const [activeCinemaTab, setActiveCinemaTab] = useState('nowplaying');
       const [adminCinemaTab, setAdminCinemaTab] = useState('movies');
       const [adminCinemaForm, setAdminCinemaForm] = useState({ title: '', poster: '', priceReg: '', priceVip: '', showTime: '', vipSeats: 5, regSeats: 15 });
@@ -369,7 +404,10 @@
       
       const [isStoreOpen, setIsStoreOpen] = useState(true); 
       const [isCinemaOpen, setIsCinemaOpen] = useState(true);
-      const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]); const [blogs, setBlogs] = useState([]); const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' }); const [globalConfig, setGlobalConfig] = useState({ appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', baseQris: '', waGatewayUrl: '', waApiKey: '' });
+      const [games, setGames] = useState([]); const [items, setItems] = useState([]); const [promos, setPromos] = useState([]); const [banners, setBanners] = useState([]); const [galleryData, setGalleryData] = useState([]); const [runningTexts, setRunningTexts] = useState([]); const [blogs, setBlogs] = useState([]); const [socialLinks, setSocialLinks] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '' }); 
+      
+      // CONFIG & API Endpoints
+      const [globalConfig, setGlobalConfig] = useState({ appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', baseQris: '', waGatewayUrl: '', waApiKey: '', apiGamesKey: '', waEndpoint: '', adminWaNumbers: [] });
       const [adminList, setAdminList] = useState([]); const [allGlobalOrders, setAllGlobalOrders] = useState([]); const [memberList, setMemberList] = useState([]); const [adminChats, setAdminChats] = useState([]); const [loadingAdminChats, setLoadingAdminChats] = useState(true); const [adminFeedbacks, setAdminFeedbacks] = useState([]);
       const [userChat, setUserChat] = useState(null);
       const isSuperAdmin = authUser?.email === ADMIN_EMAIL; const isAdmin = isSuperAdmin || (adminList || []).includes(authUser?.email);
@@ -379,11 +417,14 @@
       const [editingItemId, setEditingItemId] = useState(null); const [newItemName, setNewItemName] = useState(''); const [newItemPrice, setNewItemPrice] = useState(''); const [newResellerPrice, setNewResellerPrice] = useState('');
       const [editingGameId, setEditingGameId] = useState(null); const [newGameId, setNewGameId] = useState(''); const [newGameName, setNewGameName] = useState(''); const [newGameDev, setNewGameDev] = useState(''); const [newGameImg, setNewGameImg] = useState(''); const [newGameInput, setNewGameInput] = useState('id_zone'); const [newGameCategory, setNewGameCategory] = useState('game'); const [uploadingGameImg, setUploadingGameImg] = useState(false); const [newGameInquirySku, setNewGameInquirySku] = useState('');
       
-      const [apiEnv, setApiEnv] = useState('production');
-      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [adminGasUrl, setAdminGasUrl] = useState(''); const [dbLogs, setDbLogs] = useState([]);
+      const [adminGasUrl, setAdminGasUrl] = useState(''); 
+      const [adminWaEndpoint, setAdminWaEndpoint] = useState('');
+      const [newAdminWa, setNewAdminWa] = useState('');
+      const [isSyncingDigiflazz, setIsSyncingDigiflazz] = useState(false); const [markupForm, setMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [bulkMarkupForm, setBulkMarkupForm] = useState({ type: 'fixed', value: '', resellerValue: '' }); const [dbLogs, setDbLogs] = useState([]);
       
       const [adminBannerUrl, setAdminBannerUrl] = useState(''); const [adminBannerType, setAdminBannerType] = useState('image'); const [adminBannerTitle, setAdminBannerTitle] = useState(''); const [adminBannerDesc, setAdminBannerDesc] = useState(''); const [adminBannerLink, setAdminBannerLink] = useState('');
-      const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6', baseQris: '', waGatewayUrl: '', waApiKey: '' }); const [adminApiKey, setAdminApiKey] = useState(''); 
+      const [adminSettingsForm, setAdminSettingsForm] = useState({ ig: '', wa: '', tt: '', fb: '', tg: '', yt: '', appName: 'VIPERCELL', cashbackPercent: 0, primaryColor: '#3b82f6', baseQris: ''}); 
+      const [adminApiKey, setAdminApiKey] = useState(''); 
       const [promoModalType, setPromoModalType] = useState('item'); const [promoForm, setPromoForm] = useState({ code: '', type: 'percentage', discount: '', maxUses: '', minPurchase: '', targetItems: [], targetGame: '', startTime: '', endTime: '', stock: '', targetDay: '5' }); const [promoTargetItem, setPromoTargetItem] = useState(''); const [promoTargetGame, setPromoTargetGame] = useState('');
       const [adminOrderSearch, setAdminOrderSearch] = useState(''); const [adminMemberSearch, setAdminMemberSearch] = useState(''); const [adminChatSearch, setAdminChatSearch] = useState(''); const [adminMemberTab, setAdminMemberTab] = useState('all');
       const [isScannerOpen, setIsScannerOpen] = useState(false); const [cashConfirmModal, setCashConfirmModal] = useState({ isOpen: false, order: null }); const [selectedOrdersForDelete, setSelectedOrdersForDelete] = useState([]);
@@ -398,11 +439,38 @@
       const [postpaidData, setPostpaidData] = useState(null); const [isCheckingPostpaid, setIsCheckingPostpaid] = useState(false); const [postpaidModal, setPostpaidModal] = useState({ isOpen: false, data: null, payload: null });
       
       const [activeProfileTab, setActiveProfileTab] = useState('security');
+      const [otpModal, setOtpModal] = useState({ isOpen: false, phone: '', expectedOtp: '', onVerified: null });
 
       const logToDbConsole = (msg, type = 'info') => { setDbLogs(prev => { const newLogs = [...prev, { time: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit', second:'2-digit'}), msg, type }]; return newLogs.slice(-20); }); };
       const getDisplayPrice = (item) => currentUserData?.isReseller && item.resellerPrice ? item.resellerPrice : item.price;
+      
+      // WHATSAPP SENDER FUNCTION
+      const sendWhatsApp = async (phoneStr, msg, imgUrl = null) => {
+          if (!globalConfig?.waEndpoint || !phoneStr) return;
+          try {
+              let targetStr = phoneStr.trim();
+              if(targetStr.startsWith('0')) targetStr = '62' + targetStr.slice(1);
+              if(!targetStr.startsWith('62')) targetStr = '62' + targetStr;
+              
+              const payload = { target: targetStr, message: msg };
+              if(imgUrl) { payload.image = imgUrl; payload.type = "image"; }
+              else { payload.type = "text"; }
 
-      // ALGORITMA LAYANAN POPULER
+              await fetch(globalConfig.waEndpoint, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(payload)
+              });
+          } catch(e) { console.error("Gagal kirim WA", e); }
+      };
+
+      // OTP REQUEST FUNCTION
+      const requestOtpValidation = (phone, successCallback) => {
+          const generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+          sendWhatsApp(phone, `*VIPERCELL OTP*\n\nKode rahasia Anda adalah: *${generatedOtp}*.\nMohon jangan berikan kode ini kepada siapapun demi keamanan.`);
+          setOtpModal({ isOpen: true, phone: phone, expectedOtp: generatedOtp, onVerified: successCallback });
+      };
+
       const popularGameIds = useMemo(() => {
           const counts = {};
           (allGlobalOrders||[]).forEach(o => {
@@ -471,8 +539,8 @@
       };
 
       useEffect(() => { 
-          if (confirmModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || activeBlog || postpaidModal.isOpen || largeQrModal.isOpen) { document.body.style.overflow = 'hidden'; } else { document.body.style.overflow = 'auto'; } return () => { document.body.style.overflow = 'auto'; }; 
-      }, [ confirmModal.isOpen, pinModalState.isOpen, changePinModalOpen, checkoutSummary.isOpen, orderSuccessModal, isScannerOpen, adminTrxModal.isOpen, cashConfirmModal.isOpen, sysLoading.active, googleSetupModal.isOpen, activeBlog, postpaidModal.isOpen, largeQrModal.isOpen ]);
+          if (confirmModal.isOpen || pinModalState.isOpen || changePinModalOpen || checkoutSummary.isOpen || orderSuccessModal || isScannerOpen || adminTrxModal.isOpen || cashConfirmModal.isOpen || sysLoading.active || googleSetupModal.isOpen || activeBlog || postpaidModal.isOpen || largeQrModal.isOpen || otpModal.isOpen) { document.body.style.overflow = 'hidden'; } else { document.body.style.overflow = 'auto'; } return () => { document.body.style.overflow = 'auto'; }; 
+      }, [ confirmModal.isOpen, pinModalState.isOpen, changePinModalOpen, checkoutSummary.isOpen, orderSuccessModal, isScannerOpen, adminTrxModal.isOpen, cashConfirmModal.isOpen, sysLoading.active, googleSetupModal.isOpen, activeBlog, postpaidModal.isOpen, largeQrModal.isOpen, otpModal.isOpen ]);
       
       const greeting = useMemo(() => { const h = new Date().getHours(); if (h<11) return 'Pagi 🌅'; if (h<15) return 'Siang ☀️'; if (h<18) return 'Sore 🌇'; return 'Malam 🌙'; }, []);
       useEffect(() => { if (currentView === 'chat' && userChat?.status === 'Dijawab' && helpTab === 'chat') setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'support_chats', authUser.email), { status: 'Dibaca' }, { merge: true }).catch(()=>{}); }, [currentView, userChat, authUser, helpTab]);
@@ -484,12 +552,24 @@
       useEffect(() => { if ((games || []).length > 0 && !adminSelectedGame) setAdminSelectedGame((games[0]||{}).id); }, [games, adminSelectedGame]);
       useEffect(() => { if(currentView === 'chat' && helpTab === 'chat') chatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [userChat?.messages, currentView, helpTab]);
       useEffect(() => { if(activeChatEmail) adminChatEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [adminChats, activeChatEmail, adminReplyText]); 
-      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen || sysLoading.active) return; if(largeQrModal.isOpen) setLargeQrModal({isOpen:false, data:null}); else if(postpaidModal.isOpen) setPostpaidModal({isOpen:false, data:null, payload:null}); else if(activeBlog) setActiveBlog(null); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal, sysLoading.active, activeBlog, postpaidModal, largeQrModal]);
+      useEffect(() => { const handleKeyDown = (e) => { if (e.key === 'Escape') { if(googleSetupModal.isOpen || sysLoading.active || otpModal.isOpen) return; if(largeQrModal.isOpen) setLargeQrModal({isOpen:false, data:null}); else if(postpaidModal.isOpen) setPostpaidModal({isOpen:false, data:null, payload:null}); else if(activeBlog) setActiveBlog(null); else if (pinModalState.isOpen) setPinModalState({ isOpen: false, mode: 'setup', onSuccess: null, expectedPin: '' }); else if (changePinModalOpen) setChangePinModalOpen(false); else if (checkoutSummary.isOpen) setCheckoutSummary({ isOpen: false, data: null }); else if (orderSuccessModal) setOrderSuccessModal(false); else if (isScannerOpen) setIsScannerOpen(false); else if (adminTrxModal.isOpen) setAdminTrxModal({isOpen: false, order: null}); else if (cashConfirmModal.isOpen) setCashConfirmModal({isOpen: false, order: null}); else handleBack(); } }; window.addEventListener('keydown', handleKeyDown); return () => window.removeEventListener('keydown', handleKeyDown); }, [checkoutSummary, orderSuccessModal, isScannerOpen, pinModalState, changePinModalOpen, adminTrxModal, cashConfirmModal, selectedGame, viewHistory, googleSetupModal, sysLoading.active, activeBlog, postpaidModal, largeQrModal, otpModal.isOpen]);
 
       useEffect(() => {
           try {
               const unsubGlobal = onSnapshot(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), (snap) => {
-                 if (snap.exists()) { const d = snap.data(); setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', baseQris: '', waGatewayUrl: '', waApiKey: '', cinemaBellSound: '', ...d}); setIsStoreOpen(d.isOpen ?? true); setIsCinemaOpen(d.isCinemaOpen ?? true); setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); setBanners(Array.isArray(d.banners) ? d.banners : []); setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); if(d.gasUrl) setAdminGasUrl(d.gasUrl); } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, isCinemaOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6', waGatewayUrl: '', waApiKey: '', cinemaBellSound: '' }).catch(()=>{});
+                 if (snap.exists()) { 
+                    const d = snap.data(); 
+                    setGlobalConfig({appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, primaryColor: '#3b82f6', baseQris: '', waGatewayUrl: '', waApiKey: '', cinemaBellSound: '', apiGamesKey: '', waEndpoint: '', adminWaNumbers: [], ...d}); 
+                    setIsStoreOpen(d.isOpen ?? true); 
+                    setIsCinemaOpen(d.isCinemaOpen ?? true); 
+                    setSocialLinks({ ig: d.igLink||'', wa: d.waLink||'', tt: d.ttLink||'', fb: d.fbLink||'', tg: d.tgLink||'', yt: d.ytLink||'' }); 
+                    setRunningTexts(Array.isArray(d.runningTexts) ? d.runningTexts : []); 
+                    setBanners(Array.isArray(d.banners) ? d.banners : []); 
+                    setGalleryData(Array.isArray(d.gallery) ? d.gallery : []); 
+                    if(d.apiGamesKey) setAdminApiKey(d.apiGamesKey); 
+                    if(d.gasUrl) setAdminGasUrl(d.gasUrl); 
+                    if(d.waEndpoint) setAdminWaEndpoint(d.waEndpoint);
+                 } else if(isSuperAdmin) setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { isOpen: true, isCinemaOpen: true, appName: 'VIPERCELL', cashbackPercent: 0, digiflazzSaldo: 0, runningTexts: ['⚡ Top Up Aman & Cepat'], banners: [], gallery: [], primaryColor: '#3b82f6', waGatewayUrl: '', waApiKey: '', cinemaBellSound: '', apiGamesKey: '', waEndpoint: '', adminWaNumbers: [] }).catch(()=>{});
               });
               const unsubGames = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'games'), (snap) => { const g = []; snap.forEach(doc => g.push({id: doc.id, ...doc.data()})); setGames(g); });
               const unsubItems = onSnapshot(collection(db, 'artifacts', safeAppId, 'public', 'data', 'items'), (snap) => { const i = []; snap.forEach(doc => i.push({id: doc.id, ...doc.data()})); setItems(i); });
@@ -543,7 +623,7 @@
           }
       }, [currentUserData, authUser]);
 
-      useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '', appName: globalConfig?.appName || 'VIPERCELL', cashbackPercent: globalConfig?.cashbackPercent || 0, primaryColor: globalConfig?.primaryColor || '#3b82f6', baseQris: globalConfig?.baseQris || '', waGatewayUrl: globalConfig?.waGatewayUrl || '', waApiKey: globalConfig?.waApiKey || '' }); } }, [currentView, activeAdminTab, socialLinks, globalConfig]);
+      useEffect(() => { if(currentView === 'admin' && activeAdminTab === 'settings') { setAdminSettingsForm({ ig: socialLinks.ig || '', wa: socialLinks.wa || '', tt: socialLinks.tt || '', fb: socialLinks.fb || '', tg: socialLinks.tg || '', yt: socialLinks.yt || '', appName: globalConfig?.appName || 'VIPERCELL', cashbackPercent: globalConfig?.cashbackPercent || 0, primaryColor: globalConfig?.primaryColor || '#3b82f6', baseQris: globalConfig?.baseQris || ''}); } }, [currentView, activeAdminTab, socialLinks, globalConfig]);
 
       const pendingOrdersCount = (adminOrders || []).filter(o => o.status === 'Pending').length || 0;
       const openChatsCount = ((adminChats || []).filter(c => c.status === 'Open').length || 0);
@@ -637,24 +717,35 @@
       const isPhoneUsed = async (phoneStr, currentUid = null) => { const q = query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('phone', '==', phoneStr)); const snap = await getDocs(q); if(snap.empty) return false; let used = false; snap.forEach(d => { if(d.id !== currentUid) used = true; }); return used; }
 
       const handleAuth = async (e) => { 
-          e.preventDefault(); setAuthLoading(true); triggerSysLoad('Memeriksa Kredensial...'); 
+          e.preventDefault(); 
+          if(authMode === 'register') {
+              requestOtpValidation(regPhone, async () => {
+                  setOtpModal({isOpen:false}); setAuthLoading(true); triggerSysLoad('Mendaftarkan Akun...');
+                  try {
+                      const cred = await createUserWithEmailAndPassword(auth, email, password);
+                      const now = new Date().toISOString();
+                      await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
+                          email: email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoAkun: 0, saldoCashback: 0, isBlocked: false, isReseller: false, resellerStatus: 'none', isPhoneVerified: true
+                      });
+                      sendWhatsApp(regPhone, `*VIPERCELL*\nSelamat datang, ${regName}! Akun Anda berhasil terdaftar dengan email: ${email}.`);
+                      addToast('Pendaftaran Berhasil!', 'success');
+                  } catch (error) { addToast(error.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); }
+              });
+              return;
+          }
+
+          setAuthLoading(true); triggerSysLoad('Memeriksa Kredensial...'); 
           try { 
               if (authMode === 'login') { 
                   const cred = await signInWithEmailAndPassword(auth, email, password); 
                   if (cred.user.email !== ADMIN_EMAIL) { 
                       const userDoc = await getDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid)); 
                       if (!userDoc.exists()) { await signOut(auth); throw new Error('Akun tidak ditemukan di Database.'); } 
+                      if(userDoc.data().phone) {
+                          sendWhatsApp(userDoc.data().phone, `*PEMBERITAHUAN LOGIN*\nAkun Anda (${email}) baru saja login pada ${new Date().toLocaleString('id-ID')}. Jika ini bukan Anda, segera ubah kata sandi.`);
+                      }
                   } 
                   await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { lastLogin: new Date().toISOString() }, { merge: true }); 
-              } else if (authMode === 'register') {
-                  const cred = await createUserWithEmailAndPassword(auth, email, password);
-                  const now = new Date().toISOString();
-
-                  await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', cred.user.uid), { 
-                      email: email, name: regName, phone: regPhone, lastLogin: now, createdAt: now, avatar: '', saldoAkun: 0, saldoCashback: 0, isBlocked: false,
-                      isReseller: false, resellerStatus: 'none'
-                  });
-                  addToast('Pendaftaran Berhasil!', 'success');
               } else if (authMode === 'forgot') { 
                   if (resetCooldown > 0) return; 
                   await sendPasswordResetEmail(auth, email); 
@@ -669,9 +760,42 @@
           } 
       };
 
-      const handleGoogleLogin = async () => { setAuthLoading(true); triggerSysLoad('Google Login...'); try { const res = await signInWithPopup(auth, googleProvider); const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); const docSnap = await getDoc(userRef); if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('Akun diblokir.'); } if (!docSnap.exists()) { setGoogleSetupModal({ isOpen: true, isNew: true, existingData: null }); } else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); navigateTo('home'); } } catch (e) { addToast(e.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
-      const handleGoogleSetupSubmit = async (e, phone, pass) => { e.preventDefault(); try { setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan...'); const used = await isPhoneUsed(phone, auth.currentUser?.uid); if(used) throw new Error('Nomor HP sudah terdaftar!'); await updatePassword(auth.currentUser, pass); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), { email: auth.currentUser.email, name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0], avatar: auth.currentUser.photoURL || '', phone: phone, lastLogin: new Date().toISOString(), createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt, saldoAkun: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoAkun || 0, saldoCashback: googleSetupModal.existingData?.saldoCashback || 0, isBlocked: false, isReseller: googleSetupModal.existingData?.isReseller || false, resellerStatus: googleSetupModal.existingData?.resellerStatus || 'none' }, { merge: true }); setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null}); navigateTo('home'); addToast('Disiapkan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
-      const handleUpdateProfile = async (e) => { e.preventDefault(); if(!currentUserData) return; try { triggerSysLoad('Menyimpan...'); if (profilePhone && profilePhone !== currentUserData.phone) { if(profilePhone.length < 10) throw new Error('HP tidak valid'); const used = await isPhoneUsed(profilePhone, authUser.uid); if(used) throw new Error('HP sudah dipakai!'); } await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone }, { merge: true }); addToast('Disimpan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad() } }
+      const handleGoogleLogin = async () => { setAuthLoading(true); triggerSysLoad('Google Login...'); try { const res = await signInWithPopup(auth, googleProvider); const userRef = doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', res.user.uid); const docSnap = await getDoc(userRef); if (docSnap.exists() && docSnap.data().isBlocked) { await signOut(auth); throw new Error('Akun diblokir.'); } if (!docSnap.exists()) { setGoogleSetupModal({ isOpen: true, isNew: true, existingData: null }); } else { await setDoc(userRef, { lastLogin: new Date().toISOString() }, { merge: true }); if(docSnap.data().phone) { sendWhatsApp(docSnap.data().phone, `*PEMBERITAHUAN LOGIN GOOGLE*\nAkun Anda (${res.user.email}) baru saja login via Google pada ${new Date().toLocaleString('id-ID')}.`); } navigateTo('home'); } } catch (e) { addToast(e.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); } };
+      const handleGoogleSetupSubmit = async (e, phone, pass) => { 
+          e.preventDefault(); 
+          try { 
+              const used = await isPhoneUsed(phone, auth.currentUser?.uid); if(used) throw new Error('Nomor HP sudah terdaftar!'); 
+              requestOtpValidation(phone, async () => {
+                  setOtpModal({isOpen:false}); setAuthLoading(true); triggerSysLoad('Menyimpan Keamanan...');
+                  try {
+                      await updatePassword(auth.currentUser, pass); 
+                      await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', auth.currentUser.uid), { email: auth.currentUser.email, name: auth.currentUser.displayName || auth.currentUser.email.split('@')[0], avatar: auth.currentUser.photoURL || '', phone: phone, lastLogin: new Date().toISOString(), createdAt: googleSetupModal.isNew ? new Date().toISOString() : googleSetupModal.existingData?.createdAt, saldoAkun: googleSetupModal.isNew ? 0 : googleSetupModal.existingData?.saldoAkun || 0, saldoCashback: googleSetupModal.existingData?.saldoCashback || 0, isBlocked: false, isReseller: googleSetupModal.existingData?.isReseller || false, resellerStatus: googleSetupModal.existingData?.resellerStatus || 'none', isPhoneVerified: true }, { merge: true }); 
+                      sendWhatsApp(phone, `*VIPERCELL*\nGoogle Login berhasil dihubungkan dengan nomor ini.`);
+                      setGoogleSetupModal({isOpen: false, user: null, isNew: false, existingData: null}); navigateTo('home'); addToast('Disiapkan!', 'success');
+                  } catch(err) { addToast(err.message, 'error'); } finally { setAuthLoading(false); closeSysLoad(); }
+              });
+          } catch(err) { addToast(err.message, 'error'); }
+      };
+
+      const handleUpdateProfile = async (e) => { 
+          e.preventDefault(); if(!currentUserData) return; 
+          const executeSave = async () => {
+              try { triggerSysLoad('Menyimpan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { name: profileName, phone: profilePhone, isPhoneVerified: true }, { merge: true }); addToast('Disimpan!', 'success'); } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad() }
+          };
+
+          if (profilePhone && profilePhone !== currentUserData.phone) { 
+              if(profilePhone.length < 10) return addToast('HP tidak valid', 'error');
+              const used = await isPhoneUsed(profilePhone, authUser.uid); 
+              if(used) return addToast('HP sudah dipakai!', 'error'); 
+              requestOtpValidation(profilePhone, () => {
+                  setOtpModal({isOpen:false});
+                  executeSave();
+              });
+          } else {
+              executeSave();
+          }
+      }
+
       const handleAvatarUpload = async (e) => { const file = e.target.files[0]; if (!file || !currentUserData) return; setUploadingAvatar(true); triggerSysLoad('Upload...'); try { const compressedAvatar = await compressImage(file, 200); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { avatar: compressedAvatar }, { merge: true }); setProfileAvatar(compressedAvatar); addToast('Foto diubah!', 'success'); } catch (error) { addToast('Gagal.', 'error'); } finally { setUploadingAvatar(false); closeSysLoad(); } };
       const handleChangePassword = async (e) => { e.preventDefault(); if (!currentPassword || !newPassword || !confirmNewPassword) return addToast('Isi semua field!', 'error'); if (newPassword !== confirmNewPassword) return addToast('Sandi tidak cocok!', 'error'); try { triggerSysLoad(); const user = auth.currentUser; const credential = EmailAuthProvider.credential(user.email, currentPassword); await reauthenticateWithCredential(user, credential); await updatePassword(user, newPassword); addToast('Sandi diubah!', 'success'); setCurrentPassword(''); setNewPassword(''); setConfirmNewPassword(''); setShowPasswordForm(false); } catch (error) { addToast('Gagal ubah sandi.', 'error'); } finally { closeSysLoad() } };
       const handleSendFeedback = async (e) => { e.preventDefault(); if(!feedbackText.trim()) return; try { triggerSysLoad('Kirim...'); const fbId = `fb_${Date.now()}`; await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'feedbacks', fbId), { senderEmail: authUser.email, senderName: currentUserData?.name || authUser.email, text: feedbackText, createdAt: new Date().toISOString(), status: 'Unread' }); setFeedbackText(''); addToast('Saran dikirim.', 'success'); setHelpTab('chat'); } catch(err) { addToast('Gagal', 'error'); } finally { closeSysLoad(); } }
@@ -778,6 +902,21 @@
           for(const pRef of usedPromoIds) { const pDoc = await getDoc(pRef); if(pDoc.exists()) batch.update(pRef, { usedBy: [...(pDoc.data().usedBy||[]), authUser.email] }); }
           await batch.commit(); 
           
+          // --- NOTIFICATION TRIGGERS ---
+          if (globalConfig?.adminWaNumbers?.length > 0) {
+              const msgAdmin = `*PESANAN BARU MASUK*\nID: ${newOrderId}\nLayanan: ${payload.gameName} - ${payload.itemName}\nTotal: Rp${formatRupiah(finalPayPrice)}`;
+              globalConfig.adminWaNumbers.forEach(n => sendWhatsApp(n.phone, msgAdmin));
+          }
+
+          let msgUser = `*VIPERCELL - INVOICE*\nID Pesanan: ${newOrderId}\nLayanan: ${payload.gameName}\nItem: ${payload.itemName}\nTotal: Rp${formatRupiah(finalPayPrice)}\nStatus: ${initialStatus}`;
+          if (!isWalletPayment && payload.paymentName.includes('QRIS')) {
+              msgUser += `\n\nSilakan scan barcode QRIS untuk menyelesaikan pembayaran.`;
+              sendWhatsApp(currentUserData.phone, msgUser, generateDynamicQRISUrl(globalConfig.baseQris, finalPayPrice));
+          } else {
+              sendWhatsApp(currentUserData.phone, msgUser);
+          }
+          // ---------------------------
+
           setLastOrderId(newOrderId); setExpandedHistoryId(newOrderId); setOrderSuccessModal(true); setPendingOrderPayload(null); setSelectedGame(null); setSelectedNominal(null); setSelectedPayment(null); setUserId(''); setZoneId(''); setNickname(''); setIsIdValid(false); setBypassValidation(false); setPostpaidData(null);
           
           if(isWalletPayment) { executeDigiflazzProcess({...orderData}); }
@@ -797,7 +936,36 @@
 
       const handleAddBanner = async () => { if(!adminBannerUrl) return; let fixedUrl = adminBannerUrl; if(adminBannerType === 'youtube' && !fixedUrl.includes('youtube') && !fixedUrl.includes('youtu.be')) fixedUrl = `https://www.youtube.com/watch?v=${fixedUrl}`; let safeTargetLink = adminBannerLink; if(safeTargetLink && !safeTargetLink.startsWith('http')) safeTargetLink = 'https://' + safeTargetLink; const newBanners = [...(banners||[]), { type: adminBannerType, url: fixedUrl, title: adminBannerTitle, desc: adminBannerDesc, targetLink: safeTargetLink }]; try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { banners: newBanners }, { merge: true }); setAdminBannerUrl(''); setAdminBannerTitle(''); setAdminBannerDesc(''); setAdminBannerLink(''); addToast('Banner ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
       const handleBannerUpload = async (e) => { const file = e.target.files[0]; if(file) { try { setAuthLoading(true); triggerSysLoad('Mengunggah...'); const res = await compressImage(file, 800); setAdminBannerUrl(res); setAdminBannerType('image'); addToast('Siap ditambahkan', 'success'); } catch(err) { addToast('Gagal memproses', 'error'); } finally { setAuthLoading(false); closeSysLoad() } } };
-      const saveSettings = async () => { try { triggerSysLoad('Menyimpan Pengaturan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts, gasUrl: adminGasUrl, appName: adminSettingsForm.appName || 'VIPERCELL', cashbackPercent: Number(adminSettingsForm.cashbackPercent) || 0, primaryColor: adminSettingsForm.primaryColor || '#3b82f6', baseQris: adminSettingsForm.baseQris || '', waGatewayUrl: adminSettingsForm.waGatewayUrl || '', waApiKey: adminSettingsForm.waApiKey || '' }, { merge: true }); addToast('Tersimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
+      const saveSettings = async () => { try { triggerSysLoad('Menyimpan Pengaturan...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { igLink: adminSettingsForm.ig || '', waLink: adminSettingsForm.wa || '', ttLink: adminSettingsForm.tt || '', fbLink: adminSettingsForm.fb || '', tgLink: adminSettingsForm.tg || '', ytLink: adminSettingsForm.yt || '', runningTexts, gasUrl: adminGasUrl, waEndpoint: adminWaEndpoint, appName: adminSettingsForm.appName || 'VIPERCELL', cashbackPercent: Number(adminSettingsForm.cashbackPercent) || 0, primaryColor: adminSettingsForm.primaryColor || '#3b82f6', baseQris: adminSettingsForm.baseQris || '', apiGamesKey: adminApiKey }, { merge: true }); addToast('Tersimpan!', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } };
+      
+      const handleAddAdminWa = async () => {
+          if (!newAdminWa) return;
+          let targetStr = newAdminWa.trim();
+          if(targetStr.startsWith('0')) targetStr = '62' + targetStr.slice(1);
+          const currentWa = globalConfig.adminWaNumbers || [];
+          if (currentWa.find(n => n.phone === targetStr)) return addToast('Nomor sudah ada', 'warning');
+          
+          try {
+              triggerSysLoad('Menambah Admin WA...');
+              const updatedWa = [...currentWa, { id: Date.now().toString(), phone: targetStr }];
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { adminWaNumbers: updatedWa }, { merge: true });
+              setGlobalConfig(prev => ({...prev, adminWaNumbers: updatedWa}));
+              setNewAdminWa('');
+              addToast('Nomor Admin WA berhasil ditambah', 'success');
+          } catch(e) { addToast('Gagal menambah nomor', 'error'); } finally { closeSysLoad(); }
+      };
+
+      const handleDeleteAdminWa = async (id) => {
+          try {
+              triggerSysLoad('Menghapus Admin WA...');
+              const currentWa = globalConfig.adminWaNumbers || [];
+              const updatedWa = currentWa.filter(n => n.id !== id);
+              await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { adminWaNumbers: updatedWa }, { merge: true });
+              setGlobalConfig(prev => ({...prev, adminWaNumbers: updatedWa}));
+              addToast('Nomor Admin WA dihapus', 'success');
+          } catch(e) { addToast('Gagal menghapus', 'error'); } finally { closeSysLoad(); }
+      };
+
       const handleFaviconUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const base64 = await compressImage(file, 128); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: base64 }, { merge: true }); addToast('Icon diperbarui.', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } } };
       const handleDeleteFavicon = async () => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { favicon: null }, { merge: true }); addToast('Dihapus', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleGalleryUpload = async (e) => { const file = e.target.files[0]; if (file) { try { triggerSysLoad(); const compressed = await compressImage(file, 400); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'config', 'global'), { gallery: [...(galleryData||[]), compressed] }, { merge: true }); addToast('Ditambahkan', 'success'); } catch(e) { addToast(e.message, 'error'); } finally { closeSysLoad() } } };
@@ -874,7 +1042,6 @@
       };
       
       const executeDigiflazzProcess = async (order) => {
-          // JIKA INI TOP UP SALDO E-WALLET (Bukan Digiflazz)
           if (order.gameId === 'TOPUP_SALDO') {
               try {
                   const memberSnap = await getDocs(query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('email', '==', order.targetUserId)));
@@ -884,6 +1051,7 @@
                       await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', order.id), { status: 'Sukses' });
                       addToast('Saldo berhasil ditambahkan ke dompet pengguna!', 'success');
                       logToDbConsole(`Top Up Saldo Sukses: Rp ${order.priceTotal} untuk ${order.targetUserId}`, 'success');
+                      sendWhatsApp(memDoc.data().phone, `*TOP UP SALDO BERHASIL*\nSejumlah: Rp${formatRupiah(order.priceTotal)}\nID Trx: ${order.id}`);
                   } else { addToast('User tidak ditemukan', 'error'); }
               } catch(e) { addToast('Gagal memvalidasi', 'error'); } finally { closeSysLoad(); }
               return;
@@ -892,7 +1060,6 @@
           setIsProcessing(true); addToast(`Memproses API Digiflazz...`, 'process');
           logToDbConsole(`Mengirim transaksi ${order.id} ke pusat...`, 'info');
           try {
-              // UPDATE: Logika pemisahan payload Prabayar & Pascabayar
               const gameDoc = games.find(g => g.id === order.gameId);
               const isPostpaid = gameDoc?.category === 'pascabayar';
               const actionType = isPostpaid ? 'bayar_tagihan' : 'topup';
@@ -918,7 +1085,11 @@
                           await updateDoc(memberRef, { saldoAkun: (memberSnap.data().saldoAkun || 0) + order.priceTotal });
                           addToast(`Auto-Refund: Saldo Rp ${formatRupiah(order.priceTotal)} dikembalikan.`, 'info');
                           logToDbConsole(`Auto-Refund Sukses: Saldo dikembalikan ke ${order.userEmail}`, 'success');
+                          sendWhatsApp(memberSnap.data().phone, `*AUTO REFUND VIPERCELL*\nPesanan dibatalkan sistem. Saldo Anda sebesar Rp${formatRupiah(order.priceTotal)} telah dikembalikan ke E-Wallet.\nAlasan: ${resData.message}`);
                       }
+                  } else {
+                       const mSnap = await getDocs(query(collection(db, 'artifacts', safeAppId, 'public', 'data', 'members'), where('email', '==', order.userEmail)));
+                       if(!mSnap.empty) { sendWhatsApp(mSnap.docs[0].data().phone, `*PESANAN DIBATALKAN*\nID: ${order.id}\nAlasan: ${resData.message}`); }
                   }
               }
           } catch(e) { 
@@ -931,13 +1102,25 @@
           setIsProcessing(true); addToast(`Memproses ${newStatus}...`, 'process'); 
           try { 
               await updateDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'global_orders', orderId), { status: newStatus }); 
+              let targetUserPhone = null;
+              
               if(newStatus === 'Sukses' && order && order.userEmail && order.gameId !== 'TOPUP_SALDO') { 
                   const member = (memberList||[]).find(m => m.email === order.userEmail); 
                   if(member) { 
+                      targetUserPhone = member.phone;
                       const cbe = order.cashbackEarned || 0; 
                       if(cbe > 0) { await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', member.id), { saldoCashback: (member.saldoCashback || 0) + cbe }, { merge: true }); } 
                   } 
-              } addToast(`Pesanan ${newStatus}`, 'success'); 
+              } else if (order && order.userEmail) {
+                  const member = (memberList||[]).find(m => m.email === order.userEmail);
+                  if(member) targetUserPhone = member.phone;
+              }
+
+              if(targetUserPhone) {
+                  sendWhatsApp(targetUserPhone, `*UPDATE PESANAN VIPERCELL*\nPesanan Anda dengan ID ${orderId} saat ini berstatus: *${newStatus}*.`);
+              }
+
+              addToast(`Pesanan ${newStatus}`, 'success'); 
           } catch (e) { addToast("Gagal", 'error'); } finally { setIsProcessing(false); } 
       };
 
@@ -987,7 +1170,16 @@
       const togglePromoStatus = async (id, currentStatus) => { try { triggerSysLoad(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'promos', id), { isActive: !currentStatus }, { merge: true }); addToast('Status diubah', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad() } };
       const handleAddBlog = async (e) => { e.preventDefault(); try { triggerSysLoad('Menyimpan Artikel...'); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'blogs', `blog_${Date.now()}`), { title: adminBlogForm.title, category: adminBlogForm.category, content: adminBlogForm.content, image: adminBlogForm.image, createdAt: new Date().toISOString() }); setAdminBlogForm({ title: '', category: 'INFO', content: '', image: '' }); addToast('Artikel Terbit!', 'success'); } catch(e) { addToast('Gagal', 'error'); } finally { closeSysLoad(); } }
       const handleDeleteBlog = async (id) => requestConfirm('Hapus Berita', 'Hapus artikel ini?', async () => { try { await deleteDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'blogs', id)); addToast('Terhapus', 'success'); } catch(e){} }, 'danger', 'Hapus');
-      const handleAdminAddMember = async (e) => { e.preventDefault(); if(!newMemberPassword || newMemberPassword.length < 6) return addToast('Sandi minimal 6 karakter', 'warning'); try { triggerSysLoad('Mendaftarkan Member...'); if (!adminApiKey) throw new Error("API Key Web belum diset di Pengaturan."); const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${adminApiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: newMemberEmail, password: newMemberPassword, returnSecureToken: false }) }); const data = await res.json(); if (data.error) throw new Error(data.error.message); const now = new Date().toISOString(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', data.localId), { email: newMemberEmail, name: newMemberName, phone: newMemberPhone, lastLogin: now, createdAt: now, avatar: '', saldoAkun: 0, saldoCashback: 0, isBlocked: false, isReseller: false, resellerStatus: 'none' }); addToast('Member berhasil ditambahkan dengan Sandi Kustom.', 'success'); setNewMemberEmail(''); setNewMemberName(''); setNewMemberPhone(''); setNewMemberPassword(''); } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad(); } }
+      const handleAdminAddMember = async (e) => { e.preventDefault(); if(!newMemberPassword || newMemberPassword.length < 6) return addToast('Sandi minimal 6 karakter', 'warning'); try { triggerSysLoad('Mendaftarkan Member...'); if (!adminApiKey) throw new Error("API Key Web belum diset di Pengaturan."); const res = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${adminApiKey}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: newMemberEmail, password: newMemberPassword, returnSecureToken: false }) }); const data = await res.json(); if (data.error) throw new Error(data.error.message); const now = new Date().toISOString(); await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', data.localId), { email: newMemberEmail, name: newMemberName, phone: newMemberPhone, lastLogin: now, createdAt: now, avatar: '', saldoAkun: 0, saldoCashback: 0, isBlocked: false, isReseller: false, resellerStatus: 'none', isPhoneVerified: false }); addToast('Member berhasil ditambahkan.', 'success'); setNewMemberEmail(''); setNewMemberName(''); setNewMemberPhone(''); setNewMemberPassword(''); } catch(err) { addToast(err.message, 'error'); } finally { closeSysLoad(); } }
+
+      // Cinema Multi-Seat Logic
+      const toggleCinemaSeat = (seat) => {
+          if (selectedSeats.includes(seat)) {
+              setSelectedSeats(selectedSeats.filter(s => s !== seat));
+          } else {
+              setSelectedSeats([...selectedSeats, seat]);
+          }
+      };
 
       const flashSalePromos = (promos||[]).filter(p => p.category === 'flash' && p.isActive) || [];
       const currentBasePrice = selectedNominal ? calculateFinalPrice(getDisplayPrice(selectedNominal) + (selectedPayment?.fee||0), selectedNominal.id) : 0;
@@ -1007,7 +1199,10 @@
       const availablePayments = PAYMENTS.filter(p => p.id !== 'qris' || !!globalConfig?.baseQris);
 
       if (isAuthChecking) return (<div className="min-h-screen bg-main flex items-center justify-center"><div className="cyber-loader"><div></div><div></div><div></div></div></div>); 
-      if (!authUser) { return ( <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-main text-main"> <div className="w-full max-w-md p-6 relative z-10 animate-slide-down"> <div className="clean-card p-8 md:p-10 relative bg-card backdrop-blur-xl border border-theme shadow-2xl"> <div className="flex flex-col items-center justify-center mb-8 text-center"> <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg mb-5"><IconZap className="w-8 h-8 text-white"/></div> <h2 className="text-3xl md:text-4xl font-black tracking-widest text-main flex items-center gap-2 mb-2">{(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}<span className="text-primary">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span></h2> <p className="text-xs text-sub-theme font-medium px-4">Akses layanan top up premium.</p> </div> <div className="flex mb-6 bg-gray-100 dark:bg-navy-900 p-1 rounded-xl border border-theme"> <button onClick={()=>setAuthMode('login')} className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded-lg transition ${authMode==='login' ? 'bg-white dark:bg-navy-800 shadow-sm text-primary' : 'text-sub-theme'}`}>Masuk</button> <button onClick={()=>setAuthMode('register')} className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded-lg transition ${authMode==='register' ? 'bg-white dark:bg-navy-800 shadow-sm text-primary' : 'text-sub-theme'}`}>Daftar</button> </div> <form onSubmit={handleAuth} className="space-y-4"> <div className="relative group"><IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Alamat Email" /></div> {authMode !== 'forgot' && (<div className="relative group"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Kata Sandi Akun" /></div>)} {authMode === 'register' && ( <> <div className="relative group animate-slide-down"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nama Lengkap" /></div> <div className="relative group animate-slide-down"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nomor Handphone Aktif" /></div> </> )} <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0)} className={`w-full py-4 rounded-2xl font-black transition-all flex justify-center items-center gap-2 text-sm uppercase tracking-widest mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-gray-300 dark:bg-gray-800 text-gray-500' : 'bg-primary text-white shadow-lg disabled:opacity-50 hover:scale-[1.02]'}`}>{authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk Sesi' : authMode === 'register' ? 'Buat Akun' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Link Reset')}</button> </form> {(authMode === 'login' || authMode === 'register') && ( <> <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-sub-theme text-[9px] font-black uppercase tracking-widest">ATAU</span><div className="flex-grow border-t border-theme"></div></div> <button onClick={handleGoogleLogin} disabled={authLoading} className="w-full py-4 rounded-2xl font-bold bg-white text-black hover:bg-gray-100 border border-gray-200 transition flex items-center justify-center gap-3 text-sm mb-4 shadow-sm hover:scale-[1.02]"><svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Lanjutkan dengan Google</button> </> )} <div className="mt-8 pt-6 border-t border-theme text-center text-xs font-bold text-sub-theme flex flex-col gap-3"> {authMode === 'login' ? (<button onClick={() => setAuthMode('forgot')} className="hover:text-primary transition">Lupa kata sandi?</button>) : (<button onClick={() => setAuthMode('login')} className="hover:text-primary transition">Kembali Login</button>)} </div> </div> </div> <GoogleSetupModal isOpen={googleSetupModal.isOpen} isNew={googleSetupModal.isNew} existingData={googleSetupModal.existingData} onSubmit={handleGoogleSetupSubmit} onCancel={() => { signOut(auth); setGoogleSetupModal({isOpen:false}); setAuthUser(null); }} loading={authLoading} /> </div> ); }
+      if (!authUser) { return ( <div className="flex min-h-screen items-center justify-center relative overflow-hidden bg-main text-main"> <div className="w-full max-w-md p-6 relative z-10 animate-slide-down"> <div className="clean-card p-8 md:p-10 relative bg-card backdrop-blur-xl border border-theme shadow-2xl"> <div className="flex flex-col items-center justify-center mb-8 text-center"> <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center shadow-lg mb-5"><IconZap className="w-8 h-8 text-white"/></div> <h2 className="text-3xl md:text-4xl font-black tracking-widest text-main flex items-center gap-2 mb-2">{(globalConfig?.appName || 'VIPERCELL').substring(0, Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}<span className="text-primary">{(globalConfig?.appName || 'VIPERCELL').substring(Math.floor((globalConfig?.appName || 'VIPERCELL').length/2))}</span></h2> <p className="text-xs text-sub-theme font-medium px-4">Akses layanan top up premium.</p> </div> <div className="flex mb-6 bg-gray-100 dark:bg-navy-900 p-1 rounded-xl border border-theme"> <button onClick={()=>setAuthMode('login')} className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded-lg transition ${authMode==='login' ? 'bg-white dark:bg-navy-800 shadow-sm text-primary' : 'text-sub-theme'}`}>Masuk</button> <button onClick={()=>setAuthMode('register')} className={`flex-1 py-2 text-xs font-black uppercase tracking-widest rounded-lg transition ${authMode==='register' ? 'bg-white dark:bg-navy-800 shadow-sm text-primary' : 'text-sub-theme'}`}>Daftar</button> </div> <form onSubmit={handleAuth} className="space-y-4"> <div className="relative group"><IconMail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Alamat Email" /></div> {authMode !== 'forgot' && (<div className="relative group"><IconLock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="password" required value={password} onChange={(e)=>setPassword(e.target.value)} minLength="6" className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Kata Sandi Akun" /></div>)} {authMode === 'register' && ( <> <div className="relative group animate-slide-down"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="text" required value={regName} onChange={(e)=>setRegName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nama Lengkap" /></div> <div className="relative group animate-slide-down"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme transition-colors" /><input type="tel" required value={regPhone} onChange={(e)=>setRegPhone(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 text-sm font-bold shadow-sm" placeholder="Nomor Handphone (08...)" /></div> </> )} <button type="submit" disabled={authLoading || (authMode === 'forgot' && resetCooldown > 0)} className={`w-full py-4 rounded-2xl font-black transition-all flex justify-center items-center gap-2 text-sm uppercase tracking-widest mt-6 ${authMode === 'forgot' && resetCooldown > 0 ? 'bg-gray-300 dark:bg-gray-800 text-gray-500' : 'bg-primary text-white shadow-lg disabled:opacity-50 hover:scale-[1.02]'}`}>{authLoading ? <IconLoader className="w-5 h-5 animate-spin" /> : (authMode === 'login' ? 'Masuk Sesi' : authMode === 'register' ? 'Buat Akun' : resetCooldown > 0 ? `Tunggu ${resetCooldown}s` : 'Kirim Link Reset')}</button> </form> {(authMode === 'login' || authMode === 'register') && ( <> <div className="relative my-6 flex items-center"><div className="flex-grow border-t border-theme"></div><span className="flex-shrink-0 mx-4 text-sub-theme text-[9px] font-black uppercase tracking-widest">ATAU</span><div className="flex-grow border-t border-theme"></div></div> <button onClick={handleGoogleLogin} disabled={authLoading} className="w-full py-4 rounded-2xl font-bold bg-white text-black hover:bg-gray-100 border border-gray-200 transition flex items-center justify-center gap-3 text-sm mb-4 shadow-sm hover:scale-[1.02]"><svg className="w-5 h-5" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>Lanjutkan dengan Google</button> </> )} <div className="mt-8 pt-6 border-t border-theme text-center text-xs font-bold text-sub-theme flex flex-col gap-3"> {authMode === 'login' ? (<button onClick={() => setAuthMode('forgot')} className="hover:text-primary transition">Lupa kata sandi?</button>) : (<button onClick={() => setAuthMode('login')} className="hover:text-primary transition">Kembali Login</button>)} </div> </div> </div> 
+       
+       <OtpModal isOpen={otpModal.isOpen} phone={otpModal.phone} expectedOtp={otpModal.expectedOtp} onSuccess={otpModal.onVerified} onCancel={() => {setOtpModal({isOpen:false}); setAuthLoading(false);}} />
+       <GoogleSetupModal isOpen={googleSetupModal.isOpen} isNew={googleSetupModal.isNew} existingData={googleSetupModal.existingData} onSubmit={handleGoogleSetupSubmit} onCancel={() => { signOut(auth); setGoogleSetupModal({isOpen:false}); setAuthUser(null); }} loading={authLoading} /> </div> ); }
 
       return (
         <div className="flex-grow flex flex-col relative z-10 min-h-screen bg-main pb-24 md:pb-0">
@@ -1015,6 +1210,7 @@
           
           <SmartConfirmDialog isOpen={confirmModal.isOpen} title={confirmModal.title} type={confirmModal.type} message={confirmModal.msg} onConfirm={executeConfirm} onCancel={cancelConfirm} confirmText={confirmModal.btnText} />
           <PostpaidInquiryModal isOpen={postpaidModal.isOpen} data={postpaidModal.data} isProcessing={isProcessing} onConfirm={executeFinalPayment} onCancel={()=>setPostpaidModal({isOpen:false, data:null, payload:null})} />
+          <OtpModal isOpen={otpModal.isOpen} phone={otpModal.phone} expectedOtp={otpModal.expectedOtp} onSuccess={otpModal.onVerified} onCancel={() => {setOtpModal({isOpen:false});}} />
           
           {/* Modal Besar Untuk QR Tiket */}
           {largeQrModal.isOpen && largeQrModal.data && (
@@ -1502,19 +1698,19 @@
                                               </>
                                            ) : (
                                               <>
-                                                  <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
-                                                      <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
-                                                      <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
-                                                  </div>
-                                                  {estimatedCashback > 0 && (
-                                                      <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between shadow-sm">
-                                                          <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Cashback Diterima (Setelah Lunas):</span>
-                                                          <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
-                                                      </div>
-                                                  )}
-                                                  <button onClick={triggerCheckout} disabled={isProcessing || (selectedGame.inquirySku && !isIdValid && !bypassValidation)} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-navy-800 text-gray-500 dark:text-gray-400 border border-theme'}`}>
+                                                 <div className="flex items-center justify-between mb-4 relative z-10 border-b border-theme pb-4">
+                                                     <span className="text-xs font-black text-sub-theme uppercase tracking-widest">Total Bayar:</span>
+                                                     <span className="text-2xl md:text-3xl font-black text-primary font-mono drop-shadow-sm">{selectedNominal ? formatRupiah(displayTotal) : 'Rp 0'}</span>
+                                                 </div>
+                                                 {estimatedCashback > 0 && (
+                                                     <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl flex items-center justify-between shadow-sm">
+                                                         <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500">Cashback Diterima (Setelah Lunas):</span>
+                                                         <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-xs">+ {formatRupiah(estimatedCashback)}</span>
+                                                     </div>
+                                                 )}
+                                                 <button onClick={triggerCheckout} disabled={isProcessing || (selectedGame.inquirySku && !isIdValid && !bypassValidation)} className={`w-full py-4 md:py-5 rounded-2xl font-black text-sm uppercase tracking-widest flex justify-center items-center gap-3 relative z-10 shadow-xl transition-transform ${isFormValid ? 'bg-primary text-white hover:bg-primary-hover hover:scale-[1.02]' : 'bg-gray-200 dark:bg-navy-800 text-gray-500 dark:text-gray-400 border border-theme'}`}>
                                                      {isProcessing ? <IconLoader className="w-6 h-6 animate-spin"/> : <><IconZap className={`w-5 h-5 ${isFormValid ? 'text-white' : 'text-gray-500 dark:text-gray-400'}`} /> {isFormValid ? 'Pesan Sekarang' : 'Lengkapi Data'}</>}
-                                                  </button>
+                                                 </button>
                                               </>
                                            )}
                                         </div>
@@ -1547,8 +1743,8 @@
                                 </div>
                             </div>
                             <div className="flex bg-gray-100 dark:bg-navy-900 p-1.5 rounded-xl border border-theme shadow-inner w-full md:w-auto">
-                                <button onClick={() => {setActiveCinemaTab('nowplaying'); setActiveCinemaMovie(null); setSelectedSeat(null);}} className={`flex-1 md:w-32 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${activeCinemaTab === 'nowplaying' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-sub-theme hover:text-main'}`}>Now Playing</button>
-                                <button onClick={() => {setActiveCinemaTab('vote'); setActiveCinemaMovie(null); setSelectedSeat(null);}} className={`flex-1 md:w-32 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${activeCinemaTab === 'vote' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-sub-theme hover:text-main'}`}>Vote Film</button>
+                                <button onClick={() => {setActiveCinemaTab('nowplaying'); setActiveCinemaMovie(null); setSelectedSeats([]);}} className={`flex-1 md:w-32 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${activeCinemaTab === 'nowplaying' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-sub-theme hover:text-main'}`}>Now Playing</button>
+                                <button onClick={() => {setActiveCinemaTab('vote'); setActiveCinemaMovie(null); setSelectedSeats([]);}} className={`flex-1 md:w-32 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-lg transition-all ${activeCinemaTab === 'vote' ? 'bg-white dark:bg-card shadow-sm text-primary' : 'text-sub-theme hover:text-main'}`}>Vote Film</button>
                             </div>
                         </div>
 
@@ -1628,7 +1824,7 @@
                                 </div>
                             ) : (
                                 <div className="animate-slide-down">
-                                    <button onClick={()=>{setActiveCinemaMovie(null); setSelectedSeat(null);}} className="mb-6 bg-gray-100 dark:bg-navy-800 border border-theme px-4 py-2.5 rounded-xl text-xs font-bold text-main flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-navy-700 transition shadow-sm"><IconChevronLeft className="w-4 h-4"/> Kembali ke Jadwal</button>
+                                    <button onClick={()=>{setActiveCinemaMovie(null); setSelectedSeats([]);}} className="mb-6 bg-gray-100 dark:bg-navy-800 border border-theme px-4 py-2.5 rounded-xl text-xs font-bold text-main flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-navy-700 transition shadow-sm"><IconChevronLeft className="w-4 h-4"/> Kembali ke Jadwal</button>
                                     
                                     <div className="flex flex-col lg:flex-row gap-8 items-start">
                                         {/* Poster Detail - Diubah lg:sticky agar mobile tdk bertumpuk */}
@@ -1668,9 +1864,9 @@
                                                         <div className="flex flex-wrap justify-center gap-2">
                                                             {Array.from({length: activeCinemaMovie.vipSeats || 5}, (_, i) => `V${i+1}`).map(seat => {
                                                                 const isBooked = cinemaBookings.some(b => b.movieId === activeCinemaMovie.id && b.seat === seat);
-                                                                const isSelected = selectedSeat === seat;
+                                                                const isSelected = selectedSeats.includes(seat);
                                                                 return (
-                                                                    <button key={seat} disabled={isBooked} onClick={()=>setSelectedSeat(seat)} className={`aspect-square w-10 md:w-12 rounded-t-2xl rounded-b-lg flex items-center justify-center text-[10px] md:text-xs font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-yellow-500 text-black border border-yellow-400 scale-110 shadow-[0_0_15px_rgba(234,179,8,0.6)] z-10' : 'bg-gray-800 text-yellow-500 border border-yellow-600/50 hover:border-yellow-400 hover:bg-gray-700 hover:scale-105'}`}>
+                                                                    <button key={seat} disabled={isBooked} onClick={()=>toggleCinemaSeat(seat)} className={`aspect-square w-10 md:w-12 rounded-t-2xl rounded-b-lg flex items-center justify-center text-[10px] md:text-xs font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-yellow-500 text-black border border-yellow-400 scale-110 shadow-[0_0_15px_rgba(234,179,8,0.6)] z-10' : 'bg-gray-800 text-yellow-500 border border-yellow-600/50 hover:border-yellow-400 hover:bg-gray-700 hover:scale-105'}`}>
                                                                         {seat}
                                                                     </button>
                                                                 )
@@ -1686,9 +1882,9 @@
                                                         <div className="flex flex-wrap justify-center gap-2">
                                                             {Array.from({length: activeCinemaMovie.regSeats || 15}, (_, i) => `R${i+1}`).map(seat => {
                                                                 const isBooked = cinemaBookings.some(b => b.movieId === activeCinemaMovie.id && b.seat === seat);
-                                                                const isSelected = selectedSeat === seat;
+                                                                const isSelected = selectedSeats.includes(seat);
                                                                 return (
-                                                                    <button key={seat} disabled={isBooked} onClick={()=>setSelectedSeat(seat)} className={`aspect-square w-9 md:w-10 rounded-t-xl rounded-b-md flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-cyan-500 text-black border border-cyan-400 scale-110 shadow-[0_0_15px_rgba(6,182,212,0.6)] z-10' : 'bg-gray-800 text-cyan-400 border border-cyan-800 hover:border-cyan-400 hover:bg-gray-700 hover:scale-105'}`}>
+                                                                    <button key={seat} disabled={isBooked} onClick={()=>toggleCinemaSeat(seat)} className={`aspect-square w-9 md:w-10 rounded-t-xl rounded-b-md flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-cyan-500 text-black border border-cyan-400 scale-110 shadow-[0_0_15px_rgba(6,182,212,0.6)] z-10' : 'bg-gray-800 text-cyan-400 border border-cyan-800 hover:border-cyan-400 hover:bg-gray-700 hover:scale-105'}`}>
                                                                         {seat}
                                                                     </button>
                                                                 )
@@ -1708,33 +1904,37 @@
                                                 <div className="bg-card p-4 rounded-2xl border border-theme shadow-sm flex-1 flex justify-between items-center">
                                                     <div>
                                                         <p className="text-[10px] font-black text-sub-theme uppercase tracking-widest mb-1">Total Bayar</p>
-                                                        <p className="text-xl font-black font-mono text-primary">{selectedSeat ? formatRupiah(selectedSeat.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg) : 'Rp 0'}</p>
+                                                        <p className="text-xl font-black font-mono text-primary">
+                                                            {selectedSeats.length > 0 ? formatRupiah(selectedSeats.reduce((a, s) => a + (s.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg), 0)) : 'Rp 0'}
+                                                        </p>
                                                     </div>
-                                                    {selectedSeat && <span className={`text-[10px] font-black uppercase px-2 py-1 rounded border shadow-sm ${selectedSeat.startsWith('V') ? 'bg-yellow-500/10 text-yellow-600 border-yellow-500/30' : 'bg-cyan-500/10 text-cyan-600 border-cyan-500/30'}`}>Kelas {selectedSeat.startsWith('V') ? 'VIP' : 'Reguler'}</span>}
+                                                    {selectedSeats.length > 0 && <span className={`text-[10px] font-black uppercase px-2 py-1 rounded border shadow-sm bg-cyan-500/10 text-cyan-600 border-cyan-500/30`}>{selectedSeats.length} Kursi Terpilih</span>}
                                                 </div>
                                                 
                                                 <button onClick={async () => {
-                                                    if(!selectedSeat) return addToast('Pilih kursi terlebih dahulu!', 'warning');
-                                                    const priceToPay = selectedSeat.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg;
+                                                    if(selectedSeats.length === 0) return addToast('Pilih kursi terlebih dahulu!', 'warning');
+                                                    const priceToPay = selectedSeats.reduce((a, s) => a + (s.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg), 0);
                                                     if((currentUserData?.saldoAkun || 0) < priceToPay) return addToast('Saldo Akun tidak cukup! Silakan top up E-Wallet.', 'error');
                                                     
-                                                    requestConfirm('Bayar Tiket', `Beli tiket kursi ${selectedSeat} seharga ${formatRupiah(priceToPay)}? Saldo otomatis terpotong.`, async () => {
+                                                    requestConfirm('Bayar Tiket', `Beli ${selectedSeats.length} tiket seharga ${formatRupiah(priceToPay)}? Saldo otomatis terpotong.`, async () => {
                                                         triggerSysLoad('Memproses Tiket...');
                                                         try {
-                                                            const ticketId = 'TIX-' + Date.now().toString(36).toUpperCase();
                                                             const batch = writeBatch(db);
-                                                            batch.set(doc(db, 'artifacts', safeAppId, 'public', 'data', 'cinema_bookings', ticketId), {
-                                                                id: ticketId, movieId: activeCinemaMovie.id, movieTitle: activeCinemaMovie.title, seat: selectedSeat, class: selectedSeat.startsWith('V') ? 'VIP' : 'Reguler', userEmail: authUser.email, userName: currentUserData?.name || authUser.email.split('@')[0], price: priceToPay, showTime: activeCinemaMovie.showTime, createdAt: new Date().toISOString(), status: 'Active'
+                                                            selectedSeats.forEach(seat => {
+                                                                const ticketId = 'TIX-' + Date.now().toString(36).toUpperCase() + '-' + seat;
+                                                                batch.set(doc(db, 'artifacts', safeAppId, 'public', 'data', 'cinema_bookings', ticketId), {
+                                                                    id: ticketId, movieId: activeCinemaMovie.id, movieTitle: activeCinemaMovie.title, seat: seat, class: seat.startsWith('V') ? 'VIP' : 'Reguler', userEmail: authUser.email, userName: currentUserData?.name || authUser.email.split('@')[0], price: seat.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg, showTime: activeCinemaMovie.showTime, createdAt: new Date().toISOString(), status: 'Active'
+                                                                });
                                                             });
                                                             batch.update(doc(db, 'artifacts', safeAppId, 'public', 'data', 'members', authUser.uid), { saldoAkun: (currentUserData.saldoAkun||0) - priceToPay });
                                                             await batch.commit();
-                                                            addToast('Tiket Berhasil Dibeli! Silakan cek di menu Jadwal.', 'success');
-                                                            setSelectedSeat(null);
+                                                            addToast(`Berhasil Membeli ${selectedSeats.length} Tiket! Silakan cek di menu Jadwal.`, 'success');
+                                                            setSelectedSeats([]);
                                                             setActiveCinemaMovie(null);
                                                             setActiveCinemaTab('nowplaying');
                                                         } catch(e) { addToast('Gagal memproses', 'error'); } finally { closeSysLoad(); }
                                                     }, 'success', 'Beli Sekarang');
-                                                }} disabled={!selectedSeat} className="w-full sm:w-auto sm:flex-[1.5] bg-emerald-600 hover:bg-emerald-500 text-white py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 flex items-center justify-center gap-2 hover:scale-[1.02]">
+                                                }} disabled={selectedSeats.length === 0} className="w-full sm:w-auto sm:flex-[1.5] bg-emerald-600 hover:bg-emerald-500 text-white py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-emerald-500/20 transition disabled:opacity-50 flex items-center justify-center gap-2 hover:scale-[1.02]">
                                                     <IconCheckCircle className="w-5 h-5"/> Bayar Tiket
                                                 </button>
                                             </div>
@@ -2013,7 +2213,7 @@
                             </h2>
                             <p className="text-sm text-sub-theme font-mono mt-2 drop-shadow-sm truncate">{authUser.email}</p>
                             <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-5">
-                               <span className="text-[10px] bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-3 py-1.5 rounded-lg border border-emerald-500/20 font-black uppercase flex items-center gap-1.5 shadow-sm"><IconCheckCircle className="w-3 h-3"/> Terverifikasi Akun</span>
+                               <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercase flex items-center gap-1.5 shadow-sm ${currentUserData?.isPhoneVerified ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' : 'bg-red-500/10 text-red-600 border-red-500/20'}`}><IconCheckCircle className="w-3 h-3"/> {currentUserData?.isPhoneVerified ? 'WA Terverifikasi' : 'WA Belum Verifikasi'}</span>
                                <span className={`text-[10px] px-3 py-1.5 rounded-lg border font-black uppercase flex items-center gap-1.5 shadow-sm ${userVipData.color}`}>{userVipData.badge} {userVipData.level} Member Rank</span>
                             </div>
                          </div>
@@ -2034,7 +2234,11 @@
                                     <h3 className="text-lg font-black mb-6 flex items-center gap-3 text-main"><div className="bg-primary-light p-2 rounded-xl text-primary shadow-sm border border-primary/20"><IconUser className="w-5 h-5"/></div> Data Personal Utama</h3>
                                     <form onSubmit={handleUpdateProfile} className="space-y-5 flex-1 flex flex-col">
                                        <div className="relative group"><IconUser className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="text" required value={profileName} onChange={(e)=>setProfileName(e.target.value)} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary text-sm shadow-sm transition" placeholder="Nama Lengkap" /></div>
-                                       <div className="relative group"><IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" /><input type="tel" required value={profilePhone} onChange={(e)=> { const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setProfilePhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary text-sm shadow-sm transition" placeholder="Nomor Handphone Unik" /></div>
+                                       <div className="relative group">
+                                            <IconPhone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-sub-theme" />
+                                            <input type="tel" required value={profilePhone} onChange={(e)=> { const val = e.target.value; if(val && !/^\d*$/.test(val)) return; setProfilePhone(val); }} className="w-full input-theme rounded-2xl py-4 pl-12 pr-4 focus:outline-none focus:border-primary text-sm shadow-sm transition" placeholder="Nomor Handphone Unik" />
+                                            <p className="text-[9px] mt-2 text-sub-theme">*(Perubahan Nomor HP akan membutuhkan verifikasi OTP WhatsApp).</p>
+                                       </div>
                                        <div className="mt-auto pt-4">
                                            <button type="submit" disabled={!profilePhone || profilePhone.length < 10} className="w-full bg-primary hover:bg-primary-hover text-white py-4 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-[1.02] transition-transform disabled:opacity-50 disabled:hover:scale-100">Simpan Perubahan Data</button>
                                        </div>
@@ -2196,7 +2400,7 @@
                 </div>
             )}
 
-            {/* ADMIN PANEL HYBRID VIPERCELL v16.9 */}
+            {/* ADMIN PANEL HYBRID VIPERCELL v16.9.5 */}
             {currentView === 'admin' && isAdmin && (
                <div className="animate-slide-down pb-10 pt-4 max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 min-h-[calc(100vh-120px)] w-full relative z-10">
                   
@@ -2206,7 +2410,7 @@
                         <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shrink-0 shadow-lg"><IconShieldAlert className="w-6 h-6 text-white" /></div>
                         <div className="min-w-0">
                            <h1 className="text-lg font-black text-main truncate drop-shadow-sm">Admin Panel</h1>
-                           <span className="text-[8px] bg-gray-200 dark:bg-navy-800 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme shadow-inner">System v16.9 Enterprise</span>
+                           <span className="text-[8px] bg-gray-200 dark:bg-navy-800 text-sub-theme px-2 py-0.5 rounded uppercase font-bold mt-1 inline-block border border-theme shadow-inner">System v16.9.5 Enterprise</span>
                         </div>
                      </div>
 
@@ -2894,7 +3098,7 @@
                            </div>
                         )}
 
-                        {/* TAB: PENGATURAN WEB (Global & Banners & Theme & Webhook) */}
+                        {/* TAB: PENGATURAN WEB (Global & Banners & Theme & Webhook & WA) */}
                         {activeAdminTab === 'settings' && (
                            <div className="animate-slide-down space-y-8 overflow-y-auto custom-scrollbar h-full pb-10 px-2">
                               <div className="flex items-center gap-3 mb-2">
@@ -2904,41 +3108,86 @@
 
                               {/* PENGATURAN SERVER & WEBHOOK */}
                               <div className="bg-card p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-lg space-y-6">
-                                  <h3 className="font-black text-main text-lg flex items-center gap-2"><IconDatabase className="w-5 h-5 text-primary"/> Konfigurasi Server (Webhook & API)</h3>
+                                  <h3 className="font-black text-main text-lg flex items-center gap-2"><IconDatabase className="w-5 h-5 text-primary"/> Konfigurasi Server (Webhook & PPOB)</h3>
                                   <div className="space-y-4">
-                                      <label className="text-xs font-black text-main block">URL Endpoint Server (PHP / Webhook API)</label>
+                                      <label className="text-xs font-black text-main block">URL Endpoint Server PPOB (Webhook / Digiflazz)</label>
                                       <input type="text" value={adminGasUrl || ''} onChange={(e)=>setAdminGasUrl(e.target.value)} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-primary transition font-mono shadow-sm" placeholder="https://domain-anda.com/webhook.php" />
-                                      <p className="text-[10px] text-sub-theme font-bold">Endpoint ini akan menerima perintah eksekusi dari web dan meneruskannya ke Digiflazz secara langsung.</p>
+                                      <p className="text-[10px] text-sub-theme font-bold">Endpoint ini akan menerima perintah eksekusi otomatis untuk meneruskannya ke Digiflazz.</p>
                                       
-                                      <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-theme">
-                                          <button onClick={saveSettings} className="bg-black text-white dark:bg-white dark:text-black font-black px-6 py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-md hover:scale-105">Simpan Endpoint</button>
+                                      <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-theme mt-4">
+                                          <button onClick={saveSettings} className="bg-black text-white dark:bg-white dark:text-black font-black px-6 py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-md hover:scale-105">Simpan Webhook PPOB</button>
                                           <button onClick={triggerSyncAll} disabled={isSyncingDigiflazz || !adminGasUrl} className="flex-1 bg-primary hover:bg-primary-hover text-white font-black px-6 py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-md disabled:opacity-50 flex justify-center items-center gap-2">
                                               {isSyncingDigiflazz ? <IconLoader className="w-4 h-4 animate-spin"/> : <IconRefresh className="w-4 h-4"/>} 
                                               {isSyncingDigiflazz ? 'SINKRONISASI BERJALAN...' : 'Tarik Master Data Digiflazz (1-Klik)'}
                                           </button>
                                       </div>
                                   </div>
+                              </div>
 
-                                  <div className="bg-[#0a0a0a] rounded-2xl border border-gray-800 shadow-inner flex flex-col h-48 font-mono text-[10px] text-green-400 overflow-hidden relative mt-6">
-                                      <div className="bg-gray-900 p-3 border-b border-gray-800 flex justify-between items-center shrink-0">
-                                          <div className="flex gap-2">
-                                              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                                              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                                              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                                          </div>
-                                          <span className="text-gray-400 font-bold tracking-widest uppercase">System Console Log</span>
-                                          <button onClick={checkDigiflazzBalance} className="text-primary hover:text-white transition flex items-center gap-1"><IconRefresh className="w-3 h-3"/> Cek Saldo Live</button>
+                              {/* PENGATURAN GATEWAY WHATSAPP */}
+                              <div className="bg-card p-6 md:p-8 rounded-[2.5rem] border border-theme shadow-lg space-y-6 mt-6">
+                                  <h3 className="font-black text-main text-lg flex items-center gap-2"><IconWhatsapp className="w-5 h-5 text-green-500"/> Notifikasi & WhatsApp Gateway</h3>
+                                  
+                                  <div className="space-y-4">
+                                      <label className="text-xs font-black text-main block">URL Endpoint WhatsApp API (Terpisah)</label>
+                                      <input type="text" value={adminWaEndpoint || ''} onChange={(e)=>setAdminWaEndpoint(e.target.value)} className="w-full input-theme rounded-2xl p-4 text-sm focus:border-green-500 transition font-mono shadow-sm" placeholder="https://wa-server.com/send-message" />
+                                      <p className="text-[10px] text-sub-theme font-bold">Digunakan untuk kirim OTP, info login, invoice bayar QRIS, dan alert perubahan status ke pembeli.</p>
+
+                                      <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-theme">
+                                          <button onClick={saveSettings} className="bg-black text-white dark:bg-white dark:text-black font-black px-6 py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-md hover:scale-105">Simpan WA Endpoint</button>
+                                          <button onClick={async () => {
+                                              if(!adminWaEndpoint) return addToast('Set URL Endpoint WA dulu!', 'warning');
+                                              triggerSysLoad('Test WA...');
+                                              try {
+                                                  await sendWhatsApp(currentUserData.phone, '*TEST KONEKSI BERHASIL*\nGateway WhatsApp Vipercell berjalan dengan normal.');
+                                                  addToast('Test terkirim ke Nomor Anda', 'success');
+                                              } catch(e) { addToast('Gagal test WA', 'error'); }
+                                              closeSysLoad();
+                                          }} className="bg-green-600 hover:bg-green-500 text-white font-black px-6 py-4 rounded-xl text-xs uppercase tracking-widest transition shadow-md flex justify-center items-center gap-2">
+                                              Test Koneksi WA
+                                          </button>
                                       </div>
-                                      <div className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2">
-                                          <div className="text-gray-500 mb-2">root@vipercell-server:~# connect_webhook_server</div>
-                                          {(dbLogs || []).map((log, i) => (
-                                              <div key={i} className="flex gap-3">
-                                                  <span className="text-gray-600 shrink-0">[{log.time}]</span>
-                                                  <span className={`${log.type === 'error' ? 'text-red-400' : log.type === 'success' ? 'text-green-400' : 'text-blue-300'}`}>{log.msg}</span>
+                                  </div>
+
+                                  <div className="pt-6 border-t border-theme mt-6">
+                                      <label className="text-xs font-black text-main block mb-2">Tambahkan Nomor WA Admin (Terima Info Transaksi Masuk)</label>
+                                      <p className="text-[10px] text-sub-theme font-bold mb-4">Anda bisa menambahkan lebih dari 5 nomor WA Admin secara bersamaan. Semua akan dibroadcast saat ada yang beli.</p>
+                                      <div className="flex gap-2">
+                                          <input type="tel" value={newAdminWa} onChange={(e)=>setNewAdminWa(e.target.value)} placeholder="Misal: 08123456789" className="flex-1 input-theme p-4 rounded-xl text-sm font-mono shadow-sm"/>
+                                          <button onClick={handleAddAdminWa} className="bg-green-600 text-white px-6 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-md hover:bg-green-500">Tambah</button>
+                                      </div>
+                                      
+                                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
+                                          {(globalConfig?.adminWaNumbers || []).map((admin, idx) => (
+                                              <div key={idx} className="flex justify-between items-center p-3 border border-theme rounded-xl bg-gray-50 dark:bg-navy-900/50 shadow-sm">
+                                                  <span className="font-mono text-sm font-bold text-main">+{admin.phone}</span>
+                                                  <button onClick={() => handleDeleteAdminWa(admin.id)} className="text-red-500 hover:text-red-700 bg-red-500/10 p-2 rounded-lg"><IconTrash className="w-4 h-4"/></button>
                                               </div>
                                           ))}
-                                          {(!dbLogs || dbLogs.length === 0) && <div className="text-gray-600 animate-pulse mt-2">Menunggu aktivitas eksekusi server...</div>}
+                                          {!(globalConfig?.adminWaNumbers?.length > 0) && <p className="col-span-full text-xs text-sub-theme text-center py-4 border border-dashed border-theme rounded-xl">Belum ada nomor WA Admin yang di-set.</p>}
                                       </div>
+                                  </div>
+                              </div>
+
+                              <div className="bg-[#0a0a0a] rounded-2xl border border-gray-800 shadow-inner flex flex-col h-48 font-mono text-[10px] text-green-400 overflow-hidden relative mt-6">
+                                  <div className="bg-gray-900 p-3 border-b border-gray-800 flex justify-between items-center shrink-0">
+                                      <div className="flex gap-2">
+                                          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                                          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                                      </div>
+                                      <span className="text-gray-400 font-bold tracking-widest uppercase">System Console Log</span>
+                                      <button onClick={checkDigiflazzBalance} className="text-primary hover:text-white transition flex items-center gap-1"><IconRefresh className="w-3 h-3"/> Cek Saldo Live</button>
+                                  </div>
+                                  <div className="p-4 overflow-y-auto custom-scrollbar flex-1 space-y-2">
+                                      <div className="text-gray-500 mb-2">root@vipercell-server:~# connect_webhook_server</div>
+                                      {(dbLogs || []).map((log, i) => (
+                                          <div key={i} className="flex gap-3">
+                                              <span className="text-gray-600 shrink-0">[{log.time}]</span>
+                                              <span className={`${log.type === 'error' ? 'text-red-400' : log.type === 'success' ? 'text-green-400' : 'text-blue-300'}`}>{log.msg}</span>
+                                          </div>
+                                      ))}
+                                      {(!dbLogs || dbLogs.length === 0) && <div className="text-gray-600 animate-pulse mt-2">Menunggu aktivitas eksekusi server...</div>}
                                   </div>
                               </div>
 
@@ -3746,7 +3995,7 @@
                                                     <div className="space-y-1 flex-[2]"><label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Waktu Tayang</label><input type="datetime-local" required value={adminCinemaForm.showTime} onChange={(e)=>setAdminCinemaForm({...adminCinemaForm, showTime: e.target.value})} className="w-full input-theme p-3 rounded-xl focus:border-primary shadow-sm"/></div>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    <div className="space-y-1 flex-1"><label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Kapasitas VIP</label><input type="number" min="1" max="50" required value={adminCinemaForm.vipSeats} onChange={(e)=>setAdminCinemaForm({...adminCinemaForm, vipSeats: e.target.value})} className="w-full input-theme p-3 rounded-xl focus:border-yellow-500 shadow-sm text-center border-yellow-500/30" placeholder="5"/></div>
+                                                    <div className="space-y-1 flex-1"><label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Kapasitas VIP</label><input type="number" min="1" max="10" required value={adminCinemaForm.vipSeats} onChange={(e)=>setAdminCinemaForm({...adminCinemaForm, vipSeats: e.target.value})} className="w-full input-theme p-3 rounded-xl focus:border-yellow-500 shadow-sm text-center border-yellow-500/30" placeholder="5"/></div>
                                                     <div className="space-y-1 flex-1"><label className="text-[9px] text-sub-theme font-bold uppercase tracking-widest">Kapasitas Reguler</label><input type="number" min="1" max="100" required value={adminCinemaForm.regSeats} onChange={(e)=>setAdminCinemaForm({...adminCinemaForm, regSeats: e.target.value})} className="w-full input-theme p-3 rounded-xl focus:border-cyan-500 shadow-sm text-center border-cyan-500/30" placeholder="15"/></div>
                                                 </div>
                                                 <button type="submit" disabled={!adminCinemaForm.poster} className="w-full bg-primary hover:bg-primary-hover text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition hover:scale-[1.02] disabled:opacity-50">Tayangkan Film</button>
@@ -3760,7 +4009,7 @@
                                                     <select value={activeCinemaMovie?.id || ''} onChange={(e)=> {
                                                         const mv = cinemaMovies.find(m => m.id === e.target.value);
                                                         setActiveCinemaMovie(mv || null);
-                                                        setSelectedSeat(null);
+                                                        setSelectedSeats([]);
                                                     }} className="w-full input-theme p-3 rounded-xl focus:border-emerald-500 appearance-none shadow-sm border border-emerald-500/30">
                                                         <option value="">-- Pilih Film Tayang --</option>
                                                         {(cinemaMovies||[]).map(m=><option key={m.id} value={m.id}>{m.title}</option>)}
@@ -3769,24 +4018,29 @@
                                                 <div className="space-y-1"><label className="text-[9px] text-emerald-600 font-bold uppercase tracking-widest">Nama Pelanggan / Cashier</label><input type="text" required value={adminPosForm.userName} onChange={(e)=>setAdminPosForm({userName: e.target.value})} className="w-full input-theme p-3 rounded-xl focus:border-emerald-500 shadow-sm border border-emerald-500/30" placeholder="Nama Pembeli"/></div>
                                                 <button onClick={() => {
                                                     if(!activeCinemaMovie) return addToast('Pilih film dulu!', 'warning');
-                                                    if(!selectedSeat) return addToast('Pilih kursi di panel kanan!', 'warning');
+                                                    if(selectedSeats.length === 0) return addToast('Pilih kursi di panel kanan!', 'warning');
                                                     if(!adminPosForm.userName) return addToast('Isi nama pembeli!', 'warning');
                                                     
-                                                    requestConfirm('Cetak Tiket Fisik', `Terima uang cash dan cetak tiket untuk kursi ${selectedSeat}?`, async () => {
+                                                    const priceToPay = selectedSeats.reduce((a, s) => a + (s.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg), 0);
+                                                    requestConfirm('Cetak Tiket Fisik', `Terima uang cash sejumlah ${formatRupiah(priceToPay)} dan cetak ${selectedSeats.length} tiket?`, async () => {
                                                         triggerSysLoad('Mencetak Tiket...');
                                                         try {
-                                                            const ticketId = 'TIX-' + Date.now().toString(36).toUpperCase();
-                                                            const price = selectedSeat.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg;
-                                                            const tixData = { id: ticketId, movieId: activeCinemaMovie.id, movieTitle: activeCinemaMovie.title, seat: selectedSeat, class: selectedSeat.startsWith('V') ? 'VIP' : 'Reguler', userEmail: authUser.email, userName: adminPosForm.userName, price: price, showTime: activeCinemaMovie.showTime, createdAt: new Date().toISOString(), status: 'Scanned' };
-                                                            
-                                                            await setDoc(doc(db, 'artifacts', safeAppId, 'public', 'data', 'cinema_bookings', ticketId), tixData);
-                                                            addToast('Tiket Tercetak!', 'success');
-                                                            setSelectedSeat(null);
+                                                            const batch = writeBatch(db);
+                                                            let lastTixData = null;
+                                                            selectedSeats.forEach(seat => {
+                                                                const ticketId = 'TIX-' + Date.now().toString(36).toUpperCase() + '-' + seat;
+                                                                const tixData = { id: ticketId, movieId: activeCinemaMovie.id, movieTitle: activeCinemaMovie.title, seat: seat, class: seat.startsWith('V') ? 'VIP' : 'Reguler', userEmail: authUser.email, userName: adminPosForm.userName, price: seat.startsWith('V') ? activeCinemaMovie.priceVip : activeCinemaMovie.priceReg, showTime: activeCinemaMovie.showTime, createdAt: new Date().toISOString(), status: 'Scanned' };
+                                                                batch.set(doc(db, 'artifacts', safeAppId, 'public', 'data', 'cinema_bookings', ticketId), tixData);
+                                                                lastTixData = tixData;
+                                                                printCinemaTicket(tixData);
+                                                            });
+                                                            await batch.commit();
+                                                            addToast(`Berhasil Cetak ${selectedSeats.length} Tiket!`, 'success');
+                                                            setSelectedSeats([]);
                                                             setAdminPosForm({userName:''});
-                                                            printCinemaTicket(tixData);
                                                         } catch(e) { addToast('Gagal memproses', 'error'); } finally { closeSysLoad(); }
                                                     }, 'success', 'Cetak Tiket');
-                                                }} disabled={!selectedSeat || !activeCinemaMovie || !adminPosForm.userName} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-2"><IconPrinter className="w-4 h-4"/> Print Tiket Fisik</button>
+                                                }} disabled={selectedSeats.length === 0 || !activeCinemaMovie || !adminPosForm.userName} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 rounded-xl font-black text-xs uppercase tracking-widest shadow-lg mt-2 transition hover:scale-[1.02] disabled:opacity-50 flex items-center justify-center gap-2"><IconPrinter className="w-4 h-4"/> Print Tiket Fisik</button>
                                             </div>
                                         )}
 
@@ -3897,7 +4151,7 @@
                                         {adminCinemaTab === 'pos' && activeCinemaMovie && (
                                             <div className="flex-1 bg-[#020617] rounded-[2.5rem] p-5 border-2 border-indigo-900/50 shadow-2xl relative overflow-hidden flex flex-col justify-center">
                                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-cyan-500/10 blur-[50px] pointer-events-none"></div>
-                                                <button onClick={()=>{setActiveCinemaMovie(null); setSelectedSeat(null);}} className="absolute top-4 left-4 z-20 text-sub-theme hover:text-white transition bg-black/50 p-2 rounded-xl backdrop-blur-sm"><IconChevronLeft className="w-5 h-5"/></button>
+                                                <button onClick={()=>{setActiveCinemaMovie(null); setSelectedSeats([]);}} className="absolute top-4 left-4 z-20 text-sub-theme hover:text-white transition bg-black/50 p-2 rounded-xl backdrop-blur-sm"><IconChevronLeft className="w-5 h-5"/></button>
                                                 
                                                 <div className="text-center mb-12 relative z-10">
                                                     <div className="w-4/5 md:w-2/3 h-1.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent mx-auto rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)]"></div>
@@ -3911,9 +4165,9 @@
                                                         <div className="flex flex-wrap justify-center gap-2">
                                                             {Array.from({length: activeCinemaMovie.vipSeats || 5}, (_, i) => `V${i+1}`).map(seat => {
                                                                 const isBooked = cinemaBookings.some(b => b.movieId === activeCinemaMovie.id && b.seat === seat);
-                                                                const isSelected = selectedSeat === seat;
+                                                                const isSelected = selectedSeats.includes(seat);
                                                                 return (
-                                                                    <button key={seat} disabled={isBooked} onClick={()=>setSelectedSeat(seat)} className={`aspect-square w-10 md:w-12 rounded-t-2xl rounded-b-lg flex items-center justify-center text-[10px] md:text-xs font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-yellow-500 text-black border border-yellow-400 scale-110 shadow-[0_0_15px_rgba(234,179,8,0.6)] z-10' : 'bg-gray-800 text-yellow-500 border border-yellow-600/50 hover:border-yellow-400 hover:bg-gray-700 hover:scale-105'}`}>
+                                                                    <button key={seat} disabled={isBooked} onClick={()=>toggleCinemaSeat(seat)} className={`aspect-square w-10 md:w-12 rounded-t-2xl rounded-b-lg flex items-center justify-center text-[10px] md:text-xs font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-yellow-500 text-black border border-yellow-400 scale-110 shadow-[0_0_15px_rgba(234,179,8,0.6)] z-10' : 'bg-gray-800 text-yellow-500 border border-yellow-600/50 hover:border-yellow-400 hover:bg-gray-700 hover:scale-105'}`}>
                                                                         {seat}
                                                                     </button>
                                                                 )
@@ -3929,9 +4183,9 @@
                                                         <div className="flex flex-wrap justify-center gap-2">
                                                             {Array.from({length: activeCinemaMovie.regSeats || 15}, (_, i) => `R${i+1}`).map(seat => {
                                                                 const isBooked = cinemaBookings.some(b => b.movieId === activeCinemaMovie.id && b.seat === seat);
-                                                                const isSelected = selectedSeat === seat;
+                                                                const isSelected = selectedSeats.includes(seat);
                                                                 return (
-                                                                    <button key={seat} disabled={isBooked} onClick={()=>setSelectedSeat(seat)} className={`aspect-square w-9 md:w-10 rounded-t-xl rounded-b-md flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-cyan-500 text-black border border-cyan-400 scale-110 shadow-[0_0_15px_rgba(6,182,212,0.6)] z-10' : 'bg-gray-800 text-cyan-400 border border-cyan-800 hover:border-cyan-400 hover:bg-gray-700 hover:scale-105'}`}>
+                                                                    <button key={seat} disabled={isBooked} onClick={()=>toggleCinemaSeat(seat)} className={`aspect-square w-9 md:w-10 rounded-t-xl rounded-b-md flex items-center justify-center text-[9px] md:text-[10px] font-black transition-all transform ${isBooked ? 'bg-gray-800 text-gray-600 border border-gray-700 cursor-not-allowed opacity-50' : isSelected ? 'bg-cyan-500 text-black border border-cyan-400 scale-110 shadow-[0_0_15px_rgba(6,182,212,0.6)] z-10' : 'bg-gray-800 text-cyan-400 border border-cyan-800 hover:border-cyan-400 hover:bg-gray-700 hover:scale-105'}`}>
                                                                         {seat}
                                                                     </button>
                                                                 )
